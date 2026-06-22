@@ -1,11 +1,97 @@
 <x-dc>
-<div style="padding:32px;text-align:center;color:#94a3b8;font-family:-apple-system,sans-serif">
-  <div style="font-size:24px;margin-bottom:8px">📊</div>
-  <div style="font-weight:600;color:#16203a">Relatório em breve</div>
+<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:20px 16px;max-width:960px;margin:0 auto">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-size:18px;font-weight:800;color:#16203a">Relatorio de Desempenho</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:2px">{{ studentName }}</div>
+    </div>
+    <button onclick="{{ onExport }}" style="background:#2551c3;color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer">Imprimir PDF</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:20px">
+    <sc-for list="{{ cards }}" as="card">
+      <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:14px 16px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:{{ card.color }}">{{ card.value }}</div>
+        <div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-top:2px">{{ card.label }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <sc-if value="{{ hasEvo }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:18px 20px;margin-bottom:16px">
+      <div style="font-size:13px;font-weight:700;color:#16203a;margin-bottom:14px">Evolucao semanal — % de acerto</div>
+      <div style="display:flex;align-items:flex-end;gap:6px;height:90px;padding-bottom:4px">
+        <sc-for list="{{ evo }}" as="w">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+            <div style="font-size:9px;color:#2551c3;font-weight:700">{{ w.pct }}%</div>
+            <div style="width:100%;border-radius:4px 4px 0 0;min-height:4px;height:{{ w.barH }}px;background:{{ w.barColor }}"></div>
+            <div style="font-size:9px;color:#94a3b8;font-weight:600">{{ w.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:18px 20px;margin-bottom:16px">
+    <div style="font-size:13px;font-weight:700;color:#16203a;margin-bottom:14px">Desempenho por materia</div>
+    <sc-if value="{{ noSubj }}" hint-placeholder-val="">
+      <div style="text-align:center;color:#94a3b8;padding:20px;font-size:13px">Nenhuma questao registrada ainda.</div>
+    </sc-if>
+    <sc-for list="{{ subjArr }}" as="s">
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <div style="font-size:12px;font-weight:600;color:#16203a">{{ s.name }}</div>
+          <div style="font-size:12px;font-weight:700;color:{{ s.pctColor }}">{{ s.pctLabel }}</div>
+        </div>
+        <div style="height:7px;background:#f1f5f9;border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:{{ s.barW }}%;background:{{ s.barColor }};border-radius:4px"></div>
+        </div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:2px">{{ s.qLabel }}</div>
+      </div>
+    </sc-for>
+  </div>
+
 </div>
 </x-dc>
 <script data-dc-script>
 class Component extends DCLogic {
-  renderVals() { return {}; }
+  renderVals() {
+    var d = this.props.data || {};
+    var C = d.C || {};
+    var evo = (C.evo || []).map(function(w) {
+      var h = Math.max(4, Math.round((w.pct / 100) * 60));
+      return { label: 'S' + w.week, pct: w.pct, barH: h, barColor: w.pct >= 70 ? '#16a34a' : w.pct >= 50 ? '#f59e0b' : '#ef4444' };
+    });
+    var matColors = C.matColors || {};
+    var subjArr = (C.subjArr || []).filter(function(s) { return s.q > 0; }).map(function(s) {
+      var color = matColors[s.name] || '#2551c3';
+      return {
+        name: s.name,
+        pctLabel: s.pct != null ? s.pct + '%' : '--',
+        pctColor: s.pct == null ? '#94a3b8' : s.pct >= 70 ? '#16a34a' : s.pct >= 50 ? '#d97706' : '#dc2626',
+        barW: s.pct || 0,
+        barColor: color,
+        qLabel: (s.a || 0) + ' acertos de ' + (s.q || 0) + ' questoes'
+      };
+    });
+    var cards = [
+      { label: 'Progresso', value: (C.progPct || 0) + '%', color: '#2551c3' },
+      { label: 'Acerto', value: (C.taxa || 0) + '%', color: C.taxa >= 70 ? '#16a34a' : C.taxa >= 50 ? '#d97706' : '#dc2626' },
+      { label: 'Questoes', value: C.totalQ || 0, color: '#16203a' },
+      { label: 'Sequencia', value: (C.streak || 0) + 'd', color: '#7c3aed' },
+      { label: 'Aderencia', value: (C.adherence || 0) + '%', color: '#0891b2' },
+      { label: 'Nota Est.', value: (C.nota || 0) + '/80', color: '#16203a' }
+    ];
+    return {
+      studentName: C.name || 'Aluno',
+      onExport: d.onExport || function(){},
+      cards: cards,
+      hasEvo: evo.length > 0,
+      evo: evo,
+      subjArr: subjArr,
+      noSubj: subjArr.length === 0
+    };
+  }
 }
 </script>

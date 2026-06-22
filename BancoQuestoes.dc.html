@@ -1,11 +1,67 @@
 <x-dc>
-<div style="padding:32px;text-align:center;color:#94a3b8;font-family:-apple-system,sans-serif">
-  <div style="font-size:24px;margin-bottom:8px">📝</div>
-  <div style="font-weight:600;color:#16203a">Banco de questoes em breve</div>
+<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:20px 16px;max-width:960px;margin:0 auto">
+
+  <div style="font-size:18px;font-weight:800;color:#16203a;margin-bottom:4px">Banco de Questoes OAB</div>
+  <div style="font-size:12px;color:#94a3b8;margin-bottom:20px">Acesse questoes por materia e assunto — direto no QConcursos (banca FGV)</div>
+
+  <sc-for list="{{ materias }}" as="mat">
+    <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;margin-bottom:12px;overflow:hidden">
+      <button onclick="{{ mat.onToggle }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:none;background:transparent;cursor:pointer;text-align:left">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:10px;height:10px;border-radius:3px;background:{{ mat.color }}"></div>
+          <span style="font-size:14px;font-weight:700;color:#16203a">{{ mat.name }}</span>
+          <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;background:#f0f4ff;color:#2551c3">{{ mat.count }} assuntos</span>
+        </div>
+        <span style="font-size:16px;color:#94a3b8">{{ mat.arrow }}</span>
+      </button>
+      <sc-if value="{{ mat.open }}" hint-placeholder-val="">
+        <div style="border-top:1px solid #f1f5f9;padding:10px 16px 14px">
+          <a href="{{ mat.allUrl }}" target="_blank" style="display:inline-block;margin-bottom:10px;font-size:12px;font-weight:700;color:#fff;background:#2551c3;border-radius:8px;padding:7px 14px;text-decoration:none">Ver todas as questoes de {{ mat.name }} →</a>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <sc-for list="{{ mat.temas }}" as="t">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:#f8fafc;border-radius:9px">
+                <span style="font-size:12px;color:#16203a;font-weight:500">{{ t.name }}</span>
+                <a href="{{ t.url }}" target="_blank" style="font-size:11px;font-weight:700;color:#2551c3;text-decoration:none;background:#e8f0fd;border-radius:6px;padding:4px 10px;white-space:nowrap">{{ t.q }} questoes →</a>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </sc-for>
+
 </div>
 </x-dc>
 <script data-dc-script>
 class Component extends DCLogic {
-  renderVals() { return {}; }
+  constructor(props) {
+    super(props);
+    this.state = { open: {} };
+  }
+  renderVals() {
+    var d = this.props.data || {};
+    var self = this;
+    var st = this.state;
+    var materias = (d.materias || []).map(function(mat) {
+      var isOpen = !!st.open[mat.name];
+      return {
+        name: mat.name,
+        color: mat.color || '#2551c3',
+        count: (mat.temas || []).length,
+        allUrl: mat.url,
+        arrow: isOpen ? '▲' : '▼',
+        open: isOpen,
+        onToggle: (function(name) { return function() {
+          var o = Object.assign({}, self.state.open);
+          o[name] = !o[name];
+          self.setState({ open: o });
+        }; })(mat.name),
+        temas: (mat.temas || []).map(function(t) {
+          return { name: t.name, url: t.url, q: t.q };
+        })
+      };
+    });
+    return { materias: materias };
+  }
 }
 </script>
