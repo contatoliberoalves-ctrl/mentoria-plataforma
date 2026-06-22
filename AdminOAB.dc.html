@@ -1,6 +1,10 @@
 <x-dc>
 <div style="min-height:100vh;background:#f0f4ff;font-family:-apple-system,BlinkMacSystemFont,sans-serif">
 
+  <!-- inputs de arquivo ocultos -->
+  <input type="file" id="adminVideoInput" accept="video/mp4,video/webm,video/ogg,video/quicktime" onchange="{{ onVideoFileChange }}" style="display:none">
+  <input type="file" id="adminPdfInput" accept="application/pdf,video/mp4,video/webm,video/quicktime" onchange="{{ onPdfFileChange }}" style="display:none">
+
   <!-- Header -->
   <div style="background:#fff;border-bottom:1.5px solid #e6ecf7;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20">
     <div>
@@ -27,7 +31,6 @@
     <!-- ═══ ABA ALUNOS ═══ -->
     <sc-if value="{{ tabAlunos }}" hint-placeholder-val="{{ true }}">
       <div>
-        <!-- Adicionar aluno -->
         <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:18px 20px;margin-bottom:16px">
           <div style="font-size:13px;font-weight:700;color:#16203a;margin-bottom:12px">Adicionar aluno manualmente</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
@@ -47,7 +50,6 @@
           <div style="margin-top:8px;font-size:11px;color:#94a3b8">Senha inicial: <b>oab123</b> — informe ao aluno para trocar depois.</div>
         </div>
 
-        <!-- Lista de alunos -->
         <sc-if value="{{ noStudents }}" hint-placeholder-val="">
           <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:40px;text-align:center;color:#94a3b8">
             <div style="font-size:32px;margin-bottom:8px">&#128101;</div>
@@ -150,19 +152,34 @@
     <sc-if value="{{ tabVideo }}" hint-placeholder-val="">
       <div>
         <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:20px;margin-bottom:16px">
-          <div style="font-size:14px;font-weight:700;color:#16203a;margin-bottom:6px">Video de boas-vindas</div>
-          <div style="font-size:12px;color:#64748b;margin-bottom:14px">Cole o link do YouTube ou Vimeo. Aparece na tela inicial do aluno.</div>
-          <div style="margin-bottom:12px">
-            <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">URL do video</div>
-            <input value="{{ videoUrl }}" oninput="{{ onVideoUrl }}" placeholder="https://youtube.com/watch?v=..." style="width:100%;height:38px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
+          <div style="font-size:14px;font-weight:700;color:#16203a;margin-bottom:4px">Video de boas-vindas</div>
+          <div style="font-size:12px;color:#64748b;margin-bottom:18px">Aparece na tela inicial do aluno. Faca upload direto ou cole um link do YouTube/Vimeo.</div>
+
+          <!-- Upload direto -->
+          <div style="border:2px dashed #c7d7f5;border-radius:12px;padding:28px;text-align:center;margin-bottom:16px;background:#f8faff">
+            <div style="font-size:28px;margin-bottom:8px">&#127910;</div>
+            <div style="font-size:13px;font-weight:600;color:#16203a;margin-bottom:4px">{{ uploadVideoLabel }}</div>
+            <div style="font-size:11px;color:#94a3b8;margin-bottom:14px">MP4, WebM, MOV — ate 500 MB</div>
+            <button onclick="{{ onPickVideo }}" style="background:#2551c3;color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;{{ uploadingVideoDisabled }}">{{ uploadVideoBtnLabel }}</button>
           </div>
-          <button onclick="{{ onSaveVideo }}" style="background:#2551c3;color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer">Salvar video</button>
+
+          <!-- OU link -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+            <div style="flex:1;height:1px;background:#e2e8f0"></div>
+            <span style="font-size:12px;color:#94a3b8;font-weight:600">ou cole um link</span>
+            <div style="flex:1;height:1px;background:#e2e8f0"></div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <input value="{{ videoUrl }}" oninput="{{ onVideoUrl }}" placeholder="https://youtube.com/watch?v=..." style="flex:1;height:38px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
+            <button onclick="{{ onSaveVideoUrl }}" style="background:#64748b;color:#fff;border:none;border-radius:8px;padding:0 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Salvar link</button>
+          </div>
         </div>
 
-        <sc-if value="{{ videoUrl }}" hint-placeholder-val="">
-          <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:16px">
-            <div style="font-size:12px;font-weight:600;color:#64748b;margin-bottom:10px">Preview:</div>
-            <div style="font-size:13px;color:#2551c3;word-break:break-all">{{ videoUrl }}</div>
+        <sc-if value="{{ currentVideoUrl }}" hint-placeholder-val="">
+          <div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:12px;padding:14px 16px">
+            <div style="font-size:11px;font-weight:700;color:#16a34a;text-transform:uppercase;margin-bottom:6px">Video atual</div>
+            <div style="font-size:12px;color:#16203a;word-break:break-all">{{ currentVideoUrl }}</div>
+            <button onclick="{{ onRemoveVideo }}" style="margin-top:8px;background:transparent;border:none;font-size:11px;color:#dc2626;cursor:pointer;font-weight:600">Remover video</button>
           </div>
         </sc-if>
       </div>
@@ -172,22 +189,36 @@
     <sc-if value="{{ tabSimulados }}" hint-placeholder-val="">
       <div>
         <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-          <div style="font-size:13px;font-weight:700;color:#16203a;margin-bottom:12px">Adicionar simulado ou PDF</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-            <div style="flex:1;min-width:160px">
-              <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Nome do simulado</div>
-              <input value="{{ simName }}" oninput="{{ onSimName }}" placeholder="Ex: Simulado 1 - Outubro" style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
-            </div>
-          </div>
+          <div style="font-size:13px;font-weight:700;color:#16203a;margin-bottom:12px">Adicionar simulado ou material</div>
+
+          <!-- Nome -->
           <div style="margin-bottom:12px">
-            <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Link do PDF ou arquivo (Google Drive, Dropbox...)</div>
-            <input value="{{ simUrl }}" oninput="{{ onSimUrl }}" placeholder="https://drive.google.com/..." style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
+            <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Nome do arquivo</div>
+            <input value="{{ simName }}" oninput="{{ onSimName }}" placeholder="Ex: Simulado 1 — Outubro 2026" style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
           </div>
-          <button onclick="{{ onSaveSimulado }}" style="background:#2551c3;color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer">Adicionar simulado</button>
+
+          <!-- Upload direto -->
+          <div style="border:2px dashed #ddd6fe;border-radius:12px;padding:22px;text-align:center;margin-bottom:14px;background:#faf8ff">
+            <div style="font-size:24px;margin-bottom:6px">&#128196;</div>
+            <div style="font-size:13px;font-weight:600;color:#16203a;margin-bottom:2px">{{ uploadPdfLabel }}</div>
+            <div style="font-size:11px;color:#94a3b8;margin-bottom:12px">PDF ou video — ate 500 MB</div>
+            <button onclick="{{ onPickPdf }}" style="background:#7c3aed;color:#fff;border:none;border-radius:9px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;{{ uploadingPdfDisabled }}">{{ uploadPdfBtnLabel }}</button>
+          </div>
+
+          <!-- OU link externo -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <div style="flex:1;height:1px;background:#e2e8f0"></div>
+            <span style="font-size:12px;color:#94a3b8;font-weight:600">ou link externo</span>
+            <div style="flex:1;height:1px;background:#e2e8f0"></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-bottom:14px">
+            <input value="{{ simUrl }}" oninput="{{ onSimUrl }}" placeholder="https://drive.google.com/..." style="flex:1;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
+            <button onclick="{{ onSaveSimulado }}" style="background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:0 14px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Adicionar link</button>
+          </div>
         </div>
 
         <sc-if value="{{ hasSimulados }}" hint-placeholder-val="{{ true }}">
-          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Simulados disponibilizados</div>
+          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Materiais disponibilizados</div>
           <sc-for list="{{ simulados }}" as="sim">
             <div style="background:#fff;border:1.5px solid #e6ecf7;border-left:4px solid #7c3aed;border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
               <div>
@@ -203,7 +234,7 @@
         </sc-if>
 
         <sc-if value="{{ noSimulados }}" hint-placeholder-val="">
-          <div style="text-align:center;color:#94a3b8;padding:32px">Nenhum simulado adicionado ainda.</div>
+          <div style="text-align:center;color:#94a3b8;padding:32px">Nenhum material adicionado ainda.</div>
         </sc-if>
       </div>
     </sc-if>
@@ -260,7 +291,9 @@ class Component extends DCLogic {
       newName: '', newEmail: '', addMsg: '',
       avisoTitle: '', avisoMsg: '',
       videoUrl: settings.welcomeVideoUrl || '',
+      uploadingVideo: false,
       simName: '', simUrl: '',
+      uploadingPdf: false,
       cfgBrand: settings.brandName || '',
       cfgExam: settings.examDate || '',
       cfgGoal: String(settings.qPerDay || 27),
@@ -268,6 +301,40 @@ class Component extends DCLogic {
       cfgAdminPass: settings.adminPass || '',
       msg: '', msgType: 'ok'
     };
+  }
+
+  _getSb() {
+    if (window._sb) return window._sb;
+    if (window.supabase) {
+      window._sb = window.supabase.createClient(
+        'https://qijziqjpvtjwarkodzxp.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpanppcWpwdnRqd2Fya29kenhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MjMzNDEsImV4cCI6MjA2NTQ5OTM0MX0.xNxWFGMPsCmSbu3lJp4H5TrEQbHzEZfJcmTP7gKRFVk'
+      );
+      return window._sb;
+    }
+    return null;
+  }
+
+  async _uploadFile(file, folder, onDone) {
+    var sb = this._getSb();
+    if (!sb) { this.setState({msg: 'Supabase nao disponivel.', msgType: 'err'}); return; }
+    var ext = file.name.split('.').pop().toLowerCase();
+    var path = folder + '/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    var setUploading = folder === 'videos'
+      ? function(v){ this.setState({uploadingVideo: v}); }.bind(this)
+      : function(v){ this.setState({uploadingPdf: v}); }.bind(this);
+    setUploading(true);
+    this.setState({msg: 'Enviando arquivo...', msgType: 'ok'});
+    var result = await sb.storage.from('media').upload(path, file, {upsert: true});
+    if (result.error) {
+      setUploading(false);
+      this.setState({msg: 'Erro no upload: ' + result.error.message, msgType: 'err'});
+      return;
+    }
+    var urlResult = sb.storage.from('media').getPublicUrl(path);
+    var publicUrl = urlResult.data && urlResult.data.publicUrl;
+    setUploading(false);
+    onDone(publicUrl);
   }
 
   renderVals() {
@@ -287,14 +354,14 @@ class Component extends DCLogic {
       return {
         label: t.label,
         style: 'padding:10px 16px;border:none;border-bottom:3px solid ' + (st.tab === t.id ? '#2551c3' : 'transparent') + ';background:transparent;font-size:13px;font-weight:' + (st.tab === t.id ? '700' : '500') + ';color:' + (st.tab === t.id ? '#2551c3' : '#64748b') + ';cursor:pointer;white-space:nowrap',
-        onClick: (function(id){ return function(){ self.setState({tab:id,msg:''}); }; })(t.id)
+        onClick: (function(id){ return function(){ self.setState({tab:id, msg:''}); }; })(t.id)
       };
     });
 
     var students = (d.list || []).map(function(s) {
       var statusBg = '#f0fdf4';
       if (s.status === 'Atrasado' || s.status === 'Parou') statusBg = '#fef2f2';
-      else if (s.status === 'Atencao' || s.status === 'Atencao') statusBg = '#fffbeb';
+      else if (s.status === 'Atencao') statusBg = '#fffbeb';
       return {
         name: s.name || 'Aluno', email: s.email || '',
         progPct: s.progPct || 0, taxa: s.taxa || 0,
@@ -304,10 +371,10 @@ class Component extends DCLogic {
         statusBg: statusBg,
         lastLabel: s.last ? ('Ha ' + s.daysSince + ' dia(s)') : 'Nunca estudou',
         onRemove: (function(sid, sname){ return function(){
-          if(confirm('Remover ' + sname + '?')) { d.onRemoveStudent && d.onRemoveStudent(sid); }
+          if (confirm('Remover ' + sname + '?')) { d.onRemoveStudent && d.onRemoveStudent(sid); }
         }; })(s.id, s.name),
         onReset: (function(sid, sname){ return function(){
-          if(confirm('Resetar progresso de ' + sname + '?')) { d.onResetProgress && d.onResetProgress(sid); }
+          if (confirm('Resetar progresso de ' + sname + '?')) { d.onResetProgress && d.onResetProgress(sid); }
         }; })(s.id, s.name),
         onImpersonate: (function(sid){ return function(){ d.onImpersonate && d.onImpersonate(sid); }; })(s.id)
       };
@@ -330,10 +397,12 @@ class Component extends DCLogic {
         onDelete: (function(idx){ return function(){
           var list = (settings.simulados || []).filter(function(_,j){ return j !== idx; });
           d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {simulados: list}));
-          self.setState({msg:'Simulado removido.', msgType:'ok'});
+          self.setState({msg:'Material removido.', msgType:'ok'});
         }; })(i)
       };
     });
+
+    var currentVideoUrl = settings.welcomeVideoUrl || '';
 
     return {
       brandName: d.brandName || 'OAB',
@@ -358,9 +427,9 @@ class Component extends DCLogic {
       onNewName: function(e){ self.setState({newName: e.target.value}); },
       onNewEmail: function(e){ self.setState({newEmail: e.target.value}); },
       onAddStudent: function(){
-        if(!st.newName.trim()||!st.newEmail.trim()){self.setState({addMsg:'Preencha nome e e-mail.'});return;}
+        if (!st.newName.trim() || !st.newEmail.trim()) { self.setState({addMsg:'Preencha nome e e-mail.'}); return; }
         d.onAddStudent && d.onAddStudent(st.newName.trim(), st.newEmail.trim());
-        self.setState({newName:'',newEmail:'',addMsg:'Aluno adicionado! Senha: oab123',msg:'',msgType:'ok'});
+        self.setState({newName:'', newEmail:'', addMsg:'Aluno adicionado! Senha: oab123', msg:'', msgType:'ok'});
       },
 
       avisos: avisos,
@@ -370,17 +439,36 @@ class Component extends DCLogic {
       onAvisoTitle: function(e){ self.setState({avisoTitle: e.target.value}); },
       onAvisoMsg: function(e){ self.setState({avisoMsg: e.target.value}); },
       onSaveAviso: function(){
-        if(!st.avisoTitle.trim()) return;
-        var list = [{id:Date.now(),title:st.avisoTitle.trim(),msg:st.avisoMsg.trim(),date:new Date().toLocaleDateString('pt-BR')}].concat(settings.avisos||[]);
+        if (!st.avisoTitle.trim()) return;
+        var list = [{id:Date.now(), title:st.avisoTitle.trim(), msg:st.avisoMsg.trim(), date:new Date().toLocaleDateString('pt-BR')}].concat(settings.avisos||[]);
         d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {avisos: list}));
-        self.setState({avisoTitle:'',avisoMsg:'',msg:'Aviso publicado!',msgType:'ok'});
+        self.setState({avisoTitle:'', avisoMsg:'', msg:'Aviso publicado!', msgType:'ok'});
       },
 
+      currentVideoUrl: currentVideoUrl,
       videoUrl: st.videoUrl,
       onVideoUrl: function(e){ self.setState({videoUrl: e.target.value}); },
-      onSaveVideo: function(){
-        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {welcomeVideoUrl: st.videoUrl}));
-        self.setState({msg:'Video salvo!', msgType:'ok'});
+      onSaveVideoUrl: function(){
+        if (!st.videoUrl.trim()) return;
+        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {welcomeVideoUrl: st.videoUrl.trim()}));
+        self.setState({msg:'Link do video salvo!', msgType:'ok'});
+      },
+      onRemoveVideo: function(){
+        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {welcomeVideoUrl: ''}));
+        self.setState({videoUrl:'', msg:'Video removido.', msgType:'ok'});
+      },
+      uploadingVideoDisabled: st.uploadingVideo ? 'opacity:0.6;pointer-events:none' : '',
+      uploadVideoBtnLabel: st.uploadingVideo ? 'Enviando...' : 'Escolher video do computador',
+      uploadVideoLabel: st.uploadingVideo ? 'Aguarde, enviando...' : 'Arraste ou clique para selecionar',
+      onPickVideo: function(){ document.getElementById('adminVideoInput').click(); },
+      onVideoFileChange: function(e){
+        var file = e.target.files && e.target.files[0];
+        if (!file) return;
+        e.target.value = '';
+        self._uploadFile(file, 'videos', function(url){
+          d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {welcomeVideoUrl: url}));
+          self.setState({videoUrl: url, msg:'Video enviado e salvo!', msgType:'ok'});
+        });
       },
 
       simulados: simulados,
@@ -390,10 +478,25 @@ class Component extends DCLogic {
       onSimName: function(e){ self.setState({simName: e.target.value}); },
       onSimUrl: function(e){ self.setState({simUrl: e.target.value}); },
       onSaveSimulado: function(){
-        if(!st.simName.trim()||!st.simUrl.trim()) return;
-        var list = [{id:Date.now(),name:st.simName.trim(),url:st.simUrl.trim(),date:new Date().toLocaleDateString('pt-BR')}].concat(settings.simulados||[]);
+        if (!st.simName.trim() || !st.simUrl.trim()) return;
+        var list = [{id:Date.now(), name:st.simName.trim(), url:st.simUrl.trim(), date:new Date().toLocaleDateString('pt-BR')}].concat(settings.simulados||[]);
         d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {simulados: list}));
-        self.setState({simName:'',simUrl:'',msg:'Simulado adicionado!',msgType:'ok'});
+        self.setState({simName:'', simUrl:'', msg:'Material adicionado!', msgType:'ok'});
+      },
+      uploadingPdfDisabled: st.uploadingPdf ? 'opacity:0.6;pointer-events:none' : '',
+      uploadPdfBtnLabel: st.uploadingPdf ? 'Enviando...' : 'Fazer upload de PDF ou video',
+      uploadPdfLabel: st.uploadingPdf ? 'Aguarde, enviando...' : 'Arraste ou clique para selecionar',
+      onPickPdf: function(){ document.getElementById('adminPdfInput').click(); },
+      onPdfFileChange: function(e){
+        var file = e.target.files && e.target.files[0];
+        if (!file) return;
+        var name = st.simName.trim() || file.name;
+        e.target.value = '';
+        self._uploadFile(file, 'simulados', function(url){
+          var list = [{id:Date.now(), name:name, url:url, date:new Date().toLocaleDateString('pt-BR')}].concat(settings.simulados||[]);
+          d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {simulados: list}));
+          self.setState({simName:'', simUrl:'', msg:'Arquivo enviado e adicionado!', msgType:'ok'});
+        });
       },
 
       cfgBrand: st.cfgBrand, cfgExam: st.cfgExam, cfgGoal: st.cfgGoal,
@@ -406,7 +509,7 @@ class Component extends DCLogic {
       onSaveConfig: function(){
         d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {
           brandName: st.cfgBrand, examDate: st.cfgExam,
-          qPerDay: parseInt(st.cfgGoal)||27,
+          qPerDay: parseInt(st.cfgGoal) || 27,
           adminEmail: st.cfgAdminEmail, adminPass: st.cfgAdminPass
         }));
         self.setState({msg:'Configuracoes salvas!', msgType:'ok'});
