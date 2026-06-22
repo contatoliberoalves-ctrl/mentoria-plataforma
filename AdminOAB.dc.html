@@ -1,0 +1,108 @@
+<x-dc>
+<div style="min-height:100vh;background:#f0f4ff;font-family:-apple-system,BlinkMacSystemFont,sans-serif">
+  <div style="background:#fff;border-bottom:1px solid #e6ecf7;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10">
+    <div>
+      <div style="font-size:18px;font-weight:800;color:#16203a">{{ brandName }} — Painel Admin</div>
+      <div style="font-size:12px;color:#64748b;margin-top:1px">{{ examDateLabel }}</div>
+    </div>
+    <button onclick="{{ onLogout }}" style="background:#f1f5f9;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:600;color:#64748b;cursor:pointer">Sair</button>
+  </div>
+
+  <div style="max-width:960px;margin:0 auto;padding:24px 16px">
+
+    <sc-if value="{{ hasStudents }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-bottom:24px">
+        <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">Alunos ({{ studentCount }})</div>
+        <sc-for list="{{ students }}" as="s">
+          <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:16px 18px;margin-bottom:10px">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+              <div>
+                <div style="font-size:15px;font-weight:700;color:#16203a">{{ s.name }}</div>
+                <div style="font-size:12px;color:#94a3b8;margin-top:2px">{{ s.email }}</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <span style="font-size:12px;font-weight:700;padding:4px 10px;border-radius:7px;background:{{ s.statusBg }};color:{{ s.statusColor }}">{{ s.status }}</span>
+                <span style="font-size:12px;color:#64748b">{{ s.progPct }}% do plano</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap">
+              <div style="text-align:center">
+                <div style="font-size:18px;font-weight:800;color:#2551c3">{{ s.taxa }}%</div>
+                <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Acerto</div>
+              </div>
+              <div style="text-align:center">
+                <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.totalQ }}</div>
+                <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Questoes</div>
+              </div>
+              <div style="text-align:center">
+                <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.streak }}</div>
+                <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Sequencia</div>
+              </div>
+              <div style="text-align:center">
+                <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.adherence }}%</div>
+                <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Aderencia</div>
+              </div>
+              <div style="text-align:center">
+                <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.nota }}</div>
+                <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Nota Est.</div>
+              </div>
+              <div style="text-align:center">
+                <div style="font-size:14px;font-weight:700;color:#16203a">{{ s.lastLabel }}</div>
+                <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Ultimo Estudo</div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ noStudents }}" hint-placeholder-val="">
+      <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:40px;text-align:center;color:#94a3b8">
+        <div style="font-size:32px;margin-bottom:8px">👥</div>
+        <div style="font-weight:600">Nenhum aluno cadastrado ainda</div>
+        <div style="font-size:13px;margin-top:4px">Os alunos aparecem aqui quando se cadastrarem</div>
+      </div>
+    </sc-if>
+
+  </div>
+</div>
+</x-dc>
+<script data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const d = this.props.data || {};
+    const list = d.list || [];
+    const students = list.map(function(s) {
+      var lastLabel = s.last ? ('Ha ' + s.daysSince + ' dia(s)') : 'Nunca';
+      var statusBg = '#f0fdf4';
+      if (s.status === 'Atrasado' || s.status === 'Parou') statusBg = '#fef2f2';
+      else if (s.status === 'Atencao') statusBg = '#fffbeb';
+      return {
+        name: s.name || 'Aluno',
+        email: s.email || '',
+        progPct: s.progPct || 0,
+        taxa: s.taxa || 0,
+        totalQ: s.totalQ || 0,
+        streak: s.streak || 0,
+        adherence: s.adherence || 0,
+        nota: s.nota || 0,
+        status: s.status || 'Em dia',
+        statusColor: s.statusColor || '#16a34a',
+        statusBg: statusBg,
+        lastLabel: lastLabel
+      };
+    });
+    var examDate = d.examDate || '';
+    var examDateLabel = examDate ? ('Prova: ' + examDate) : '';
+    return {
+      brandName: d.brandName || 'OAB',
+      examDateLabel: examDateLabel,
+      students: students,
+      studentCount: students.length,
+      hasStudents: students.length > 0,
+      noStudents: students.length === 0,
+      onLogout: d.onLogout || function() {}
+    };
+  }
+}
+</script>
