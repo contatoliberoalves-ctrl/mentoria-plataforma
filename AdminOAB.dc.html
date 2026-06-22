@@ -1,66 +1,249 @@
 <x-dc>
 <div style="min-height:100vh;background:#f0f4ff;font-family:-apple-system,BlinkMacSystemFont,sans-serif">
-  <div style="background:#fff;border-bottom:1px solid #e6ecf7;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10">
+
+  <!-- Header -->
+  <div style="background:#fff;border-bottom:1.5px solid #e6ecf7;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20">
     <div>
-      <div style="font-size:18px;font-weight:800;color:#16203a">{{ brandName }} — Painel Admin</div>
-      <div style="font-size:12px;color:#64748b;margin-top:1px">{{ examDateLabel }}</div>
+      <div style="font-size:17px;font-weight:800;color:#16203a">{{ brandName }} — Painel Admin</div>
+      <div style="font-size:11px;color:#94a3b8;margin-top:1px">{{ examDateLabel }}</div>
     </div>
-    <button onclick="{{ onLogout }}" style="background:#f1f5f9;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:600;color:#64748b;cursor:pointer">Sair</button>
+    <button onclick="{{ onLogout }}" style="background:#f1f5f9;border:none;border-radius:9px;padding:8px 16px;font-size:13px;font-weight:600;color:#64748b;cursor:pointer">Sair</button>
   </div>
 
-  <div style="max-width:960px;margin:0 auto;padding:24px 16px">
+  <!-- Tabs -->
+  <div style="background:#fff;border-bottom:1.5px solid #e6ecf7;padding:0 20px;display:flex;gap:4px;overflow-x:auto">
+    <sc-for list="{{ tabs }}" as="tab">
+      <button onclick="{{ tab.onClick }}" style="{{ tab.style }}">{{ tab.label }}</button>
+    </sc-for>
+  </div>
 
-    <sc-if value="{{ hasStudents }}" hint-placeholder-val="{{ true }}">
-      <div style="margin-bottom:24px">
-        <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">Alunos ({{ studentCount }})</div>
-        <sc-for list="{{ students }}" as="s">
-          <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:16px 18px;margin-bottom:10px">
-            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-              <div>
-                <div style="font-size:15px;font-weight:700;color:#16203a">{{ s.name }}</div>
-                <div style="font-size:12px;color:#94a3b8;margin-top:2px">{{ s.email }}</div>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-                <span style="font-size:12px;font-weight:700;padding:4px 10px;border-radius:7px;background:{{ s.statusBg }};color:{{ s.statusColor }}">{{ s.status }}</span>
-                <span style="font-size:12px;color:#64748b">{{ s.progPct }}% do plano</span>
-              </div>
+  <!-- Mensagem global -->
+  <sc-if value="{{ msg }}" hint-placeholder-val="">
+    <div style="margin:14px 20px 0;padding:10px 16px;border-radius:9px;font-size:13px;font-weight:600;background:{{ msgBg }};color:{{ msgColor }}">{{ msg }}</div>
+  </sc-if>
+
+  <div style="max-width:960px;margin:0 auto;padding:20px 16px">
+
+    <!-- ═══ ABA ALUNOS ═══ -->
+    <sc-if value="{{ tabAlunos }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <!-- Adicionar aluno -->
+        <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:18px 20px;margin-bottom:16px">
+          <div style="font-size:13px;font-weight:700;color:#16203a;margin-bottom:12px">Adicionar aluno manualmente</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+            <div style="flex:1;min-width:160px">
+              <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Nome</div>
+              <input value="{{ newName }}" oninput="{{ onNewName }}" placeholder="Nome do aluno" style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
             </div>
-            <div style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap">
-              <div style="text-align:center">
-                <div style="font-size:18px;font-weight:800;color:#2551c3">{{ s.taxa }}%</div>
-                <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Acerto</div>
-              </div>
-              <div style="text-align:center">
-                <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.totalQ }}</div>
-                <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Questoes</div>
-              </div>
-              <div style="text-align:center">
-                <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.streak }}</div>
-                <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Sequencia</div>
-              </div>
-              <div style="text-align:center">
-                <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.adherence }}%</div>
-                <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Aderencia</div>
-              </div>
-              <div style="text-align:center">
-                <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.nota }}</div>
-                <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Nota Est.</div>
-              </div>
-              <div style="text-align:center">
-                <div style="font-size:14px;font-weight:700;color:#16203a">{{ s.lastLabel }}</div>
-                <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Ultimo Estudo</div>
-              </div>
+            <div style="flex:1;min-width:200px">
+              <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">E-mail</div>
+              <input value="{{ newEmail }}" oninput="{{ onNewEmail }}" placeholder="email@exemplo.com" type="email" style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
             </div>
+            <button onclick="{{ onAddStudent }}" style="height:36px;padding:0 18px;background:#2551c3;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Adicionar</button>
           </div>
-        </sc-for>
+          <sc-if value="{{ addMsg }}" hint-placeholder-val="">
+            <div style="margin-top:8px;font-size:12px;color:#2551c3;font-weight:600">{{ addMsg }}</div>
+          </sc-if>
+          <div style="margin-top:8px;font-size:11px;color:#94a3b8">Senha inicial: <b>oab123</b> — informe ao aluno para trocar depois.</div>
+        </div>
+
+        <!-- Lista de alunos -->
+        <sc-if value="{{ noStudents }}" hint-placeholder-val="">
+          <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:40px;text-align:center;color:#94a3b8">
+            <div style="font-size:32px;margin-bottom:8px">&#128101;</div>
+            <div style="font-weight:600;color:#16203a">Nenhum aluno cadastrado</div>
+            <div style="font-size:13px;margin-top:4px">Adicione acima ou aguarde os alunos se cadastrarem</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ hasStudents }}" hint-placeholder-val="{{ true }}">
+          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">{{ studentCount }} aluno(s)</div>
+          <sc-for list="{{ students }}" as="s">
+            <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:16px 18px;margin-bottom:10px">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">
+                <div style="flex:1;min-width:180px">
+                  <div style="font-size:15px;font-weight:700;color:#16203a">{{ s.name }}</div>
+                  <div style="font-size:12px;color:#94a3b8;margin-top:2px">{{ s.email }}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                  <span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;background:{{ s.statusBg }};color:{{ s.statusColor }}">{{ s.status }}</span>
+                  <button onclick="{{ s.onImpersonate }}" style="padding:5px 12px;background:#f0f4ff;border:1.5px solid #c7d7f5;border-radius:7px;font-size:12px;font-weight:600;color:#2551c3;cursor:pointer">Ver como aluno</button>
+                  <button onclick="{{ s.onReset }}" style="padding:5px 12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:7px;font-size:12px;font-weight:600;color:#64748b;cursor:pointer">Resetar progresso</button>
+                  <button onclick="{{ s.onRemove }}" style="padding:5px 12px;background:#fef2f2;border:1.5px solid #fecaca;border-radius:7px;font-size:12px;font-weight:600;color:#dc2626;cursor:pointer">Remover</button>
+                </div>
+              </div>
+              <div style="display:flex;gap:14px;margin-top:12px;flex-wrap:wrap">
+                <div style="text-align:center;min-width:44px">
+                  <div style="font-size:18px;font-weight:800;color:#2551c3">{{ s.progPct }}%</div>
+                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Plano</div>
+                </div>
+                <div style="text-align:center;min-width:44px">
+                  <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.taxa }}%</div>
+                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Acerto</div>
+                </div>
+                <div style="text-align:center;min-width:44px">
+                  <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.totalQ }}</div>
+                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Questoes</div>
+                </div>
+                <div style="text-align:center;min-width:44px">
+                  <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.streak }}</div>
+                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Sequencia</div>
+                </div>
+                <div style="text-align:center;min-width:44px">
+                  <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.adherence }}%</div>
+                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Aderencia</div>
+                </div>
+                <div style="text-align:center;min-width:44px">
+                  <div style="font-size:16px;font-weight:700;color:#16203a">{{ s.nota }}/80</div>
+                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Nota Est.</div>
+                </div>
+                <div style="text-align:center;min-width:80px">
+                  <div style="font-size:12px;font-weight:700;color:#16203a">{{ s.lastLabel }}</div>
+                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Ultimo estudo</div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </sc-if>
       </div>
     </sc-if>
 
-    <sc-if value="{{ noStudents }}" hint-placeholder-val="">
-      <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:40px;text-align:center;color:#94a3b8">
-        <div style="font-size:32px;margin-bottom:8px">👥</div>
-        <div style="font-weight:600">Nenhum aluno cadastrado ainda</div>
-        <div style="font-size:13px;margin-top:4px">Os alunos aparecem aqui quando se cadastrarem</div>
+    <!-- ═══ ABA AVISOS ═══ -->
+    <sc-if value="{{ tabAvisos }}" hint-placeholder-val="">
+      <div>
+        <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:18px 20px;margin-bottom:16px">
+          <div style="font-size:13px;font-weight:700;color:#16203a;margin-bottom:12px">Novo aviso para alunos</div>
+          <div style="margin-bottom:8px">
+            <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Titulo</div>
+            <input value="{{ avisoTitle }}" oninput="{{ onAvisoTitle }}" placeholder="Ex: Aula ao vivo amanha!" style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
+          </div>
+          <div style="margin-bottom:12px">
+            <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Mensagem (opcional)</div>
+            <textarea oninput="{{ onAvisoMsg }}" placeholder="Detalhes do aviso..." rows="3" style="width:100%;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 10px;font-size:13px;box-sizing:border-box;resize:vertical;font-family:inherit">{{ avisoMsg }}</textarea>
+          </div>
+          <button onclick="{{ onSaveAviso }}" style="background:#2551c3;color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer">Publicar aviso</button>
+        </div>
+
+        <sc-if value="{{ hasAvisos }}" hint-placeholder-val="{{ true }}">
+          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Avisos publicados</div>
+          <sc-for list="{{ avisos }}" as="a">
+            <div style="background:#fff;border:1.5px solid #e6ecf7;border-left:4px solid #2551c3;border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:700;color:#16203a">{{ a.title }}</div>
+                <sc-if value="{{ a.msg }}" hint-placeholder-val="">
+                  <div style="font-size:12px;color:#64748b;margin-top:4px">{{ a.msg }}</div>
+                </sc-if>
+                <div style="font-size:11px;color:#94a3b8;margin-top:4px">{{ a.date }}</div>
+              </div>
+              <button onclick="{{ a.onDelete }}" style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;color:#dc2626;cursor:pointer;white-space:nowrap">Remover</button>
+            </div>
+          </sc-for>
+        </sc-if>
+
+        <sc-if value="{{ noAvisos }}" hint-placeholder-val="">
+          <div style="text-align:center;color:#94a3b8;padding:32px">Nenhum aviso publicado ainda.</div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- ═══ ABA BOAS-VINDAS ═══ -->
+    <sc-if value="{{ tabVideo }}" hint-placeholder-val="">
+      <div>
+        <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:20px;margin-bottom:16px">
+          <div style="font-size:14px;font-weight:700;color:#16203a;margin-bottom:6px">Video de boas-vindas</div>
+          <div style="font-size:12px;color:#64748b;margin-bottom:14px">Cole o link do YouTube ou Vimeo. Aparece na tela inicial do aluno.</div>
+          <div style="margin-bottom:12px">
+            <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">URL do video</div>
+            <input value="{{ videoUrl }}" oninput="{{ onVideoUrl }}" placeholder="https://youtube.com/watch?v=..." style="width:100%;height:38px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
+          </div>
+          <button onclick="{{ onSaveVideo }}" style="background:#2551c3;color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer">Salvar video</button>
+        </div>
+
+        <sc-if value="{{ videoUrl }}" hint-placeholder-val="">
+          <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:16px">
+            <div style="font-size:12px;font-weight:600;color:#64748b;margin-bottom:10px">Preview:</div>
+            <div style="font-size:13px;color:#2551c3;word-break:break-all">{{ videoUrl }}</div>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- ═══ ABA SIMULADOS ═══ -->
+    <sc-if value="{{ tabSimulados }}" hint-placeholder-val="">
+      <div>
+        <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:18px 20px;margin-bottom:16px">
+          <div style="font-size:13px;font-weight:700;color:#16203a;margin-bottom:12px">Adicionar simulado ou PDF</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+            <div style="flex:1;min-width:160px">
+              <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Nome do simulado</div>
+              <input value="{{ simName }}" oninput="{{ onSimName }}" placeholder="Ex: Simulado 1 - Outubro" style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
+            </div>
+          </div>
+          <div style="margin-bottom:12px">
+            <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Link do PDF ou arquivo (Google Drive, Dropbox...)</div>
+            <input value="{{ simUrl }}" oninput="{{ onSimUrl }}" placeholder="https://drive.google.com/..." style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
+          </div>
+          <button onclick="{{ onSaveSimulado }}" style="background:#2551c3;color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer">Adicionar simulado</button>
+        </div>
+
+        <sc-if value="{{ hasSimulados }}" hint-placeholder-val="{{ true }}">
+          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Simulados disponibilizados</div>
+          <sc-for list="{{ simulados }}" as="sim">
+            <div style="background:#fff;border:1.5px solid #e6ecf7;border-left:4px solid #7c3aed;border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+              <div>
+                <div style="font-size:13px;font-weight:700;color:#16203a">{{ sim.name }}</div>
+                <div style="font-size:11px;color:#94a3b8;margin-top:2px">{{ sim.date }}</div>
+              </div>
+              <div style="display:flex;gap:8px">
+                <a href="{{ sim.url }}" target="_blank" style="padding:5px 12px;background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:7px;font-size:12px;font-weight:600;color:#7c3aed;text-decoration:none">Abrir</a>
+                <button onclick="{{ sim.onDelete }}" style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;color:#dc2626;cursor:pointer">Remover</button>
+              </div>
+            </div>
+          </sc-for>
+        </sc-if>
+
+        <sc-if value="{{ noSimulados }}" hint-placeholder-val="">
+          <div style="text-align:center;color:#94a3b8;padding:32px">Nenhum simulado adicionado ainda.</div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- ═══ ABA CONFIGURACOES ═══ -->
+    <sc-if value="{{ tabConfig }}" hint-placeholder-val="">
+      <div>
+        <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:20px;margin-bottom:14px">
+          <div style="font-size:14px;font-weight:700;color:#16203a;margin-bottom:16px">Configuracoes da plataforma</div>
+          <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+            <div>
+              <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Nome da mentoria</div>
+              <input value="{{ cfgBrand }}" oninput="{{ onCfgBrand }}" style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Data da prova (YYYY-MM-DD)</div>
+              <input value="{{ cfgExam }}" oninput="{{ onCfgExam }}" placeholder="2026-09-06" style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Meta de questoes por dia</div>
+              <input value="{{ cfgGoal }}" oninput="{{ onCfgGoal }}" type="number" min="10" max="60" style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:20px;margin-bottom:14px">
+          <div style="font-size:13px;font-weight:700;color:#16203a;margin-bottom:14px">Acesso admin</div>
+          <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+            <div>
+              <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">E-mail admin</div>
+              <input value="{{ cfgAdminEmail }}" oninput="{{ onCfgAdminEmail }}" type="email" style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Senha admin (login local)</div>
+              <input value="{{ cfgAdminPass }}" oninput="{{ onCfgAdminPass }}" type="text" style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
+            </div>
+          </div>
+        </div>
+
+        <button onclick="{{ onSaveConfig }}" style="background:#2551c3;color:#fff;border:none;border-radius:10px;padding:11px 28px;font-size:14px;font-weight:700;cursor:pointer">Salvar configuracoes</button>
       </div>
     </sc-if>
 
@@ -69,39 +252,165 @@
 </x-dc>
 <script data-dc-script>
 class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var settings = (props.data && props.data.settings) || {};
+    this.state = {
+      tab: 'alunos',
+      newName: '', newEmail: '', addMsg: '',
+      avisoTitle: '', avisoMsg: '',
+      videoUrl: settings.welcomeVideoUrl || '',
+      simName: '', simUrl: '',
+      cfgBrand: settings.brandName || '',
+      cfgExam: settings.examDate || '',
+      cfgGoal: String(settings.qPerDay || 27),
+      cfgAdminEmail: settings.adminEmail || '',
+      cfgAdminPass: settings.adminPass || '',
+      msg: '', msgType: 'ok'
+    };
+  }
+
   renderVals() {
-    const d = this.props.data || {};
-    const list = d.list || [];
-    const students = list.map(function(s) {
-      var lastLabel = s.last ? ('Ha ' + s.daysSince + ' dia(s)') : 'Nunca';
-      var statusBg = '#f0fdf4';
-      if (s.status === 'Atrasado' || s.status === 'Parou') statusBg = '#fef2f2';
-      else if (s.status === 'Atencao') statusBg = '#fffbeb';
+    var d = this.props.data || {};
+    var st = this.state;
+    var settings = d.settings || {};
+    var self = this;
+
+    var tabDefs = [
+      {id:'alunos', label:'Alunos'},
+      {id:'avisos', label:'Avisos'},
+      {id:'boas-vindas', label:'Boas-vindas'},
+      {id:'simulados', label:'Simulados'},
+      {id:'config', label:'Configuracoes'}
+    ];
+    var tabs = tabDefs.map(function(t) {
       return {
-        name: s.name || 'Aluno',
-        email: s.email || '',
-        progPct: s.progPct || 0,
-        taxa: s.taxa || 0,
-        totalQ: s.totalQ || 0,
-        streak: s.streak || 0,
-        adherence: s.adherence || 0,
-        nota: s.nota || 0,
-        status: s.status || 'Em dia',
-        statusColor: s.statusColor || '#16a34a',
-        statusBg: statusBg,
-        lastLabel: lastLabel
+        label: t.label,
+        style: 'padding:10px 16px;border:none;border-bottom:3px solid ' + (st.tab === t.id ? '#2551c3' : 'transparent') + ';background:transparent;font-size:13px;font-weight:' + (st.tab === t.id ? '700' : '500') + ';color:' + (st.tab === t.id ? '#2551c3' : '#64748b') + ';cursor:pointer;white-space:nowrap',
+        onClick: (function(id){ return function(){ self.setState({tab:id,msg:''}); }; })(t.id)
       };
     });
-    var examDate = d.examDate || '';
-    var examDateLabel = examDate ? ('Prova: ' + examDate) : '';
+
+    var students = (d.list || []).map(function(s) {
+      var statusBg = '#f0fdf4';
+      if (s.status === 'Atrasado' || s.status === 'Parou') statusBg = '#fef2f2';
+      else if (s.status === 'Atencao' || s.status === 'Atencao') statusBg = '#fffbeb';
+      return {
+        name: s.name || 'Aluno', email: s.email || '',
+        progPct: s.progPct || 0, taxa: s.taxa || 0,
+        totalQ: s.totalQ || 0, streak: s.streak || 0,
+        adherence: s.adherence || 0, nota: s.nota || 0,
+        status: s.status || 'Em dia', statusColor: s.statusColor || '#16a34a',
+        statusBg: statusBg,
+        lastLabel: s.last ? ('Ha ' + s.daysSince + ' dia(s)') : 'Nunca estudou',
+        onRemove: (function(sid, sname){ return function(){
+          if(confirm('Remover ' + sname + '?')) { d.onRemoveStudent && d.onRemoveStudent(sid); }
+        }; })(s.id, s.name),
+        onReset: (function(sid, sname){ return function(){
+          if(confirm('Resetar progresso de ' + sname + '?')) { d.onResetProgress && d.onResetProgress(sid); }
+        }; })(s.id, s.name),
+        onImpersonate: (function(sid){ return function(){ d.onImpersonate && d.onImpersonate(sid); }; })(s.id)
+      };
+    });
+
+    var avisos = (settings.avisos || []).map(function(a, i) {
+      return {
+        title: a.title, msg: a.msg || '', date: a.date || '',
+        onDelete: (function(idx){ return function(){
+          var list = (settings.avisos || []).filter(function(_,j){ return j !== idx; });
+          d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {avisos: list}));
+          self.setState({msg:'Aviso removido.', msgType:'ok'});
+        }; })(i)
+      };
+    });
+
+    var simulados = (settings.simulados || []).map(function(s, i) {
+      return {
+        name: s.name, url: s.url, date: s.date || '',
+        onDelete: (function(idx){ return function(){
+          var list = (settings.simulados || []).filter(function(_,j){ return j !== idx; });
+          d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {simulados: list}));
+          self.setState({msg:'Simulado removido.', msgType:'ok'});
+        }; })(i)
+      };
+    });
+
     return {
       brandName: d.brandName || 'OAB',
-      examDateLabel: examDateLabel,
+      examDateLabel: d.examDate ? 'Prova: ' + d.examDate : '',
+      onLogout: d.onLogout || function(){},
+      tabs: tabs,
+      msg: st.msg,
+      msgBg: st.msgType === 'ok' ? '#f0fdf4' : '#fef2f2',
+      msgColor: st.msgType === 'ok' ? '#16a34a' : '#dc2626',
+
+      tabAlunos: st.tab === 'alunos',
+      tabAvisos: st.tab === 'avisos',
+      tabVideo: st.tab === 'boas-vindas',
+      tabSimulados: st.tab === 'simulados',
+      tabConfig: st.tab === 'config',
+
       students: students,
       studentCount: students.length,
       hasStudents: students.length > 0,
       noStudents: students.length === 0,
-      onLogout: d.onLogout || function() {}
+      newName: st.newName, newEmail: st.newEmail, addMsg: st.addMsg,
+      onNewName: function(e){ self.setState({newName: e.target.value}); },
+      onNewEmail: function(e){ self.setState({newEmail: e.target.value}); },
+      onAddStudent: function(){
+        if(!st.newName.trim()||!st.newEmail.trim()){self.setState({addMsg:'Preencha nome e e-mail.'});return;}
+        d.onAddStudent && d.onAddStudent(st.newName.trim(), st.newEmail.trim());
+        self.setState({newName:'',newEmail:'',addMsg:'Aluno adicionado! Senha: oab123',msg:'',msgType:'ok'});
+      },
+
+      avisos: avisos,
+      hasAvisos: avisos.length > 0,
+      noAvisos: avisos.length === 0,
+      avisoTitle: st.avisoTitle, avisoMsg: st.avisoMsg,
+      onAvisoTitle: function(e){ self.setState({avisoTitle: e.target.value}); },
+      onAvisoMsg: function(e){ self.setState({avisoMsg: e.target.value}); },
+      onSaveAviso: function(){
+        if(!st.avisoTitle.trim()) return;
+        var list = [{id:Date.now(),title:st.avisoTitle.trim(),msg:st.avisoMsg.trim(),date:new Date().toLocaleDateString('pt-BR')}].concat(settings.avisos||[]);
+        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {avisos: list}));
+        self.setState({avisoTitle:'',avisoMsg:'',msg:'Aviso publicado!',msgType:'ok'});
+      },
+
+      videoUrl: st.videoUrl,
+      onVideoUrl: function(e){ self.setState({videoUrl: e.target.value}); },
+      onSaveVideo: function(){
+        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {welcomeVideoUrl: st.videoUrl}));
+        self.setState({msg:'Video salvo!', msgType:'ok'});
+      },
+
+      simulados: simulados,
+      hasSimulados: simulados.length > 0,
+      noSimulados: simulados.length === 0,
+      simName: st.simName, simUrl: st.simUrl,
+      onSimName: function(e){ self.setState({simName: e.target.value}); },
+      onSimUrl: function(e){ self.setState({simUrl: e.target.value}); },
+      onSaveSimulado: function(){
+        if(!st.simName.trim()||!st.simUrl.trim()) return;
+        var list = [{id:Date.now(),name:st.simName.trim(),url:st.simUrl.trim(),date:new Date().toLocaleDateString('pt-BR')}].concat(settings.simulados||[]);
+        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {simulados: list}));
+        self.setState({simName:'',simUrl:'',msg:'Simulado adicionado!',msgType:'ok'});
+      },
+
+      cfgBrand: st.cfgBrand, cfgExam: st.cfgExam, cfgGoal: st.cfgGoal,
+      cfgAdminEmail: st.cfgAdminEmail, cfgAdminPass: st.cfgAdminPass,
+      onCfgBrand: function(e){ self.setState({cfgBrand: e.target.value}); },
+      onCfgExam: function(e){ self.setState({cfgExam: e.target.value}); },
+      onCfgGoal: function(e){ self.setState({cfgGoal: e.target.value}); },
+      onCfgAdminEmail: function(e){ self.setState({cfgAdminEmail: e.target.value}); },
+      onCfgAdminPass: function(e){ self.setState({cfgAdminPass: e.target.value}); },
+      onSaveConfig: function(){
+        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {
+          brandName: st.cfgBrand, examDate: st.cfgExam,
+          qPerDay: parseInt(st.cfgGoal)||27,
+          adminEmail: st.cfgAdminEmail, adminPass: st.cfgAdminPass
+        }));
+        self.setState({msg:'Configuracoes salvas!', msgType:'ok'});
+      }
     };
   }
 }
