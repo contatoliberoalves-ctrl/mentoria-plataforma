@@ -1,0 +1,253 @@
+<x-dc>
+<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:20px 16px;max-width:900px;margin:0 auto">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-size:18px;font-weight:800;color:#16203a">Meus Simulados</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:2px">{{ totalLabel }}</div>
+    </div>
+    <button onclick="{{ onShowForm }}" style="background:#7c3aed;color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer">+ Registrar simulado</button>
+  </div>
+
+  <!-- Formulario -->
+  <sc-if value="{{ showForm }}" hint-placeholder-val="">
+    <div style="background:#fff;border:1.5px solid #ddd6fe;border-radius:16px;padding:20px 22px;margin-bottom:20px">
+      <div style="font-size:14px;font-weight:700;color:#16203a;margin-bottom:16px">Novo simulado</div>
+
+      <!-- Tipo + exame -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        <div style="flex:1;min-width:160px">
+          <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Tipo</div>
+          <select oninput="{{ onTipo }}" style="width:100%;height:38px;border:1.5px solid #e2e8f0;border-radius:9px;padding:0 10px;font-size:13px;background:#fff">
+            <option value="autoral">Autoral (do mentor)</option>
+            <option value="oab">Oficial OAB (FGV)</option>
+          </select>
+        </div>
+        <sc-if value="{{ isOAB }}" hint-placeholder-val="">
+          <div style="flex:1;min-width:140px">
+            <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Numero do exame OAB</div>
+            <input value="{{ exameNum }}" oninput="{{ onExameNum }}" placeholder="Ex: 42" type="number" min="1" style="width:100%;height:38px;border:1.5px solid #e2e8f0;border-radius:9px;padding:0 10px;font-size:13px;box-sizing:border-box">
+          </div>
+        </sc-if>
+        <div style="flex:1;min-width:140px">
+          <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Tempo usado (h:mm)</div>
+          <input value="{{ tempo }}" oninput="{{ onTempo }}" placeholder="Ex: 4:30" style="width:100%;height:38px;border:1.5px solid #e2e8f0;border-radius:9px;padding:0 10px;font-size:13px;box-sizing:border-box">
+          <div style="font-size:10px;color:#94a3b8;margin-top:2px">Maximo: 5 horas</div>
+        </div>
+        <div style="flex:1;min-width:120px">
+          <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Total de acertos</div>
+          <div style="height:38px;border:1.5px solid #7c3aed;border-radius:9px;display:flex;align-items:center;padding:0 12px;background:#faf8ff">
+            <span style="font-size:18px;font-weight:800;color:#7c3aed">{{ totalAcertos }}</span>
+            <span style="font-size:13px;color:#94a3b8;margin-left:4px">/ 80</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid de materias -->
+      <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Acertos por materia</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;margin-bottom:16px">
+        <sc-for list="{{ formMaterias }}" as="fm">
+          <div style="background:#f8fafc;border-radius:10px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:600;color:#16203a">{{ fm.name }}</div>
+              <div style="font-size:10px;color:#94a3b8">Questoes {{ fm.range }} — {{ fm.total }} no total</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px">
+              <input type="number" value="{{ fm.acertos }}" oninput="{{ fm.onInput }}" min="0" max="{{ fm.total }}" placeholder="0" style="width:44px;height:32px;border:1.5px solid #c7d7f5;border-radius:7px;text-align:center;font-size:14px;font-weight:700;color:#7c3aed;background:#fff">
+              <span style="font-size:12px;color:#94a3b8">/{{ fm.total }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;gap:8px">
+        <button onclick="{{ onSave }}" style="background:#7c3aed;color:#fff;border:none;border-radius:9px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer">Salvar simulado</button>
+        <button onclick="{{ onCancel }}" style="background:#f1f5f9;color:#64748b;border:none;border-radius:9px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer">Cancelar</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Lista de simulados -->
+  <sc-if value="{{ noEntries }}" hint-placeholder-val="">
+    <div style="text-align:center;padding:48px 20px;color:#94a3b8">
+      <div style="font-size:40px;margin-bottom:12px">📝</div>
+      <div style="font-weight:600;color:#16203a;margin-bottom:4px">Nenhum simulado registrado</div>
+      <div style="font-size:13px">Registre seus resultados para acompanhar sua evolucao.</div>
+    </div>
+  </sc-if>
+
+  <sc-for list="{{ entries }}" as="e">
+    <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;margin-bottom:14px;overflow:hidden">
+      <!-- Cabecalho do simulado -->
+      <div style="background:linear-gradient(135deg,#5b21b6,#7c3aed);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div>
+          <div style="font-size:15px;font-weight:800;color:#fff">{{ e.titulo }}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:2px">{{ e.date }} · {{ e.tempoLabel }}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="text-align:center">
+            <div style="font-size:26px;font-weight:900;color:#fff">{{ e.pct }}%</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.75)">ACERTO</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:22px;font-weight:800;color:#fff">{{ e.acertos }}/80</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.75)">QUESTOES</div>
+          </div>
+          <button onclick="{{ e.onRemove }}" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:7px;padding:5px 10px;font-size:11px;color:#fff;cursor:pointer">Remover</button>
+        </div>
+      </div>
+      <!-- Materias -->
+      <div style="padding:14px 16px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px">
+          <sc-for list="{{ e.materias }}" as="mat">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#f8fafc;border-radius:8px">
+              <div>
+                <div style="font-size:11px;font-weight:600;color:#16203a">{{ mat.name }}</div>
+                <div style="font-size:10px;color:#94a3b8">{{ mat.range }}</div>
+              </div>
+              <div style="text-align:right">
+                <span style="font-size:13px;font-weight:800;color:{{ mat.color }}">{{ mat.acertos }}/{{ mat.total }}</span>
+                <div style="font-size:10px;color:#94a3b8">{{ mat.pct }}%</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-for>
+
+</div>
+</x-dc>
+<script data-dc-script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var MATS = this._mats();
+    var mat0 = {};
+    MATS.forEach(function(m) { mat0[m.name] = ''; });
+    this.state = {
+      showForm: false,
+      tipo: 'autoral',
+      exameNum: '',
+      tempo: '',
+      mat: mat0
+    };
+  }
+
+  _mats() {
+    return [
+      {name:'Etica Profissional',      total:8,  range:'01-08'},
+      {name:'Filosofia do Direito',    total:2,  range:'09-10'},
+      {name:'Dir. Constitucional',     total:6,  range:'11-16'},
+      {name:'Direitos Humanos',        total:2,  range:'17-18'},
+      {name:'Direito Eleitoral',       total:2,  range:'19-20'},
+      {name:'Direito Internacional',   total:2,  range:'21-22'},
+      {name:'Direito Financeiro',      total:2,  range:'23-24'},
+      {name:'Direito Tributario',      total:5,  range:'25-29'},
+      {name:'Dir. Administrativo',     total:5,  range:'30-34'},
+      {name:'Direito Ambiental',       total:2,  range:'35-36'},
+      {name:'Direito Civil',           total:6,  range:'37-42'},
+      {name:'ECA',                     total:2,  range:'43-44'},
+      {name:'Direito do Consumidor',   total:2,  range:'45-46'},
+      {name:'Direito Empresarial',     total:4,  range:'47-50'},
+      {name:'Processo Civil',          total:6,  range:'51-56'},
+      {name:'Direito Penal',           total:6,  range:'57-62'},
+      {name:'Processo Penal',          total:6,  range:'63-68'},
+      {name:'Dir. Previdenciario',     total:2,  range:'69-70'},
+      {name:'Direito do Trabalho',     total:5,  range:'71-75'},
+      {name:'Processo do Trabalho',    total:5,  range:'76-80'}
+    ];
+  }
+
+  renderVals() {
+    var d = this.props.data || {};
+    var st = this.state;
+    var self = this;
+    var MATS = this._mats();
+
+    var totalAcertos = 0;
+    MATS.forEach(function(m) { totalAcertos += parseInt(st.mat[m.name] || 0) || 0; });
+
+    var formMaterias = MATS.map(function(m) {
+      return {
+        name: m.name,
+        total: m.total,
+        range: m.range,
+        acertos: st.mat[m.name] || '',
+        onInput: (function(name, max) { return function(e) {
+          var v = parseInt(e.target.value) || 0;
+          if (v > max) v = max;
+          if (v < 0) v = 0;
+          var nm = Object.assign({}, self.state.mat);
+          nm[name] = v === 0 && e.target.value === '' ? '' : String(v);
+          self.setState({ mat: nm });
+        }; })(m.name, m.total)
+      };
+    });
+
+    var entries = (d.entries || []).map(function(e) {
+      var pct = Math.round(e.acertos / 80 * 100);
+      var titulo = e.tipo === 'oab'
+        ? ('OAB ' + (e.exameNum ? e.exameNum + 'o Exame' : 'Exame'))
+        : 'Simulado Autoral';
+      var mats = (e.materias || []).map(function(mat) {
+        var mp = mat.total > 0 ? Math.round(mat.acertos / mat.total * 100) : 0;
+        return {
+          name: mat.name, range: mat.range,
+          acertos: mat.acertos, total: mat.total,
+          pct: mp,
+          color: mp >= 70 ? '#16a34a' : mp >= 50 ? '#d97706' : '#dc2626'
+        };
+      });
+      return {
+        titulo: titulo,
+        date: e.date || '',
+        tempoLabel: e.tempo ? ('Tempo: ' + e.tempo) : '',
+        pct: pct,
+        acertos: e.acertos,
+        materias: mats,
+        onRemove: (function(eid) { return function() {
+          if (confirm('Remover este simulado?')) d.onRemove && d.onRemove(eid);
+        }; })(e.id)
+      };
+    });
+
+    return {
+      totalLabel: (d.entries || []).length + ' simulado(s) registrado(s)',
+      showForm: st.showForm,
+      isOAB: st.tipo === 'oab',
+      exameNum: st.exameNum,
+      tempo: st.tempo,
+      totalAcertos: totalAcertos,
+      formMaterias: formMaterias,
+      onShowForm: function() { self.setState({ showForm: true }); },
+      onCancel: function() { self.setState({ showForm: false }); },
+      onTipo: function(e) { self.setState({ tipo: e.target.value }); },
+      onExameNum: function(e) { self.setState({ exameNum: e.target.value }); },
+      onTempo: function(e) { self.setState({ tempo: e.target.value }); },
+      onSave: function() {
+        var materias = MATS.map(function(m) {
+          return { name: m.name, range: m.range, total: m.total, acertos: parseInt(st.mat[m.name] || 0) || 0 };
+        });
+        var total = materias.reduce(function(s, m) { return s + m.acertos; }, 0);
+        var entry = {
+          id: Date.now(),
+          tipo: st.tipo,
+          exameNum: st.exameNum,
+          tempo: st.tempo,
+          acertos: total,
+          materias: materias,
+          date: new Date().toLocaleDateString('pt-BR')
+        };
+        d.onAdd && d.onAdd(entry);
+        var mat0 = {};
+        MATS.forEach(function(m) { mat0[m.name] = ''; });
+        self.setState({ showForm: false, tipo: 'autoral', exameNum: '', tempo: '', mat: mat0 });
+      },
+      entries: entries,
+      noEntries: entries.length === 0
+    };
+  }
+}
+</script>
