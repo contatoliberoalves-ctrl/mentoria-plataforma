@@ -10,6 +10,22 @@
     <button onclick="{{ onShowForm }}" style="background:#7c3aed;color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer">+ Registrar simulado</button>
   </div>
 
+  <!-- Simulados disponibilizados pelo admin -->
+  <sc-if value="{{ hasAdminSimulados }}" hint-placeholder-val="">
+  <div style="background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:14px;padding:16px 18px;margin-bottom:20px">
+    <div style="font-size:13px;font-weight:700;color:#5b21b6;margin-bottom:12px">Simulados disponíveis</div>
+    <sc-for list="{{ adminSimulados }}" as="sim">
+      <div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #ede9fe;border-radius:9px;padding:10px 14px;margin-bottom:8px;gap:10px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:#16203a">{{ sim.name }}</div>
+          <sc-if value="{{ sim.date }}" hint-placeholder-val=""><div style="font-size:11px;color:#94a3b8">{{ sim.date }}</div></sc-if>
+        </div>
+        <a href="{{ sim.url }}" target="_blank" style="background:#7c3aed;color:#fff;text-decoration:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;white-space:nowrap">Abrir PDF</a>
+      </div>
+    </sc-for>
+  </div>
+  </sc-if>
+
   <!-- Formulario -->
   <sc-if value="{{ showForm }}" hint-placeholder-val="">
     <div style="background:#fff;border:1.5px solid #ddd6fe;border-radius:16px;padding:20px 22px;margin-bottom:20px">
@@ -246,7 +262,9 @@ class Component extends DCLogic {
         self.setState({ showForm: false, tipo: 'autoral', exameNum: '', tempo: '', mat: mat0 });
       },
       entries: entries,
-      noEntries: entries.length === 0
+      noEntries: entries.length === 0,
+      adminSimulados: d.adminSimulados || [],
+      hasAdminSimulados: (d.adminSimulados || []).length > 0
     };
   }
 }
