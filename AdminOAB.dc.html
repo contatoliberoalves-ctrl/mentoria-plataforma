@@ -42,7 +42,7 @@
               <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">E-mail</div>
               <input value="{{ newEmail }}" oninput="{{ onNewEmail }}" placeholder="email@exemplo.com" type="email" style="width:100%;height:36px;border:1.5px solid #e2e8f0;border-radius:8px;padding:0 10px;font-size:13px;box-sizing:border-box">
             </div>
-            <button onclick="{{ onAddStudent }}" style="height:36px;padding:0 18px;background:#2551c3;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Adicionar</button>
+            <button onclick="{{ onAddStudent }}" disabled="{{ addingStudent }}" style="height:36px;padding:0 18px;background:#2551c3;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;opacity:{{ addingStudent ? 0.6 : 1 }}">{{ addingStudent ? 'Criando...' : 'Adicionar' }}</button>
           </div>
           <sc-if value="{{ addMsg }}" hint-placeholder-val="">
             <div style="margin-top:8px;font-size:12px;color:#2551c3;font-weight:600">{{ addMsg }}</div>
@@ -288,7 +288,7 @@ class Component extends DCLogic {
     var settings = (props.data && props.data.settings) || {};
     this.state = {
       tab: 'alunos',
-      newName: '', newEmail: '', addMsg: '',
+      newName: '', newEmail: '', addMsg: '', _wasAdding: false,
       avisoTitle: '', avisoMsg: '',
       videoUrl: settings.welcomeVideoUrl || '',
       uploadingVideo: false,
@@ -342,6 +342,13 @@ class Component extends DCLogic {
     var st = this.state;
     var settings = d.settings || {};
     var self = this;
+
+    // Detecta quando addingStudent volta a false (aluno criado com sucesso)
+    if (st._wasAdding && !d.addingStudent) {
+      setTimeout(function(){ self.setState({addMsg:'Aluno criado! Senha inicial: oab123', _wasAdding:false}); }, 0);
+    } else if (d.addingStudent && !st._wasAdding) {
+      setTimeout(function(){ self.setState({_wasAdding:true}); }, 0);
+    }
 
     var tabDefs = [
       {id:'alunos', label:'Alunos'},
@@ -423,13 +430,17 @@ class Component extends DCLogic {
       studentCount: students.length,
       hasStudents: students.length > 0,
       noStudents: students.length === 0,
-      newName: st.newName, newEmail: st.newEmail, addMsg: st.addMsg,
+      newName: st.newName, newEmail: st.newEmail,
+      addMsg: d.addingStudent ? 'Criando conta no sistema...' : st.addMsg,
       onNewName: function(e){ self.setState({newName: e.target.value}); },
       onNewEmail: function(e){ self.setState({newEmail: e.target.value}); },
+      addingStudent: !!d.addingStudent,
       onAddStudent: function(){
         if (!st.newName.trim() || !st.newEmail.trim()) { self.setState({addMsg:'Preencha nome e e-mail.'}); return; }
+        self.setState({addMsg:'Criando conta...'});
         d.onAddStudent && d.onAddStudent(st.newName.trim(), st.newEmail.trim());
-        self.setState({newName:'', newEmail:'', addMsg:'Aluno adicionado! Senha: oab123', msg:'', msgType:'ok'});
+        // limpa nome/email imediatamente; addMsg será atualizado pelo pai
+        self.setState({newName:'', newEmail:''});
       },
 
       avisos: avisos,
