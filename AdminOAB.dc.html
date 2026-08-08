@@ -1,24 +1,24 @@
 <x-dc>
-<div style="min-height:100vh;background:#050510;font-family:-apple-system,BlinkMacSystemFont,sans-serif">
+<div style="min-height:100vh;background:#FFF9E6;font-family:-apple-system,BlinkMacSystemFont,sans-serif">
 
   <!-- inputs de arquivo ocultos -->
   <input type="file" id="adminVideoInput" accept="video/mp4,video/webm,video/ogg,video/quicktime" onchange="{{ onVideoFileChange }}" style="display:none">
   <input type="file" id="adminPdfInput" accept="application/pdf,video/mp4,video/webm,video/quicktime" onchange="{{ onPdfFileChange }}" style="display:none">
 
   <!-- Header -->
-  <div style="background:#0d0d2b;border-bottom:2px solid #ffe000;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20">
+  <div style="background:#fff;border-bottom:2px solid #ffe000;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20">
     <div>
-      <div style="font-size:17px;font-weight:900;color:#ffe000;text-shadow:0 0 14px #ffe00088;text-transform:uppercase;letter-spacing:-.01em">{{ brandName }} — Painel Admin</div>
-      <div style="font-size:11px;color:#00e5ff;margin-top:1px">{{ examDateLabel }}</div>
+      <div style="font-size:17px;font-weight:900;color:#E8003D;text-shadow:0 0 14px #ffe00088;text-transform:uppercase;letter-spacing:-.01em">{{ brandName }} — Painel Admin</div>
+      <div style="font-size:11px;color:#00A8E8;margin-top:1px">{{ examDateLabel }}</div>
     </div>
     <div style="display:flex;gap:8px;align-items:center">
-      <button onclick="{{ onRefresh }}" disabled="{{ refreshing }}" style="background:#13132e;border:1px solid #00e5ff44;border-radius:9px;padding:8px 14px;font-size:13px;font-weight:600;color:#00e5ff;cursor:pointer;opacity:{{ refreshing ? 0.6 : 1 }}">{{ refreshing ? 'Atualizando...' : '↻ Atualizar' }}</button>
-      <button onclick="{{ onLogout }}" style="background:#1a1a40;border:1px solid #ff0080;border-radius:9px;padding:8px 16px;font-size:13px;font-weight:600;color:#ff0080;cursor:pointer">Sair</button>
+      <button onclick="{{ onRefresh }}" disabled="{{ refreshing }}" style="background:#FFF9E6;border:2px solid #00A8E8;border-radius:9px;padding:8px 14px;font-size:13px;font-weight:600;color:#00A8E8;cursor:pointer;opacity:{{ refreshing ? 0.6 : 1 }}">{{ refreshing ? 'Atualizando...' : '↻ Atualizar' }}</button>
+      <button onclick="{{ onLogout }}" style="background:#fff;border:1px solid #ff0080;border-radius:9px;padding:8px 16px;font-size:13px;font-weight:600;color:#E8003D;cursor:pointer">Sair</button>
     </div>
   </div>
 
   <!-- Tabs -->
-  <div style="background:#0d0d2b;border-bottom:2px solid #ffe00033;padding:0 20px;display:flex;gap:4px;overflow-x:auto">
+  <div style="background:#fff;border-bottom:4px solid #0D0D0D;padding:0 20px;display:flex;gap:4px;overflow-x:auto">
     <sc-for list="{{ tabs }}" as="tab">
       <button onclick="{{ tab.onClick }}" style="{{ tab.style }}">{{ tab.label }}</button>
     </sc-for>
@@ -29,82 +29,82 @@
     <div style="margin:14px 20px 0;padding:10px 16px;border-radius:9px;font-size:13px;font-weight:600;background:{{ msgBg }};color:{{ msgColor }}">{{ msg }}</div>
   </sc-if>
 
-  <div style="max-width:960px;margin:0 auto;padding:20px 16px;color:#e0e6ff">
+  <div style="max-width:960px;margin:0 auto;padding:20px 16px;color:#111">
 
     <!-- ═══ ABA ALUNOS ═══ -->
     <sc-if value="{{ tabAlunos }}" hint-placeholder-val="{{ true }}">
       <div>
-        <div style="background:#0d0d2b;border:1.5px solid #ffe00033;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-          <div style="font-size:13px;font-weight:700;color:#ffe000;margin-bottom:12px">Adicionar aluno manualmente</div>
+        <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:18px 20px;margin-bottom:16px">
+          <div style="font-size:13px;font-weight:700;color:#E8003D;margin-bottom:12px">Adicionar aluno manualmente</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
             <div style="flex:1;min-width:160px">
-              <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">Nome</div>
-              <input value="{{ newName }}" oninput="{{ onNewName }}" placeholder="Nome do aluno" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#13132e;color:#e0e6ff;box-sizing:border-box">
+              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Nome</div>
+              <input value="{{ newName }}" oninput="{{ onNewName }}" placeholder="Nome do aluno" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
             </div>
             <div style="flex:1;min-width:200px">
-              <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">E-mail</div>
-              <input value="{{ newEmail }}" oninput="{{ onNewEmail }}" placeholder="email@exemplo.com" type="email" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#13132e;color:#e0e6ff;box-sizing:border-box">
+              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">E-mail</div>
+              <input value="{{ newEmail }}" oninput="{{ onNewEmail }}" placeholder="email@exemplo.com" type="email" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
             </div>
-            <button onclick="{{ onAddStudent }}" disabled="{{ addingStudent }}" style="height:36px;padding:0 18px;background:linear-gradient(135deg,#ffe000,#ff0080);color:#050510;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;opacity:{{ addingStudent ? 0.6 : 1 }}">{{ addingStudent ? 'Criando...' : 'Adicionar' }}</button>
+            <button onclick="{{ onAddStudent }}" disabled="{{ addingStudent }}" style="height:36px;padding:0 18px;background:#E8003D;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#050510;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;opacity:{{ addingStudent ? 0.6 : 1 }}">{{ addingStudent ? 'Criando...' : 'Adicionar' }}</button>
           </div>
           <sc-if value="{{ addMsg }}" hint-placeholder-val="">
-            <div style="margin-top:8px;font-size:12px;color:#00e5ff;font-weight:600">{{ addMsg }}</div>
+            <div style="margin-top:8px;font-size:12px;color:#00A8E8;font-weight:600">{{ addMsg }}</div>
           </sc-if>
-          <div style="margin-top:8px;font-size:11px;color:#94a3b8">Senha inicial: <b>oab123</b> — informe ao aluno para trocar depois.</div>
+          <div style="margin-top:8px;font-size:11px;color:#666">Senha inicial: <b>oab123</b> — informe ao aluno para trocar depois.</div>
         </div>
 
         <sc-if value="{{ noStudents }}" hint-placeholder-val="">
-          <div style="background:#0d0d2b;border:1.5px solid #ffe00033;border-radius:14px;padding:40px;text-align:center;color:#94a3b8">
+          <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:40px;text-align:center;color:#666">
             <div style="font-size:32px;margin-bottom:8px">&#128101;</div>
-            <div style="font-weight:600;color:#94a3b8">Nenhum aluno cadastrado</div>
+            <div style="font-weight:600;color:#666">Nenhum aluno cadastrado</div>
             <div style="font-size:13px;margin-top:4px">Adicione acima ou aguarde os alunos se cadastrarem</div>
           </div>
         </sc-if>
 
         <sc-if value="{{ hasStudents }}" hint-placeholder-val="{{ true }}">
-          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">{{ studentCount }} aluno(s)</div>
+          <div style="font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">{{ studentCount }} aluno(s)</div>
           <sc-for list="{{ students }}" as="s">
-            <div style="background:#0d0d2b;border:1.5px solid #ffe00033;border-radius:14px;padding:16px 18px;margin-bottom:10px">
+            <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:16px 18px;margin-bottom:10px">
               <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">
                 <div style="flex:1;min-width:180px">
-                  <div style="font-size:15px;font-weight:700;color:#ffe000">{{ s.name }}</div>
-                  <div style="font-size:12px;color:#94a3b8;margin-top:2px">{{ s.email }}</div>
+                  <div style="font-size:15px;font-weight:700;color:#E8003D">{{ s.name }}</div>
+                  <div style="font-size:12px;color:#666;margin-top:2px">{{ s.email }}</div>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
                   <span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;background:{{ s.statusBg }};color:{{ s.statusColor }}">{{ s.status }}</span>
-                  <button onclick="{{ s.onImpersonate }}" style="padding:5px 12px;background:#0d0d2b;border:1.5px solid #00e5ff44;border-radius:7px;font-size:12px;font-weight:600;color:#00e5ff;cursor:pointer">Ver como aluno</button>
-                  <button onclick="{{ s.onReset }}" style="padding:5px 12px;background:#13132e;border:1.5px solid #ffe00033;border-radius:7px;font-size:12px;font-weight:600;color:#94a3b8;cursor:pointer">Resetar progresso</button>
-                  <button onclick="{{ s.onRemove }}" style="padding:5px 12px;background:#1a0d1a;border:1.5px solid #ff008044;border-radius:7px;font-size:12px;font-weight:600;color:#ff0080;cursor:pointer">Remover</button>
+                  <button onclick="{{ s.onImpersonate }}" style="padding:5px 12px;background:#fff;border:1.5px solid #00e5ff44;border-radius:7px;font-size:12px;font-weight:600;color:#00A8E8;cursor:pointer">Ver como aluno</button>
+                  <button onclick="{{ s.onReset }}" style="padding:5px 12px;background:#FFF9E6;border:3px solid #0D0D0D;border-radius:7px;font-size:12px;font-weight:600;color:#666;cursor:pointer">Resetar progresso</button>
+                  <button onclick="{{ s.onRemove }}" style="padding:5px 12px;background:#fff0f3;border:1.5px solid #ff008044;border-radius:7px;font-size:12px;font-weight:600;color:#E8003D;cursor:pointer">Remover</button>
                 </div>
               </div>
               <div style="display:flex;gap:14px;margin-top:12px;flex-wrap:wrap">
                 <div style="text-align:center;min-width:44px">
-                  <div style="font-size:18px;font-weight:800;color:#00e5ff;text-shadow:0 0 10px #00e5ff88">{{ s.progPct }}%</div>
-                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Plano</div>
+                  <div style="font-size:18px;font-weight:800;color:#00A8E8;text-shadow:0 0 10px #00e5ff88">{{ s.progPct }}%</div>
+                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Plano</div>
                 </div>
                 <div style="text-align:center;min-width:44px">
-                  <div style="font-size:18px;font-weight:800;color:#ffe000;text-shadow:0 0 10px #ffe00066">{{ s.taxa }}%</div>
-                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Acerto</div>
+                  <div style="font-size:18px;font-weight:800;color:#E8003D">{{ s.taxa }}%</div>
+                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Acerto</div>
                 </div>
                 <div style="text-align:center;min-width:44px">
                   <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.totalQ }}</div>
-                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Questoes</div>
+                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Questoes</div>
                 </div>
                 <div style="text-align:center;min-width:44px">
                   <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.streak }}</div>
-                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Sequencia</div>
+                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Sequencia</div>
                 </div>
                 <div style="text-align:center;min-width:44px">
                   <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.adherence }}%</div>
-                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Aderencia</div>
+                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Aderencia</div>
                 </div>
                 <div style="text-align:center;min-width:44px">
-                  <div style="font-size:16px;font-weight:700;color:#ffe000">{{ s.nota }}/80</div>
-                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Nota Est.</div>
+                  <div style="font-size:16px;font-weight:700;color:#E8003D">{{ s.nota }}/80</div>
+                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Nota Est.</div>
                 </div>
                 <div style="text-align:center;min-width:80px">
-                  <div style="font-size:12px;font-weight:700;color:#e0e6ff">{{ s.lastLabel }}</div>
-                  <div style="font-size:10px;color:#94a3b8;font-weight:600;text-transform:uppercase">Ultimo estudo</div>
+                  <div style="font-size:12px;font-weight:700;color:#111">{{ s.lastLabel }}</div>
+                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Ultimo estudo</div>
                 </div>
               </div>
             </div>
@@ -116,37 +116,37 @@
     <!-- ═══ ABA AVISOS ═══ -->
     <sc-if value="{{ tabAvisos }}" hint-placeholder-val="">
       <div>
-        <div style="background:#0d0d2b;border:1.5px solid #ffe00033;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-          <div style="font-size:13px;font-weight:700;color:#ffe000;margin-bottom:12px">Novo aviso para alunos</div>
+        <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:18px 20px;margin-bottom:16px">
+          <div style="font-size:13px;font-weight:700;color:#E8003D;margin-bottom:12px">Novo aviso para alunos</div>
           <div style="margin-bottom:8px">
-            <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">Titulo</div>
-            <input value="{{ avisoTitle }}" oninput="{{ onAvisoTitle }}" placeholder="Ex: Aula ao vivo amanha!" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#13132e;color:#e0e6ff;box-sizing:border-box">
+            <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Titulo</div>
+            <input value="{{ avisoTitle }}" oninput="{{ onAvisoTitle }}" placeholder="Ex: Aula ao vivo amanha!" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
           </div>
           <div style="margin-bottom:12px">
-            <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">Mensagem (opcional)</div>
+            <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Mensagem (opcional)</div>
             <textarea oninput="{{ onAvisoMsg }}" placeholder="Detalhes do aviso..." rows="3" style="width:100%;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 10px;font-size:13px;box-sizing:border-box;resize:vertical;font-family:inherit">{{ avisoMsg }}</textarea>
           </div>
           <button onclick="{{ onSaveAviso }}" style="background:#ffe000;color:#050510;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer">Publicar aviso</button>
         </div>
 
         <sc-if value="{{ hasAvisos }}" hint-placeholder-val="{{ true }}">
-          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Avisos publicados</div>
+          <div style="font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Avisos publicados</div>
           <sc-for list="{{ avisos }}" as="a">
             <div style="background:#fff;border:1.5px solid #e6ecf7;border-left:4px solid #2551c3;border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
               <div style="flex:1">
-                <div style="font-size:13px;font-weight:700;color:#ffe000">{{ a.title }}</div>
+                <div style="font-size:13px;font-weight:700;color:#E8003D">{{ a.title }}</div>
                 <sc-if value="{{ a.msg }}" hint-placeholder-val="">
-                  <div style="font-size:12px;color:#94a3b8;margin-top:4px">{{ a.msg }}</div>
+                  <div style="font-size:12px;color:#666;margin-top:4px">{{ a.msg }}</div>
                 </sc-if>
-                <div style="font-size:11px;color:#94a3b8;margin-top:4px">{{ a.date }}</div>
+                <div style="font-size:11px;color:#666;margin-top:4px">{{ a.date }}</div>
               </div>
-              <button onclick="{{ a.onDelete }}" style="background:#1a0d1a;border:1px solid #ff008044;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;color:#ff0080;cursor:pointer;white-space:nowrap">Remover</button>
+              <button onclick="{{ a.onDelete }}" style="background:#fff0f3;border:2px solid #E8003D;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;color:#E8003D;cursor:pointer;white-space:nowrap">Remover</button>
             </div>
           </sc-for>
         </sc-if>
 
         <sc-if value="{{ noAvisos }}" hint-placeholder-val="">
-          <div style="text-align:center;color:#94a3b8;padding:32px">Nenhum aviso publicado ainda.</div>
+          <div style="text-align:center;color:#666;padding:32px">Nenhum aviso publicado ainda.</div>
         </sc-if>
       </div>
     </sc-if>
@@ -154,26 +154,26 @@
     <!-- ═══ ABA BOAS-VINDAS ═══ -->
     <sc-if value="{{ tabVideo }}" hint-placeholder-val="">
       <div>
-        <div style="background:#0d0d2b;border:1.5px solid #ffe00033;border-radius:14px;padding:20px;margin-bottom:16px">
-          <div style="font-size:14px;font-weight:700;color:#ffe000;margin-bottom:4px">Video de boas-vindas</div>
-          <div style="font-size:12px;color:#94a3b8;margin-bottom:18px">Aparece na tela inicial do aluno. Faca upload direto ou cole um link do YouTube/Vimeo.</div>
+        <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:20px;margin-bottom:16px">
+          <div style="font-size:14px;font-weight:700;color:#E8003D;margin-bottom:4px">Video de boas-vindas</div>
+          <div style="font-size:12px;color:#666;margin-bottom:18px">Aparece na tela inicial do aluno. Faca upload direto ou cole um link do YouTube/Vimeo.</div>
 
           <!-- Upload direto -->
-          <div style="border:2px dashed #ffe00044;border-radius:12px;padding:28px;text-align:center;margin-bottom:16px;background:#0d0d2b">
+          <div style="border:2px dashed #ffe00044;border-radius:12px;padding:28px;text-align:center;margin-bottom:16px;background:#fff">
             <div style="font-size:28px;margin-bottom:8px">&#127910;</div>
-            <div style="font-size:13px;font-weight:600;color:#e0e6ff;margin-bottom:4px">{{ uploadVideoLabel }}</div>
-            <div style="font-size:11px;color:#94a3b8;margin-bottom:14px">MP4, WebM, MOV — ate 500 MB</div>
+            <div style="font-size:13px;font-weight:600;color:#111;margin-bottom:4px">{{ uploadVideoLabel }}</div>
+            <div style="font-size:11px;color:#666;margin-bottom:14px">MP4, WebM, MOV — ate 500 MB</div>
             <button onclick="{{ onPickVideo }}" style="background:#ffe000;color:#050510;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;{{ uploadingVideoDisabled }}">{{ uploadVideoBtnLabel }}</button>
           </div>
 
           <!-- OU link -->
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
             <div style="flex:1;height:1px;background:#e2e8f0"></div>
-            <span style="font-size:12px;color:#94a3b8;font-weight:600">ou cole um link</span>
+            <span style="font-size:12px;color:#666;font-weight:600">ou cole um link</span>
             <div style="flex:1;height:1px;background:#e2e8f0"></div>
           </div>
           <div style="display:flex;gap:8px">
-            <input value="{{ videoUrl }}" oninput="{{ onVideoUrl }}" placeholder="https://youtube.com/watch?v=..." style="flex:1;height:38px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#13132e;color:#e0e6ff;box-sizing:border-box">
+            <input value="{{ videoUrl }}" oninput="{{ onVideoUrl }}" placeholder="https://youtube.com/watch?v=..." style="flex:1;height:38px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
             <button onclick="{{ onSaveVideoUrl }}" style="background:#64748b;color:#fff;border:none;border-radius:8px;padding:0 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Salvar link</button>
           </div>
         </div>
@@ -181,7 +181,7 @@
         <sc-if value="{{ currentVideoUrl }}" hint-placeholder-val="">
           <div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:12px;padding:14px 16px">
             <div style="font-size:11px;font-weight:700;color:#16a34a;text-transform:uppercase;margin-bottom:6px">Video atual</div>
-            <div style="font-size:12px;color:#00e5ff;word-break:break-all">{{ currentVideoUrl }}</div>
+            <div style="font-size:12px;color:#00A8E8;word-break:break-all">{{ currentVideoUrl }}</div>
             <button onclick="{{ onRemoveVideo }}" style="margin-top:8px;background:transparent;border:none;font-size:11px;color:#dc2626;cursor:pointer;font-weight:600">Remover video</button>
           </div>
         </sc-if>
@@ -191,53 +191,53 @@
     <!-- ═══ ABA SIMULADOS ═══ -->
     <sc-if value="{{ tabSimulados }}" hint-placeholder-val="">
       <div>
-        <div style="background:#0d0d2b;border:1.5px solid #ffe00033;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-          <div style="font-size:13px;font-weight:700;color:#ffe000;margin-bottom:12px">Adicionar simulado ou material</div>
+        <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:18px 20px;margin-bottom:16px">
+          <div style="font-size:13px;font-weight:700;color:#E8003D;margin-bottom:12px">Adicionar simulado ou material</div>
 
           <!-- Nome -->
           <div style="margin-bottom:12px">
-            <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">Nome do arquivo</div>
-            <input value="{{ simName }}" oninput="{{ onSimName }}" placeholder="Ex: Simulado 1 — Outubro 2026" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#13132e;color:#e0e6ff;box-sizing:border-box">
+            <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Nome do arquivo</div>
+            <input value="{{ simName }}" oninput="{{ onSimName }}" placeholder="Ex: Simulado 1 — Outubro 2026" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
           </div>
 
           <!-- Upload direto -->
           <div style="border:2px dashed #ddd6fe;border-radius:12px;padding:22px;text-align:center;margin-bottom:14px;background:#faf8ff">
             <div style="font-size:24px;margin-bottom:6px">&#128196;</div>
-            <div style="font-size:13px;font-weight:600;color:#e0e6ff;margin-bottom:2px">{{ uploadPdfLabel }}</div>
-            <div style="font-size:11px;color:#94a3b8;margin-bottom:12px">PDF ou video — ate 500 MB</div>
+            <div style="font-size:13px;font-weight:600;color:#111;margin-bottom:2px">{{ uploadPdfLabel }}</div>
+            <div style="font-size:11px;color:#666;margin-bottom:12px">PDF ou video — ate 500 MB</div>
             <button onclick="{{ onPickPdf }}" style="background:#7c3aed;color:#fff;border:none;border-radius:9px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;{{ uploadingPdfDisabled }}">{{ uploadPdfBtnLabel }}</button>
           </div>
 
           <!-- OU link externo -->
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
             <div style="flex:1;height:1px;background:#e2e8f0"></div>
-            <span style="font-size:12px;color:#94a3b8;font-weight:600">ou link externo</span>
+            <span style="font-size:12px;color:#666;font-weight:600">ou link externo</span>
             <div style="flex:1;height:1px;background:#e2e8f0"></div>
           </div>
           <div style="display:flex;gap:8px;margin-bottom:14px">
-            <input value="{{ simUrl }}" oninput="{{ onSimUrl }}" placeholder="https://drive.google.com/..." style="flex:1;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#13132e;color:#e0e6ff;box-sizing:border-box">
+            <input value="{{ simUrl }}" oninput="{{ onSimUrl }}" placeholder="https://drive.google.com/..." style="flex:1;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
             <button onclick="{{ onSaveSimulado }}" style="background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:0 14px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Adicionar link</button>
           </div>
         </div>
 
         <sc-if value="{{ hasSimulados }}" hint-placeholder-val="{{ true }}">
-          <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Materiais disponibilizados</div>
+          <div style="font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Materiais disponibilizados</div>
           <sc-for list="{{ simulados }}" as="sim">
             <div style="background:#fff;border:1.5px solid #e6ecf7;border-left:4px solid #7c3aed;border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
               <div>
-                <div style="font-size:13px;font-weight:700;color:#e0e6ff">{{ sim.name }}</div>
-                <div style="font-size:11px;color:#94a3b8;margin-top:2px">{{ sim.date }}</div>
+                <div style="font-size:13px;font-weight:700;color:#111">{{ sim.name }}</div>
+                <div style="font-size:11px;color:#666;margin-top:2px">{{ sim.date }}</div>
               </div>
               <div style="display:flex;gap:8px">
                 <a href="{{ sim.url }}" target="_blank" style="padding:5px 12px;background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:7px;font-size:12px;font-weight:600;color:#7c3aed;text-decoration:none">Abrir</a>
-                <button onclick="{{ sim.onDelete }}" style="background:#1a0d1a;border:1px solid #ff008044;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;color:#ff0080;cursor:pointer">Remover</button>
+                <button onclick="{{ sim.onDelete }}" style="background:#fff0f3;border:2px solid #E8003D;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;color:#E8003D;cursor:pointer">Remover</button>
               </div>
             </div>
           </sc-for>
         </sc-if>
 
         <sc-if value="{{ noSimulados }}" hint-placeholder-val="">
-          <div style="text-align:center;color:#94a3b8;padding:32px">Nenhum material adicionado ainda.</div>
+          <div style="text-align:center;color:#666;padding:32px">Nenhum material adicionado ainda.</div>
         </sc-if>
       </div>
     </sc-if>
@@ -245,34 +245,34 @@
     <!-- ═══ ABA CONFIGURACOES ═══ -->
     <sc-if value="{{ tabConfig }}" hint-placeholder-val="">
       <div>
-        <div style="background:#0d0d2b;border:1.5px solid #ffe00033;border-radius:14px;padding:20px;margin-bottom:14px">
-          <div style="font-size:14px;font-weight:700;color:#ffe000;margin-bottom:16px">Configuracoes da plataforma</div>
+        <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:20px;margin-bottom:14px">
+          <div style="font-size:14px;font-weight:700;color:#E8003D;margin-bottom:16px">Configuracoes da plataforma</div>
           <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
             <div>
-              <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">Nome da mentoria</div>
-              <input value="{{ cfgBrand }}" oninput="{{ onCfgBrand }}" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#13132e;color:#e0e6ff;box-sizing:border-box">
+              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Nome da mentoria</div>
+              <input value="{{ cfgBrand }}" oninput="{{ onCfgBrand }}" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
             </div>
             <div>
-              <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">Data da prova (YYYY-MM-DD)</div>
-              <input value="{{ cfgExam }}" oninput="{{ onCfgExam }}" placeholder="2026-09-06" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#13132e;color:#e0e6ff;box-sizing:border-box">
+              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Data da prova (YYYY-MM-DD)</div>
+              <input value="{{ cfgExam }}" oninput="{{ onCfgExam }}" placeholder="2026-09-06" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
             </div>
             <div>
-              <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">Meta de questoes por dia</div>
-              <input value="{{ cfgGoal }}" oninput="{{ onCfgGoal }}" type="number" min="10" max="60" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#13132e;color:#e0e6ff;box-sizing:border-box">
+              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Meta de questoes por dia</div>
+              <input value="{{ cfgGoal }}" oninput="{{ onCfgGoal }}" type="number" min="10" max="60" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
             </div>
           </div>
         </div>
 
-        <div style="background:#0d0d2b;border:1.5px solid #ffe00033;border-radius:14px;padding:20px;margin-bottom:14px">
-          <div style="font-size:13px;font-weight:700;color:#ffe000;margin-bottom:14px">Acesso admin</div>
+        <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:20px;margin-bottom:14px">
+          <div style="font-size:13px;font-weight:700;color:#E8003D;margin-bottom:14px">Acesso admin</div>
           <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
             <div>
-              <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">E-mail admin</div>
-              <input value="{{ cfgAdminEmail }}" oninput="{{ onCfgAdminEmail }}" type="email" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#13132e;color:#e0e6ff;box-sizing:border-box">
+              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">E-mail admin</div>
+              <input value="{{ cfgAdminEmail }}" oninput="{{ onCfgAdminEmail }}" type="email" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
             </div>
             <div>
-              <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">Senha admin (login local)</div>
-              <input value="{{ cfgAdminPass }}" oninput="{{ onCfgAdminPass }}" type="text" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#13132e;color:#e0e6ff;box-sizing:border-box">
+              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Senha admin (login local)</div>
+              <input value="{{ cfgAdminPass }}" oninput="{{ onCfgAdminPass }}" type="text" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
             </div>
           </div>
         </div>
