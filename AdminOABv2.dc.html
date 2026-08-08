@@ -113,7 +113,7 @@
     </div>
     <div class="adm-header-btns">
       <sc-if value="{{ showBackBtn }}" hint-placeholder-val="">
-        <button onclick="{{ onBackToHome }}" class="adm-btn-back">← Voltar</button>
+        <button onclick="this.closest('x-dc').__dc.setState({platformView:null,tab:'alunos',msg:''})" class="adm-btn-back">← Voltar</button>
       </sc-if>
       <button onclick="{{ onRefresh }}" class="adm-btn-refresh">{{ refreshing ? '⟳ Atualizando...' : '⟳ Atualizar' }}</button>
       <button onclick="{{ onLogout }}" class="adm-btn-logout">Sair</button>
@@ -128,13 +128,13 @@
         <div style="font-size:14px;color:#666;margin-top:6px">Selecione a plataforma para administrar</div>
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;max-width:700px;margin:0 auto">
-        <div class="adm-platform-card oab" onclick="{{ onSelectOAB }}">
+        <div class="adm-platform-card oab" onclick="this.closest('x-dc').__dc.setState({platformView:'oab',tab:'alunos',msg:''})">
           <div class="adm-platform-icon">⚡</div>
           <div class="adm-platform-name" style="color:var(--blue)">OAB</div>
           <div class="adm-platform-sub">1ª Fase · Cronograma inteligente</div>
           <div class="adm-platform-badge" style="background:#E8F0FF;color:var(--blue)">{{ countOAB }} aluno(s)</div>
         </div>
-        <div class="adm-platform-card ct" onclick="{{ onSelectCartorio }}">
+        <div class="adm-platform-card ct" onclick="this.closest('x-dc').__dc.setState({platformView:'cartorio',tab:'alunos',msg:''})">
           <div class="adm-platform-icon">📜</div>
           <div class="adm-platform-name" style="color:var(--ct-green)">Cartório</div>
           <div class="adm-platform-sub">Concurso de Cartórios</div>
@@ -633,7 +633,7 @@ class Component extends DCLogic {
     this.state = {
       platformView: null, // null=home, 'oab', 'cartorio'
       tab: 'alunos',
-      newName: '', newEmail: '', addMsg: '', _wasAdding: false,
+      newName: '', newEmail: '', addMsg: '',
       avisoTitle: '', avisoMsg: '',
       videoUrl: settings.welcomeVideoUrl || '',
       uploadingVideo: false,
@@ -687,12 +687,6 @@ class Component extends DCLogic {
     var st = this.state;
     var settings = d.settings || {};
     var self = this;
-
-    if (st._wasAdding && !d.addingStudent) {
-      setTimeout(function(){ self.setState({addMsg:'Aluno criado! Senha: oab123', _wasAdding:false}); }, 0);
-    } else if (d.addingStudent && !st._wasAdding) {
-      setTimeout(function(){ self.setState({_wasAdding:true}); }, 0);
-    }
 
     // ── All students ──
     var allStudents = (d.list || []).map(function(s) {
@@ -824,9 +818,6 @@ class Component extends DCLogic {
       headerTitle: pv === 'oab' ? '⚡ OAB — Admin' : pv === 'cartorio' ? '📜 Cartório — Admin' : (d.brandName || 'Mentoria') + ' — Admin',
       headerSub: pv === 'oab' ? 'Plataforma OAB' : pv === 'cartorio' ? 'Plataforma Cartório' : 'Painel de Controle',
       showBackBtn: !!pv,
-      onBackToHome: function(){ self.setState({platformView:null, tab:'alunos', msg:''}); },
-      onSelectOAB: function(){ self.setState({platformView:'oab', tab:'alunos', msg:''}); },
-      onSelectCartorio: function(){ self.setState({platformView:'cartorio', tab:'alunos', msg:''}); },
       platformView: pv || '',
 
       onLogout: d.onLogout || function(){},
@@ -869,15 +860,15 @@ class Component extends DCLogic {
 
       // Add student
       newName: st.newName, newEmail: st.newEmail,
-      addMsg: d.addingStudent ? 'Criando conta...' : st.addMsg,
+      addMsg: st.addMsg,
       onNewName: function(e){ self.setState({newName: e.target.value}); },
       onNewEmail: function(e){ self.setState({newEmail: e.target.value}); },
       addingStudent: !!d.addingStudent,
       onAddStudent: function(){
         if (!st.newName.trim() || !st.newEmail.trim()) { self.setState({addMsg:'Preencha nome e e-mail.'}); return; }
-        self.setState({addMsg:'Criando conta...'});
+        self.setState({addMsg:'Criando...', newName:'', newEmail:''});
         d.onAddStudent && d.onAddStudent(st.newName.trim(), st.newEmail.trim(), pv === 'cartorio' ? 'cartorio' : 'oab');
-        self.setState({newName:'', newEmail:''});
+        setTimeout(function(){ self.setState({addMsg:'Criado! Senha: oab123'}); }, 1500);
       },
 
       // Materials
