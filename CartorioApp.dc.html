@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root {
+  --ct-green: #007A3D;
+  --ct-gold: #D4A017;
+  --ct-yellow: #FFE500;
+  --ct-black: #0D0D0D;
+  --ct-white: #FFFFFF;
+  --ct-bg: #FFFDF0;
+  --ct-purple: #7B2FFF;
+  --ct-orange: #FF6600;
+  --ct-cyan: #00A8E8;
+  --ct-red: #D32F2F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:var(--ct-bg);color:var(--ct-black)}
+.ct-wrap{display:flex;flex-direction:column;min-height:100vh}
+
+/* HEADER */
+.ct-header{background:var(--ct-green);border-bottom:4px solid var(--ct-black);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:60px}
+.ct-logo{display:flex;align-items:center;gap:10px}
+.ct-logo-box{background:var(--ct-yellow);border:3px solid var(--ct-black);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:3px 3px 0 var(--ct-black)}
+.ct-logo-text{color:var(--ct-white);font-weight:800;font-size:16px;letter-spacing:.5px;text-transform:uppercase}
+.ct-logo-sub{color:var(--ct-yellow);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.ct-header-right{display:flex;align-items:center;gap:10px}
+.ct-user-name{color:var(--ct-yellow);font-weight:700;font-size:14px}
+.ct-btn-sm{background:var(--ct-yellow);color:var(--ct-black);border:2px solid var(--ct-black);border-radius:6px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;box-shadow:2px 2px 0 var(--ct-black)}
+.ct-btn-sm:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ct-black)}
+
+/* STAT BAR */
+.ct-statbar{background:var(--ct-yellow);border-bottom:4px solid var(--ct-black);display:flex;align-items:center;gap:16px;padding:8px 20px;overflow-x:auto}
+.ct-stat{display:flex;align-items:center;gap:6px;background:var(--ct-white);border:2px solid var(--ct-black);border-radius:8px;padding:4px 12px;box-shadow:2px 2px 0 var(--ct-black);white-space:nowrap}
+.ct-stat-icon{font-size:16px}
+.ct-stat-val{font-weight:800;font-size:16px;color:var(--ct-green)}
+.ct-stat-label{font-size:11px;font-weight:600;color:#555;text-transform:uppercase}
+
+/* NAV */
+.ct-nav{display:flex;border-bottom:4px solid var(--ct-black);background:var(--ct-white)}
+.ct-tab{flex:1;padding:12px 8px;text-align:center;font-weight:700;font-size:13px;cursor:pointer;border-right:2px solid var(--ct-black);text-transform:uppercase;letter-spacing:.5px;transition:background .15s}
+.ct-tab:last-child{border-right:none}
+.ct-tab.active{background:var(--ct-green);color:var(--ct-white)}
+.ct-tab:not(.active):hover{background:var(--ct-yellow)}
+
+/* CONTENT */
+.ct-content{padding:20px;max-width:900px;margin:0 auto;width:100%}
+
+/* COUNTDOWN CARD */
+.ct-countdown{background:var(--ct-green);border:3px solid var(--ct-black);border-radius:16px;box-shadow:6px 6px 0 var(--ct-black);padding:24px;text-align:center;margin-bottom:20px;color:var(--ct-white)}
+.ct-countdown-num{font-size:72px;font-weight:900;color:var(--ct-yellow);line-height:1;text-shadow:3px 3px 0 var(--ct-black)}
+.ct-countdown-label{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:2px;opacity:.9}
+.ct-countdown-date{font-size:13px;margin-top:6px;color:var(--ct-yellow);font-weight:700}
+
+/* PROGRESS BAR */
+.ct-progress-wrap{background:var(--ct-white);border:3px solid var(--ct-black);border-radius:12px;box-shadow:4px 4px 0 var(--ct-black);padding:16px;margin-bottom:20px}
+.ct-progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.ct-progress-title{font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+.ct-progress-pct{font-size:20px;font-weight:900;color:var(--ct-green)}
+.ct-bar-track{background:#e8e8e8;border:2px solid var(--ct-black);border-radius:6px;height:20px;overflow:hidden}
+.ct-bar-fill{height:100%;background:repeating-linear-gradient(45deg,var(--ct-green),var(--ct-green) 10px,var(--ct-yellow) 10px,var(--ct-yellow) 20px);animation:stripe-move .8s linear infinite;transition:width .5s}
+@keyframes stripe-move{0%{background-position:0 0}100%{background-position:28px 0}}
+
+/* MONTH TABS */
+.ct-months{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
+.ct-month-btn{background:var(--ct-white);border:2px solid var(--ct-black);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:2px 2px 0 var(--ct-black);text-transform:uppercase}
+.ct-month-btn.active{background:var(--ct-green);color:var(--ct-white)}
+.ct-month-btn:hover:not(.active){background:var(--ct-yellow)}
+
+/* WEEK CALENDAR */
+.ct-week{margin-bottom:16px}
+.ct-week-label{font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;color:#555}
+.ct-days{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.ct-day{min-width:80px;border:3px solid var(--ct-black);border-radius:10px;padding:10px 8px;text-align:center;box-shadow:3px 3px 0 var(--ct-black);cursor:pointer;transition:transform .1s;flex-shrink:0}
+.ct-day:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ct-black)}
+.ct-day.today{background:var(--ct-green);color:var(--ct-white)}
+.ct-day.done{background:#C8E6C9;border-color:var(--ct-green)}
+.ct-day.simulado{background:#E8D5FF;border-color:var(--ct-purple)}
+.ct-day.nocaute{background:#FFE0CC;border-color:var(--ct-orange)}
+.ct-day.exam{background:var(--ct-black);color:var(--ct-yellow)}
+.ct-day.future{background:var(--ct-white)}
+.ct-day-num{font-size:11px;font-weight:600;opacity:.7}
+.ct-day-name{font-size:13px;font-weight:800;margin:4px 0}
+.ct-day-type{font-size:10px;font-weight:700;text-transform:uppercase}
+.ct-day-theme{font-size:10px;color:#666;margin-top:3px;word-break:break-word}
+.ct-day-check{font-size:14px;margin-top:4px}
+
+/* EMPTY STATE */
+.ct-empty{text-align:center;padding:60px 20px;color:#888}
+.ct-empty-icon{font-size:48px;margin-bottom:16px}
+.ct-empty-text{font-size:16px;font-weight:600}
+.ct-empty-sub{font-size:13px;margin-top:8px}
+
+/* CARD */
+.ct-card{background:var(--ct-white);border:3px solid var(--ct-black);border-radius:12px;box-shadow:4px 4px 0 var(--ct-black);padding:16px;margin-bottom:16px}
+.ct-card-title{font-weight:800;font-size:15px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+</style>
+</head>
+<body>
+<x-dc>
+<script type="text/dc-logic">
+class CartorioApp extends DCLogic {
+  get brandName(){return this.data.brandName||'Mentoria Cartórios'}
+  get onLogout(){return this.data.onLogout||function(){}}
+  get onChangePw(){return this.data.onChangePw||function(){}}
+
+  get state(){return this._state||(this._state={view:'cronograma',activeMonth:0})}
+  setState(s){Object.assign(this._state,s);this.renderVals()}
+
+  renderVals(){
+    const st=this.state
+    const d=this.data||{}
+    const weeks=d.weeks||[]
+    const months=d.months||[]
+    const C=d.C||{}
+    const completed=d.completed||0
+    const studyDays=d.studyDays||0
+    const progPct=studyDays>0?Math.round(completed/studyDays*100):0
+
+    // Nav tabs
+    const tabs=[
+      {id:'cronograma',icon:'📅',label:'Cronograma'},
+      {id:'relatorio',icon:'📊',label:'Relatório'},
+      {id:'questoes',icon:'📝',label:'Questões'},
+      {id:'simulados',icon:'🎯',label:'Simulados'},
+    ]
+    const navTabs=tabs.map(t=>`
+      <div class="ct-tab${st.view===t.id?' active':''}" onclick="this.closest('x-dc').__dc.setState({view:'${t.id}'})">
+        ${t.icon} ${t.label}
+      </div>`).join('')
+
+    // Month tabs
+    const monthTabs=months.length?months.map((m,i)=>`
+      <button class="ct-month-btn${st.activeMonth===i?' active':''}"
+        onclick="this.closest('x-dc').__dc.setState({activeMonth:${i}})">
+        ${m.label}
+      </button>`).join(''):'<div style="color:#888;font-size:13px">Sem meses cadastrados</div>'
+
+    // Current month weeks
+    const curMonth=months[st.activeMonth]||null
+    const curWeeks=curMonth?weeks.filter(w=>w.month===st.activeMonth):[]
+
+    const styledWeeks=curWeeks.map(w=>{
+      const dayCards=w.days.map(day=>{
+        let cls='ct-day future',icon='',typeLabel=''
+        if(day.isExam){cls='ct-day exam';icon='🏆';typeLabel='PROVA'}
+        else if(day.isSimulado){cls='ct-day simulado';icon='🎯';typeLabel='SIMULADO'}
+        else if(day.isNocaute){cls='ct-day nocaute';icon='💪';typeLabel='NOCAUTE'}
+        else if(day.isToday){cls='ct-day today';icon='👇';typeLabel='HOJE'}
+        else if(day.done){cls='ct-day done';icon='✅';typeLabel='FEITO'}
+        else{typeLabel='ESTUDO'}
+        return `<div class="${cls}">
+          <div class="ct-day-num">${day.dateLabel||''}</div>
+          <div class="ct-day-name">${day.dayName||''}</div>
+          <div class="ct-day-type">${typeLabel}</div>
+          ${day.theme?`<div class="ct-day-theme">${day.theme}</div>`:''}
+          <div class="ct-day-check">${icon}</div>
+        </div>`
+      }).join('')
+      return `<div class="ct-week">
+        <div class="ct-week-label">Semana ${w.num||''}</div>
+        <div class="ct-days">${dayCards}</div>
+      </div>`
+    }).join('')
+
+    // Stat cards
+    const statCards=[
+      {icon:'📅',val:d.examCountdown!=null?d.examCountdown+'d':'—',label:'Pra Prova'},
+      {icon:'✅',val:completed,label:'Dias Feitos'},
+      {icon:'📈',val:progPct+'%',label:'Progresso'},
+      {icon:'📚',val:d.questoesData&&d.questoesData.total||0,label:'Questões'},
+    ].map(s=>`<div class="ct-stat">
+      <span class="ct-stat-icon">${s.icon}</span>
+      <span class="ct-stat-val">${s.val}</span>
+      <span class="ct-stat-label">${s.label}</span>
+    </div>`).join('')
+
+    // Cronogram content
+    const cronContent=`
+      <div class="ct-countdown">
+        <div class="ct-countdown-num">${d.examCountdown!=null?d.examCountdown:'—'}</div>
+        <div class="ct-countdown-label">Dias para a Prova</div>
+        <div class="ct-countdown-date">📅 ${d.examDateLabel||'Data em breve'}</div>
+      </div>
+      <div class="ct-progress-wrap">
+        <div class="ct-progress-header">
+          <span class="ct-progress-title">Progresso Geral</span>
+          <span class="ct-progress-pct">${progPct}%</span>
+        </div>
+        <div class="ct-bar-track"><div class="ct-bar-fill" style="width:${progPct}%"></div></div>
+      </div>
+      <div class="ct-months">${monthTabs}</div>
+      ${styledWeeks||'<div class="ct-empty"><div class="ct-empty-icon">📅</div><div class="ct-empty-text">Cronograma em breve</div><div class="ct-empty-sub">O cronograma será disponibilizado em breve.</div></div>'}
+    `
+
+    return {
+      statCards,navTabs,cronContent,
+      showCronograma:st.view==='cronograma',
+      showRelatorio:st.view==='relatorio',
+      showQuestoes:st.view==='questoes',
+      showSimulados:st.view==='simulados',
+      userName:d.userName||'Aluno',
+      reportData:d.reportData||{},
+      questoesData:d.questoesData||{materias:[]},
+      simuladosData:d.simuladosData||{entries:[]},
+    }
+  }
+}
+</script>
+
+<div class="ct-wrap">
+  <!-- HEADER -->
+  <div class="ct-header">
+    <div class="ct-logo">
+      <div class="ct-logo-box">📜</div>
+      <div>
+        <div class="ct-logo-text">Mentoria Cartórios</div>
+        <div class="ct-logo-sub">Concurso de Cartórios</div>
+      </div>
+    </div>
+    <div class="ct-header-right">
+      <span class="ct-user-name">{{ userName }}</span>
+      <button class="ct-btn-sm" onclick="this.closest('x-dc').__dc.onLogout()">Sair</button>
+    </div>
+  </div>
+
+  <!-- STAT BAR -->
+  <div class="ct-statbar" inner-html="{{ statCards }}"></div>
+
+  <!-- NAV TABS -->
+  <div class="ct-nav" inner-html="{{ navTabs }}"></div>
+
+  <!-- CONTENT -->
+  <div class="ct-content">
+    <sc-if value="{{ showCronograma }}">
+      <div inner-html="{{ cronContent }}"></div>
+    </sc-if>
+    <sc-if value="{{ showRelatorio }}">
+      <dc-import name="RelatorioOAB" data="{{ reportData }}" hint-size="100%,auto"></dc-import>
+    </sc-if>
+    <sc-if value="{{ showQuestoes }}">
+      <dc-import name="BancoQuestoes" data="{{ questoesData }}" hint-size="100%,auto"></dc-import>
+    </sc-if>
+    <sc-if value="{{ showSimulados }}">
+      <dc-import name="SimuladosOAB" data="{{ simuladosData }}" hint-size="100%,auto"></dc-import>
+    </sc-if>
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

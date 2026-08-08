@@ -8,12 +8,12 @@
   <!-- Header -->
   <div style="background:#fff;border-bottom:2px solid #ffe000;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20">
     <div>
-      <div style="font-size:17px;font-weight:900;color:#E8003D;text-shadow:0 0 14px #ffe00088;text-transform:uppercase;letter-spacing:-.01em">{{ brandName }} — Painel Admin</div>
+      <div style="font-size:17px;font-weight:900;color:#0057FF;text-shadow:0 0 14px #ffe00088;text-transform:uppercase;letter-spacing:-.01em">{{ brandName }} — Painel Admin</div>
       <div style="font-size:11px;color:#00A8E8;margin-top:1px">{{ examDateLabel }}</div>
     </div>
     <div style="display:flex;gap:8px;align-items:center">
       <button onclick="{{ onRefresh }}" disabled="{{ refreshing }}" style="background:#FFF9E6;border:2px solid #00A8E8;border-radius:9px;padding:8px 14px;font-size:13px;font-weight:600;color:#00A8E8;cursor:pointer;opacity:{{ refreshing ? 0.6 : 1 }}">{{ refreshing ? 'Atualizando...' : '↻ Atualizar' }}</button>
-      <button onclick="{{ onLogout }}" style="background:#fff;border:1px solid #ff0080;border-radius:9px;padding:8px 16px;font-size:13px;font-weight:600;color:#E8003D;cursor:pointer">Sair</button>
+      <button onclick="{{ onLogout }}" style="background:#fff;border:1px solid #ff0080;border-radius:9px;padding:8px 16px;font-size:13px;font-weight:600;color:#0057FF;cursor:pointer">Sair</button>
     </div>
   </div>
 
@@ -35,7 +35,7 @@
     <sc-if value="{{ tabAlunos }}" hint-placeholder-val="{{ true }}">
       <div>
         <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-          <div style="font-size:13px;font-weight:700;color:#E8003D;margin-bottom:12px">Adicionar aluno manualmente</div>
+          <div style="font-size:13px;font-weight:700;color:#0057FF;margin-bottom:12px">Adicionar aluno manualmente</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
             <div style="flex:1;min-width:160px">
               <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Nome</div>
@@ -45,7 +45,7 @@
               <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">E-mail</div>
               <input value="{{ newEmail }}" oninput="{{ onNewEmail }}" placeholder="email@exemplo.com" type="email" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
             </div>
-            <button onclick="{{ onAddStudent }}" disabled="{{ addingStudent }}" style="height:36px;padding:0 18px;background:#E8003D;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#050510;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;opacity:{{ addingStudent ? 0.6 : 1 }}">{{ addingStudent ? 'Criando...' : 'Adicionar' }}</button>
+            <button onclick="{{ onAddStudent }}" disabled="{{ addingStudent }}" style="height:36px;padding:0 18px;background:#0057FF;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#050510;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;opacity:{{ addingStudent ? 0.6 : 1 }}">{{ addingStudent ? 'Criando...' : 'Adicionar' }}</button>
           </div>
           <sc-if value="{{ addMsg }}" hint-placeholder-val="">
             <div style="margin-top:8px;font-size:12px;color:#00A8E8;font-weight:600">{{ addMsg }}</div>
@@ -67,14 +67,15 @@
             <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:16px 18px;margin-bottom:10px">
               <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">
                 <div style="flex:1;min-width:180px">
-                  <div style="font-size:15px;font-weight:700;color:#E8003D">{{ s.name }}</div>
+                  <div style="font-size:15px;font-weight:700;color:#0057FF">{{ s.name }}</div>
                   <div style="font-size:12px;color:#666;margin-top:2px">{{ s.email }}</div>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
                   <span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;background:{{ s.statusBg }};color:{{ s.statusColor }}">{{ s.status }}</span>
                   <button onclick="{{ s.onImpersonate }}" style="padding:5px 12px;background:#fff;border:1.5px solid #00e5ff44;border-radius:7px;font-size:12px;font-weight:600;color:#00A8E8;cursor:pointer">Ver como aluno</button>
                   <button onclick="{{ s.onReset }}" style="padding:5px 12px;background:#FFF9E6;border:3px solid #0D0D0D;border-radius:7px;font-size:12px;font-weight:600;color:#666;cursor:pointer">Resetar progresso</button>
-                  <button onclick="{{ s.onRemove }}" style="padding:5px 12px;background:#fff0f3;border:1.5px solid #ff008044;border-radius:7px;font-size:12px;font-weight:600;color:#E8003D;cursor:pointer">Remover</button>
+                  <button onclick="{{ s.onToggleTipo }}" style="padding:5px 12px;background:{{ s.tipoBg }};border:2px solid #0D0D0D;border-radius:7px;font-size:12px;font-weight:700;color:{{ s.tipoColor }};cursor:pointer;box-shadow:2px 2px 0 #0D0D0D">{{ s.tipoLabel }}</button>
+                  <button onclick="{{ s.onRemove }}" style="padding:5px 12px;background:#fff0f3;border:1.5px solid #ff008044;border-radius:7px;font-size:12px;font-weight:600;color:#0057FF;cursor:pointer">Remover</button>
                 </div>
               </div>
               <div style="display:flex;gap:14px;margin-top:12px;flex-wrap:wrap">
@@ -83,7 +84,7 @@
                   <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Plano</div>
                 </div>
                 <div style="text-align:center;min-width:44px">
-                  <div style="font-size:18px;font-weight:800;color:#E8003D">{{ s.taxa }}%</div>
+                  <div style="font-size:18px;font-weight:800;color:#0057FF">{{ s.taxa }}%</div>
                   <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Acerto</div>
                 </div>
                 <div style="text-align:center;min-width:44px">
@@ -99,7 +100,7 @@
                   <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Aderencia</div>
                 </div>
                 <div style="text-align:center;min-width:44px">
-                  <div style="font-size:16px;font-weight:700;color:#E8003D">{{ s.nota }}/80</div>
+                  <div style="font-size:16px;font-weight:700;color:#0057FF">{{ s.nota }}/80</div>
                   <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Nota Est.</div>
                 </div>
                 <div style="text-align:center;min-width:80px">
@@ -117,7 +118,7 @@
     <sc-if value="{{ tabAvisos }}" hint-placeholder-val="">
       <div>
         <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-          <div style="font-size:13px;font-weight:700;color:#E8003D;margin-bottom:12px">Novo aviso para alunos</div>
+          <div style="font-size:13px;font-weight:700;color:#0057FF;margin-bottom:12px">Novo aviso para alunos</div>
           <div style="margin-bottom:8px">
             <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Titulo</div>
             <input value="{{ avisoTitle }}" oninput="{{ onAvisoTitle }}" placeholder="Ex: Aula ao vivo amanha!" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
@@ -134,13 +135,13 @@
           <sc-for list="{{ avisos }}" as="a">
             <div style="background:#fff;border:1.5px solid #e6ecf7;border-left:4px solid #2551c3;border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
               <div style="flex:1">
-                <div style="font-size:13px;font-weight:700;color:#E8003D">{{ a.title }}</div>
+                <div style="font-size:13px;font-weight:700;color:#0057FF">{{ a.title }}</div>
                 <sc-if value="{{ a.msg }}" hint-placeholder-val="">
                   <div style="font-size:12px;color:#666;margin-top:4px">{{ a.msg }}</div>
                 </sc-if>
                 <div style="font-size:11px;color:#666;margin-top:4px">{{ a.date }}</div>
               </div>
-              <button onclick="{{ a.onDelete }}" style="background:#fff0f3;border:2px solid #E8003D;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;color:#E8003D;cursor:pointer;white-space:nowrap">Remover</button>
+              <button onclick="{{ a.onDelete }}" style="background:#fff0f3;border:2px solid #0057FF;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;color:#0057FF;cursor:pointer;white-space:nowrap">Remover</button>
             </div>
           </sc-for>
         </sc-if>
@@ -155,7 +156,7 @@
     <sc-if value="{{ tabVideo }}" hint-placeholder-val="">
       <div>
         <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:20px;margin-bottom:16px">
-          <div style="font-size:14px;font-weight:700;color:#E8003D;margin-bottom:4px">Video de boas-vindas</div>
+          <div style="font-size:14px;font-weight:700;color:#0057FF;margin-bottom:4px">Video de boas-vindas</div>
           <div style="font-size:12px;color:#666;margin-bottom:18px">Aparece na tela inicial do aluno. Faca upload direto ou cole um link do YouTube/Vimeo.</div>
 
           <!-- Upload direto -->
@@ -192,7 +193,7 @@
     <sc-if value="{{ tabSimulados }}" hint-placeholder-val="">
       <div>
         <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-          <div style="font-size:13px;font-weight:700;color:#E8003D;margin-bottom:12px">Adicionar simulado ou material</div>
+          <div style="font-size:13px;font-weight:700;color:#0057FF;margin-bottom:12px">Adicionar simulado ou material</div>
 
           <!-- Nome -->
           <div style="margin-bottom:12px">
@@ -230,7 +231,7 @@
               </div>
               <div style="display:flex;gap:8px">
                 <a href="{{ sim.url }}" target="_blank" style="padding:5px 12px;background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:7px;font-size:12px;font-weight:600;color:#7c3aed;text-decoration:none">Abrir</a>
-                <button onclick="{{ sim.onDelete }}" style="background:#fff0f3;border:2px solid #E8003D;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;color:#E8003D;cursor:pointer">Remover</button>
+                <button onclick="{{ sim.onDelete }}" style="background:#fff0f3;border:2px solid #0057FF;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;color:#0057FF;cursor:pointer">Remover</button>
               </div>
             </div>
           </sc-for>
@@ -246,7 +247,7 @@
     <sc-if value="{{ tabConfig }}" hint-placeholder-val="">
       <div>
         <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:20px;margin-bottom:14px">
-          <div style="font-size:14px;font-weight:700;color:#E8003D;margin-bottom:16px">Configuracoes da plataforma</div>
+          <div style="font-size:14px;font-weight:700;color:#0057FF;margin-bottom:16px">Configuracoes da plataforma</div>
           <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
             <div>
               <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Nome da mentoria</div>
@@ -264,7 +265,7 @@
         </div>
 
         <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:20px;margin-bottom:14px">
-          <div style="font-size:13px;font-weight:700;color:#E8003D;margin-bottom:14px">Acesso admin</div>
+          <div style="font-size:13px;font-weight:700;color:#0057FF;margin-bottom:14px">Acesso admin</div>
           <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
             <div>
               <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">E-mail admin</div>
@@ -386,7 +387,14 @@ class Component extends DCLogic {
         onReset: (function(sid, sname){ return function(){
           if (confirm('Resetar progresso de ' + sname + '?')) { d.onResetProgress && d.onResetProgress(sid); }
         }; })(s.id, s.name),
-        onImpersonate: (function(sid){ return function(){ d.onImpersonate && d.onImpersonate(sid); }; })(s.id)
+        onImpersonate: (function(sid){ return function(){ d.onImpersonate && d.onImpersonate(sid); }; })(s.id),
+        tipoLabel: s.tipo === 'cartorio' ? '📜 Cartório' : '⚡ OAB',
+        tipoBg: s.tipo === 'cartorio' ? '#C8F7DC' : '#E8F0FF',
+        tipoColor: s.tipo === 'cartorio' ? '#007A3D' : '#0057FF',
+        onToggleTipo: (function(sid, curTipo){ return function(){
+          var novo = curTipo === 'cartorio' ? 'oab' : 'cartorio';
+          d.onSetTipo && d.onSetTipo(sid, novo);
+        }; })(s.id, s.tipo||'oab')
       };
     });
 

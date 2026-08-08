@@ -4,16 +4,16 @@
   <!-- Header + botao adicionar -->
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
     <div>
-      <div style="font-size:18px;font-weight:900;color:#E8003D;text-transform:uppercase">Caderno de Erros</div>
+      <div style="font-size:18px;font-weight:900;color:#0057FF;text-transform:uppercase">Caderno de Erros</div>
       <div style="font-size:12px;color:#7B2FFF;margin-top:2px">{{ totalLabel }}</div>
     </div>
-    <button onclick="{{ onShowForm }}" style="background:#E8003D;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer">+ Adicionar erro</button>
+    <button onclick="{{ onShowForm }}" style="background:#0057FF;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer">+ Adicionar erro</button>
   </div>
 
   <!-- Formulario adicionar -->
   <sc-if value="{{ showForm }}" hint-placeholder-val="">
     <div style="background:#fff;border:1.5px solid #c7d7f5;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-      <div style="font-size:13px;font-weight:700;color:#E8003D;margin-bottom:14px">Registrar erro</div>
+      <div style="font-size:13px;font-weight:700;color:#0057FF;margin-bottom:14px">Registrar erro</div>
       <div style="display:grid;gap:10px;grid-template-columns:1fr 1fr;margin-bottom:10px">
         <div>
           <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Materia</div>
@@ -38,7 +38,7 @@
         <textarea oninput="{{ onFormNota }}" placeholder="Anote a logica correta, a regra, o mnemônico..." rows="2" style="width:100%;border:3px solid #0D0D0D;border-radius:8px;padding:8px 10px;font-size:13px;box-sizing:border-box;resize:vertical;font-family:inherit">{{ formNota }}</textarea>
       </div>
       <div style="display:flex;gap:8px">
-        <button onclick="{{ onSaveEntry }}" style="background:#E8003D;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer">Salvar</button>
+        <button onclick="{{ onSaveEntry }}" style="background:#0057FF;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer">Salvar</button>
         <button onclick="{{ onCancelForm }}" style="background:#FFF9E6;color:#666;border:none;border-radius:9px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer">Cancelar</button>
       </div>
     </div>
@@ -70,7 +70,7 @@
           </div>
           <div style="display:flex;flex-direction:column;gap:6px">
             <button onclick="{{ e.onToggleReviewed }}" style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid {{ e.reviewBorder }};background:{{ e.reviewBg }};color:{{ e.reviewColor }}">{{ e.reviewLabel }}</button>
-            <button onclick="{{ e.onRemove }}" style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid #fecaca;background:#fff0f3;color:#E8003D">Remover</button>
+            <button onclick="{{ e.onRemove }}" style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid #fecaca;background:#fff0f3;color:#0057FF">Remover</button>
           </div>
         </div>
       </div>

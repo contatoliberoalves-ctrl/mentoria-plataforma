@@ -4,10 +4,10 @@
   <!-- Header -->
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
     <div>
-      <div style="font-size:18px;font-weight:900;color:#E8003D;text-transform:uppercase">Meus Simulados</div>
+      <div style="font-size:18px;font-weight:900;color:#0057FF;text-transform:uppercase">Meus Simulados</div>
       <div style="font-size:12px;color:#00A8E8;margin-top:2px">{{ totalLabel }}</div>
     </div>
-    <button onclick="{{ onShowForm }}" style="background:#E8003D;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#050510;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer">+ Registrar simulado</button>
+    <button onclick="{{ onShowForm }}" style="background:#0057FF;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#050510;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer">+ Registrar simulado</button>
   </div>
 
   <!-- Simulados disponibilizados pelo admin -->
@@ -29,7 +29,7 @@
   <!-- Formulario -->
   <sc-if value="{{ showForm }}" hint-placeholder-val="">
     <div style="background:#fff;border:2px solid #7B2FFF;border-radius:16px;padding:20px 22px;margin-bottom:20px">
-      <div style="font-size:14px;font-weight:700;color:#E8003D;margin-bottom:16px">Novo simulado</div>
+      <div style="font-size:14px;font-weight:700;color:#0057FF;margin-bottom:16px">Novo simulado</div>
 
       <!-- Tipo + exame -->
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
@@ -54,7 +54,7 @@
         <div style="flex:1;min-width:120px">
           <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Total de acertos</div>
           <div style="height:38px;border:1.5px solid #9b59ff;border-radius:9px;display:flex;align-items:center;padding:0 12px;background:#FFF9E6">
-            <span style="font-size:18px;font-weight:800;color:#E8003D">{{ totalAcertos }}</span>
+            <span style="font-size:18px;font-weight:800;color:#0057FF">{{ totalAcertos }}</span>
             <span style="font-size:13px;color:#7B2FFF;margin-left:4px">/ 80</span>
           </div>
         </div>
@@ -70,7 +70,7 @@
               <div style="font-size:10px;color:#7B2FFF">Questoes {{ fm.range }} — {{ fm.total }} no total</div>
             </div>
             <div style="display:flex;align-items:center;gap:4px">
-              <input type="number" value="{{ fm.acertos }}" oninput="{{ fm.onInput }}" min="0" max="{{ fm.total }}" placeholder="0" style="width:44px;height:32px;border:1.5px solid #9b59ff;border-radius:7px;text-align:center;font-size:14px;font-weight:700;color:#E8003D;background:#FFF9E6">
+              <input type="number" value="{{ fm.acertos }}" oninput="{{ fm.onInput }}" min="0" max="{{ fm.total }}" placeholder="0" style="width:44px;height:32px;border:1.5px solid #9b59ff;border-radius:7px;text-align:center;font-size:14px;font-weight:700;color:#0057FF;background:#FFF9E6">
               <span style="font-size:12px;color:#7B2FFF">/{{ fm.total }}</span>
             </div>
           </div>
@@ -78,7 +78,7 @@
       </div>
 
       <div style="display:flex;gap:8px">
-        <button onclick="{{ onSave }}" style="background:#E8003D;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#050510;border:none;border-radius:9px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer">Salvar simulado</button>
+        <button onclick="{{ onSave }}" style="background:#0057FF;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#050510;border:none;border-radius:9px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer">Salvar simulado</button>
         <button onclick="{{ onCancel }}" style="background:#FFF9E6;color:#666;border:2px solid #e0e0e0;border-radius:9px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer">Cancelar</button>
       </div>
     </div>
@@ -110,7 +110,7 @@
             <div style="font-size:22px;font-weight:800;color:#fff">{{ e.acertos }}/80</div>
             <div style="font-size:10px;color:rgba(255,255,255,.75)">QUESTOES</div>
           </div>
-          <button onclick="{{ e.onRemove }}" style="background:#ff008022;border:1px solid #ff008066;border-radius:7px;padding:5px 10px;font-size:11px;color:#E8003D;cursor:pointer">Remover</button>
+          <button onclick="{{ e.onRemove }}" style="background:#ff008022;border:1px solid #ff008066;border-radius:7px;padding:5px 10px;font-size:11px;color:#0057FF;cursor:pointer">Remover</button>
         </div>
       </div>
       <!-- Materias -->
