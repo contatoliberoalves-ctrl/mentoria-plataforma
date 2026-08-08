@@ -1,6 +1,6 @@
 <x-dc>
 <style>
-:root{--blue:#0057FF;--yellow:#FFE500;--black:#0D0D0D;--bg:#FFF9E6;--white:#FFFFFF;--green:#00C040;--purple:#7B2FFF;--cyan:#00A8E8;--orange:#FF6600;--red:#D32F2F}
+:root{--blue:#0057FF;--yellow:#FFE500;--black:#0D0D0D;--bg:#FFF9E6;--white:#FFFFFF;--green:#00C040;--purple:#7B2FFF;--cyan:#00A8E8;--orange:#FF6600;--red:#D32F2F;--ct-green:#007A3D;--ct-bg:#E6F7EE}
 *{box-sizing:border-box}
 .adm-wrap{min-height:100vh;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--black)}
 /* HEADER */
@@ -12,11 +12,13 @@
 .adm-header-btns{display:flex;gap:8px;align-items:center}
 .adm-btn-refresh{background:var(--yellow);color:var(--black);border:2px solid var(--black);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;box-shadow:2px 2px 0 var(--black)}
 .adm-btn-logout{background:transparent;color:var(--yellow);border:2px solid var(--yellow);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer}
+.adm-btn-back{background:rgba(255,255,255,.15);color:var(--white);border:2px solid rgba(255,255,255,.4);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer}
 /* TABS */
 .adm-tabs{background:var(--white);border-bottom:4px solid var(--black);display:flex;overflow-x:auto;padding:0 16px}
 .adm-tab{padding:14px 18px;border:none;border-bottom:4px solid transparent;background:transparent;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;text-transform:uppercase;letter-spacing:.3px;color:#666;margin-bottom:-4px;transition:color .15s}
 .adm-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
-.adm-tab:hover:not(.active){color:var(--black)}
+.adm-tab.active-ct{color:var(--ct-green);border-bottom-color:var(--ct-green)}
+.adm-tab:hover:not(.active):not(.active-ct){color:var(--black)}
 /* MSG BANNER */
 .adm-msg{margin:14px 20px 0;padding:12px 16px;border-radius:10px;font-size:13px;font-weight:700;border:2px solid var(--black);box-shadow:3px 3px 0 var(--black)}
 .adm-msg.ok{background:#D4F7E0;color:#007A3D}
@@ -40,6 +42,7 @@
 .adm-btn-yellow:hover{transform:translate(-1px,-1px)}
 .adm-btn-sm{background:var(--white);color:var(--black);border:2px solid var(--black);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:2px 2px 0 var(--black)}
 .adm-btn-danger{background:#FFE0E0;color:var(--red);border:2px solid var(--red);border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer}
+.adm-btn-green{background:var(--ct-green);color:#fff;border:3px solid var(--black);border-radius:10px;padding:10px 22px;font-size:13px;font-weight:900;cursor:pointer;text-transform:uppercase;box-shadow:4px 4px 0 var(--black)}
 /* STUDENT CARD */
 .adm-student{background:var(--white);border:3px solid var(--black);border-radius:14px;box-shadow:4px 4px 0 var(--black);padding:16px 18px;margin-bottom:12px}
 .adm-student-name{font-size:16px;font-weight:900;color:var(--blue)}
@@ -66,9 +69,31 @@
 .adm-empty{text-align:center;padding:40px 20px;color:#888}
 .adm-empty-icon{font-size:40px;margin-bottom:10px}
 /* CARTÓRIO */
-.adm-ct-card{background:var(--white);border:3px solid #007A3D;border-radius:14px;box-shadow:4px 4px 0 #007A3D;padding:16px 18px;margin-bottom:12px}
+.adm-ct-card{background:var(--white);border:3px solid var(--ct-green);border-radius:14px;box-shadow:4px 4px 0 var(--ct-green);padding:16px 18px;margin-bottom:12px}
 .adm-student-tipo-oab{background:#E8F0FF;color:var(--blue);border:2px solid var(--blue)}
-.adm-student-tipo-ct{background:#C8F7DC;color:#007A3D;border:2px solid #007A3D}
+.adm-student-tipo-ct{background:#C8F7DC;color:var(--ct-green);border:2px solid var(--ct-green)}
+/* PLATFORM HOME */
+.adm-platform-home{padding:48px 16px}
+.adm-platform-card{border:4px solid var(--black);border-radius:20px;padding:36px 32px;cursor:pointer;transition:transform .12s,box-shadow .12s;text-align:center;background:var(--white)}
+.adm-platform-card:hover{transform:translate(-3px,-3px)}
+.adm-platform-card.oab{box-shadow:7px 7px 0 var(--blue)}
+.adm-platform-card.oab:hover{box-shadow:10px 10px 0 var(--blue)}
+.adm-platform-card.ct{box-shadow:7px 7px 0 var(--ct-green)}
+.adm-platform-card.ct:hover{box-shadow:10px 10px 0 var(--ct-green)}
+.adm-platform-icon{font-size:56px;margin-bottom:12px}
+.adm-platform-name{font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.adm-platform-sub{font-size:13px;color:#666;font-weight:600}
+.adm-platform-badge{display:inline-block;margin-top:14px;padding:5px 16px;border-radius:8px;font-size:13px;font-weight:800;border:2px solid var(--black)}
+/* STATS BAR */
+.adm-stat-bar-bg{background:#eee;border-radius:6px;height:10px;overflow:hidden;margin-top:4px}
+.adm-stat-bar-fill{height:10px;border-radius:6px;transition:width .3s}
+/* REPORT CARD */
+.adm-report-num{font-size:36px;font-weight:900;line-height:1}
+.adm-report-label{font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+/* MATERIAL ITEM */
+.adm-mat-item{background:var(--white);border:2px solid var(--black);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.adm-mat-item-title{font-size:13px;font-weight:800;color:var(--black)}
+.adm-mat-item-url{font-size:11px;color:var(--cyan);word-break:break-all;margin-top:2px}
 </style>
 
 <!-- hidden file inputs -->
@@ -82,359 +107,522 @@
     <div class="adm-logo">
       <div class="adm-logo-box">⚡</div>
       <div>
-        <div class="adm-logo-title">{{ brandName }} — Admin</div>
-        <div class="adm-logo-sub">Painel de Controle</div>
+        <div class="adm-logo-title">{{ headerTitle }}</div>
+        <div class="adm-logo-sub">{{ headerSub }}</div>
       </div>
     </div>
     <div class="adm-header-btns">
+      <sc-if value="{{ showBackBtn }}" hint-placeholder-val="">
+        <button onclick="{{ onBackToHome }}" class="adm-btn-back">← Voltar</button>
+      </sc-if>
       <button onclick="{{ onRefresh }}" class="adm-btn-refresh">{{ refreshing ? '⟳ Atualizando...' : '⟳ Atualizar' }}</button>
       <button onclick="{{ onLogout }}" class="adm-btn-logout">Sair</button>
     </div>
   </div>
 
-  <!-- TABS -->
-  <div class="adm-tabs" inner-html="{{ tabsHtml }}"></div>
+  <!-- ═══ HOME: SELECIONAR PLATAFORMA ═══ -->
+  <sc-if value="{{ screenHome }}" hint-placeholder-val="{{ true }}">
+    <div class="adm-platform-home">
+      <div style="text-align:center;margin-bottom:36px">
+        <div style="font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:1px">Painel de Controle</div>
+        <div style="font-size:14px;color:#666;margin-top:6px">Selecione a plataforma para administrar</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;max-width:700px;margin:0 auto">
+        <div class="adm-platform-card oab" onclick="{{ onSelectOAB }}">
+          <div class="adm-platform-icon">⚡</div>
+          <div class="adm-platform-name" style="color:var(--blue)">OAB</div>
+          <div class="adm-platform-sub">1ª Fase · Cronograma inteligente</div>
+          <div class="adm-platform-badge" style="background:#E8F0FF;color:var(--blue)">{{ countOAB }} aluno(s)</div>
+        </div>
+        <div class="adm-platform-card ct" onclick="{{ onSelectCartorio }}">
+          <div class="adm-platform-icon">📜</div>
+          <div class="adm-platform-name" style="color:var(--ct-green)">Cartório</div>
+          <div class="adm-platform-sub">Concurso de Cartórios</div>
+          <div class="adm-platform-badge" style="background:#C8F7DC;color:var(--ct-green)">{{ countCartorio }} aluno(s)</div>
+        </div>
+      </div>
 
-  <!-- MSG BANNER -->
-  <sc-if value="{{ msg }}" hint-placeholder-val="">
-    <div class="adm-msg {{ msgClass }}">{{ msg }}</div>
+      <!-- Resumo geral -->
+      <div style="max-width:700px;margin:32px auto 0">
+        <div class="adm-card">
+          <div class="adm-card-title">📊 Resumo Geral</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:16px">
+            <div style="text-align:center">
+              <div class="adm-report-num" style="color:var(--blue)">{{ totalStudents }}</div>
+              <div class="adm-report-label">Alunos Totais</div>
+            </div>
+            <div style="text-align:center">
+              <div class="adm-report-num" style="color:var(--green)">{{ totalQ }}</div>
+              <div class="adm-report-label">Questões Feitas</div>
+            </div>
+            <div style="text-align:center">
+              <div class="adm-report-num" style="color:var(--orange)">{{ avgTaxa }}%</div>
+              <div class="adm-report-label">Taxa Média</div>
+            </div>
+            <div style="text-align:center">
+              <div class="adm-report-num" style="color:var(--purple)">{{ activeStudents }}</div>
+              <div class="adm-report-label">Ativos (7d)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </sc-if>
 
-  <div class="adm-content">
+  <!-- ═══ PLATAFORMA SELECIONADA: TABS ═══ -->
+  <sc-if value="{{ screenPlatform }}" hint-placeholder-val="">
 
-    <!-- ═══ ALUNOS ═══ -->
-    <sc-if value="{{ tabAlunos }}" hint-placeholder-val="{{ true }}">
-      <div>
-        <!-- Adicionar aluno -->
-        <div class="adm-card">
-          <div class="adm-card-title">👤 Adicionar Aluno <span class="adm-card-title-badge">Senha inicial: oab123</span></div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
-            <div style="flex:1;min-width:150px">
-              <div class="adm-label">Nome</div>
-              <input class="adm-input" value="{{ newName }}" oninput="{{ onNewName }}" placeholder="Nome do aluno">
+    <!-- TABS -->
+    <div class="adm-tabs" inner-html="{{ tabsHtml }}"></div>
+
+    <!-- MSG BANNER -->
+    <sc-if value="{{ msg }}" hint-placeholder-val="">
+      <div class="adm-msg {{ msgClass }}">{{ msg }}</div>
+    </sc-if>
+
+    <div class="adm-content">
+
+      <!-- ═══ ALUNOS ═══ -->
+      <sc-if value="{{ tabAlunos }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <!-- Adicionar aluno -->
+          <div class="adm-card">
+            <div class="adm-card-title">👤 Adicionar Aluno <span class="adm-card-title-badge">Senha inicial: oab123</span></div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+              <div style="flex:1;min-width:150px">
+                <div class="adm-label">Nome</div>
+                <input class="adm-input" value="{{ newName }}" oninput="{{ onNewName }}" placeholder="Nome do aluno">
+              </div>
+              <div style="flex:1.5;min-width:200px">
+                <div class="adm-label">E-mail</div>
+                <input class="adm-input" value="{{ newEmail }}" oninput="{{ onNewEmail }}" placeholder="email@exemplo.com" type="email">
+              </div>
+              <button onclick="{{ onAddStudent }}" class="{{ platformView === 'cartorio' ? 'adm-btn-green' : 'adm-btn-primary' }}" style="{{ addingStudent ? 'opacity:.6;pointer-events:none' : '' }}">{{ addingStudent ? 'Criando...' : '+ Adicionar' }}</button>
             </div>
-            <div style="flex:1.5;min-width:200px">
-              <div class="adm-label">E-mail</div>
-              <input class="adm-input" value="{{ newEmail }}" oninput="{{ onNewEmail }}" placeholder="email@exemplo.com" type="email">
-            </div>
-            <div style="min-width:140px">
-              <div class="adm-label">Plataforma</div>
-              <select class="adm-input" oninput="{{ onNewTipo }}">
-                <option value="oab">⚡ OAB</option>
-                <option value="cartorio">📜 Cartório</option>
-              </select>
-            </div>
-            <button onclick="{{ onAddStudent }}" class="adm-btn-primary" style="{{ addingStudent ? 'opacity:.6;pointer-events:none' : '' }}">{{ addingStudent ? 'Criando...' : '+ Adicionar' }}</button>
+            <sc-if value="{{ addMsg }}" hint-placeholder-val="">
+              <div style="margin-top:10px;font-size:13px;font-weight:700;color:var(--blue)">{{ addMsg }}</div>
+            </sc-if>
           </div>
-          <sc-if value="{{ addMsg }}" hint-placeholder-val="">
-            <div style="margin-top:10px;font-size:13px;font-weight:700;color:var(--blue)">{{ addMsg }}</div>
+
+          <!-- Lista -->
+          <sc-if value="{{ noPlatformStudents }}" hint-placeholder-val="">
+            <div class="adm-empty"><div class="adm-empty-icon">👥</div><div style="font-weight:700">Nenhum aluno nesta plataforma</div></div>
           </sc-if>
-        </div>
 
-        <!-- Lista -->
-        <sc-if value="{{ noStudents }}" hint-placeholder-val="">
-          <div class="adm-empty"><div class="adm-empty-icon">👥</div><div style="font-weight:700">Nenhum aluno cadastrado ainda</div></div>
-        </sc-if>
-
-        <sc-if value="{{ hasStudents }}" hint-placeholder-val="{{ true }}">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-            <div style="font-size:13px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px">{{ studentCount }} aluno(s)</div>
-            <div style="display:flex;gap:8px">
-              <span style="background:#E8F0FF;border:2px solid var(--blue);border-radius:6px;padding:3px 10px;font-size:11px;font-weight:800;color:var(--blue)">⚡ OAB: {{ countOAB }}</span>
-              <span style="background:#C8F7DC;border:2px solid #007A3D;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:800;color:#007A3D">📜 Cartório: {{ countCartorio }}</span>
-            </div>
-          </div>
-          <sc-for list="{{ students }}" as="s">
-            <div class="adm-student">
-              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">
-                <div style="flex:1;min-width:180px">
-                  <div class="adm-student-name">{{ s.name }}</div>
-                  <div class="adm-student-email">{{ s.email }}</div>
-                  <div style="margin-top:6px">
-                    <span class="adm-badge {{ s.tipoClass }}">{{ s.tipoLabel }}</span>
-                    <span class="adm-badge" style="margin-left:8px;background:{{ s.statusBg }};color:{{ s.statusColor }};border-color:{{ s.statusColor }}">{{ s.status }}</span>
-                    <span style="margin-left:8px;font-size:11px;color:#888">{{ s.lastLabel }}</span>
+          <sc-if value="{{ hasPlatformStudents }}" hint-placeholder-val="{{ true }}">
+            <div style="font-size:13px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">{{ platformStudentCount }} aluno(s)</div>
+            <sc-for list="{{ platformStudents }}" as="s">
+              <div class="{{ platformView === 'cartorio' ? 'adm-ct-card' : 'adm-student' }}">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">
+                  <div style="flex:1;min-width:180px">
+                    <div class="adm-student-name" style="{{ platformView === 'cartorio' ? 'color:var(--ct-green)' : '' }}">{{ s.name }}</div>
+                    <div class="adm-student-email">{{ s.email }}</div>
+                    <div style="margin-top:6px">
+                      <span class="adm-badge" style="margin-left:0;background:{{ s.statusBg }};color:{{ s.statusColor }};border-color:{{ s.statusColor }}">{{ s.status }}</span>
+                      <span style="margin-left:8px;font-size:11px;color:#888">{{ s.lastLabel }}</span>
+                    </div>
                   </div>
-                </div>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-                  <button onclick="{{ s.onToggleTipo }}" class="adm-btn-sm" title="Alternar OAB ↔ Cartório">🔄 Mudar plataforma</button>
-                  <button onclick="{{ s.onImpersonate }}" class="adm-btn-sm">👁 Ver como aluno</button>
-                  <button onclick="{{ s.onReset }}" class="adm-btn-sm">↺ Resetar</button>
-                  <button onclick="{{ s.onRemove }}" class="adm-btn-danger">✕</button>
-                </div>
-              </div>
-              <div class="adm-stat-row">
-                <div class="adm-stat-cell">
-                  <div class="adm-stat-val">{{ s.progPct }}%</div>
-                  <div class="adm-stat-lbl">Plano</div>
-                </div>
-                <div class="adm-stat-cell">
-                  <div class="adm-stat-val" style="color:{{ s.taxa >= 70 ? '#007A3D' : s.taxa >= 50 ? '#FF6600' : '#D32F2F' }}">{{ s.taxa }}%</div>
-                  <div class="adm-stat-lbl">Acerto</div>
-                </div>
-                <div class="adm-stat-cell">
-                  <div class="adm-stat-val" style="color:var(--black)">{{ s.totalQ }}</div>
-                  <div class="adm-stat-lbl">Questões</div>
-                </div>
-                <div class="adm-stat-cell">
-                  <div class="adm-stat-val" style="color:var(--orange)">{{ s.streak }}</div>
-                  <div class="adm-stat-lbl">Sequência</div>
-                </div>
-                <div class="adm-stat-cell">
-                  <div class="adm-stat-val" style="color:var(--cyan)">{{ s.adherence }}%</div>
-                  <div class="adm-stat-lbl">Aderência</div>
-                </div>
-                <div class="adm-stat-cell">
-                  <div class="adm-stat-val" style="font-size:14px;color:var(--purple)">{{ s.nota }}/80</div>
-                  <div class="adm-stat-lbl">Nota Est.</div>
-                </div>
-              </div>
-            </div>
-          </sc-for>
-        </sc-if>
-      </div>
-    </sc-if>
-
-    <!-- ═══ AVISOS ═══ -->
-    <sc-if value="{{ tabAvisos }}" hint-placeholder-val="">
-      <div>
-        <div class="adm-card">
-          <div class="adm-card-title">📢 Novo Aviso</div>
-          <div style="margin-bottom:12px">
-            <div class="adm-label">Título</div>
-            <input class="adm-input" value="{{ avisoTitle }}" oninput="{{ onAvisoTitle }}" placeholder="Ex: Encontro de mentoria amanhã às 19h!">
-          </div>
-          <div style="margin-bottom:14px">
-            <div class="adm-label">Mensagem (opcional)</div>
-            <textarea class="adm-textarea" oninput="{{ onAvisoMsg }}" placeholder="Mais detalhes sobre o aviso..." rows="3">{{ avisoMsg }}</textarea>
-          </div>
-          <button onclick="{{ onSaveAviso }}" class="adm-btn-yellow">📢 Publicar aviso</button>
-        </div>
-
-        <sc-if value="{{ hasAvisos }}" hint-placeholder-val="{{ true }}">
-          <div style="font-size:12px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Publicados ({{ avisoCount }})</div>
-          <sc-for list="{{ avisos }}" as="a">
-            <div class="adm-aviso">
-              <div style="flex:1">
-                <div style="font-size:14px;font-weight:800;color:var(--blue)">{{ a.title }}</div>
-                <sc-if value="{{ a.msg }}" hint-placeholder-val="">
-                  <div style="font-size:13px;color:#333;margin-top:4px">{{ a.msg }}</div>
-                </sc-if>
-                <div style="font-size:11px;color:#888;margin-top:6px">{{ a.date }}</div>
-              </div>
-              <button onclick="{{ a.onDelete }}" class="adm-btn-danger">✕ Remover</button>
-            </div>
-          </sc-for>
-        </sc-if>
-        <sc-if value="{{ noAvisos }}" hint-placeholder-val="">
-          <div class="adm-empty"><div class="adm-empty-icon">📭</div><div style="font-weight:700">Nenhum aviso publicado</div></div>
-        </sc-if>
-      </div>
-    </sc-if>
-
-    <!-- ═══ SIMULADOS ═══ -->
-    <sc-if value="{{ tabSimulados }}" hint-placeholder-val="">
-      <div>
-        <div class="adm-card">
-          <div class="adm-card-title">🎯 Adicionar Simulado</div>
-          <div class="adm-grid-2" style="margin-bottom:14px">
-            <div>
-              <div class="adm-label">Nome do simulado</div>
-              <input class="adm-input" value="{{ simName }}" oninput="{{ onSimName }}" placeholder="Ex: Simulado OAB — Set/2026">
-            </div>
-            <div>
-              <div class="adm-label">Tempo máximo — até 5h</div>
-              <div style="display:flex;align-items:center;gap:10px">
-                <input type="range" min="1" max="5" step="0.5" value="{{ simTimer }}" oninput="{{ onSimTimer }}" style="flex:1;accent-color:var(--blue);height:8px;cursor:pointer">
-                <div style="background:var(--blue);color:#fff;border:2px solid var(--black);border-radius:8px;padding:6px 14px;font-size:16px;font-weight:900;min-width:58px;text-align:center;box-shadow:2px 2px 0 var(--black)">{{ simTimer }}h</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="adm-upload-zone" onclick="{{ onPickPdf }}">
-            <div style="font-size:28px;margin-bottom:6px">📄</div>
-            <div style="font-size:13px;font-weight:700;color:var(--black)">{{ uploadPdfLabel }}</div>
-            <div style="font-size:11px;color:#666;margin-top:2px">PDF ou vídeo — até 500 MB</div>
-            <button style="margin-top:12px;background:var(--purple);color:#fff;border:3px solid var(--black);border-radius:9px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:3px 3px 0 var(--black);pointer-events:none">{{ uploadPdfBtnLabel }}</button>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-            <div style="flex:1;height:2px;background:var(--black)"></div>
-            <span style="font-size:11px;font-weight:800;color:#666;text-transform:uppercase">ou link externo</span>
-            <div style="flex:1;height:2px;background:var(--black)"></div>
-          </div>
-          <div style="display:flex;gap:8px">
-            <input class="adm-input" value="{{ simUrl }}" oninput="{{ onSimUrl }}" placeholder="https://drive.google.com/..." style="flex:1">
-            <button onclick="{{ onSaveSimulado }}" class="adm-btn-primary">Adicionar</button>
-          </div>
-        </div>
-
-        <sc-if value="{{ hasSimulados }}" hint-placeholder-val="{{ true }}">
-          <div style="font-size:12px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Simulados disponibilizados ({{ simCount }})</div>
-          <sc-for list="{{ simulados }}" as="sim">
-            <div class="adm-sim">
-              <div>
-                <div style="font-size:14px;font-weight:800;color:var(--black)">{{ sim.name }}</div>
-                <div style="margin-top:4px;display:flex;gap:8px;align-items:center">
-                  <span style="background:var(--purple);color:#fff;border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)">⏱ {{ sim.timerLabel }}</span>
-                  <span style="font-size:11px;color:#666">{{ sim.date }}</span>
-                </div>
-              </div>
-              <div style="display:flex;gap:8px">
-                <a href="{{ sim.url }}" target="_blank" class="adm-btn-sm" style="text-decoration:none">📄 Abrir</a>
-                <button onclick="{{ sim.onDelete }}" class="adm-btn-danger">✕</button>
-              </div>
-            </div>
-          </sc-for>
-        </sc-if>
-        <sc-if value="{{ noSimulados }}" hint-placeholder-val="">
-          <div class="adm-empty"><div class="adm-empty-icon">🎯</div><div style="font-weight:700">Nenhum simulado adicionado</div></div>
-        </sc-if>
-      </div>
-    </sc-if>
-
-    <!-- ═══ CARTÓRIO ═══ -->
-    <sc-if value="{{ tabCartorio }}" hint-placeholder-val="">
-      <div>
-        <!-- Config cartório -->
-        <div class="adm-card" style="border-color:#007A3D;box-shadow:5px 5px 0 #007A3D">
-          <div class="adm-card-title" style="color:#007A3D">📜 Configurações — Concurso de Cartórios</div>
-          <div class="adm-grid-2" style="margin-bottom:14px">
-            <div>
-              <div class="adm-label">Data da prova (cartório)</div>
-              <input class="adm-input" value="{{ ctExamDate }}" oninput="{{ onCtExamDate }}" placeholder="YYYY-MM-DD" type="date">
-            </div>
-            <div>
-              <div class="adm-label">Nome do concurso</div>
-              <input class="adm-input" value="{{ ctBrand }}" oninput="{{ onCtBrand }}" placeholder="Ex: Concurso de Cartórios SP 2026">
-            </div>
-          </div>
-          <button onclick="{{ onSaveCartorio }}" class="adm-btn-yellow" style="border-color:#007A3D;box-shadow:4px 4px 0 #007A3D">💾 Salvar configurações do Cartório</button>
-        </div>
-
-        <!-- Alunos cartório -->
-        <div class="adm-card" style="border-color:#007A3D;box-shadow:5px 5px 0 #007A3D">
-          <div class="adm-card-title" style="color:#007A3D">👥 Alunos — Cartório <span class="adm-card-title-badge" style="background:#007A3D">{{ countCartorio }}</span></div>
-          <sc-if value="{{ hasCartorioStudents }}" hint-placeholder-val="{{ true }}">
-            <sc-for list="{{ cartorioStudents }}" as="s">
-              <div class="adm-ct-card">
-                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-                  <div>
-                    <div style="font-size:15px;font-weight:900;color:#007A3D">{{ s.name }}</div>
-                    <div style="font-size:12px;color:#666;margin-top:2px">{{ s.email }}</div>
-                  </div>
-                  <div style="display:flex;gap:6px;flex-wrap:wrap">
+                  <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+                    <button onclick="{{ s.onToggleTipo }}" class="adm-btn-sm" title="Mover para outra plataforma">🔄 Mover plataforma</button>
                     <button onclick="{{ s.onImpersonate }}" class="adm-btn-sm">👁 Ver como aluno</button>
-                    <button onclick="{{ s.onToggleTipo }}" class="adm-btn-sm">🔄 Mover para OAB</button>
+                    <button onclick="{{ s.onReset }}" class="adm-btn-sm">↺ Resetar</button>
                     <button onclick="{{ s.onRemove }}" class="adm-btn-danger">✕</button>
                   </div>
                 </div>
-                <div class="adm-stat-row" style="border-color:#007A3D;margin-top:10px">
-                  <div class="adm-stat-cell" style="border-right-color:#007A3D">
-                    <div class="adm-stat-val" style="color:#007A3D">{{ s.progPct }}%</div>
+                <div class="adm-stat-row" style="{{ platformView === 'cartorio' ? 'border-color:var(--ct-green)' : '' }}">
+                  <div class="adm-stat-cell" style="{{ platformView === 'cartorio' ? 'border-right-color:var(--ct-green)' : '' }}">
+                    <div class="adm-stat-val" style="{{ platformView === 'cartorio' ? 'color:var(--ct-green)' : '' }}">{{ s.progPct }}%</div>
                     <div class="adm-stat-lbl">Plano</div>
                   </div>
-                  <div class="adm-stat-cell" style="border-right-color:#007A3D">
-                    <div class="adm-stat-val" style="color:#007A3D">{{ s.taxa }}%</div>
+                  <div class="adm-stat-cell" style="{{ platformView === 'cartorio' ? 'border-right-color:var(--ct-green)' : '' }}">
+                    <div class="adm-stat-val" style="color:{{ s.taxa >= 70 ? '#007A3D' : s.taxa >= 50 ? '#FF6600' : '#D32F2F' }}">{{ s.taxa }}%</div>
                     <div class="adm-stat-lbl">Acerto</div>
                   </div>
-                  <div class="adm-stat-cell" style="border-right-color:#007A3D">
-                    <div class="adm-stat-val" style="color:#007A3D">{{ s.totalQ }}</div>
+                  <div class="adm-stat-cell" style="{{ platformView === 'cartorio' ? 'border-right-color:var(--ct-green)' : '' }}">
+                    <div class="adm-stat-val">{{ s.totalQ }}</div>
                     <div class="adm-stat-lbl">Questões</div>
                   </div>
-                  <div class="adm-stat-cell" style="border-right-color:#007A3D">
-                    <div class="adm-stat-val" style="color:#007A3D">{{ s.streak }}</div>
+                  <div class="adm-stat-cell" style="{{ platformView === 'cartorio' ? 'border-right-color:var(--ct-green)' : '' }}">
+                    <div class="adm-stat-val" style="color:var(--orange)">{{ s.streak }}</div>
                     <div class="adm-stat-lbl">Sequência</div>
                   </div>
+                  <div class="adm-stat-cell" style="{{ platformView === 'cartorio' ? 'border-right-color:var(--ct-green)' : '' }}">
+                    <div class="adm-stat-val" style="color:var(--cyan)">{{ s.adherence }}%</div>
+                    <div class="adm-stat-lbl">Aderência</div>
+                  </div>
                   <div class="adm-stat-cell">
-                    <div class="adm-stat-val" style="color:#007A3D">{{ s.lastLabel }}</div>
-                    <div class="adm-stat-lbl">Último estudo</div>
+                    <div class="adm-stat-val" style="font-size:14px;color:var(--purple)">{{ s.nota }}/80</div>
+                    <div class="adm-stat-lbl">Nota Est.</div>
                   </div>
                 </div>
               </div>
             </sc-for>
           </sc-if>
-          <sc-if value="{{ noCartorioStudents }}" hint-placeholder-val="">
-            <div class="adm-empty">
-              <div class="adm-empty-icon">📜</div>
-              <div style="font-weight:700">Nenhum aluno no Cartório ainda</div>
-              <div style="font-size:13px;margin-top:6px">Na aba Alunos, clique em "🔄 Mudar plataforma" para mover alunos para Cartório</div>
+        </div>
+      </sc-if>
+
+      <!-- ═══ RELATÓRIOS ═══ -->
+      <sc-if value="{{ tabRelatorios }}" hint-placeholder-val="">
+        <div>
+          <!-- Cards de resumo -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:20px">
+            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
+              <div class="adm-report-num" style="color:var(--blue)">{{ rTotalAlunos }}</div>
+              <div class="adm-report-label">Alunos</div>
+            </div>
+            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
+              <div class="adm-report-num" style="color:var(--green)">{{ rTotalQ }}</div>
+              <div class="adm-report-label">Questões</div>
+            </div>
+            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
+              <div class="adm-report-num" style="color:{{ rAvgTaxa >= 70 ? '#007A3D' : rAvgTaxa >= 50 ? '#FF6600' : '#D32F2F' }}">{{ rAvgTaxa }}%</div>
+              <div class="adm-report-label">Taxa Média</div>
+            </div>
+            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
+              <div class="adm-report-num" style="color:var(--orange)">{{ rAvgStreak }}</div>
+              <div class="adm-report-label">Sequência Média</div>
+            </div>
+            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
+              <div class="adm-report-num" style="color:var(--purple)">{{ rActiveCount }}</div>
+              <div class="adm-report-label">Ativos (7d)</div>
+            </div>
+            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
+              <div class="adm-report-num" style="color:var(--red)">{{ rInactiveCount }}</div>
+              <div class="adm-report-label">Parados (+7d)</div>
+            </div>
+          </div>
+
+          <!-- Ranking por taxa de acerto -->
+          <div class="adm-card">
+            <div class="adm-card-title">🏆 Ranking — Taxa de Acerto</div>
+            <sc-if value="{{ hasPlatformStudents }}" hint-placeholder-val="{{ true }}">
+              <sc-for list="{{ rankingStudents }}" as="s">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:10px 12px;background:{{ s.rank <= 3 ? '#FFF9E6' : '#fafafa' }};border:2px solid {{ s.rank <= 3 ? 'var(--black)' : '#ddd' }};border-radius:10px">
+                  <div style="font-size:18px;font-weight:900;width:28px;text-align:center;color:{{ s.rank === 1 ? '#FFB800' : s.rank === 2 ? '#888' : s.rank === 3 ? '#CD7F32' : '#999' }}">{{ s.rank }}°</div>
+                  <div style="flex:1">
+                    <div style="font-size:13px;font-weight:800">{{ s.name }}</div>
+                    <div style="margin-top:4px">
+                      <div class="adm-stat-bar-bg"><div class="adm-stat-bar-fill" style="width:{{ s.taxa }}%;background:{{ s.taxa >= 70 ? '#007A3D' : s.taxa >= 50 ? '#FF6600' : '#D32F2F' }}"></div></div>
+                    </div>
+                  </div>
+                  <div style="text-align:right;min-width:80px">
+                    <div style="font-size:16px;font-weight:900;color:{{ s.taxa >= 70 ? '#007A3D' : s.taxa >= 50 ? '#FF6600' : '#D32F2F' }}">{{ s.taxa }}%</div>
+                    <div style="font-size:11px;color:#888">{{ s.totalQ }} questões</div>
+                  </div>
+                </div>
+              </sc-for>
+            </sc-if>
+            <sc-if value="{{ noPlatformStudents }}" hint-placeholder-val="">
+              <div class="adm-empty"><div class="adm-empty-icon">📊</div><div style="font-weight:700">Sem dados ainda</div></div>
+            </sc-if>
+          </div>
+
+          <!-- Alunos em risco -->
+          <div class="adm-card" style="border-color:var(--red);box-shadow:5px 5px 0 var(--red)">
+            <div class="adm-card-title" style="color:var(--red)">⚠️ Atenção — Parados há mais de 7 dias</div>
+            <sc-if value="{{ hasInactiveStudents }}" hint-placeholder-val="{{ true }}">
+              <sc-for list="{{ inactiveStudents }}" as="s">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#FFF5F5;border:2px solid #FFB0B0;border-radius:10px;margin-bottom:8px">
+                  <div>
+                    <div style="font-size:13px;font-weight:800">{{ s.name }}</div>
+                    <div style="font-size:11px;color:#888;margin-top:2px">{{ s.email }}</div>
+                  </div>
+                  <div style="background:var(--red);color:#fff;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:800">{{ s.daysSince }}d parado</div>
+                </div>
+              </sc-for>
+            </sc-if>
+            <sc-if value="{{ noInactiveStudents }}" hint-placeholder-val="">
+              <div style="text-align:center;padding:20px;color:#007A3D;font-weight:700">✅ Todos os alunos estão ativos!</div>
+            </sc-if>
+          </div>
+
+          <!-- Detalhe individual -->
+          <div class="adm-card">
+            <div class="adm-card-title">📋 Relatório Individual</div>
+            <sc-for list="{{ platformStudents }}" as="s">
+              <div style="border:2px solid #ddd;border-radius:12px;padding:14px;margin-bottom:12px">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+                  <div>
+                    <div style="font-size:14px;font-weight:900">{{ s.name }}</div>
+                    <div style="font-size:11px;color:#888">{{ s.email }} · {{ s.lastLabel }}</div>
+                  </div>
+                  <span class="adm-badge" style="background:{{ s.statusBg }};color:{{ s.statusColor }};border-color:{{ s.statusColor }}">{{ s.status }}</span>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px">
+                  <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px">
+                    <div style="font-size:20px;font-weight:900;color:var(--blue)">{{ s.progPct }}%</div>
+                    <div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Plano</div>
+                  </div>
+                  <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px">
+                    <div style="font-size:20px;font-weight:900;color:{{ s.taxa >= 70 ? '#007A3D' : s.taxa >= 50 ? '#FF6600' : '#D32F2F' }}">{{ s.taxa }}%</div>
+                    <div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Acerto</div>
+                  </div>
+                  <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px">
+                    <div style="font-size:20px;font-weight:900">{{ s.totalQ }}</div>
+                    <div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Questões</div>
+                  </div>
+                  <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px">
+                    <div style="font-size:20px;font-weight:900;color:var(--orange)">{{ s.streak }}</div>
+                    <div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Sequência</div>
+                  </div>
+                  <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px">
+                    <div style="font-size:20px;font-weight:900;color:var(--cyan)">{{ s.adherence }}%</div>
+                    <div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Aderência</div>
+                  </div>
+                  <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px">
+                    <div style="font-size:20px;font-weight:900;color:var(--purple)">{{ s.nota }}/80</div>
+                    <div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Nota Est.</div>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ noPlatformStudents }}" hint-placeholder-val="">
+              <div class="adm-empty"><div class="adm-empty-icon">📋</div><div style="font-weight:700">Sem alunos nesta plataforma</div></div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ═══ MATERIAIS / CONTEÚDO ═══ -->
+      <sc-if value="{{ tabMateriais }}" hint-placeholder-val="">
+        <div>
+          <div class="adm-card">
+            <div class="adm-card-title">📚 Adicionar Material</div>
+            <div class="adm-grid-2" style="margin-bottom:12px">
+              <div>
+                <div class="adm-label">Matéria / Módulo</div>
+                <input class="adm-input" value="{{ matMateria }}" oninput="{{ onMatMateria }}" placeholder="Ex: Direito Constitucional">
+              </div>
+              <div>
+                <div class="adm-label">Título do material</div>
+                <input class="adm-input" value="{{ matTitulo }}" oninput="{{ onMatTitulo }}" placeholder="Ex: Aula 01 — Teoria da Constituição">
+              </div>
+            </div>
+            <div style="margin-bottom:12px">
+              <div class="adm-label">Link (YouTube, Google Drive, PDF, etc.)</div>
+              <input class="adm-input" value="{{ matUrl }}" oninput="{{ onMatUrl }}" placeholder="https://...">
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <div style="min-width:160px">
+                <div class="adm-label">Tipo</div>
+                <select class="adm-input" oninput="{{ onMatTipo }}">
+                  <option value="video">🎬 Vídeo</option>
+                  <option value="pdf">📄 PDF</option>
+                  <option value="link">🔗 Link</option>
+                  <option value="simulado">🎯 Simulado</option>
+                </select>
+              </div>
+              <button onclick="{{ onSaveMaterial }}" class="{{ platformView === 'cartorio' ? 'adm-btn-green' : 'adm-btn-primary' }}" style="margin-top:18px">+ Adicionar</button>
+            </div>
+          </div>
+
+          <!-- Lista de materiais -->
+          <sc-if value="{{ hasMateriais }}" hint-placeholder-val="{{ true }}">
+            <!-- Agrupado por matéria -->
+            <sc-for list="{{ materiaisGrupos }}" as="g">
+              <div class="adm-card" style="margin-bottom:14px">
+                <div class="adm-card-title">
+                  <span style="background:{{ platformView === 'cartorio' ? 'var(--ct-green)' : 'var(--blue)' }};color:#fff;border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)">{{ g.materia }}</span>
+                </div>
+                <sc-for list="{{ g.items }}" as="m">
+                  <div class="adm-mat-item">
+                    <div style="flex:1">
+                      <div class="adm-mat-item-title">{{ m.tipoIcon }} {{ m.titulo }}</div>
+                      <div class="adm-mat-item-url">{{ m.url }}</div>
+                    </div>
+                    <div style="display:flex;gap:6px">
+                      <a href="{{ m.url }}" target="_blank" class="adm-btn-sm" style="text-decoration:none">↗ Abrir</a>
+                      <button onclick="{{ m.onDelete }}" class="adm-btn-danger">✕</button>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ noMateriais }}" hint-placeholder-val="">
+            <div class="adm-empty"><div class="adm-empty-icon">📚</div><div style="font-weight:700">Nenhum material adicionado ainda</div><div style="font-size:13px;margin-top:6px">Adicione vídeos, PDFs e links de estudo para seus alunos</div></div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ═══ AVISOS ═══ -->
+      <sc-if value="{{ tabAvisos }}" hint-placeholder-val="">
+        <div>
+          <div class="adm-card">
+            <div class="adm-card-title">📢 Novo Aviso</div>
+            <div style="margin-bottom:12px">
+              <div class="adm-label">Título</div>
+              <input class="adm-input" value="{{ avisoTitle }}" oninput="{{ onAvisoTitle }}" placeholder="Ex: Encontro de mentoria amanhã às 19h!">
+            </div>
+            <div style="margin-bottom:14px">
+              <div class="adm-label">Mensagem (opcional)</div>
+              <textarea class="adm-textarea" oninput="{{ onAvisoMsg }}" placeholder="Mais detalhes sobre o aviso..." rows="3">{{ avisoMsg }}</textarea>
+            </div>
+            <button onclick="{{ onSaveAviso }}" class="adm-btn-yellow">📢 Publicar aviso</button>
+          </div>
+
+          <sc-if value="{{ hasAvisos }}" hint-placeholder-val="{{ true }}">
+            <div style="font-size:12px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Publicados ({{ avisoCount }})</div>
+            <sc-for list="{{ avisos }}" as="a">
+              <div class="adm-aviso">
+                <div style="flex:1">
+                  <div style="font-size:14px;font-weight:800;color:var(--blue)">{{ a.title }}</div>
+                  <sc-if value="{{ a.msg }}" hint-placeholder-val="">
+                    <div style="font-size:13px;color:#333;margin-top:4px">{{ a.msg }}</div>
+                  </sc-if>
+                  <div style="font-size:11px;color:#888;margin-top:6px">{{ a.date }}</div>
+                </div>
+                <button onclick="{{ a.onDelete }}" class="adm-btn-danger">✕ Remover</button>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ noAvisos }}" hint-placeholder-val="">
+            <div class="adm-empty"><div class="adm-empty-icon">📭</div><div style="font-weight:700">Nenhum aviso publicado</div></div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ═══ SIMULADOS ═══ -->
+      <sc-if value="{{ tabSimulados }}" hint-placeholder-val="">
+        <div>
+          <div class="adm-card">
+            <div class="adm-card-title">🎯 Adicionar Simulado</div>
+            <div class="adm-grid-2" style="margin-bottom:14px">
+              <div>
+                <div class="adm-label">Nome do simulado</div>
+                <input class="adm-input" value="{{ simName }}" oninput="{{ onSimName }}" placeholder="Ex: Simulado OAB — Set/2026">
+              </div>
+              <div>
+                <div class="adm-label">Tempo máximo — até 5h</div>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <input type="range" min="1" max="5" step="0.5" value="{{ simTimer }}" oninput="{{ onSimTimer }}" style="flex:1;accent-color:var(--blue);height:8px;cursor:pointer">
+                  <div style="background:var(--blue);color:#fff;border:2px solid var(--black);border-radius:8px;padding:6px 14px;font-size:16px;font-weight:900;min-width:58px;text-align:center;box-shadow:2px 2px 0 var(--black)">{{ simTimer }}h</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="adm-upload-zone" onclick="{{ onPickPdf }}">
+              <div style="font-size:28px;margin-bottom:6px">📄</div>
+              <div style="font-size:13px;font-weight:700;color:var(--black)">{{ uploadPdfLabel }}</div>
+              <div style="font-size:11px;color:#666;margin-top:2px">PDF ou vídeo — até 500 MB</div>
+              <button style="margin-top:12px;background:var(--purple);color:#fff;border:3px solid var(--black);border-radius:9px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:3px 3px 0 var(--black);pointer-events:none">{{ uploadPdfBtnLabel }}</button>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+              <div style="flex:1;height:2px;background:var(--black)"></div>
+              <span style="font-size:11px;font-weight:800;color:#666;text-transform:uppercase">ou link externo</span>
+              <div style="flex:1;height:2px;background:var(--black)"></div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <input class="adm-input" value="{{ simUrl }}" oninput="{{ onSimUrl }}" placeholder="https://drive.google.com/..." style="flex:1">
+              <button onclick="{{ onSaveSimulado }}" class="adm-btn-primary">Adicionar</button>
+            </div>
+          </div>
+
+          <sc-if value="{{ hasSimulados }}" hint-placeholder-val="{{ true }}">
+            <div style="font-size:12px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Simulados disponibilizados ({{ simCount }})</div>
+            <sc-for list="{{ simulados }}" as="sim">
+              <div class="adm-sim">
+                <div>
+                  <div style="font-size:14px;font-weight:800;color:var(--black)">{{ sim.name }}</div>
+                  <div style="margin-top:4px;display:flex;gap:8px;align-items:center">
+                    <span style="background:var(--purple);color:#fff;border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)">⏱ {{ sim.timerLabel }}</span>
+                    <span style="font-size:11px;color:#666">{{ sim.date }}</span>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <a href="{{ sim.url }}" target="_blank" class="adm-btn-sm" style="text-decoration:none">📄 Abrir</a>
+                  <button onclick="{{ sim.onDelete }}" class="adm-btn-danger">✕</button>
+                </div>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ noSimulados }}" hint-placeholder-val="">
+            <div class="adm-empty"><div class="adm-empty-icon">🎯</div><div style="font-weight:700">Nenhum simulado adicionado</div></div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ═══ BOAS-VINDAS ═══ -->
+      <sc-if value="{{ tabVideo }}" hint-placeholder-val="">
+        <div>
+          <div class="adm-card">
+            <div class="adm-card-title">🎬 Vídeo de Boas-vindas</div>
+            <div style="font-size:13px;color:#555;margin-bottom:16px">Aparece na tela inicial do aluno. Faça upload ou cole um link do YouTube/Vimeo.</div>
+            <div class="adm-upload-zone" onclick="{{ onPickVideo }}">
+              <div style="font-size:28px;margin-bottom:6px">🎬</div>
+              <div style="font-size:13px;font-weight:700">{{ uploadVideoLabel }}</div>
+              <div style="font-size:11px;color:#666;margin-top:2px">MP4, WebM, MOV — até 500 MB</div>
+              <button style="margin-top:12px;background:var(--blue);color:#fff;border:3px solid var(--black);border-radius:9px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:3px 3px 0 var(--black);pointer-events:none">{{ uploadVideoBtnLabel }}</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+              <div style="flex:1;height:2px;background:var(--black)"></div>
+              <span style="font-size:11px;font-weight:800;color:#666;text-transform:uppercase">ou cole um link</span>
+              <div style="flex:1;height:2px;background:var(--black)"></div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <input class="adm-input" value="{{ videoUrl }}" oninput="{{ onVideoUrl }}" placeholder="https://youtube.com/watch?v=..." style="flex:1">
+              <button onclick="{{ onSaveVideoUrl }}" class="adm-btn-primary">Salvar</button>
+            </div>
+          </div>
+          <sc-if value="{{ currentVideoUrl }}" hint-placeholder-val="">
+            <div class="adm-card" style="border-color:var(--green);box-shadow:4px 4px 0 var(--green)">
+              <div style="font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;margin-bottom:6px">✅ Vídeo atual</div>
+              <div style="font-size:12px;color:var(--cyan);word-break:break-all">{{ currentVideoUrl }}</div>
+              <button onclick="{{ onRemoveVideo }}" style="margin-top:10px;background:transparent;border:none;font-size:12px;color:var(--red);cursor:pointer;font-weight:700">✕ Remover vídeo</button>
             </div>
           </sc-if>
         </div>
-      </div>
-    </sc-if>
+      </sc-if>
 
-    <!-- ═══ BOAS-VINDAS ═══ -->
-    <sc-if value="{{ tabVideo }}" hint-placeholder-val="">
-      <div>
-        <div class="adm-card">
-          <div class="adm-card-title">🎬 Vídeo de Boas-vindas</div>
-          <div style="font-size:13px;color:#555;margin-bottom:16px">Aparece na tela inicial do aluno. Faça upload ou cole um link do YouTube/Vimeo.</div>
-          <div class="adm-upload-zone" onclick="{{ onPickVideo }}">
-            <div style="font-size:28px;margin-bottom:6px">🎬</div>
-            <div style="font-size:13px;font-weight:700">{{ uploadVideoLabel }}</div>
-            <div style="font-size:11px;color:#666;margin-top:2px">MP4, WebM, MOV — até 500 MB</div>
-            <button style="margin-top:12px;background:var(--blue);color:#fff;border:3px solid var(--black);border-radius:9px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:3px 3px 0 var(--black);pointer-events:none">{{ uploadVideoBtnLabel }}</button>
+      <!-- ═══ CONFIGURAÇÕES ═══ -->
+      <sc-if value="{{ tabConfig }}" hint-placeholder-val="">
+        <div>
+          <div class="adm-card" style="{{ platformView === 'cartorio' ? 'border-color:var(--ct-green);box-shadow:5px 5px 0 var(--ct-green)' : '' }}">
+            <div class="adm-card-title" style="{{ platformView === 'cartorio' ? 'color:var(--ct-green)' : '' }}">{{ platformView === 'cartorio' ? '📜 Plataforma Cartório' : '⚙️ Plataforma OAB' }}</div>
+            <div class="adm-grid-2">
+              <div>
+                <div class="adm-label">Nome da mentoria</div>
+                <input class="adm-input" value="{{ cfgBrand }}" oninput="{{ onCfgBrand }}" placeholder="Ex: Mentoria Prof. Líbero">
+              </div>
+              <div>
+                <div class="adm-label">{{ platformView === 'cartorio' ? 'Data da prova (Cartório)' : 'Data da prova OAB' }}</div>
+                <input class="adm-input" value="{{ cfgExam }}" oninput="{{ onCfgExam }}" placeholder="YYYY-MM-DD" type="date">
+              </div>
+              <sc-if value="{{ platformView !== 'cartorio' }}" hint-placeholder-val="">
+                <div>
+                  <div class="adm-label">Meta de questões/dia</div>
+                  <input class="adm-input" value="{{ cfgGoal }}" oninput="{{ onCfgGoal }}" type="number" min="10" max="60" placeholder="27">
+                </div>
+              </sc-if>
+              <sc-if value="{{ platformView === 'cartorio' }}" hint-placeholder-val="">
+                <div>
+                  <div class="adm-label">Nome do concurso</div>
+                  <input class="adm-input" value="{{ cfgCtBrand }}" oninput="{{ onCfgCtBrand }}" placeholder="Ex: Concurso de Cartórios SP 2026">
+                </div>
+              </sc-if>
+            </div>
           </div>
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-            <div style="flex:1;height:2px;background:var(--black)"></div>
-            <span style="font-size:11px;font-weight:800;color:#666;text-transform:uppercase">ou cole um link</span>
-            <div style="flex:1;height:2px;background:var(--black)"></div>
+          <div class="adm-card">
+            <div class="adm-card-title">🔐 Acesso Admin</div>
+            <div class="adm-grid-2">
+              <div>
+                <div class="adm-label">E-mail admin</div>
+                <input class="adm-input" value="{{ cfgAdminEmail }}" oninput="{{ onCfgAdminEmail }}" type="email">
+              </div>
+              <div>
+                <div class="adm-label">Senha admin (login local)</div>
+                <input class="adm-input" value="{{ cfgAdminPass }}" oninput="{{ onCfgAdminPass }}" type="text">
+              </div>
+            </div>
           </div>
-          <div style="display:flex;gap:8px">
-            <input class="adm-input" value="{{ videoUrl }}" oninput="{{ onVideoUrl }}" placeholder="https://youtube.com/watch?v=..." style="flex:1">
-            <button onclick="{{ onSaveVideoUrl }}" class="adm-btn-primary">Salvar</button>
-          </div>
+          <button onclick="{{ onSaveConfig }}" class="{{ platformView === 'cartorio' ? 'adm-btn-green' : 'adm-btn-primary' }}">💾 Salvar Configurações</button>
         </div>
-        <sc-if value="{{ currentVideoUrl }}" hint-placeholder-val="">
-          <div class="adm-card" style="border-color:var(--green);box-shadow:4px 4px 0 var(--green)">
-            <div style="font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;margin-bottom:6px">✅ Vídeo atual</div>
-            <div style="font-size:12px;color:var(--cyan);word-break:break-all">{{ currentVideoUrl }}</div>
-            <button onclick="{{ onRemoveVideo }}" style="margin-top:10px;background:transparent;border:none;font-size:12px;color:var(--red);cursor:pointer;font-weight:700">✕ Remover vídeo</button>
-          </div>
-        </sc-if>
-      </div>
-    </sc-if>
+      </sc-if>
 
-    <!-- ═══ CONFIGURAÇÕES ═══ -->
-    <sc-if value="{{ tabConfig }}" hint-placeholder-val="">
-      <div>
-        <div class="adm-card">
-          <div class="adm-card-title">⚙️ Plataforma OAB</div>
-          <div class="adm-grid-2">
-            <div>
-              <div class="adm-label">Nome da mentoria</div>
-              <input class="adm-input" value="{{ cfgBrand }}" oninput="{{ onCfgBrand }}" placeholder="Ex: Mentoria Prof. Líbero">
-            </div>
-            <div>
-              <div class="adm-label">Data da prova OAB (YYYY-MM-DD)</div>
-              <input class="adm-input" value="{{ cfgExam }}" oninput="{{ onCfgExam }}" placeholder="2026-09-06" type="date">
-            </div>
-            <div>
-              <div class="adm-label">Meta de questões/dia</div>
-              <input class="adm-input" value="{{ cfgGoal }}" oninput="{{ onCfgGoal }}" type="number" min="10" max="60" placeholder="27">
-            </div>
-          </div>
-        </div>
-        <div class="adm-card">
-          <div class="adm-card-title">🔐 Acesso Admin</div>
-          <div class="adm-grid-2">
-            <div>
-              <div class="adm-label">E-mail admin</div>
-              <input class="adm-input" value="{{ cfgAdminEmail }}" oninput="{{ onCfgAdminEmail }}" type="email">
-            </div>
-            <div>
-              <div class="adm-label">Senha admin (login local)</div>
-              <input class="adm-input" value="{{ cfgAdminPass }}" oninput="{{ onCfgAdminPass }}" type="text">
-            </div>
-          </div>
-        </div>
-        <button onclick="{{ onSaveConfig }}" class="adm-btn-primary">💾 Salvar Configurações</button>
-      </div>
-    </sc-if>
+    </div>
+  </sc-if>
 
-  </div>
 </div>
 </x-dc>
 <script data-dc-script>
@@ -443,18 +631,19 @@ class Component extends DCLogic {
     super(props);
     var settings = (props.data && props.data.settings) || {};
     this.state = {
+      platformView: null, // null=home, 'oab', 'cartorio'
       tab: 'alunos',
-      newName: '', newEmail: '', newTipo: 'oab', addMsg: '', _wasAdding: false,
+      newName: '', newEmail: '', addMsg: '', _wasAdding: false,
       avisoTitle: '', avisoMsg: '',
       videoUrl: settings.welcomeVideoUrl || '',
       uploadingVideo: false,
       simName: '', simUrl: '', simTimer: 5,
       uploadingPdf: false,
-      ctExamDate: settings.ctExamDate || '',
-      ctBrand: settings.ctBrand || '',
+      matMateria: '', matTitulo: '', matUrl: '', matTipo: 'video',
       cfgBrand: settings.brandName || '',
       cfgExam: settings.examDate || '',
       cfgGoal: String(settings.qPerDay || 27),
+      cfgCtBrand: settings.ctBrand || '',
       cfgAdminEmail: settings.adminEmail || '',
       cfgAdminPass: settings.adminPass || '',
       msg: '', msgType: 'ok'
@@ -505,33 +694,20 @@ class Component extends DCLogic {
       setTimeout(function(){ self.setState({_wasAdding:true}); }, 0);
     }
 
-    var tabDefs = [
-      {id:'alunos',    icon:'👥', label:'Alunos'},
-      {id:'cartorio',  icon:'📜', label:'Cartório'},
-      {id:'avisos',    icon:'📢', label:'Avisos'},
-      {id:'simulados', icon:'🎯', label:'Simulados'},
-      {id:'boas-vindas',icon:'🎬',label:'Boas-vindas'},
-      {id:'config',    icon:'⚙️', label:'Config'},
-    ];
-    var tabsHtml = tabDefs.map(function(t) {
-      var active = st.tab === t.id;
-      return '<button onclick="this.closest(\'x-dc\').__dc.setState({tab:\'' + t.id + '\',msg:\'\'})" class="adm-tab' + (active ? ' active' : '') + '">' + t.icon + ' ' + t.label + '</button>';
-    }).join('');
-
+    // ── All students ──
     var allStudents = (d.list || []).map(function(s) {
       var statusBg = '#D4F7E0'; var statusColor = '#007A3D';
       if (s.status === 'Atrasado' || s.status === 'Parou') { statusBg = '#FFE0E0'; statusColor = '#D32F2F'; }
       else if (s.status === 'Atencao') { statusBg = '#FFF3CC'; statusColor = '#FF6600'; }
-      var isCartorio = s.tipo === 'cartorio';
       return {
         name: s.name || 'Aluno', email: s.email || '',
         progPct: s.progPct || 0, taxa: s.taxa || 0,
         totalQ: s.totalQ || 0, streak: s.streak || 0,
         adherence: s.adherence || 0, nota: s.nota || 0,
+        daysSince: s.daysSince || 999,
         status: s.status || 'Em dia', statusColor: statusColor, statusBg: statusBg,
         lastLabel: s.last ? (s.daysSince + 'd atrás') : 'Nunca',
-        tipoLabel: isCartorio ? '📜 Cartório' : '⚡ OAB',
-        tipoClass: isCartorio ? 'adm-student-tipo-ct' : 'adm-student-tipo-oab',
+        tipo: s.tipo || 'oab',
         onRemove: (function(sid, sname){ return function(){
           if (confirm('Remover ' + sname + '?')) { d.onRemoveStudent && d.onRemoveStudent(sid); }
         }; })(s.id, s.name),
@@ -541,17 +717,60 @@ class Component extends DCLogic {
         onImpersonate: (function(sid){ return function(){ d.onImpersonate && d.onImpersonate(sid); }; })(s.id),
         onToggleTipo: (function(sid, curTipo){ return function(){
           var novo = curTipo === 'cartorio' ? 'oab' : 'cartorio';
-          if (confirm('Mover ' + (curTipo === 'cartorio' ? 'para OAB' : 'para Cartório') + '?')) {
-            d.onSetTipo && d.onSetTipo(sid, novo);
-          }
+          var label = curTipo === 'cartorio' ? 'para OAB' : 'para Cartório';
+          if (confirm('Mover ' + label + '?')) { d.onSetTipo && d.onSetTipo(sid, novo); }
         }; })(s.id, s.tipo || 'oab')
       };
     });
 
-    var countOAB = allStudents.filter(function(s){ return s.tipoLabel.indexOf('OAB') > -1; }).length;
-    var countCartorio = allStudents.filter(function(s){ return s.tipoLabel.indexOf('Cartório') > -1; }).length;
-    var cartorioStudents = allStudents.filter(function(s){ return s.tipoLabel.indexOf('Cartório') > -1; });
+    var countOAB = allStudents.filter(function(s){ return s.tipo !== 'cartorio'; }).length;
+    var countCartorio = allStudents.filter(function(s){ return s.tipo === 'cartorio'; }).length;
 
+    // ── Platform-filtered students ──
+    var pv = st.platformView;
+    var platformStudents = pv === 'cartorio'
+      ? allStudents.filter(function(s){ return s.tipo === 'cartorio'; })
+      : allStudents.filter(function(s){ return s.tipo !== 'cartorio'; });
+
+    // Sort by taxa desc for ranking
+    var rankingStudents = platformStudents.slice().sort(function(a,b){ return b.taxa - a.taxa; }).map(function(s,i){ return Object.assign({rank:i+1},s); });
+
+    var inactiveStudents = platformStudents.filter(function(s){ return s.daysSince >= 7; });
+
+    // ── Totals for home ──
+    var totalQ = allStudents.reduce(function(a,s){ return a + s.totalQ; }, 0);
+    var avgTaxa = allStudents.length ? Math.round(allStudents.reduce(function(a,s){ return a + s.taxa; },0) / allStudents.length) : 0;
+    var activeStudents = allStudents.filter(function(s){ return s.daysSince < 7; }).length;
+
+    // ── Reports ──
+    var rTotalQ = platformStudents.reduce(function(a,s){ return a + s.totalQ; },0);
+    var rAvgTaxa = platformStudents.length ? Math.round(platformStudents.reduce(function(a,s){ return a + s.taxa; },0) / platformStudents.length) : 0;
+    var rAvgStreak = platformStudents.length ? Math.round(platformStudents.reduce(function(a,s){ return a + s.streak; },0) / platformStudents.length) : 0;
+    var rActiveCount = platformStudents.filter(function(s){ return s.daysSince < 7; }).length;
+    var rInactiveCount = inactiveStudents.length;
+
+    // ── Materials ──
+    var matKey = pv === 'cartorio' ? 'materiaisCartorio' : 'materiais';
+    var rawMateriais = settings[matKey] || [];
+    var tipoIcons = {video:'🎬', pdf:'📄', link:'🔗', simulado:'🎯'};
+    var materiais = rawMateriais.map(function(m, i) {
+      return {
+        materia: m.materia || '—', titulo: m.titulo || '—',
+        url: m.url || '', tipoIcon: tipoIcons[m.tipo] || '🔗',
+        onDelete: (function(idx){ return function(){
+          var list = rawMateriais.filter(function(_,j){ return j !== idx; });
+          var patch = {}; patch[matKey] = list;
+          d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, patch));
+          self.setState({msg:'Material removido.', msgType:'ok'});
+        }; })(i)
+      };
+    });
+    // Group by materia
+    var gruposMap = {};
+    materiais.forEach(function(m){ if(!gruposMap[m.materia]) gruposMap[m.materia] = []; gruposMap[m.materia].push(m); });
+    var materiaisGrupos = Object.keys(gruposMap).map(function(k){ return {materia:k, items:gruposMap[k]}; });
+
+    // ── Avisos ──
     var avisos = (settings.avisos || []).map(function(a, i) {
       return {
         title: a.title, msg: a.msg || '', date: a.date || '',
@@ -563,6 +782,7 @@ class Component extends DCLogic {
       };
     });
 
+    // ── Simulados ──
     var simulados = (settings.simulados || []).map(function(s, i) {
       return {
         name: s.name, url: s.url, date: s.date || '',
@@ -575,45 +795,113 @@ class Component extends DCLogic {
       };
     });
 
+    // ── Tabs ──
+    var tabDefsOAB = [
+      {id:'alunos', icon:'👥', label:'Alunos'},
+      {id:'relatorios', icon:'📊', label:'Relatórios'},
+      {id:'materiais', icon:'📚', label:'Materiais'},
+      {id:'simulados', icon:'🎯', label:'Simulados'},
+      {id:'avisos', icon:'📢', label:'Avisos'},
+      {id:'boas-vindas', icon:'🎬', label:'Boas-vindas'},
+      {id:'config', icon:'⚙️', label:'Config'},
+    ];
+    var tabDefsCT = [
+      {id:'alunos', icon:'👥', label:'Alunos'},
+      {id:'relatorios', icon:'📊', label:'Relatórios'},
+      {id:'materiais', icon:'📚', label:'Materiais'},
+      {id:'avisos', icon:'📢', label:'Avisos'},
+      {id:'config', icon:'⚙️', label:'Config'},
+    ];
+    var tabDefs = pv === 'cartorio' ? tabDefsCT : tabDefsOAB;
+    var activeClass = pv === 'cartorio' ? 'active-ct' : 'active';
+    var tabsHtml = tabDefs.map(function(t) {
+      var active = st.tab === t.id;
+      return '<button onclick="this.closest(\'x-dc\').__dc.setState({tab:\'' + t.id + '\',msg:\'\'})" class="adm-tab' + (active ? ' ' + activeClass : '') + '">' + t.icon + ' ' + t.label + '</button>';
+    }).join('');
+
     return {
-      brandName: d.brandName || 'OAB',
+      brandName: d.brandName || 'Admin',
+      headerTitle: pv === 'oab' ? '⚡ OAB — Admin' : pv === 'cartorio' ? '📜 Cartório — Admin' : (d.brandName || 'Mentoria') + ' — Admin',
+      headerSub: pv === 'oab' ? 'Plataforma OAB' : pv === 'cartorio' ? 'Plataforma Cartório' : 'Painel de Controle',
+      showBackBtn: !!pv,
+      onBackToHome: function(){ self.setState({platformView:null, tab:'alunos', msg:''}); },
+      onSelectOAB: function(){ self.setState({platformView:'oab', tab:'alunos', msg:''}); },
+      onSelectCartorio: function(){ self.setState({platformView:'cartorio', tab:'alunos', msg:''}); },
+      platformView: pv || '',
+
       onLogout: d.onLogout || function(){},
       onRefresh: d.onRefresh || function(){},
       refreshing: !!d.refreshing,
+
+      screenHome: !pv,
+      screenPlatform: !!pv,
+
+      // Home stats
+      countOAB: countOAB, countCartorio: countCartorio,
+      totalStudents: allStudents.length,
+      totalQ: totalQ, avgTaxa: avgTaxa, activeStudents: activeStudents,
+
       tabsHtml: tabsHtml,
-      msg: st.msg,
-      msgClass: st.msgType === 'ok' ? 'ok' : 'err',
+      msg: st.msg, msgClass: st.msgType === 'ok' ? 'ok' : 'err',
 
       tabAlunos: st.tab === 'alunos',
+      tabRelatorios: st.tab === 'relatorios',
+      tabMateriais: st.tab === 'materiais',
       tabAvisos: st.tab === 'avisos',
       tabVideo: st.tab === 'boas-vindas',
       tabSimulados: st.tab === 'simulados',
       tabConfig: st.tab === 'config',
-      tabCartorio: st.tab === 'cartorio',
 
-      students: allStudents,
-      studentCount: allStudents.length,
-      hasStudents: allStudents.length > 0,
-      noStudents: allStudents.length === 0,
-      countOAB: countOAB,
-      countCartorio: countCartorio,
-      cartorioStudents: cartorioStudents,
-      hasCartorioStudents: cartorioStudents.length > 0,
-      noCartorioStudents: cartorioStudents.length === 0,
+      // Students
+      platformStudents: platformStudents,
+      platformStudentCount: platformStudents.length,
+      hasPlatformStudents: platformStudents.length > 0,
+      noPlatformStudents: platformStudents.length === 0,
+      rankingStudents: rankingStudents,
+      inactiveStudents: inactiveStudents,
+      hasInactiveStudents: inactiveStudents.length > 0,
+      noInactiveStudents: inactiveStudents.length === 0,
 
+      // Reports
+      rTotalAlunos: platformStudents.length,
+      rTotalQ: rTotalQ, rAvgTaxa: rAvgTaxa, rAvgStreak: rAvgStreak,
+      rActiveCount: rActiveCount, rInactiveCount: rInactiveCount,
+
+      // Add student
       newName: st.newName, newEmail: st.newEmail,
       addMsg: d.addingStudent ? 'Criando conta...' : st.addMsg,
       onNewName: function(e){ self.setState({newName: e.target.value}); },
       onNewEmail: function(e){ self.setState({newEmail: e.target.value}); },
-      onNewTipo: function(e){ self.setState({newTipo: e.target.value}); },
       addingStudent: !!d.addingStudent,
       onAddStudent: function(){
         if (!st.newName.trim() || !st.newEmail.trim()) { self.setState({addMsg:'Preencha nome e e-mail.'}); return; }
         self.setState({addMsg:'Criando conta...'});
-        d.onAddStudent && d.onAddStudent(st.newName.trim(), st.newEmail.trim(), st.newTipo || 'oab');
+        d.onAddStudent && d.onAddStudent(st.newName.trim(), st.newEmail.trim(), pv === 'cartorio' ? 'cartorio' : 'oab');
         self.setState({newName:'', newEmail:''});
       },
 
+      // Materials
+      materiais: materiais, materiaisGrupos: materiaisGrupos,
+      hasMateriais: materiais.length > 0, noMateriais: materiais.length === 0,
+      matMateria: st.matMateria, matTitulo: st.matTitulo, matUrl: st.matUrl,
+      onMatMateria: function(e){ self.setState({matMateria: e.target.value}); },
+      onMatTitulo: function(e){ self.setState({matTitulo: e.target.value}); },
+      onMatUrl: function(e){ self.setState({matUrl: e.target.value}); },
+      onMatTipo: function(e){ self.setState({matTipo: e.target.value}); },
+      onSaveMaterial: function(){
+        if (!st.matTitulo.trim() || !st.matUrl.trim()) { self.setState({msg:'Preencha título e URL.', msgType:'err'}); return; }
+        var mk2 = pv === 'cartorio' ? 'materiaisCartorio' : 'materiais';
+        var list = [{
+          id: Date.now(), materia: st.matMateria.trim() || 'Geral',
+          titulo: st.matTitulo.trim(), url: st.matUrl.trim(), tipo: st.matTipo,
+          date: new Date().toLocaleDateString('pt-BR')
+        }].concat(settings[mk2] || []);
+        var patch = {}; patch[mk2] = list;
+        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, patch));
+        self.setState({matTitulo:'', matUrl:'', msg:'Material adicionado!', msgType:'ok'});
+      },
+
+      // Avisos
       avisos: avisos, avisoCount: avisos.length,
       hasAvisos: avisos.length > 0, noAvisos: avisos.length === 0,
       avisoTitle: st.avisoTitle, avisoMsg: st.avisoMsg,
@@ -626,6 +914,7 @@ class Component extends DCLogic {
         self.setState({avisoTitle:'', avisoMsg:'', msg:'Aviso publicado!', msgType:'ok'});
       },
 
+      // Video
       currentVideoUrl: settings.welcomeVideoUrl || '',
       videoUrl: st.videoUrl,
       onVideoUrl: function(e){ self.setState({videoUrl: e.target.value}); },
@@ -651,6 +940,7 @@ class Component extends DCLogic {
         });
       },
 
+      // Simulados
       simulados: simulados, simCount: simulados.length,
       hasSimulados: simulados.length > 0, noSimulados: simulados.length === 0,
       simName: st.simName, simUrl: st.simUrl, simTimer: st.simTimer,
@@ -678,29 +968,21 @@ class Component extends DCLogic {
         });
       },
 
-      ctExamDate: st.ctExamDate, ctBrand: st.ctBrand,
-      onCtExamDate: function(e){ self.setState({ctExamDate: e.target.value}); },
-      onCtBrand: function(e){ self.setState({ctBrand: e.target.value}); },
-      onSaveCartorio: function(){
-        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {
-          ctExamDate: st.ctExamDate, ctBrand: st.ctBrand
-        }));
-        self.setState({msg:'Configurações do Cartório salvas!', msgType:'ok'});
-      },
-
+      // Config
       cfgBrand: st.cfgBrand, cfgExam: st.cfgExam, cfgGoal: st.cfgGoal,
+      cfgCtBrand: st.cfgCtBrand,
       cfgAdminEmail: st.cfgAdminEmail, cfgAdminPass: st.cfgAdminPass,
       onCfgBrand: function(e){ self.setState({cfgBrand: e.target.value}); },
       onCfgExam: function(e){ self.setState({cfgExam: e.target.value}); },
       onCfgGoal: function(e){ self.setState({cfgGoal: e.target.value}); },
+      onCfgCtBrand: function(e){ self.setState({cfgCtBrand: e.target.value}); },
       onCfgAdminEmail: function(e){ self.setState({cfgAdminEmail: e.target.value}); },
       onCfgAdminPass: function(e){ self.setState({cfgAdminPass: e.target.value}); },
       onSaveConfig: function(){
-        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {
-          brandName: st.cfgBrand, examDate: st.cfgExam,
-          qPerDay: parseInt(st.cfgGoal) || 27,
-          adminEmail: st.cfgAdminEmail, adminPass: st.cfgAdminPass
-        }));
+        var patch = pv === 'cartorio'
+          ? { brandName: st.cfgBrand, ctExamDate: st.cfgExam, ctBrand: st.cfgCtBrand, adminEmail: st.cfgAdminEmail, adminPass: st.cfgAdminPass }
+          : { brandName: st.cfgBrand, examDate: st.cfgExam, qPerDay: parseInt(st.cfgGoal)||27, adminEmail: st.cfgAdminEmail, adminPass: st.cfgAdminPass };
+        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, patch));
         self.setState({msg:'Configurações salvas!', msgType:'ok'});
       }
     };
