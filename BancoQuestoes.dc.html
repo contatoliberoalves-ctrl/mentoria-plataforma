@@ -1,30 +1,30 @@
 <x-dc>
-<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:20px 16px;max-width:960px;margin:0 auto">
+<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:20px 16px;max-width:960px;margin:0 auto;color:#e0e6ff">
 
-  <div style="font-size:18px;font-weight:800;color:#16203a;margin-bottom:4px">Banco de Questoes OAB</div>
-  <div style="font-size:12px;color:#94a3b8;margin-bottom:20px">Acesse questoes por materia e assunto — direto no QConcursos (banca FGV)</div>
+  <div style="font-size:18px;font-weight:900;color:#ffe000;text-shadow:0 0 14px #ffe00077;text-transform:uppercase;margin-bottom:4px">Banco de Questoes OAB</div>
+  <div style="font-size:12px;color:#00e5ff;margin-bottom:20px">Acesse questoes por materia e assunto — direto no QConcursos (banca FGV). Se a busca não achar, edite o termo e tente novamente.</div>
 
   <sc-for list="{{ materias }}" as="mat">
-    <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;margin-bottom:12px;overflow:hidden">
+    <div style="background:#0d0d2b;border:1.5px solid #ffe00022;border-radius:14px;margin-bottom:12px;overflow:hidden">
       <button onclick="{{ mat.onToggle }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:none;background:transparent;cursor:pointer;text-align:left">
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <div style="width:10px;height:10px;border-radius:3px;flex-shrink:0;background:{{ mat.color }}"></div>
-          <span style="font-size:14px;font-weight:700;color:#16203a">{{ mat.jwName }}</span>
-          <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;background:#f0f4ff;color:#2551c3">{{ mat.temasCount }} assuntos</span>
+          <span style="font-size:14px;font-weight:700;color:#e0e6ff">{{ mat.jwName }}</span>
+          <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;background:#0d0d2b;color:#00e5ff;border:1px solid #00e5ff44">{{ mat.temasCount }} assuntos</span>
           <sc-if value="{{ mat.pctLabel }}" hint-placeholder-val="">
             <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:{{ mat.pctBg }};color:{{ mat.pctColor }}">{{ mat.pctLabel }}% acerto</span>
           </sc-if>
         </div>
-        <span style="font-size:14px;color:#94a3b8;flex-shrink:0">{{ mat.arrow }}</span>
+        <span style="font-size:14px;color:#ffe000;flex-shrink:0">{{ mat.arrow }}</span>
       </button>
       <sc-if value="{{ mat.open }}" hint-placeholder-val="">
-        <div style="border-top:1px solid #f1f5f9;padding:12px 16px 16px">
-          <a href="{{ mat.jwUrl }}" target="_blank" style="display:inline-block;margin-bottom:12px;font-size:12px;font-weight:700;color:#fff;background:#2551c3;border-radius:8px;padding:7px 14px;text-decoration:none">Ver todas as questoes de {{ mat.mat }} →</a>
+        <div style="border-top:1px solid #ffe00022;padding:12px 16px 16px;background:#0d0d2b">
+          <a href="{{ mat.jwUrl }}" target="_blank" style="display:inline-block;margin-bottom:12px;font-size:12px;font-weight:700;color:#050510;background:linear-gradient(135deg,#ffe000,#ff0080);border-radius:8px;padding:7px 14px;text-decoration:none">Ver todas as questoes de {{ mat.mat }} →</a>
           <div style="display:flex;flex-direction:column;gap:6px">
             <sc-for list="{{ mat.temas }}" as="t">
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:#f8fafc;border-radius:9px;gap:8px">
-                <span style="font-size:12px;color:#16203a;font-weight:500;flex:1">{{ t.tema }}</span>
-                <a href="{{ t.url }}" target="_blank" style="font-size:11px;font-weight:700;color:#2551c3;text-decoration:none;background:#e8f0fd;border-radius:6px;padding:4px 10px;white-space:nowrap;flex-shrink:0">{{ t.q }} questoes →</a>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:#13132e;border-radius:9px;flex-wrap:wrap">
+                <input type="text" value="{{ t.busca }}" oninput="{{ t.onBusca }}" style="flex:1;min-width:160px;font-size:12px;color:#e0e6ff;font-weight:500;border:1.5px solid #ffe00044;border-radius:7px;padding:5px 9px;background:#0d0d2b;outline:none" placeholder="Termo de busca...">
+                <a href="{{ t.url }}" target="_blank" style="font-size:11px;font-weight:700;color:#050510;text-decoration:none;background:linear-gradient(135deg,#ffe000,#ff0080);border-radius:6px;padding:5px 12px;white-space:nowrap;flex-shrink:0">{{ t.q }} questoes →</a>
               </div>
             </sc-for>
           </div>
@@ -39,12 +39,14 @@
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { open: {} };
+    this.state = { open: {}, buscas: {} };
   }
   renderVals() {
     var d = this.props.data || {};
     var self = this;
     var st = this.state;
+    var jwBase = d.jwBase || 'https://www.qconcursos.com/questoes-da-oab';
+
     var materias = (d.materias || []).map(function(mat) {
       var isOpen = !!st.open[mat.mat];
       var pctLabel = mat.pct != null ? mat.pct : null;
@@ -64,7 +66,23 @@ class Component extends DCLogic {
           o[key] = !o[key];
           self.setState({ open: o });
         }; })(mat.mat),
-        temas: (mat.temas || [])
+        temas: (mat.temas || []).map(function(t, i) {
+          var key = mat.mat + '__' + i;
+          // busca customizada ou nome original do tema
+          var busca = st.buscas[key] !== undefined ? st.buscas[key] : t.tema;
+          var url = mat.jwUrl + '/questoes?q=' + encodeURIComponent(busca);
+          return {
+            tema: t.tema,
+            busca: busca,
+            q: t.q || '?',
+            url: url,
+            onBusca: (function(k) { return function(e) {
+              var b = Object.assign({}, self.state.buscas);
+              b[k] = e.target.value;
+              self.setState({ buscas: b });
+            }; })(key)
+          };
+        })
       };
     });
     return { materias: materias };

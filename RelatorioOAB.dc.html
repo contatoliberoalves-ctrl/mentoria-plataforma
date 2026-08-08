@@ -1,53 +1,53 @@
 <x-dc>
-<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:20px 16px;max-width:960px;margin:0 auto">
+<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#e0e6ff;padding:20px 16px;max-width:960px;margin:0 auto">
 
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
     <div>
-      <div style="font-size:18px;font-weight:800;color:#16203a">Relatorio de Desempenho</div>
-      <div style="font-size:12px;color:#94a3b8;margin-top:2px">{{ studentName }}</div>
+      <div style="font-size:18px;font-weight:900;color:#ffe000;text-shadow:0 0 14px #ffe00077;text-transform:uppercase">Relatorio de Desempenho</div>
+      <div style="font-size:12px;color:#9b59ff;margin-top:2px">{{ studentName }}</div>
     </div>
-    <button onclick="{{ onExport }}" style="background:#2551c3;color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer">Imprimir PDF</button>
+    <button onclick="{{ onExport }}" style="background:linear-gradient(135deg,#ffe000,#ff0080);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer">Imprimir PDF</button>
   </div>
 
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:20px">
     <sc-for list="{{ cards }}" as="card">
-      <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:14px 16px;text-align:center">
+      <div style="background:#0d0d2b;border:1.5px solid #ffe00022;border-radius:14px;padding:14px 16px;text-align:center">
         <div style="font-size:22px;font-weight:800;color:{{ card.color }}">{{ card.value }}</div>
-        <div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-top:2px">{{ card.label }}</div>
+        <div style="font-size:10px;font-weight:700;color:#9b59ff;text-transform:uppercase;margin-top:2px">{{ card.label }}</div>
       </div>
     </sc-for>
   </div>
 
   <sc-if value="{{ hasEvo }}" hint-placeholder-val="{{ true }}">
-    <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-      <div style="font-size:13px;font-weight:700;color:#16203a;margin-bottom:14px">Evolucao semanal — % de acerto</div>
+    <div style="background:#0d0d2b;border:1.5px solid #ffe00022;border-radius:14px;padding:18px 20px;margin-bottom:16px">
+      <div style="font-size:13px;font-weight:700;color:#ffe000;margin-bottom:14px">Evolucao semanal — % de acerto</div>
       <div style="display:flex;align-items:flex-end;gap:6px;height:90px;padding-bottom:4px">
         <sc-for list="{{ evo }}" as="w">
           <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
-            <div style="font-size:9px;color:#2551c3;font-weight:700">{{ w.pct }}%</div>
+            <div style="font-size:9px;color:#00e5ff;font-weight:700">{{ w.pct }}%</div>
             <div style="width:100%;border-radius:4px 4px 0 0;min-height:4px;height:{{ w.barH }}px;background:{{ w.barColor }}"></div>
-            <div style="font-size:9px;color:#94a3b8;font-weight:600">{{ w.label }}</div>
+            <div style="font-size:9px;color:#9b59ff;font-weight:600">{{ w.label }}</div>
           </div>
         </sc-for>
       </div>
     </div>
   </sc-if>
 
-  <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-    <div style="font-size:13px;font-weight:700;color:#16203a;margin-bottom:14px">Desempenho por materia</div>
+  <div style="background:#0d0d2b;border:1.5px solid #ffe00022;border-radius:14px;padding:18px 20px;margin-bottom:16px">
+    <div style="font-size:13px;font-weight:700;color:#ffe000;margin-bottom:14px">Desempenho por materia</div>
     <sc-if value="{{ noSubj }}" hint-placeholder-val="">
-      <div style="text-align:center;color:#94a3b8;padding:20px;font-size:13px">Nenhuma questao registrada ainda.</div>
+      <div style="text-align:center;color:#9b59ff;padding:20px;font-size:13px">Nenhuma questao registrada ainda.</div>
     </sc-if>
     <sc-for list="{{ subjArr }}" as="s">
       <div style="margin-bottom:12px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-          <div style="font-size:12px;font-weight:600;color:#16203a">{{ s.name }}</div>
+          <div style="font-size:12px;font-weight:600;color:#e0e6ff">{{ s.name }}</div>
           <div style="font-size:12px;font-weight:700;color:{{ s.pctColor }}">{{ s.pctLabel }}</div>
         </div>
-        <div style="height:7px;background:#f1f5f9;border-radius:4px;overflow:hidden">
+        <div style="height:7px;background:#13132e;border-radius:4px;overflow:hidden">
           <div style="height:100%;width:{{ s.barW }}%;background:{{ s.barColor }};border-radius:4px"></div>
         </div>
-        <div style="font-size:10px;color:#94a3b8;margin-top:2px">{{ s.qLabel }}</div>
+        <div style="font-size:10px;color:#9b59ff;margin-top:2px">{{ s.qLabel }}</div>
       </div>
     </sc-for>
   </div>

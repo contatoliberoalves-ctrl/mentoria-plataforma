@@ -1,26 +1,26 @@
 <x-dc>
-<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:20px 16px;max-width:900px;margin:0 auto">
+<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:20px 16px;max-width:900px;margin:0 auto;color:#e0e6ff">
 
   <!-- Header -->
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
     <div>
-      <div style="font-size:18px;font-weight:800;color:#16203a">Meus Simulados</div>
-      <div style="font-size:12px;color:#94a3b8;margin-top:2px">{{ totalLabel }}</div>
+      <div style="font-size:18px;font-weight:900;color:#ffe000;text-shadow:0 0 14px #ffe00077;text-transform:uppercase">Meus Simulados</div>
+      <div style="font-size:12px;color:#00e5ff;margin-top:2px">{{ totalLabel }}</div>
     </div>
-    <button onclick="{{ onShowForm }}" style="background:#7c3aed;color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer">+ Registrar simulado</button>
+    <button onclick="{{ onShowForm }}" style="background:linear-gradient(135deg,#ffe000,#ff0080);color:#050510;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer">+ Registrar simulado</button>
   </div>
 
   <!-- Simulados disponibilizados pelo admin -->
   <sc-if value="{{ hasAdminSimulados }}" hint-placeholder-val="">
-  <div style="background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:14px;padding:16px 18px;margin-bottom:20px">
-    <div style="font-size:13px;font-weight:700;color:#5b21b6;margin-bottom:12px">Simulados disponíveis</div>
+  <div style="background:#13132e;border:1.5px solid #9b59ff44;border-radius:14px;padding:16px 18px;margin-bottom:20px">
+    <div style="font-size:13px;font-weight:700;color:#9b59ff;margin-bottom:12px">Simulados disponíveis</div>
     <sc-for list="{{ adminSimulados }}" as="sim">
-      <div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #ede9fe;border-radius:9px;padding:10px 14px;margin-bottom:8px;gap:10px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;justify-content:space-between;background:#0d0d2b;border:1px solid #9b59ff33;border-radius:9px;padding:10px 14px;margin-bottom:8px;gap:10px;flex-wrap:wrap">
         <div>
-          <div style="font-size:13px;font-weight:600;color:#16203a">{{ sim.name }}</div>
+          <div style="font-size:13px;font-weight:600;color:#e0e6ff">{{ sim.name }}</div>
           <sc-if value="{{ sim.date }}" hint-placeholder-val=""><div style="font-size:11px;color:#94a3b8">{{ sim.date }}</div></sc-if>
         </div>
-        <a href="{{ sim.url }}" target="_blank" style="background:#7c3aed;color:#fff;text-decoration:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;white-space:nowrap">Abrir PDF</a>
+        <a href="{{ sim.url }}" target="_blank" style="background:linear-gradient(135deg,#9b59ff,#ff0080);color:#fff;text-decoration:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;white-space:nowrap">Abrir PDF</a>
       </div>
     </sc-for>
   </div>
@@ -28,73 +28,73 @@
 
   <!-- Formulario -->
   <sc-if value="{{ showForm }}" hint-placeholder-val="">
-    <div style="background:#fff;border:1.5px solid #ddd6fe;border-radius:16px;padding:20px 22px;margin-bottom:20px">
-      <div style="font-size:14px;font-weight:700;color:#16203a;margin-bottom:16px">Novo simulado</div>
+    <div style="background:#0d0d2b;border:1.5px solid #9b59ff44;border-radius:16px;padding:20px 22px;margin-bottom:20px">
+      <div style="font-size:14px;font-weight:700;color:#ffe000;margin-bottom:16px">Novo simulado</div>
 
       <!-- Tipo + exame -->
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
         <div style="flex:1;min-width:160px">
-          <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Tipo</div>
-          <select oninput="{{ onTipo }}" style="width:100%;height:38px;border:1.5px solid #e2e8f0;border-radius:9px;padding:0 10px;font-size:13px;background:#fff">
+          <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">Tipo</div>
+          <select oninput="{{ onTipo }}" style="width:100%;height:38px;border:1.5px solid #ffe00033;border-radius:9px;padding:0 10px;font-size:13px;background:#13132e;color:#e0e6ff">
             <option value="autoral">Autoral (do mentor)</option>
             <option value="oab">Oficial OAB (FGV)</option>
           </select>
         </div>
         <sc-if value="{{ isOAB }}" hint-placeholder-val="">
           <div style="flex:1;min-width:140px">
-            <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Numero do exame OAB</div>
+            <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">Numero do exame OAB</div>
             <input value="{{ exameNum }}" oninput="{{ onExameNum }}" placeholder="Ex: 42" type="number" min="1" style="width:100%;height:38px;border:1.5px solid #e2e8f0;border-radius:9px;padding:0 10px;font-size:13px;box-sizing:border-box">
           </div>
         </sc-if>
         <div style="flex:1;min-width:140px">
-          <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Tempo usado (h:mm)</div>
+          <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">Tempo usado (h:mm)</div>
           <input value="{{ tempo }}" oninput="{{ onTempo }}" placeholder="Ex: 4:30" style="width:100%;height:38px;border:1.5px solid #e2e8f0;border-radius:9px;padding:0 10px;font-size:13px;box-sizing:border-box">
-          <div style="font-size:10px;color:#94a3b8;margin-top:2px">Maximo: 5 horas</div>
+          <div style="font-size:10px;color:#9b59ff;margin-top:2px">Maximo: 5 horas</div>
         </div>
         <div style="flex:1;min-width:120px">
-          <div style="font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px">Total de acertos</div>
-          <div style="height:38px;border:1.5px solid #7c3aed;border-radius:9px;display:flex;align-items:center;padding:0 12px;background:#faf8ff">
-            <span style="font-size:18px;font-weight:800;color:#7c3aed">{{ totalAcertos }}</span>
-            <span style="font-size:13px;color:#94a3b8;margin-left:4px">/ 80</span>
+          <div style="font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px">Total de acertos</div>
+          <div style="height:38px;border:1.5px solid #9b59ff;border-radius:9px;display:flex;align-items:center;padding:0 12px;background:#13132e">
+            <span style="font-size:18px;font-weight:800;color:#ffe000;text-shadow:0 0 10px #ffe00088">{{ totalAcertos }}</span>
+            <span style="font-size:13px;color:#9b59ff;margin-left:4px">/ 80</span>
           </div>
         </div>
       </div>
 
       <!-- Grid de materias -->
-      <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Acertos por materia</div>
+      <div style="font-size:11px;font-weight:700;color:#9b59ff;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Acertos por materia</div>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;margin-bottom:16px">
         <sc-for list="{{ formMaterias }}" as="fm">
-          <div style="background:#f8fafc;border-radius:10px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <div style="background:#13132e;border-radius:10px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
             <div style="flex:1">
-              <div style="font-size:12px;font-weight:600;color:#16203a">{{ fm.name }}</div>
-              <div style="font-size:10px;color:#94a3b8">Questoes {{ fm.range }} — {{ fm.total }} no total</div>
+              <div style="font-size:12px;font-weight:600;color:#e0e6ff">{{ fm.name }}</div>
+              <div style="font-size:10px;color:#9b59ff">Questoes {{ fm.range }} — {{ fm.total }} no total</div>
             </div>
             <div style="display:flex;align-items:center;gap:4px">
-              <input type="number" value="{{ fm.acertos }}" oninput="{{ fm.onInput }}" min="0" max="{{ fm.total }}" placeholder="0" style="width:44px;height:32px;border:1.5px solid #c7d7f5;border-radius:7px;text-align:center;font-size:14px;font-weight:700;color:#7c3aed;background:#fff">
-              <span style="font-size:12px;color:#94a3b8">/{{ fm.total }}</span>
+              <input type="number" value="{{ fm.acertos }}" oninput="{{ fm.onInput }}" min="0" max="{{ fm.total }}" placeholder="0" style="width:44px;height:32px;border:1.5px solid #9b59ff;border-radius:7px;text-align:center;font-size:14px;font-weight:700;color:#ffe000;background:#13132e">
+              <span style="font-size:12px;color:#9b59ff">/{{ fm.total }}</span>
             </div>
           </div>
         </sc-for>
       </div>
 
       <div style="display:flex;gap:8px">
-        <button onclick="{{ onSave }}" style="background:#7c3aed;color:#fff;border:none;border-radius:9px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer">Salvar simulado</button>
-        <button onclick="{{ onCancel }}" style="background:#f1f5f9;color:#64748b;border:none;border-radius:9px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer">Cancelar</button>
+        <button onclick="{{ onSave }}" style="background:linear-gradient(135deg,#ffe000,#ff0080);color:#050510;border:none;border-radius:9px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer">Salvar simulado</button>
+        <button onclick="{{ onCancel }}" style="background:#13132e;color:#94a3b8;border:1px solid #ffe00022;border-radius:9px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer">Cancelar</button>
       </div>
     </div>
   </sc-if>
 
   <!-- Lista de simulados -->
   <sc-if value="{{ noEntries }}" hint-placeholder-val="">
-    <div style="text-align:center;padding:48px 20px;color:#94a3b8">
+    <div style="text-align:center;padding:48px 20px;color:#9b59ff">
       <div style="font-size:40px;margin-bottom:12px">📝</div>
-      <div style="font-weight:600;color:#16203a;margin-bottom:4px">Nenhum simulado registrado</div>
+      <div style="font-weight:600;color:#e0e6ff;margin-bottom:4px">Nenhum simulado registrado</div>
       <div style="font-size:13px">Registre seus resultados para acompanhar sua evolucao.</div>
     </div>
   </sc-if>
 
   <sc-for list="{{ entries }}" as="e">
-    <div style="background:#fff;border:1.5px solid #e6ecf7;border-radius:14px;margin-bottom:14px;overflow:hidden">
+    <div style="background:#0d0d2b;border:1.5px solid #9b59ff33;border-radius:14px;margin-bottom:14px;overflow:hidden">
       <!-- Cabecalho do simulado -->
       <div style="background:linear-gradient(135deg,#5b21b6,#7c3aed);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
         <div>
@@ -110,21 +110,21 @@
             <div style="font-size:22px;font-weight:800;color:#fff">{{ e.acertos }}/80</div>
             <div style="font-size:10px;color:rgba(255,255,255,.75)">QUESTOES</div>
           </div>
-          <button onclick="{{ e.onRemove }}" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:7px;padding:5px 10px;font-size:11px;color:#fff;cursor:pointer">Remover</button>
+          <button onclick="{{ e.onRemove }}" style="background:#ff008022;border:1px solid #ff008066;border-radius:7px;padding:5px 10px;font-size:11px;color:#ff0080;cursor:pointer">Remover</button>
         </div>
       </div>
       <!-- Materias -->
-      <div style="padding:14px 16px">
+      <div style="padding:14px 16px;background:#0d0d2b">
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px">
           <sc-for list="{{ e.materias }}" as="mat">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#f8fafc;border-radius:8px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#13132e;border-radius:8px">
               <div>
-                <div style="font-size:11px;font-weight:600;color:#16203a">{{ mat.name }}</div>
-                <div style="font-size:10px;color:#94a3b8">{{ mat.range }}</div>
+                <div style="font-size:11px;font-weight:600;color:#e0e6ff">{{ mat.name }}</div>
+                <div style="font-size:10px;color:#9b59ff">{{ mat.range }}</div>
               </div>
               <div style="text-align:right">
                 <span style="font-size:13px;font-weight:800;color:{{ mat.color }}">{{ mat.acertos }}/{{ mat.total }}</span>
-                <div style="font-size:10px;color:#94a3b8">{{ mat.pct }}%</div>
+                <div style="font-size:10px;color:#9b59ff">{{ mat.pct }}%</div>
               </div>
             </div>
           </sc-for>
