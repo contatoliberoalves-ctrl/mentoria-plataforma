@@ -1,111 +1,192 @@
 <x-dc>
-<div style="min-height:100vh;background:#FFF9E6;font-family:-apple-system,BlinkMacSystemFont,sans-serif">
+<style>
+:root{--blue:#0057FF;--yellow:#FFE500;--black:#0D0D0D;--bg:#FFF9E6;--white:#FFFFFF;--green:#00C040;--purple:#7B2FFF;--cyan:#00A8E8;--orange:#FF6600;--red:#D32F2F}
+*{box-sizing:border-box}
+.adm-wrap{min-height:100vh;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--black)}
+/* HEADER */
+.adm-header{background:var(--blue);border-bottom:4px solid var(--black);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:30}
+.adm-logo{display:flex;align-items:center;gap:10px}
+.adm-logo-box{background:var(--yellow);border:3px solid var(--black);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:3px 3px 0 var(--black)}
+.adm-logo-title{color:var(--white);font-weight:900;font-size:15px;text-transform:uppercase;letter-spacing:.5px}
+.adm-logo-sub{color:var(--yellow);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.adm-header-btns{display:flex;gap:8px;align-items:center}
+.adm-btn-refresh{background:var(--yellow);color:var(--black);border:2px solid var(--black);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;box-shadow:2px 2px 0 var(--black)}
+.adm-btn-logout{background:transparent;color:var(--yellow);border:2px solid var(--yellow);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer}
+/* TABS */
+.adm-tabs{background:var(--white);border-bottom:4px solid var(--black);display:flex;overflow-x:auto;padding:0 16px}
+.adm-tab{padding:14px 18px;border:none;border-bottom:4px solid transparent;background:transparent;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;text-transform:uppercase;letter-spacing:.3px;color:#666;margin-bottom:-4px;transition:color .15s}
+.adm-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.adm-tab:hover:not(.active){color:var(--black)}
+/* MSG BANNER */
+.adm-msg{margin:14px 20px 0;padding:12px 16px;border-radius:10px;font-size:13px;font-weight:700;border:2px solid var(--black);box-shadow:3px 3px 0 var(--black)}
+.adm-msg.ok{background:#D4F7E0;color:#007A3D}
+.adm-msg.err{background:#FFE0E0;color:var(--red)}
+/* CONTENT */
+.adm-content{max-width:980px;margin:0 auto;padding:20px 16px}
+/* CARDS */
+.adm-card{background:var(--white);border:3px solid var(--black);border-radius:16px;box-shadow:5px 5px 0 var(--black);padding:20px;margin-bottom:18px}
+.adm-card-title{font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:var(--black);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.adm-card-title-badge{background:var(--blue);color:var(--white);border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)}
+/* INPUTS */
+.adm-label{font-size:11px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.adm-input{width:100%;height:42px;border:2px solid var(--black);border-radius:10px;padding:0 12px;font-size:13px;font-weight:600;background:var(--bg);color:var(--black);box-sizing:border-box;outline:none}
+.adm-input:focus{border-color:var(--blue);box-shadow:3px 3px 0 var(--blue)}
+.adm-textarea{width:100%;border:2px solid var(--black);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:600;background:var(--bg);color:var(--black);box-sizing:border-box;resize:vertical;font-family:inherit;outline:none}
+.adm-textarea:focus{border-color:var(--blue)}
+/* BUTTONS */
+.adm-btn-primary{background:var(--blue);color:var(--white);border:3px solid var(--black);border-radius:10px;padding:10px 22px;font-size:13px;font-weight:900;cursor:pointer;text-transform:uppercase;box-shadow:4px 4px 0 var(--black);letter-spacing:.3px}
+.adm-btn-primary:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--black)}
+.adm-btn-yellow{background:var(--yellow);color:var(--black);border:3px solid var(--black);border-radius:10px;padding:10px 22px;font-size:13px;font-weight:900;cursor:pointer;text-transform:uppercase;box-shadow:4px 4px 0 var(--black)}
+.adm-btn-yellow:hover{transform:translate(-1px,-1px)}
+.adm-btn-sm{background:var(--white);color:var(--black);border:2px solid var(--black);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:2px 2px 0 var(--black)}
+.adm-btn-danger{background:#FFE0E0;color:var(--red);border:2px solid var(--red);border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer}
+/* STUDENT CARD */
+.adm-student{background:var(--white);border:3px solid var(--black);border-radius:14px;box-shadow:4px 4px 0 var(--black);padding:16px 18px;margin-bottom:12px}
+.adm-student-name{font-size:16px;font-weight:900;color:var(--blue)}
+.adm-student-email{font-size:12px;color:#666;margin-top:2px}
+.adm-stat-row{display:flex;gap:0;flex-wrap:wrap;margin-top:12px;border:2px solid var(--black);border-radius:10px;overflow:hidden}
+.adm-stat-cell{flex:1;min-width:60px;text-align:center;padding:8px 6px;border-right:2px solid var(--black)}
+.adm-stat-cell:last-child{border-right:none}
+.adm-stat-val{font-size:18px;font-weight:900;color:var(--blue)}
+.adm-stat-lbl{font-size:9px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.3px;margin-top:2px}
+/* STATUS BADGE */
+.adm-badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:800;border:2px solid var(--black);text-transform:uppercase}
+/* AVISO CARD */
+.adm-aviso{background:var(--white);border:3px solid var(--blue);border-radius:12px;box-shadow:3px 3px 0 var(--blue);padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+/* SIM CARD */
+.adm-sim{background:var(--white);border:3px solid var(--purple);border-radius:12px;box-shadow:3px 3px 0 var(--purple);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+/* UPLOAD ZONE */
+.adm-upload-zone{border:3px dashed var(--black);border-radius:14px;padding:24px;text-align:center;background:var(--bg);margin-bottom:14px;cursor:pointer}
+.adm-upload-zone:hover{background:#fff0c8}
+/* GRID */
+.adm-grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+/* SECTION DIVIDER */
+.adm-divider{height:3px;background:var(--black);border-radius:2px;margin:20px 0}
+/* EMPTY STATE */
+.adm-empty{text-align:center;padding:40px 20px;color:#888}
+.adm-empty-icon{font-size:40px;margin-bottom:10px}
+/* CARTÓRIO */
+.adm-ct-card{background:var(--white);border:3px solid #007A3D;border-radius:14px;box-shadow:4px 4px 0 #007A3D;padding:16px 18px;margin-bottom:12px}
+.adm-student-tipo-oab{background:#E8F0FF;color:var(--blue);border:2px solid var(--blue)}
+.adm-student-tipo-ct{background:#C8F7DC;color:#007A3D;border:2px solid #007A3D}
+</style>
 
-  <!-- inputs de arquivo ocultos -->
-  <input type="file" id="adminVideoInput" accept="video/mp4,video/webm,video/ogg,video/quicktime" onchange="{{ onVideoFileChange }}" style="display:none">
-  <input type="file" id="adminPdfInput" accept="application/pdf,video/mp4,video/webm,video/quicktime" onchange="{{ onPdfFileChange }}" style="display:none">
+<!-- hidden file inputs -->
+<input type="file" id="adminVideoInput" accept="video/mp4,video/webm,video/ogg,video/quicktime" onchange="{{ onVideoFileChange }}" style="display:none">
+<input type="file" id="adminPdfInput" accept="application/pdf,video/mp4,video/webm,video/quicktime" onchange="{{ onPdfFileChange }}" style="display:none">
 
-  <!-- Header -->
-  <div style="background:#fff;border-bottom:2px solid #ffe000;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20">
-    <div>
-      <div style="font-size:17px;font-weight:900;color:#0057FF;text-shadow:0 0 14px #ffe00088;text-transform:uppercase;letter-spacing:-.01em">{{ brandName }} — Painel Admin</div>
-      <div style="font-size:11px;color:#00A8E8;margin-top:1px">{{ examDateLabel }}</div>
+<div class="adm-wrap">
+
+  <!-- HEADER -->
+  <div class="adm-header">
+    <div class="adm-logo">
+      <div class="adm-logo-box">⚡</div>
+      <div>
+        <div class="adm-logo-title">{{ brandName }} — Admin</div>
+        <div class="adm-logo-sub">Painel de Controle</div>
+      </div>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <button onclick="{{ onRefresh }}" disabled="{{ refreshing }}" style="background:#FFF9E6;border:2px solid #00A8E8;border-radius:9px;padding:8px 14px;font-size:13px;font-weight:600;color:#00A8E8;cursor:pointer;opacity:{{ refreshing ? 0.6 : 1 }}">{{ refreshing ? 'Atualizando...' : '↻ Atualizar' }}</button>
-      <button onclick="{{ onLogout }}" style="background:#fff;border:1px solid #ff0080;border-radius:9px;padding:8px 16px;font-size:13px;font-weight:600;color:#0057FF;cursor:pointer">Sair</button>
+    <div class="adm-header-btns">
+      <button onclick="{{ onRefresh }}" class="adm-btn-refresh">{{ refreshing ? '⟳ Atualizando...' : '⟳ Atualizar' }}</button>
+      <button onclick="{{ onLogout }}" class="adm-btn-logout">Sair</button>
     </div>
   </div>
 
-  <!-- Tabs -->
-  <div style="background:#fff;border-bottom:4px solid #0D0D0D;padding:0 20px;display:flex;gap:4px;overflow-x:auto">
-    <sc-for list="{{ tabs }}" as="tab">
-      <button onclick="{{ tab.onClick }}" style="{{ tab.style }}">{{ tab.label }}</button>
-    </sc-for>
-  </div>
+  <!-- TABS -->
+  <div class="adm-tabs" inner-html="{{ tabsHtml }}"></div>
 
-  <!-- Mensagem global -->
+  <!-- MSG BANNER -->
   <sc-if value="{{ msg }}" hint-placeholder-val="">
-    <div style="margin:14px 20px 0;padding:10px 16px;border-radius:9px;font-size:13px;font-weight:600;background:{{ msgBg }};color:{{ msgColor }}">{{ msg }}</div>
+    <div class="adm-msg {{ msgClass }}">{{ msg }}</div>
   </sc-if>
 
-  <div style="max-width:960px;margin:0 auto;padding:20px 16px;color:#111">
+  <div class="adm-content">
 
-    <!-- ═══ ABA ALUNOS ═══ -->
+    <!-- ═══ ALUNOS ═══ -->
     <sc-if value="{{ tabAlunos }}" hint-placeholder-val="{{ true }}">
       <div>
-        <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-          <div style="font-size:13px;font-weight:700;color:#0057FF;margin-bottom:12px">Adicionar aluno manualmente</div>
+        <!-- Adicionar aluno -->
+        <div class="adm-card">
+          <div class="adm-card-title">👤 Adicionar Aluno <span class="adm-card-title-badge">Senha inicial: oab123</span></div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
-            <div style="flex:1;min-width:160px">
-              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Nome</div>
-              <input value="{{ newName }}" oninput="{{ onNewName }}" placeholder="Nome do aluno" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
+            <div style="flex:1;min-width:150px">
+              <div class="adm-label">Nome</div>
+              <input class="adm-input" value="{{ newName }}" oninput="{{ onNewName }}" placeholder="Nome do aluno">
             </div>
-            <div style="flex:1;min-width:200px">
-              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">E-mail</div>
-              <input value="{{ newEmail }}" oninput="{{ onNewEmail }}" placeholder="email@exemplo.com" type="email" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
+            <div style="flex:1.5;min-width:200px">
+              <div class="adm-label">E-mail</div>
+              <input class="adm-input" value="{{ newEmail }}" oninput="{{ onNewEmail }}" placeholder="email@exemplo.com" type="email">
             </div>
-            <button onclick="{{ onAddStudent }}" disabled="{{ addingStudent }}" style="height:36px;padding:0 18px;background:#0057FF;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#050510;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;opacity:{{ addingStudent ? 0.6 : 1 }}">{{ addingStudent ? 'Criando...' : 'Adicionar' }}</button>
+            <div style="min-width:140px">
+              <div class="adm-label">Plataforma</div>
+              <select class="adm-input" oninput="{{ onNewTipo }}">
+                <option value="oab">⚡ OAB</option>
+                <option value="cartorio">📜 Cartório</option>
+              </select>
+            </div>
+            <button onclick="{{ onAddStudent }}" class="adm-btn-primary" style="{{ addingStudent ? 'opacity:.6;pointer-events:none' : '' }}">{{ addingStudent ? 'Criando...' : '+ Adicionar' }}</button>
           </div>
           <sc-if value="{{ addMsg }}" hint-placeholder-val="">
-            <div style="margin-top:8px;font-size:12px;color:#00A8E8;font-weight:600">{{ addMsg }}</div>
+            <div style="margin-top:10px;font-size:13px;font-weight:700;color:var(--blue)">{{ addMsg }}</div>
           </sc-if>
-          <div style="margin-top:8px;font-size:11px;color:#666">Senha inicial: <b>oab123</b> — informe ao aluno para trocar depois.</div>
         </div>
 
+        <!-- Lista -->
         <sc-if value="{{ noStudents }}" hint-placeholder-val="">
-          <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:40px;text-align:center;color:#666">
-            <div style="font-size:32px;margin-bottom:8px">&#128101;</div>
-            <div style="font-weight:600;color:#666">Nenhum aluno cadastrado</div>
-            <div style="font-size:13px;margin-top:4px">Adicione acima ou aguarde os alunos se cadastrarem</div>
-          </div>
+          <div class="adm-empty"><div class="adm-empty-icon">👥</div><div style="font-weight:700">Nenhum aluno cadastrado ainda</div></div>
         </sc-if>
 
         <sc-if value="{{ hasStudents }}" hint-placeholder-val="{{ true }}">
-          <div style="font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">{{ studentCount }} aluno(s)</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div style="font-size:13px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px">{{ studentCount }} aluno(s)</div>
+            <div style="display:flex;gap:8px">
+              <span style="background:#E8F0FF;border:2px solid var(--blue);border-radius:6px;padding:3px 10px;font-size:11px;font-weight:800;color:var(--blue)">⚡ OAB: {{ countOAB }}</span>
+              <span style="background:#C8F7DC;border:2px solid #007A3D;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:800;color:#007A3D">📜 Cartório: {{ countCartorio }}</span>
+            </div>
+          </div>
           <sc-for list="{{ students }}" as="s">
-            <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:16px 18px;margin-bottom:10px">
+            <div class="adm-student">
               <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">
                 <div style="flex:1;min-width:180px">
-                  <div style="font-size:15px;font-weight:700;color:#0057FF">{{ s.name }}</div>
-                  <div style="font-size:12px;color:#666;margin-top:2px">{{ s.email }}</div>
+                  <div class="adm-student-name">{{ s.name }}</div>
+                  <div class="adm-student-email">{{ s.email }}</div>
+                  <div style="margin-top:6px">
+                    <span class="adm-badge {{ s.tipoClass }}">{{ s.tipoLabel }}</span>
+                    <span style="margin-left:8px" class="adm-badge" style="background:{{ s.statusBg }};color:{{ s.statusColor }};border-color:{{ s.statusColor }}">{{ s.status }}</span>
+                    <span style="margin-left:8px;font-size:11px;color:#888">{{ s.lastLabel }}</span>
+                  </div>
                 </div>
-                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-                  <span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;background:{{ s.statusBg }};color:{{ s.statusColor }}">{{ s.status }}</span>
-                  <button onclick="{{ s.onImpersonate }}" style="padding:5px 12px;background:#fff;border:1.5px solid #00e5ff44;border-radius:7px;font-size:12px;font-weight:600;color:#00A8E8;cursor:pointer">Ver como aluno</button>
-                  <button onclick="{{ s.onReset }}" style="padding:5px 12px;background:#FFF9E6;border:3px solid #0D0D0D;border-radius:7px;font-size:12px;font-weight:600;color:#666;cursor:pointer">Resetar progresso</button>
-                  <button onclick="{{ s.onToggleTipo }}" style="padding:5px 12px;background:{{ s.tipoBg }};border:2px solid #0D0D0D;border-radius:7px;font-size:12px;font-weight:700;color:{{ s.tipoColor }};cursor:pointer;box-shadow:2px 2px 0 #0D0D0D">{{ s.tipoLabel }}</button>
-                  <button onclick="{{ s.onRemove }}" style="padding:5px 12px;background:#fff0f3;border:1.5px solid #ff008044;border-radius:7px;font-size:12px;font-weight:600;color:#0057FF;cursor:pointer">Remover</button>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+                  <button onclick="{{ s.onToggleTipo }}" class="adm-btn-sm" title="Alternar OAB ↔ Cartório">🔄 Mudar plataforma</button>
+                  <button onclick="{{ s.onImpersonate }}" class="adm-btn-sm">👁 Ver como aluno</button>
+                  <button onclick="{{ s.onReset }}" class="adm-btn-sm">↺ Resetar</button>
+                  <button onclick="{{ s.onRemove }}" class="adm-btn-danger">✕</button>
                 </div>
               </div>
-              <div style="display:flex;gap:14px;margin-top:12px;flex-wrap:wrap">
-                <div style="text-align:center;min-width:44px">
-                  <div style="font-size:18px;font-weight:800;color:#00A8E8;text-shadow:0 0 10px #00e5ff88">{{ s.progPct }}%</div>
-                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Plano</div>
+              <div class="adm-stat-row">
+                <div class="adm-stat-cell">
+                  <div class="adm-stat-val">{{ s.progPct }}%</div>
+                  <div class="adm-stat-lbl">Plano</div>
                 </div>
-                <div style="text-align:center;min-width:44px">
-                  <div style="font-size:18px;font-weight:800;color:#0057FF">{{ s.taxa }}%</div>
-                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Acerto</div>
+                <div class="adm-stat-cell">
+                  <div class="adm-stat-val" style="color:{{ s.taxa >= 70 ? '#007A3D' : s.taxa >= 50 ? '#FF6600' : '#D32F2F' }}">{{ s.taxa }}%</div>
+                  <div class="adm-stat-lbl">Acerto</div>
                 </div>
-                <div style="text-align:center;min-width:44px">
-                  <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.totalQ }}</div>
-                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Questoes</div>
+                <div class="adm-stat-cell">
+                  <div class="adm-stat-val" style="color:var(--black)">{{ s.totalQ }}</div>
+                  <div class="adm-stat-lbl">Questões</div>
                 </div>
-                <div style="text-align:center;min-width:44px">
-                  <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.streak }}</div>
-                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Sequencia</div>
+                <div class="adm-stat-cell">
+                  <div class="adm-stat-val" style="color:var(--orange)">{{ s.streak }}</div>
+                  <div class="adm-stat-lbl">Sequência</div>
                 </div>
-                <div style="text-align:center;min-width:44px">
-                  <div style="font-size:18px;font-weight:800;color:#16203a">{{ s.adherence }}%</div>
-                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Aderencia</div>
+                <div class="adm-stat-cell">
+                  <div class="adm-stat-val" style="color:var(--cyan)">{{ s.adherence }}%</div>
+                  <div class="adm-stat-lbl">Aderência</div>
                 </div>
-                <div style="text-align:center;min-width:44px">
-                  <div style="font-size:16px;font-weight:700;color:#0057FF">{{ s.nota }}/80</div>
-                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Nota Est.</div>
-                </div>
-                <div style="text-align:center;min-width:80px">
-                  <div style="font-size:12px;font-weight:700;color:#111">{{ s.lastLabel }}</div>
-                  <div style="font-size:10px;color:#666;font-weight:600;text-transform:uppercase">Ultimo estudo</div>
+                <div class="adm-stat-cell">
+                  <div class="adm-stat-val" style="font-size:14px;color:var(--purple)">{{ s.nota }}/80</div>
+                  <div class="adm-stat-lbl">Nota Est.</div>
                 </div>
               </div>
             </div>
@@ -114,180 +195,242 @@
       </div>
     </sc-if>
 
-    <!-- ═══ ABA AVISOS ═══ -->
+    <!-- ═══ AVISOS ═══ -->
     <sc-if value="{{ tabAvisos }}" hint-placeholder-val="">
       <div>
-        <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-          <div style="font-size:13px;font-weight:700;color:#0057FF;margin-bottom:12px">Novo aviso para alunos</div>
-          <div style="margin-bottom:8px">
-            <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Titulo</div>
-            <input value="{{ avisoTitle }}" oninput="{{ onAvisoTitle }}" placeholder="Ex: Aula ao vivo amanha!" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
-          </div>
+        <div class="adm-card">
+          <div class="adm-card-title">📢 Novo Aviso</div>
           <div style="margin-bottom:12px">
-            <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Mensagem (opcional)</div>
-            <textarea oninput="{{ onAvisoMsg }}" placeholder="Detalhes do aviso..." rows="3" style="width:100%;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 10px;font-size:13px;box-sizing:border-box;resize:vertical;font-family:inherit">{{ avisoMsg }}</textarea>
+            <div class="adm-label">Título</div>
+            <input class="adm-input" value="{{ avisoTitle }}" oninput="{{ onAvisoTitle }}" placeholder="Ex: Encontro de mentoria amanhã às 19h!">
           </div>
-          <button onclick="{{ onSaveAviso }}" style="background:#ffe000;color:#050510;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer">Publicar aviso</button>
+          <div style="margin-bottom:14px">
+            <div class="adm-label">Mensagem (opcional)</div>
+            <textarea class="adm-textarea" oninput="{{ onAvisoMsg }}" placeholder="Mais detalhes sobre o aviso..." rows="3">{{ avisoMsg }}</textarea>
+          </div>
+          <button onclick="{{ onSaveAviso }}" class="adm-btn-yellow">📢 Publicar aviso</button>
         </div>
 
         <sc-if value="{{ hasAvisos }}" hint-placeholder-val="{{ true }}">
-          <div style="font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Avisos publicados</div>
+          <div style="font-size:12px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Publicados ({{ avisoCount }})</div>
           <sc-for list="{{ avisos }}" as="a">
-            <div style="background:#fff;border:1.5px solid #e6ecf7;border-left:4px solid #2551c3;border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <div class="adm-aviso">
               <div style="flex:1">
-                <div style="font-size:13px;font-weight:700;color:#0057FF">{{ a.title }}</div>
+                <div style="font-size:14px;font-weight:800;color:var(--blue)">{{ a.title }}</div>
                 <sc-if value="{{ a.msg }}" hint-placeholder-val="">
-                  <div style="font-size:12px;color:#666;margin-top:4px">{{ a.msg }}</div>
+                  <div style="font-size:13px;color:#333;margin-top:4px">{{ a.msg }}</div>
                 </sc-if>
-                <div style="font-size:11px;color:#666;margin-top:4px">{{ a.date }}</div>
+                <div style="font-size:11px;color:#888;margin-top:6px">{{ a.date }}</div>
               </div>
-              <button onclick="{{ a.onDelete }}" style="background:#fff0f3;border:2px solid #0057FF;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;color:#0057FF;cursor:pointer;white-space:nowrap">Remover</button>
+              <button onclick="{{ a.onDelete }}" class="adm-btn-danger">✕ Remover</button>
             </div>
           </sc-for>
         </sc-if>
-
         <sc-if value="{{ noAvisos }}" hint-placeholder-val="">
-          <div style="text-align:center;color:#666;padding:32px">Nenhum aviso publicado ainda.</div>
+          <div class="adm-empty"><div class="adm-empty-icon">📭</div><div style="font-weight:700">Nenhum aviso publicado</div></div>
         </sc-if>
       </div>
     </sc-if>
 
-    <!-- ═══ ABA BOAS-VINDAS ═══ -->
-    <sc-if value="{{ tabVideo }}" hint-placeholder-val="">
-      <div>
-        <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:20px;margin-bottom:16px">
-          <div style="font-size:14px;font-weight:700;color:#0057FF;margin-bottom:4px">Video de boas-vindas</div>
-          <div style="font-size:12px;color:#666;margin-bottom:18px">Aparece na tela inicial do aluno. Faca upload direto ou cole um link do YouTube/Vimeo.</div>
-
-          <!-- Upload direto -->
-          <div style="border:2px dashed #ffe00044;border-radius:12px;padding:28px;text-align:center;margin-bottom:16px;background:#fff">
-            <div style="font-size:28px;margin-bottom:8px">&#127910;</div>
-            <div style="font-size:13px;font-weight:600;color:#111;margin-bottom:4px">{{ uploadVideoLabel }}</div>
-            <div style="font-size:11px;color:#666;margin-bottom:14px">MP4, WebM, MOV — ate 500 MB</div>
-            <button onclick="{{ onPickVideo }}" style="background:#ffe000;color:#050510;border:none;border-radius:9px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;{{ uploadingVideoDisabled }}">{{ uploadVideoBtnLabel }}</button>
-          </div>
-
-          <!-- OU link -->
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-            <div style="flex:1;height:1px;background:#e2e8f0"></div>
-            <span style="font-size:12px;color:#666;font-weight:600">ou cole um link</span>
-            <div style="flex:1;height:1px;background:#e2e8f0"></div>
-          </div>
-          <div style="display:flex;gap:8px">
-            <input value="{{ videoUrl }}" oninput="{{ onVideoUrl }}" placeholder="https://youtube.com/watch?v=..." style="flex:1;height:38px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
-            <button onclick="{{ onSaveVideoUrl }}" style="background:#64748b;color:#fff;border:none;border-radius:8px;padding:0 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Salvar link</button>
-          </div>
-        </div>
-
-        <sc-if value="{{ currentVideoUrl }}" hint-placeholder-val="">
-          <div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:12px;padding:14px 16px">
-            <div style="font-size:11px;font-weight:700;color:#16a34a;text-transform:uppercase;margin-bottom:6px">Video atual</div>
-            <div style="font-size:12px;color:#00A8E8;word-break:break-all">{{ currentVideoUrl }}</div>
-            <button onclick="{{ onRemoveVideo }}" style="margin-top:8px;background:transparent;border:none;font-size:11px;color:#dc2626;cursor:pointer;font-weight:600">Remover video</button>
-          </div>
-        </sc-if>
-      </div>
-    </sc-if>
-
-    <!-- ═══ ABA SIMULADOS ═══ -->
+    <!-- ═══ SIMULADOS ═══ -->
     <sc-if value="{{ tabSimulados }}" hint-placeholder-val="">
       <div>
-        <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-          <div style="font-size:13px;font-weight:700;color:#0057FF;margin-bottom:12px">Adicionar simulado ou material</div>
-
-          <!-- Nome -->
-          <div style="margin-bottom:12px">
-            <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Nome do simulado</div>
-            <input value="{{ simName }}" oninput="{{ onSimName }}" placeholder="Ex: Simulado 1 — Outubro 2026" style="width:100%;height:36px;border:2px solid #0D0D0D;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
-          </div>
-
-          <!-- Timer -->
-          <div style="margin-bottom:12px">
-            <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Tempo máximo (horas) — até 5h</div>
-            <div style="display:flex;align-items:center;gap:10px">
-              <input type="range" min="1" max="5" step="0.5" value="{{ simTimer }}" oninput="{{ onSimTimer }}" style="flex:1;accent-color:#0057FF;height:8px;cursor:pointer">
-              <div style="background:#0057FF;color:#fff;border:2px solid #0D0D0D;border-radius:8px;padding:6px 14px;font-size:15px;font-weight:900;min-width:60px;text-align:center;box-shadow:2px 2px 0 #0D0D0D">{{ simTimer }}h</div>
+        <div class="adm-card">
+          <div class="adm-card-title">🎯 Adicionar Simulado</div>
+          <div class="adm-grid-2" style="margin-bottom:14px">
+            <div>
+              <div class="adm-label">Nome do simulado</div>
+              <input class="adm-input" value="{{ simName }}" oninput="{{ onSimName }}" placeholder="Ex: Simulado OAB — Set/2026">
+            </div>
+            <div>
+              <div class="adm-label">Tempo máximo — até 5h</div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <input type="range" min="1" max="5" step="0.5" value="{{ simTimer }}" oninput="{{ onSimTimer }}" style="flex:1;accent-color:var(--blue);height:8px;cursor:pointer">
+                <div style="background:var(--blue);color:#fff;border:2px solid var(--black);border-radius:8px;padding:6px 14px;font-size:16px;font-weight:900;min-width:58px;text-align:center;box-shadow:2px 2px 0 var(--black)">{{ simTimer }}h</div>
+              </div>
             </div>
           </div>
 
-          <!-- Upload direto -->
-          <div style="border:2px dashed #ddd6fe;border-radius:12px;padding:22px;text-align:center;margin-bottom:14px;background:#faf8ff">
-            <div style="font-size:24px;margin-bottom:6px">&#128196;</div>
-            <div style="font-size:13px;font-weight:600;color:#111;margin-bottom:2px">{{ uploadPdfLabel }}</div>
-            <div style="font-size:11px;color:#666;margin-bottom:12px">PDF ou video — ate 500 MB</div>
-            <button onclick="{{ onPickPdf }}" style="background:#7c3aed;color:#fff;border:none;border-radius:9px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;{{ uploadingPdfDisabled }}">{{ uploadPdfBtnLabel }}</button>
+          <div class="adm-upload-zone" onclick="{{ onPickPdf }}">
+            <div style="font-size:28px;margin-bottom:6px">📄</div>
+            <div style="font-size:13px;font-weight:700;color:var(--black)">{{ uploadPdfLabel }}</div>
+            <div style="font-size:11px;color:#666;margin-top:2px">PDF ou vídeo — até 500 MB</div>
+            <button style="margin-top:12px;background:var(--purple);color:#fff;border:3px solid var(--black);border-radius:9px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:3px 3px 0 var(--black);pointer-events:none">{{ uploadPdfBtnLabel }}</button>
           </div>
 
-          <!-- OU link externo -->
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-            <div style="flex:1;height:1px;background:#e2e8f0"></div>
-            <span style="font-size:12px;color:#666;font-weight:600">ou link externo</span>
-            <div style="flex:1;height:1px;background:#e2e8f0"></div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="flex:1;height:2px;background:var(--black)"></div>
+            <span style="font-size:11px;font-weight:800;color:#666;text-transform:uppercase">ou link externo</span>
+            <div style="flex:1;height:2px;background:var(--black)"></div>
           </div>
-          <div style="display:flex;gap:8px;margin-bottom:14px">
-            <input value="{{ simUrl }}" oninput="{{ onSimUrl }}" placeholder="https://drive.google.com/..." style="flex:1;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
-            <button onclick="{{ onSaveSimulado }}" style="background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:0 14px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">Adicionar link</button>
+          <div style="display:flex;gap:8px">
+            <input class="adm-input" value="{{ simUrl }}" oninput="{{ onSimUrl }}" placeholder="https://drive.google.com/..." style="flex:1">
+            <button onclick="{{ onSaveSimulado }}" class="adm-btn-primary">Adicionar</button>
           </div>
         </div>
 
         <sc-if value="{{ hasSimulados }}" hint-placeholder-val="{{ true }}">
-          <div style="font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Materiais disponibilizados</div>
+          <div style="font-size:12px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Simulados disponibilizados ({{ simCount }})</div>
           <sc-for list="{{ simulados }}" as="sim">
-            <div style="background:#fff;border:1.5px solid #e6ecf7;border-left:4px solid #7c3aed;border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div class="adm-sim">
               <div>
-                <div style="font-size:13px;font-weight:700;color:#111">{{ sim.name }}</div>
-                <div style="font-size:11px;color:#666;margin-top:2px">{{ sim.date }} · ⏱ {{ sim.timerLabel }}</div>
+                <div style="font-size:14px;font-weight:800;color:var(--black)">{{ sim.name }}</div>
+                <div style="margin-top:4px;display:flex;gap:8px;align-items:center">
+                  <span style="background:var(--purple);color:#fff;border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)">⏱ {{ sim.timerLabel }}</span>
+                  <span style="font-size:11px;color:#666">{{ sim.date }}</span>
+                </div>
               </div>
               <div style="display:flex;gap:8px">
-                <a href="{{ sim.url }}" target="_blank" style="padding:5px 12px;background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:7px;font-size:12px;font-weight:600;color:#7c3aed;text-decoration:none">Abrir</a>
-                <button onclick="{{ sim.onDelete }}" style="background:#fff0f3;border:2px solid #0057FF;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;color:#0057FF;cursor:pointer">Remover</button>
+                <a href="{{ sim.url }}" target="_blank" class="adm-btn-sm" style="text-decoration:none">📄 Abrir</a>
+                <button onclick="{{ sim.onDelete }}" class="adm-btn-danger">✕</button>
               </div>
             </div>
           </sc-for>
         </sc-if>
-
         <sc-if value="{{ noSimulados }}" hint-placeholder-val="">
-          <div style="text-align:center;color:#666;padding:32px">Nenhum material adicionado ainda.</div>
+          <div class="adm-empty"><div class="adm-empty-icon">🎯</div><div style="font-weight:700">Nenhum simulado adicionado</div></div>
         </sc-if>
       </div>
     </sc-if>
 
-    <!-- ═══ ABA CONFIGURACOES ═══ -->
+    <!-- ═══ CARTÓRIO ═══ -->
+    <sc-if value="{{ tabCartorio }}" hint-placeholder-val="">
+      <div>
+        <!-- Config cartório -->
+        <div class="adm-card" style="border-color:#007A3D;box-shadow:5px 5px 0 #007A3D">
+          <div class="adm-card-title" style="color:#007A3D">📜 Configurações — Concurso de Cartórios</div>
+          <div class="adm-grid-2" style="margin-bottom:14px">
+            <div>
+              <div class="adm-label">Data da prova (cartório)</div>
+              <input class="adm-input" value="{{ ctExamDate }}" oninput="{{ onCtExamDate }}" placeholder="YYYY-MM-DD" type="date">
+            </div>
+            <div>
+              <div class="adm-label">Nome do concurso</div>
+              <input class="adm-input" value="{{ ctBrand }}" oninput="{{ onCtBrand }}" placeholder="Ex: Concurso de Cartórios SP 2026">
+            </div>
+          </div>
+          <button onclick="{{ onSaveCartorio }}" class="adm-btn-yellow" style="border-color:#007A3D;box-shadow:4px 4px 0 #007A3D">💾 Salvar configurações do Cartório</button>
+        </div>
+
+        <!-- Alunos cartório -->
+        <div class="adm-card" style="border-color:#007A3D;box-shadow:5px 5px 0 #007A3D">
+          <div class="adm-card-title" style="color:#007A3D">👥 Alunos — Cartório <span class="adm-card-title-badge" style="background:#007A3D">{{ countCartorio }}</span></div>
+          <sc-if value="{{ hasCartorioStudents }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ cartorioStudents }}" as="s">
+              <div class="adm-ct-card">
+                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+                  <div>
+                    <div style="font-size:15px;font-weight:900;color:#007A3D">{{ s.name }}</div>
+                    <div style="font-size:12px;color:#666;margin-top:2px">{{ s.email }}</div>
+                  </div>
+                  <div style="display:flex;gap:6px;flex-wrap:wrap">
+                    <button onclick="{{ s.onImpersonate }}" class="adm-btn-sm">👁 Ver como aluno</button>
+                    <button onclick="{{ s.onToggleTipo }}" class="adm-btn-sm">🔄 Mover para OAB</button>
+                    <button onclick="{{ s.onRemove }}" class="adm-btn-danger">✕</button>
+                  </div>
+                </div>
+                <div class="adm-stat-row" style="border-color:#007A3D;margin-top:10px">
+                  <div class="adm-stat-cell" style="border-right-color:#007A3D">
+                    <div class="adm-stat-val" style="color:#007A3D">{{ s.progPct }}%</div>
+                    <div class="adm-stat-lbl">Plano</div>
+                  </div>
+                  <div class="adm-stat-cell" style="border-right-color:#007A3D">
+                    <div class="adm-stat-val" style="color:#007A3D">{{ s.taxa }}%</div>
+                    <div class="adm-stat-lbl">Acerto</div>
+                  </div>
+                  <div class="adm-stat-cell" style="border-right-color:#007A3D">
+                    <div class="adm-stat-val" style="color:#007A3D">{{ s.totalQ }}</div>
+                    <div class="adm-stat-lbl">Questões</div>
+                  </div>
+                  <div class="adm-stat-cell" style="border-right-color:#007A3D">
+                    <div class="adm-stat-val" style="color:#007A3D">{{ s.streak }}</div>
+                    <div class="adm-stat-lbl">Sequência</div>
+                  </div>
+                  <div class="adm-stat-cell">
+                    <div class="adm-stat-val" style="color:#007A3D">{{ s.lastLabel }}</div>
+                    <div class="adm-stat-lbl">Último estudo</div>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ noCartorioStudents }}" hint-placeholder-val="">
+            <div class="adm-empty">
+              <div class="adm-empty-icon">📜</div>
+              <div style="font-weight:700">Nenhum aluno no Cartório ainda</div>
+              <div style="font-size:13px;margin-top:6px">Na aba Alunos, clique em "🔄 Mudar plataforma" para mover alunos para Cartório</div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ═══ BOAS-VINDAS ═══ -->
+    <sc-if value="{{ tabVideo }}" hint-placeholder-val="">
+      <div>
+        <div class="adm-card">
+          <div class="adm-card-title">🎬 Vídeo de Boas-vindas</div>
+          <div style="font-size:13px;color:#555;margin-bottom:16px">Aparece na tela inicial do aluno. Faça upload ou cole um link do YouTube/Vimeo.</div>
+          <div class="adm-upload-zone" onclick="{{ onPickVideo }}">
+            <div style="font-size:28px;margin-bottom:6px">🎬</div>
+            <div style="font-size:13px;font-weight:700">{{ uploadVideoLabel }}</div>
+            <div style="font-size:11px;color:#666;margin-top:2px">MP4, WebM, MOV — até 500 MB</div>
+            <button style="margin-top:12px;background:var(--blue);color:#fff;border:3px solid var(--black);border-radius:9px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:3px 3px 0 var(--black);pointer-events:none">{{ uploadVideoBtnLabel }}</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="flex:1;height:2px;background:var(--black)"></div>
+            <span style="font-size:11px;font-weight:800;color:#666;text-transform:uppercase">ou cole um link</span>
+            <div style="flex:1;height:2px;background:var(--black)"></div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <input class="adm-input" value="{{ videoUrl }}" oninput="{{ onVideoUrl }}" placeholder="https://youtube.com/watch?v=..." style="flex:1">
+            <button onclick="{{ onSaveVideoUrl }}" class="adm-btn-primary">Salvar</button>
+          </div>
+        </div>
+        <sc-if value="{{ currentVideoUrl }}" hint-placeholder-val="">
+          <div class="adm-card" style="border-color:var(--green);box-shadow:4px 4px 0 var(--green)">
+            <div style="font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;margin-bottom:6px">✅ Vídeo atual</div>
+            <div style="font-size:12px;color:var(--cyan);word-break:break-all">{{ currentVideoUrl }}</div>
+            <button onclick="{{ onRemoveVideo }}" style="margin-top:10px;background:transparent;border:none;font-size:12px;color:var(--red);cursor:pointer;font-weight:700">✕ Remover vídeo</button>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- ═══ CONFIGURAÇÕES ═══ -->
     <sc-if value="{{ tabConfig }}" hint-placeholder-val="">
       <div>
-        <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:20px;margin-bottom:14px">
-          <div style="font-size:14px;font-weight:700;color:#0057FF;margin-bottom:16px">Configuracoes da plataforma</div>
-          <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+        <div class="adm-card">
+          <div class="adm-card-title">⚙️ Plataforma OAB</div>
+          <div class="adm-grid-2">
             <div>
-              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Nome da mentoria</div>
-              <input value="{{ cfgBrand }}" oninput="{{ onCfgBrand }}" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
+              <div class="adm-label">Nome da mentoria</div>
+              <input class="adm-input" value="{{ cfgBrand }}" oninput="{{ onCfgBrand }}" placeholder="Ex: Mentoria Prof. Líbero">
             </div>
             <div>
-              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Data da prova (YYYY-MM-DD)</div>
-              <input value="{{ cfgExam }}" oninput="{{ onCfgExam }}" placeholder="2026-09-06" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
+              <div class="adm-label">Data da prova OAB (YYYY-MM-DD)</div>
+              <input class="adm-input" value="{{ cfgExam }}" oninput="{{ onCfgExam }}" placeholder="2026-09-06" type="date">
             </div>
             <div>
-              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Meta de questoes por dia</div>
-              <input value="{{ cfgGoal }}" oninput="{{ onCfgGoal }}" type="number" min="10" max="60" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
-            </div>
-          </div>
-        </div>
-
-        <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;padding:20px;margin-bottom:14px">
-          <div style="font-size:13px;font-weight:700;color:#0057FF;margin-bottom:14px">Acesso admin</div>
-          <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
-            <div>
-              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">E-mail admin</div>
-              <input value="{{ cfgAdminEmail }}" oninput="{{ onCfgAdminEmail }}" type="email" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
-            </div>
-            <div>
-              <div style="font-size:11px;font-weight:600;color:#666;margin-bottom:4px">Senha admin (login local)</div>
-              <input value="{{ cfgAdminPass }}" oninput="{{ onCfgAdminPass }}" type="text" style="width:100%;height:36px;border:1.5px solid #ffe00044;border-radius:8px;padding:0 10px;font-size:13px;background:#FFF9E6;color:#111;box-sizing:border-box">
+              <div class="adm-label">Meta de questões/dia</div>
+              <input class="adm-input" value="{{ cfgGoal }}" oninput="{{ onCfgGoal }}" type="number" min="10" max="60" placeholder="27">
             </div>
           </div>
         </div>
-
-        <button onclick="{{ onSaveConfig }}" style="background:#ffe000;color:#050510;border:none;border-radius:10px;padding:11px 28px;font-size:14px;font-weight:700;cursor:pointer">Salvar configuracoes</button>
+        <div class="adm-card">
+          <div class="adm-card-title">🔐 Acesso Admin</div>
+          <div class="adm-grid-2">
+            <div>
+              <div class="adm-label">E-mail admin</div>
+              <input class="adm-input" value="{{ cfgAdminEmail }}" oninput="{{ onCfgAdminEmail }}" type="email">
+            </div>
+            <div>
+              <div class="adm-label">Senha admin (login local)</div>
+              <input class="adm-input" value="{{ cfgAdminPass }}" oninput="{{ onCfgAdminPass }}" type="text">
+            </div>
+          </div>
+        </div>
+        <button onclick="{{ onSaveConfig }}" class="adm-btn-primary">💾 Salvar Configurações</button>
       </div>
     </sc-if>
 
@@ -301,12 +444,14 @@ class Component extends DCLogic {
     var settings = (props.data && props.data.settings) || {};
     this.state = {
       tab: 'alunos',
-      newName: '', newEmail: '', addMsg: '', _wasAdding: false,
+      newName: '', newEmail: '', newTipo: 'oab', addMsg: '', _wasAdding: false,
       avisoTitle: '', avisoMsg: '',
       videoUrl: settings.welcomeVideoUrl || '',
       uploadingVideo: false,
       simName: '', simUrl: '', simTimer: 5,
       uploadingPdf: false,
+      ctExamDate: settings.ctExamDate || '',
+      ctBrand: settings.ctBrand || '',
       cfgBrand: settings.brandName || '',
       cfgExam: settings.examDate || '',
       cfgGoal: String(settings.qPerDay || 27),
@@ -330,22 +475,20 @@ class Component extends DCLogic {
 
   async _uploadFile(file, folder, onDone) {
     var sb = this._getSb();
-    if (!sb) { this.setState({msg: 'Supabase nao disponivel.', msgType: 'err'}); return; }
-    var ext = file.name.split('.').pop().toLowerCase();
-    var path = folder + '/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    if (!sb) { this.setState({msg: 'Supabase não disponível.', msgType: 'err'}); return; }
     var setUploading = folder === 'videos'
       ? function(v){ this.setState({uploadingVideo: v}); }.bind(this)
       : function(v){ this.setState({uploadingPdf: v}); }.bind(this);
     setUploading(true);
     this.setState({msg: 'Enviando arquivo...', msgType: 'ok'});
+    var path = folder + '/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
     var result = await sb.storage.from('media').upload(path, file, {upsert: true});
     if (result.error) {
       setUploading(false);
       this.setState({msg: 'Erro no upload: ' + result.error.message, msgType: 'err'});
       return;
     }
-    var urlResult = sb.storage.from('media').getPublicUrl(path);
-    var publicUrl = urlResult.data && urlResult.data.publicUrl;
+    var publicUrl = sb.storage.from('media').getPublicUrl(path).data.publicUrl;
     setUploading(false);
     onDone(publicUrl);
   }
@@ -356,40 +499,39 @@ class Component extends DCLogic {
     var settings = d.settings || {};
     var self = this;
 
-    // Detecta quando addingStudent volta a false (aluno criado com sucesso)
     if (st._wasAdding && !d.addingStudent) {
-      setTimeout(function(){ self.setState({addMsg:'Aluno criado! Senha inicial: oab123', _wasAdding:false}); }, 0);
+      setTimeout(function(){ self.setState({addMsg:'Aluno criado! Senha: oab123', _wasAdding:false}); }, 0);
     } else if (d.addingStudent && !st._wasAdding) {
       setTimeout(function(){ self.setState({_wasAdding:true}); }, 0);
     }
 
     var tabDefs = [
-      {id:'alunos', label:'Alunos'},
-      {id:'avisos', label:'Avisos'},
-      {id:'boas-vindas', label:'Boas-vindas'},
-      {id:'simulados', label:'Simulados'},
-      {id:'config', label:'Configuracoes'}
+      {id:'alunos',    icon:'👥', label:'Alunos'},
+      {id:'cartorio',  icon:'📜', label:'Cartório'},
+      {id:'avisos',    icon:'📢', label:'Avisos'},
+      {id:'simulados', icon:'🎯', label:'Simulados'},
+      {id:'boas-vindas',icon:'🎬',label:'Boas-vindas'},
+      {id:'config',    icon:'⚙️', label:'Config'},
     ];
-    var tabs = tabDefs.map(function(t) {
-      return {
-        label: t.label,
-        style: 'padding:10px 16px;border:none;border-bottom:3px solid ' + (st.tab === t.id ? '#2551c3' : 'transparent') + ';background:transparent;font-size:13px;font-weight:' + (st.tab === t.id ? '700' : '500') + ';color:' + (st.tab === t.id ? '#2551c3' : '#64748b') + ';cursor:pointer;white-space:nowrap',
-        onClick: (function(id){ return function(){ self.setState({tab:id, msg:''}); if(id==='alunos'&&d.onRefresh){d.onRefresh();} }; })(t.id)
-      };
-    });
+    var tabsHtml = tabDefs.map(function(t) {
+      var active = st.tab === t.id;
+      return '<button onclick="this.closest(\'x-dc\').__dc.setState({tab:\'' + t.id + '\',msg:\'\'})" class="adm-tab' + (active ? ' active' : '') + '">' + t.icon + ' ' + t.label + '</button>';
+    }).join('');
 
-    var students = (d.list || []).map(function(s) {
-      var statusBg = '#f0fdf4';
-      if (s.status === 'Atrasado' || s.status === 'Parou') statusBg = '#fef2f2';
-      else if (s.status === 'Atencao') statusBg = '#fffbeb';
+    var allStudents = (d.list || []).map(function(s) {
+      var statusBg = '#D4F7E0'; var statusColor = '#007A3D';
+      if (s.status === 'Atrasado' || s.status === 'Parou') { statusBg = '#FFE0E0'; statusColor = '#D32F2F'; }
+      else if (s.status === 'Atencao') { statusBg = '#FFF3CC'; statusColor = '#FF6600'; }
+      var isCartorio = s.tipo === 'cartorio';
       return {
         name: s.name || 'Aluno', email: s.email || '',
         progPct: s.progPct || 0, taxa: s.taxa || 0,
         totalQ: s.totalQ || 0, streak: s.streak || 0,
         adherence: s.adherence || 0, nota: s.nota || 0,
-        status: s.status || 'Em dia', statusColor: s.statusColor || '#16a34a',
-        statusBg: statusBg,
-        lastLabel: s.last ? ('Ha ' + s.daysSince + ' dia(s)') : 'Nunca estudou',
+        status: s.status || 'Em dia', statusColor: statusColor, statusBg: statusBg,
+        lastLabel: s.last ? (s.daysSince + 'd atrás') : 'Nunca',
+        tipoLabel: isCartorio ? '📜 Cartório' : '⚡ OAB',
+        tipoClass: isCartorio ? 'adm-student-tipo-ct' : 'adm-student-tipo-oab',
         onRemove: (function(sid, sname){ return function(){
           if (confirm('Remover ' + sname + '?')) { d.onRemoveStudent && d.onRemoveStudent(sid); }
         }; })(s.id, s.name),
@@ -397,15 +539,18 @@ class Component extends DCLogic {
           if (confirm('Resetar progresso de ' + sname + '?')) { d.onResetProgress && d.onResetProgress(sid); }
         }; })(s.id, s.name),
         onImpersonate: (function(sid){ return function(){ d.onImpersonate && d.onImpersonate(sid); }; })(s.id),
-        tipoLabel: s.tipo === 'cartorio' ? '📜 Cartório' : '⚡ OAB',
-        tipoBg: s.tipo === 'cartorio' ? '#C8F7DC' : '#E8F0FF',
-        tipoColor: s.tipo === 'cartorio' ? '#007A3D' : '#0057FF',
         onToggleTipo: (function(sid, curTipo){ return function(){
           var novo = curTipo === 'cartorio' ? 'oab' : 'cartorio';
-          d.onSetTipo && d.onSetTipo(sid, novo);
-        }; })(s.id, s.tipo||'oab')
+          if (confirm('Mover ' + (curTipo === 'cartorio' ? 'para OAB' : 'para Cartório') + '?')) {
+            d.onSetTipo && d.onSetTipo(sid, novo);
+          }
+        }; })(s.id, s.tipo || 'oab')
       };
     });
+
+    var countOAB = allStudents.filter(function(s){ return s.tipoLabel.indexOf('OAB') > -1; }).length;
+    var countCartorio = allStudents.filter(function(s){ return s.tipoLabel.indexOf('Cartório') > -1; }).length;
+    var cartorioStudents = allStudents.filter(function(s){ return s.tipoLabel.indexOf('Cartório') > -1; });
 
     var avisos = (settings.avisos || []).map(function(a, i) {
       return {
@@ -421,54 +566,56 @@ class Component extends DCLogic {
     var simulados = (settings.simulados || []).map(function(s, i) {
       return {
         name: s.name, url: s.url, date: s.date || '',
-        timerLabel: s.timer ? s.timer + 'h' : '5h',
+        timerLabel: (s.timer || 5) + 'h',
         onDelete: (function(idx){ return function(){
           var list = (settings.simulados || []).filter(function(_,j){ return j !== idx; });
           d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {simulados: list}));
-          self.setState({msg:'Material removido.', msgType:'ok'});
+          self.setState({msg:'Simulado removido.', msgType:'ok'});
         }; })(i)
       };
     });
 
-    var currentVideoUrl = settings.welcomeVideoUrl || '';
-
     return {
       brandName: d.brandName || 'OAB',
-      examDateLabel: d.examDate ? 'Prova: ' + d.examDate : '',
       onLogout: d.onLogout || function(){},
       onRefresh: d.onRefresh || function(){},
       refreshing: !!d.refreshing,
-      tabs: tabs,
+      tabsHtml: tabsHtml,
       msg: st.msg,
-      msgBg: st.msgType === 'ok' ? '#f0fdf4' : '#fef2f2',
-      msgColor: st.msgType === 'ok' ? '#16a34a' : '#dc2626',
+      msgClass: st.msgType === 'ok' ? 'ok' : 'err',
 
       tabAlunos: st.tab === 'alunos',
       tabAvisos: st.tab === 'avisos',
       tabVideo: st.tab === 'boas-vindas',
       tabSimulados: st.tab === 'simulados',
       tabConfig: st.tab === 'config',
+      tabCartorio: st.tab === 'cartorio',
 
-      students: students,
-      studentCount: students.length,
-      hasStudents: students.length > 0,
-      noStudents: students.length === 0,
+      students: allStudents,
+      studentCount: allStudents.length,
+      hasStudents: allStudents.length > 0,
+      noStudents: allStudents.length === 0,
+      countOAB: countOAB,
+      countCartorio: countCartorio,
+      cartorioStudents: cartorioStudents,
+      hasCartorioStudents: cartorioStudents.length > 0,
+      noCartorioStudents: cartorioStudents.length === 0,
+
       newName: st.newName, newEmail: st.newEmail,
-      addMsg: d.addingStudent ? 'Criando conta no sistema...' : st.addMsg,
+      addMsg: d.addingStudent ? 'Criando conta...' : st.addMsg,
       onNewName: function(e){ self.setState({newName: e.target.value}); },
       onNewEmail: function(e){ self.setState({newEmail: e.target.value}); },
+      onNewTipo: function(e){ self.setState({newTipo: e.target.value}); },
       addingStudent: !!d.addingStudent,
       onAddStudent: function(){
         if (!st.newName.trim() || !st.newEmail.trim()) { self.setState({addMsg:'Preencha nome e e-mail.'}); return; }
         self.setState({addMsg:'Criando conta...'});
-        d.onAddStudent && d.onAddStudent(st.newName.trim(), st.newEmail.trim());
-        // limpa nome/email imediatamente; addMsg será atualizado pelo pai
+        d.onAddStudent && d.onAddStudent(st.newName.trim(), st.newEmail.trim(), st.newTipo || 'oab');
         self.setState({newName:'', newEmail:''});
       },
 
-      avisos: avisos,
-      hasAvisos: avisos.length > 0,
-      noAvisos: avisos.length === 0,
+      avisos: avisos, avisoCount: avisos.length,
+      hasAvisos: avisos.length > 0, noAvisos: avisos.length === 0,
       avisoTitle: st.avisoTitle, avisoMsg: st.avisoMsg,
       onAvisoTitle: function(e){ self.setState({avisoTitle: e.target.value}); },
       onAvisoMsg: function(e){ self.setState({avisoMsg: e.target.value}); },
@@ -479,59 +626,66 @@ class Component extends DCLogic {
         self.setState({avisoTitle:'', avisoMsg:'', msg:'Aviso publicado!', msgType:'ok'});
       },
 
-      currentVideoUrl: currentVideoUrl,
+      currentVideoUrl: settings.welcomeVideoUrl || '',
       videoUrl: st.videoUrl,
       onVideoUrl: function(e){ self.setState({videoUrl: e.target.value}); },
       onSaveVideoUrl: function(){
         if (!st.videoUrl.trim()) return;
         d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {welcomeVideoUrl: st.videoUrl.trim()}));
-        self.setState({msg:'Link do video salvo!', msgType:'ok'});
+        self.setState({msg:'Vídeo salvo!', msgType:'ok'});
       },
       onRemoveVideo: function(){
         d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {welcomeVideoUrl: ''}));
-        self.setState({videoUrl:'', msg:'Video removido.', msgType:'ok'});
+        self.setState({videoUrl:'', msg:'Vídeo removido.', msgType:'ok'});
       },
       uploadingVideoDisabled: st.uploadingVideo ? 'opacity:0.6;pointer-events:none' : '',
-      uploadVideoBtnLabel: st.uploadingVideo ? 'Enviando...' : 'Escolher video do computador',
-      uploadVideoLabel: st.uploadingVideo ? 'Aguarde, enviando...' : 'Arraste ou clique para selecionar',
+      uploadVideoBtnLabel: st.uploadingVideo ? 'Enviando...' : 'Escolher vídeo',
+      uploadVideoLabel: st.uploadingVideo ? 'Aguarde, enviando...' : 'Clique para selecionar',
       onPickVideo: function(){ document.getElementById('adminVideoInput').click(); },
       onVideoFileChange: function(e){
-        var file = e.target.files && e.target.files[0];
-        if (!file) return;
+        var file = e.target.files && e.target.files[0]; if (!file) return;
         e.target.value = '';
         self._uploadFile(file, 'videos', function(url){
           d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {welcomeVideoUrl: url}));
-          self.setState({videoUrl: url, msg:'Video enviado e salvo!', msgType:'ok'});
+          self.setState({videoUrl: url, msg:'Vídeo enviado!', msgType:'ok'});
         });
       },
 
-      simulados: simulados,
-      hasSimulados: simulados.length > 0,
-      noSimulados: simulados.length === 0,
+      simulados: simulados, simCount: simulados.length,
+      hasSimulados: simulados.length > 0, noSimulados: simulados.length === 0,
       simName: st.simName, simUrl: st.simUrl, simTimer: st.simTimer,
       onSimName: function(e){ self.setState({simName: e.target.value}); },
       onSimUrl: function(e){ self.setState({simUrl: e.target.value}); },
       onSimTimer: function(e){ self.setState({simTimer: parseFloat(e.target.value)}); },
       onSaveSimulado: function(){
-        if (!st.simName.trim() || !st.simUrl.trim()) return;
+        if (!st.simName.trim() || !st.simUrl.trim()) { self.setState({msg:'Preencha nome e URL.', msgType:'err'}); return; }
         var list = [{id:Date.now(), name:st.simName.trim(), url:st.simUrl.trim(), timer:st.simTimer||5, date:new Date().toLocaleDateString('pt-BR')}].concat(settings.simulados||[]);
         d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {simulados: list}));
         self.setState({simName:'', simUrl:'', simTimer:5, msg:'Simulado adicionado!', msgType:'ok'});
       },
       uploadingPdfDisabled: st.uploadingPdf ? 'opacity:0.6;pointer-events:none' : '',
-      uploadPdfBtnLabel: st.uploadingPdf ? 'Enviando...' : 'Fazer upload de PDF ou video',
-      uploadPdfLabel: st.uploadingPdf ? 'Aguarde, enviando...' : 'Arraste ou clique para selecionar',
+      uploadPdfBtnLabel: st.uploadingPdf ? 'Enviando...' : 'Fazer upload de PDF',
+      uploadPdfLabel: st.uploadingPdf ? 'Aguarde, enviando...' : 'Clique para selecionar',
       onPickPdf: function(){ document.getElementById('adminPdfInput').click(); },
       onPdfFileChange: function(e){
-        var file = e.target.files && e.target.files[0];
-        if (!file) return;
+        var file = e.target.files && e.target.files[0]; if (!file) return;
         var name = st.simName.trim() || file.name;
         e.target.value = '';
         self._uploadFile(file, 'simulados', function(url){
           var list = [{id:Date.now(), name:name, url:url, timer:st.simTimer||5, date:new Date().toLocaleDateString('pt-BR')}].concat(settings.simulados||[]);
           d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {simulados: list}));
-          self.setState({simName:'', simUrl:'', simTimer:5, msg:'Arquivo enviado e adicionado!', msgType:'ok'});
+          self.setState({simName:'', simUrl:'', simTimer:5, msg:'Arquivo enviado!', msgType:'ok'});
         });
+      },
+
+      ctExamDate: st.ctExamDate, ctBrand: st.ctBrand,
+      onCtExamDate: function(e){ self.setState({ctExamDate: e.target.value}); },
+      onCtBrand: function(e){ self.setState({ctBrand: e.target.value}); },
+      onSaveCartorio: function(){
+        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {
+          ctExamDate: st.ctExamDate, ctBrand: st.ctBrand
+        }));
+        self.setState({msg:'Configurações do Cartório salvas!', msgType:'ok'});
       },
 
       cfgBrand: st.cfgBrand, cfgExam: st.cfgExam, cfgGoal: st.cfgGoal,
@@ -547,7 +701,7 @@ class Component extends DCLogic {
           qPerDay: parseInt(st.cfgGoal) || 27,
           adminEmail: st.cfgAdminEmail, adminPass: st.cfgAdminPass
         }));
-        self.setState({msg:'Configuracoes salvas!', msgType:'ok'});
+        self.setState({msg:'Configurações salvas!', msgType:'ok'});
       }
     };
   }
