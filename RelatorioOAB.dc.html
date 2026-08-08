@@ -1,55 +1,184 @@
 <x-dc>
-<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#111;padding:20px 16px;max-width:960px;margin:0 auto">
+<style>
+.rpt-root { font-family:-apple-system,BlinkMacSystemFont,sans-serif; background:#FFF9E6; min-height:100vh; padding:20px 16px; max-width:980px; margin:0 auto; color:#0D0D0D; }
+.pop-card { background:#fff; border:3px solid #0D0D0D; border-radius:12px; box-shadow:4px 4px 0 #0D0D0D; }
+.pop-title { font-size:12px; font-weight:800; color:#E8003D; text-transform:uppercase; letter-spacing:.1em; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.pop-title::before { content:''; display:inline-block; width:14px; height:14px; background:#E8003D; border:2px solid #0D0D0D; border-radius:3px; flex-shrink:0; }
+.stat-chip { background:#FFE500; border:3px solid #0D0D0D; border-radius:10px; box-shadow:3px 3px 0 #0D0D0D; padding:14px 12px; text-align:center; }
+.badge { display:inline-block; padding:3px 10px; border:2px solid #0D0D0D; border-radius:99px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; }
+@media print { .no-print { display:none !important; } body { background:#fff; } .pop-card { box-shadow:none; } }
+</style>
 
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+<div class="rpt-root">
+
+  <!-- HEADER -->
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px">
     <div>
-      <div style="font-size:18px;font-weight:900;color:#E8003D;text-transform:uppercase">Relatorio de Desempenho</div>
-      <div style="font-size:12px;color:#7B2FFF;margin-top:2px">{{ studentName }}</div>
+      <div style="font-size:28px;font-weight:900;color:#0D0D0D;text-transform:uppercase;letter-spacing:-.03em;line-height:1">Relatório</div>
+      <div style="font-size:28px;font-weight:900;color:#E8003D;text-transform:uppercase;letter-spacing:-.03em;line-height:1">de Desempenho</div>
+      <div style="margin-top:8px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:13px;font-weight:700;color:#0D0D0D">{{ studentName }}</span>
+        <span class="badge" style="background:#00A8E8;color:#fff">OAB 1ª Fase</span>
+      </div>
+      <div style="font-size:11px;color:#666;margin-top:4px">Gerado em {{ reportDate }}</div>
     </div>
-    <button onclick="{{ onExport }}" style="background:#E8003D;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer">Imprimir PDF</button>
+    <div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap">
+      <button onclick="{{ onExport }}" style="background:#E8003D;color:#fff;border:3px solid #0D0D0D;border-radius:9px;padding:10px 20px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:4px 4px 0 #0D0D0D;text-transform:uppercase;letter-spacing:.04em">🖨 Imprimir PDF</button>
+    </div>
   </div>
 
+  <!-- STAT CHIPS ROW -->
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:20px">
-    <sc-for list="{{ cards }}" as="card">
-      <div style="background:#fff;border:2px solid #e0e0e0;border-radius:14px;padding:14px 16px;text-align:center">
-        <div style="font-size:22px;font-weight:800;color:{{ card.color }}">{{ card.value }}</div>
-        <div style="font-size:10px;font-weight:700;color:#7B2FFF;text-transform:uppercase;margin-top:2px">{{ card.label }}</div>
+    <sc-for list="{{ chips }}" as="chip">
+      <div style="background:{{ chip.bg }};border:3px solid #0D0D0D;border-radius:12px;box-shadow:4px 4px 0 #0D0D0D;padding:14px 12px;text-align:center">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:{{ chip.labelColor }};margin-bottom:6px">{{ chip.label }}</div>
+        <div style="font-size:26px;font-weight:900;color:{{ chip.valueColor }};line-height:1;font-family:'Fraunces',serif">{{ chip.value }}</div>
+        <div style="font-size:10px;color:{{ chip.subColor }};margin-top:4px;font-weight:600">{{ chip.sub }}</div>
       </div>
     </sc-for>
   </div>
 
-  <sc-if value="{{ hasEvo }}" hint-placeholder-val="{{ true }}">
-    <div style="background:#fff;border:2px solid #e0e0e0;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-      <div style="font-size:13px;font-weight:700;color:#E8003D;margin-bottom:14px">Evolucao semanal — % de acerto</div>
-      <div style="display:flex;align-items:flex-end;gap:6px;height:90px;padding-bottom:4px">
+  <!-- PROGRESS BAND -->
+  <div class="pop-card" style="padding:16px 20px;margin-bottom:16px">
+    <div class="pop-title">Progresso do cronograma</div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="flex:1;height:22px;background:#FFF9E6;border:2px solid #0D0D0D;border-radius:6px;overflow:hidden">
+        <div style="height:100%;width:{{ progPctW }};background:repeating-linear-gradient(45deg,#E8003D,#E8003D 10px,#FFE500 10px,#FFE500 20px);animation:stripe-move .8s linear infinite"></div>
+      </div>
+      <div style="font-size:22px;font-weight:900;color:#E8003D;min-width:52px;text-align:right;font-family:'Fraunces',serif">{{ progPct }}%</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:#666;font-weight:600">
+      <span>{{ completedDays }} dias concluídos</span>
+      <span>{{ studyDays }} dias no plano</span>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+
+    <!-- WEEKLY EVO CHART -->
+    <sc-if value="{{ hasEvo }}" hint-placeholder-val="{{ true }}">
+    <div class="pop-card" style="padding:18px 20px">
+      <div class="pop-title">Evolução semanal — % acerto</div>
+      <div style="display:flex;align-items:flex-end;gap:5px;height:110px">
         <sc-for list="{{ evo }}" as="w">
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
-            <div style="font-size:9px;color:#00A8E8;font-weight:700">{{ w.pct }}%</div>
-            <div style="width:100%;border-radius:4px 4px 0 0;min-height:4px;height:{{ w.barH }}px;background:{{ w.barColor }}"></div>
-            <div style="font-size:9px;color:#7B2FFF;font-weight:600">{{ w.label }}</div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+            <div style="font-size:9px;font-weight:800;color:#0D0D0D">{{ w.pct }}%</div>
+            <div style="width:100%;border:2px solid #0D0D0D;border-bottom:none;border-radius:4px 4px 0 0;min-height:4px;height:{{ w.barH }}px;background:{{ w.barBg }}"></div>
+            <div style="font-size:9px;font-weight:700;color:#666">{{ w.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="border-top:2px solid #0D0D0D;margin-top:0"></div>
+      <!-- legend -->
+      <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+        <span style="font-size:9px;font-weight:700;display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:#00C040;border:1.5px solid #0D0D0D;display:inline-block;border-radius:2px"></span>≥70%</span>
+        <span style="font-size:9px;font-weight:700;display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:#FF6600;border:1.5px solid #0D0D0D;display:inline-block;border-radius:2px"></span>50–69%</span>
+        <span style="font-size:9px;font-weight:700;display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:#E8003D;border:1.5px solid #0D0D0D;display:inline-block;border-radius:2px"></span>&lt;50%</span>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- QUICK DIAGNOSIS -->
+    <div class="pop-card" style="padding:18px 20px">
+      <div class="pop-title">Diagnóstico rápido</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <sc-for list="{{ diagnosis }}" as="d">
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:{{ d.bg }};border:2px solid #0D0D0D;border-radius:8px">
+            <span style="font-size:18px">{{ d.icon }}</span>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:800;color:#0D0D0D">{{ d.label }}</div>
+              <div style="font-size:11px;color:#444">{{ d.text }}</div>
+            </div>
           </div>
         </sc-for>
       </div>
     </div>
-  </sc-if>
 
-  <div style="background:#fff;border:2px solid #e0e0e0;border-radius:14px;padding:18px 20px;margin-bottom:16px">
-    <div style="font-size:13px;font-weight:700;color:#E8003D;margin-bottom:14px">Desempenho por materia</div>
+  </div>
+
+  <!-- MATERIAS TABLE -->
+  <div class="pop-card" style="padding:18px 20px;margin-bottom:16px">
+    <div class="pop-title">Desempenho por matéria</div>
     <sc-if value="{{ noSubj }}" hint-placeholder-val="">
-      <div style="text-align:center;color:#7B2FFF;padding:20px;font-size:13px">Nenhuma questao registrada ainda.</div>
+      <div style="text-align:center;color:#666;padding:20px;font-size:13px">Nenhuma questão registrada ainda.</div>
     </sc-if>
-    <sc-for list="{{ subjArr }}" as="s">
-      <div style="margin-bottom:12px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-          <div style="font-size:12px;font-weight:600;color:#111">{{ s.name }}</div>
-          <div style="font-size:12px;font-weight:700;color:{{ s.pctColor }}">{{ s.pctLabel }}</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <sc-for list="{{ subjArr }}" as="s">
+        <div style="padding:10px 12px;background:#FFF9E6;border:2px solid #e0e0e0;border-radius:9px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:10px;height:10px;border-radius:2px;background:{{ s.barColor }};border:1.5px solid #0D0D0D;flex-shrink:0"></div>
+              <div style="font-size:12px;font-weight:700;color:#0D0D0D">{{ s.name }}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:10px;color:#666">{{ s.qLabel }}</span>
+              <span class="badge" style="background:{{ s.badgeBg }};color:{{ s.badgeColor }}">{{ s.pctLabel }}</span>
+            </div>
+          </div>
+          <div style="height:8px;background:#e0e0e0;border:1.5px solid #0D0D0D;border-radius:4px;overflow:hidden">
+            <div style="height:100%;width:{{ s.barW }}%;background:{{ s.barColor }}"></div>
+          </div>
         </div>
-        <div style="height:7px;background:#FFF9E6;border-radius:4px;overflow:hidden">
-          <div style="height:100%;width:{{ s.barW }}%;background:{{ s.barColor }};border-radius:4px"></div>
-        </div>
-        <div style="font-size:10px;color:#7B2FFF;margin-top:2px">{{ s.qLabel }}</div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- TOP / BOTTOM MATERIAS -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+    <sc-if value="{{ hasTop }}" hint-placeholder-val="">
+    <div class="pop-card" style="padding:18px 20px;border-color:#00C040;box-shadow:4px 4px 0 #00C040">
+      <div style="font-size:12px;font-weight:800;color:#00C040;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">🏆 Seus pontos fortes</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <sc-for list="{{ topMats }}" as="t">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#f0fff4;border:2px solid #00C040;border-radius:8px">
+            <div style="font-size:12px;font-weight:700;color:#0D0D0D">{{ t.name }}</div>
+            <span class="badge" style="background:#00C040;color:#fff">{{ t.pct }}%</span>
+          </div>
+        </sc-for>
       </div>
-    </sc-for>
+    </div>
+    </sc-if>
+    <sc-if value="{{ hasBot }}" hint-placeholder-val="">
+    <div class="pop-card" style="padding:18px 20px;border-color:#E8003D;box-shadow:4px 4px 0 #E8003D">
+      <div style="font-size:12px;font-weight:800;color:#E8003D;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">⚠ Reforçar agora</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <sc-for list="{{ botMats }}" as="b">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#fff0f3;border:2px solid #E8003D;border-radius:8px">
+            <div style="font-size:12px;font-weight:700;color:#0D0D0D">{{ b.name }}</div>
+            <span class="badge" style="background:#E8003D;color:#fff">{{ b.pct }}%</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+
+  <!-- NOTA ESTIMADA vs META -->
+  <div class="pop-card" style="padding:18px 20px;margin-bottom:16px;background:#7B2FFF;border-color:#0D0D0D">
+    <div style="font-size:12px;font-weight:800;color:#FFE500;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px">🎯 Nota estimada vs meta</div>
+    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+      <div style="text-align:center">
+        <div style="font-size:48px;font-weight:900;color:#FFE500;font-family:'Fraunces',serif;line-height:1;-webkit-text-stroke:1px #0D0D0D">{{ nota }}</div>
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.85);text-transform:uppercase;margin-top:4px">Nota estimada /80</div>
+      </div>
+      <div style="flex:1;min-width:160px">
+        <div style="margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+            <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.8)">Mínimo OAB (50%)</span>
+            <span style="font-size:11px;font-weight:800;color:#FFE500">40 pontos</span>
+          </div>
+          <div style="height:10px;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.5);border-radius:4px;overflow:hidden">
+            <div style="height:100%;width:{{ notaBarW }};background:#FFE500"></div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,.9);font-weight:600">{{ notaMsg }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:12px;font-size:11px;color:#999;font-weight:600">
+    Mentoria Prof. Líbero · Preparatório OAB · {{ reportDate }}
   </div>
 
 </div>
@@ -59,38 +188,99 @@ class Component extends DCLogic {
   renderVals() {
     var d = this.props.data || {};
     var C = d.C || {};
-    var evo = (C.evo || []).map(function(w) {
-      var h = Math.max(4, Math.round((w.pct / 100) * 60));
-      return { label: 'S' + w.week, pct: w.pct, barH: h, barColor: w.pct >= 70 ? '#16a34a' : w.pct >= 50 ? '#f59e0b' : '#ef4444' };
+    var today = new Date().toLocaleDateString('pt-BR');
+
+    // ── chips ────────────────────────────────────────────────────────────────
+    var taxa = C.taxa || 0;
+    var chips = [
+      { label:'Progresso',  value:(C.progPct||0)+'%', sub:'do cronograma',
+        bg:'#FFE500', labelColor:'#0D0D0D', valueColor:'#E8003D', subColor:'#555' },
+      { label:'Taxa de acerto', value:taxa+'%', sub: taxa>=70?'✓ Meta atingida': taxa>=50?'Quase lá':'Precisa melhorar',
+        bg: taxa>=70?'#00C040': taxa>=50?'#FF6600':'#E8003D',
+        labelColor:'#fff', valueColor:'#fff', subColor:'rgba(255,255,255,.85)' },
+      { label:'Questões', value:C.totalQ||0, sub:(C.totalA||0)+' acertos',
+        bg:'#00A8E8', labelColor:'#fff', valueColor:'#fff', subColor:'rgba(255,255,255,.85)' },
+      { label:'Sequência', value:(C.streak||0)+'d', sub:'dias seguidos',
+        bg:'#7B2FFF', labelColor:'#FFE500', valueColor:'#FFE500', subColor:'rgba(255,255,255,.8)' },
+      { label:'Aderência', value:(C.adherence||0)+'%', sub:'ao cronograma',
+        bg:C.adherence>=80?'#00C040':C.adherence>=60?'#FF6600':'#E8003D',
+        labelColor:'#fff', valueColor:'#fff', subColor:'rgba(255,255,255,.85)' },
+      { label:'Nota est.', value:(C.nota||0)+'/80', sub: C.nota>=40?'Aprovado ✓':'Abaixo da média',
+        bg:'#FFF9E6', labelColor:'#0D0D0D', valueColor:'#0D0D0D', subColor:'#555' }
+    ];
+
+    // ── evo chart ────────────────────────────────────────────────────────────
+    var evo = (C.evo || []).slice(-12).map(function(w) {
+      var h = Math.max(6, Math.round((w.pct / 100) * 80));
+      var bg = w.pct >= 70 ? '#00C040' : w.pct >= 50 ? '#FF6600' : '#E8003D';
+      return { label:'S'+w.week, pct:w.pct, barH:h, barBg:bg };
     });
+
+    // ── subject bars ─────────────────────────────────────────────────────────
     var matColors = C.matColors || {};
-    var subjArr = (C.subjArr || []).filter(function(s) { return s.q > 0; }).map(function(s) {
-      var color = matColors[s.name] || '#2551c3';
+    var allSubj = (C.subjArr || []).filter(function(s){ return s.q > 0; });
+    var subjArr = allSubj.map(function(s) {
+      var pct = s.pct != null ? s.pct : null;
+      var badgeBg = pct == null ? '#e0e0e0' : pct >= 70 ? '#00C040' : pct >= 50 ? '#FF6600' : '#E8003D';
+      var badgeColor = pct == null ? '#555' : '#fff';
       return {
         name: s.name,
-        pctLabel: s.pct != null ? s.pct + '%' : '--',
-        pctColor: s.pct == null ? '#94a3b8' : s.pct >= 70 ? '#16a34a' : s.pct >= 50 ? '#d97706' : '#dc2626',
-        barW: s.pct || 0,
-        barColor: color,
-        qLabel: (s.a || 0) + ' acertos de ' + (s.q || 0) + ' questoes'
+        pctLabel: pct != null ? pct+'%' : '--',
+        barW: pct || 0,
+        barColor: matColors[s.name] || '#E8003D',
+        badgeBg: badgeBg,
+        badgeColor: badgeColor,
+        qLabel: (s.a||0)+' acertos / '+(s.q||0)+' questões'
       };
     });
-    var cards = [
-      { label: 'Progresso', value: (C.progPct || 0) + '%', color: '#2551c3' },
-      { label: 'Acerto', value: (C.taxa || 0) + '%', color: C.taxa >= 70 ? '#16a34a' : C.taxa >= 50 ? '#d97706' : '#dc2626' },
-      { label: 'Questoes', value: C.totalQ || 0, color: '#16203a' },
-      { label: 'Sequencia', value: (C.streak || 0) + 'd', color: '#7c3aed' },
-      { label: 'Aderencia', value: (C.adherence || 0) + '%', color: '#0891b2' },
-      { label: 'Nota Est.', value: (C.nota || 0) + '/80', color: '#16203a' }
-    ];
+
+    // ── top / bottom ─────────────────────────────────────────────────────────
+    var withPct = allSubj.filter(function(s){ return s.pct != null && s.q >= 3; })
+      .sort(function(a,b){ return b.pct - a.pct; });
+    var topMats = withPct.slice(0,3).map(function(s){ return {name:s.name, pct:s.pct}; });
+    var botMats = withPct.slice(-3).reverse().map(function(s){ return {name:s.name, pct:s.pct}; });
+
+    // ── diagnosis ─────────────────────────────────────────────────────────────
+    var diagnosis = [];
+    var adh = C.adherence || 0;
+    if (adh >= 80) diagnosis.push({icon:'🔥', label:'Aderência excelente', text:'Você está seguindo o cronograma muito bem!', bg:'#f0fff4'});
+    else if (adh >= 60) diagnosis.push({icon:'⚡', label:'Aderência ok', text:'Tente aumentar a consistência nos estudos.', bg:'#fffbe6'});
+    else diagnosis.push({icon:'⚠️', label:'Aderência baixa', text:'Estude mais dias para atingir a meta.', bg:'#fff0f3'});
+
+    if (taxa >= 70) diagnosis.push({icon:'🏆', label:'Taxa de acerto no alvo!', text:'Continue assim — você está aprovando!', bg:'#f0fff4'});
+    else if (taxa >= 50) diagnosis.push({icon:'📈', label:'Acerto em evolução', text:'Foco nas matérias abaixo de 50%.', bg:'#fffbe6'});
+    else diagnosis.push({icon:'📚', label:'Reforçar questões', text:'Priorize revisão das matérias críticas.', bg:'#fff0f3'});
+
+    if ((C.streak||0) >= 7) diagnosis.push({icon:'⚡', label:'Sequência forte!', text:(C.streak)+' dias consecutivos estudando.', bg:'#f0f0ff'});
+
+    // ── nota bar ─────────────────────────────────────────────────────────────
+    var nota = C.nota || 0;
+    var notaBarW = Math.min(100, Math.round(nota / 80 * 100)) + '%';
+    var notaMsg = nota >= 40
+      ? '✅ Aprovado! Faltam '+(80-nota)+' pontos para nota máxima.'
+      : '🎯 Faltam '+(40-nota)+' pontos para a aprovação mínima (40/80).';
+
     return {
       studentName: C.name || 'Aluno',
+      reportDate: today,
       onExport: d.onExport || function(){},
-      cards: cards,
+      chips: chips,
+      progPct: C.progPct || 0,
+      progPctW: (C.progPct||0)+'%',
+      completedDays: C.completed || 0,
+      studyDays: C.studyDays ? C.studyDays.length : 0,
       hasEvo: evo.length > 0,
       evo: evo,
       subjArr: subjArr,
-      noSubj: subjArr.length === 0
+      noSubj: subjArr.length === 0,
+      topMats: topMats,
+      botMats: botMats,
+      hasTop: topMats.length > 0,
+      hasBot: botMats.length > 0,
+      nota: nota,
+      notaBarW: notaBarW,
+      notaMsg: notaMsg,
+      diagnosis: diagnosis
     };
   }
 }
