@@ -113,7 +113,7 @@
     </div>
     <div class="adm-header-btns">
       <sc-if value="{{ showBackBtn }}" hint-placeholder-val="">
-        <button onclick="this.closest('x-dc').__dc.setState({platformView:null,tab:'alunos',msg:''})" class="adm-btn-back">← Voltar</button>
+        <button onclick="{{ onBackToHome }}" class="adm-btn-back">← Voltar</button>
       </sc-if>
       <button onclick="{{ onRefresh }}" class="adm-btn-refresh">{{ refreshing ? '⟳ Atualizando...' : '⟳ Atualizar' }}</button>
       <button onclick="{{ onLogout }}" class="adm-btn-logout">Sair</button>
@@ -128,13 +128,13 @@
         <div style="font-size:14px;color:#666;margin-top:6px">Selecione a plataforma para administrar</div>
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;max-width:700px;margin:0 auto">
-        <div class="adm-platform-card oab" onclick="this.closest('x-dc').__dc.setState({platformView:'oab',tab:'alunos',msg:''})">
+        <div class="adm-platform-card oab" onclick="{{ onSelectOAB }}">
           <div class="adm-platform-icon">⚡</div>
           <div class="adm-platform-name" style="color:var(--blue)">OAB</div>
           <div class="adm-platform-sub">1ª Fase · Cronograma inteligente</div>
           <div class="adm-platform-badge" style="background:#E8F0FF;color:var(--blue)">{{ countOAB }} aluno(s)</div>
         </div>
-        <div class="adm-platform-card ct" onclick="this.closest('x-dc').__dc.setState({platformView:'cartorio',tab:'alunos',msg:''})">
+        <div class="adm-platform-card ct" onclick="{{ onSelectCartorio }}">
           <div class="adm-platform-icon">📜</div>
           <div class="adm-platform-name" style="color:var(--ct-green)">Cartório</div>
           <div class="adm-platform-sub">Concurso de Cartórios</div>
@@ -818,6 +818,9 @@ class Component extends DCLogic {
       headerTitle: pv === 'oab' ? '⚡ OAB — Admin' : pv === 'cartorio' ? '📜 Cartório — Admin' : (d.brandName || 'Mentoria') + ' — Admin',
       headerSub: pv === 'oab' ? 'Plataforma OAB' : pv === 'cartorio' ? 'Plataforma Cartório' : 'Painel de Controle',
       showBackBtn: !!pv,
+      onBackToHome: function(){ self.setState({platformView:null, tab:'alunos', msg:''}); },
+      onSelectOAB: function(){ self.setState({platformView:'oab', tab:'alunos', msg:''}); },
+      onSelectCartorio: function(){ self.setState({platformView:'cartorio', tab:'alunos', msg:''}); },
       platformView: pv || '',
 
       onLogout: d.onLogout || function(){},
