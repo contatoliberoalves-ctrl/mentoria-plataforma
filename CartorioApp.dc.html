@@ -177,8 +177,23 @@ class CartorioApp extends DCLogic {
       <span class="ct-stat-label">${s.label}</span>
     </div>`).join('')
 
+    // Avisos
+    const avisos=d.avisosData&&d.avisosData.avisos||[]
+    const avisosHtml=avisos.length?`
+      <div style="margin-bottom:16px">
+        <div style="font-size:12px;font-weight:800;color:#007A3D;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">📢 Avisos do Mentor</div>
+        ${avisos.map(av=>`
+          <div style="background:#fff;border:3px solid #007A3D;border-radius:12px;box-shadow:3px 3px 0 #007A3D;padding:14px 16px;margin-bottom:10px">
+            <div style="font-size:14px;font-weight:800;color:#007A3D">${av.title||''}</div>
+            ${av.msg?`<div style="font-size:13px;color:#333;margin-top:4px">${av.msg}</div>`:''}
+            <div style="font-size:11px;color:#888;margin-top:6px">${av.date||''}</div>
+          </div>`).join('')}
+      </div>`
+    :''
+
     // Cronogram content
     const cronContent=`
+      ${avisosHtml}
       <div class="ct-countdown">
         <div class="ct-countdown-num">${d.examCountdown!=null?d.examCountdown:'—'}</div>
         <div class="ct-countdown-label">Dias para a Prova</div>

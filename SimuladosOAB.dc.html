@@ -12,15 +12,36 @@
 
   <!-- Simulados disponibilizados pelo admin -->
   <sc-if value="{{ hasAdminSimulados }}" hint-placeholder-val="">
-  <div style="background:#FFF9E6;border:1.5px solid #9b59ff44;border-radius:14px;padding:16px 18px;margin-bottom:20px">
-    <div style="font-size:13px;font-weight:700;color:#7B2FFF;margin-bottom:12px">Simulados disponíveis</div>
+  <div style="margin-bottom:24px">
+    <div style="font-size:12px;font-weight:800;color:#7B2FFF;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📋 Simulados disponibilizados pelo mentor</div>
     <sc-for list="{{ adminSimulados }}" as="sim">
-      <div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:2px solid #ddd;border-radius:9px;padding:10px 14px;margin-bottom:8px;gap:10px;flex-wrap:wrap">
-        <div>
-          <div style="font-size:13px;font-weight:600;color:#111">{{ sim.name }}</div>
-          <sc-if value="{{ sim.date }}" hint-placeholder-val=""><div style="font-size:11px;color:#666">{{ sim.date }}</div></sc-if>
+      <div style="background:#fff;border:3px solid #0D0D0D;border-radius:14px;box-shadow:4px 4px 0 #0D0D0D;padding:16px 18px;margin-bottom:12px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px">
+          <div style="flex:1;min-width:180px">
+            <div style="font-size:15px;font-weight:800;color:#0D0D0D">{{ sim.name }}</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap">
+              <span style="background:#7B2FFF;color:#fff;border:2px solid #0D0D0D;border-radius:6px;padding:2px 10px;font-size:11px;font-weight:700;box-shadow:2px 2px 0 #0D0D0D">⏱ {{ sim.timerLabel }}</span>
+              <span style="font-size:11px;color:#666">{{ sim.date }}</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <a href="{{ sim.url }}" target="_blank" style="background:#FFF9E6;color:#0D0D0D;text-decoration:none;border:2px solid #0D0D0D;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;box-shadow:2px 2px 0 #0D0D0D;white-space:nowrap">📄 Abrir PDF</a>
+            <button onclick="{{ sim.onStart }}" style="background:#7B2FFF;color:#fff;border:3px solid #0D0D0D;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:3px 3px 0 #0D0D0D;white-space:nowrap;text-transform:uppercase">▶ Iniciar Timer</button>
+          </div>
         </div>
-        <a href="{{ sim.url }}" target="_blank" style="background:#7B2FFF;border:3px solid #0D0D0D;box-shadow:3px 3px 0 #0D0D0D;color:#fff;text-decoration:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;white-space:nowrap">Abrir PDF</a>
+        <!-- Timer ativo -->
+        <sc-if value="{{ sim.timerActive }}" hint-placeholder-val="">
+          <div style="margin-top:14px;background:#0D0D0D;border-radius:12px;padding:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+            <div>
+              <div style="font-size:11px;color:#FFE500;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Timer em andamento</div>
+              <div style="font-size:36px;font-weight:900;color:#fff;font-family:monospace">{{ sim.timerDisplay }}</div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button onclick="{{ sim.onFinish }}" style="background:#00C040;color:#fff;border:3px solid #0D0D0D;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:3px 3px 0 #0D0D0D">✅ Finalizar</button>
+              <button onclick="{{ sim.onCancel }}" style="background:#FF6600;color:#fff;border:2px solid #0D0D0D;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:2px 2px 0 #0D0D0D">✕</button>
+            </div>
+          </div>
+        </sc-if>
       </div>
     </sc-for>
   </div>
@@ -147,8 +168,38 @@ class Component extends DCLogic {
       tipo: 'autoral',
       exameNum: '',
       tempo: '',
-      mat: mat0
+      mat: mat0,
+      activeTimers: {} // id -> {startMs, limitMs}
     };
+    this._timerInterval = null;
+  }
+
+  _startTimer(id, limitH) {
+    var timers = Object.assign({}, this.state.activeTimers);
+    timers[id] = {startMs: Date.now(), limitMs: limitH * 3600000};
+    this.setState({activeTimers: timers});
+    if (!this._timerInterval) {
+      var self = this;
+      this._timerInterval = setInterval(function(){ self.setState({}); }, 1000);
+    }
+  }
+
+  _stopTimer(id) {
+    var timers = Object.assign({}, this.state.activeTimers);
+    delete timers[id];
+    this.setState({activeTimers: timers});
+    if (Object.keys(timers).length === 0 && this._timerInterval) {
+      clearInterval(this._timerInterval);
+      this._timerInterval = null;
+    }
+  }
+
+  _fmtTimer(elapsed, limit) {
+    var remaining = Math.max(0, limit - elapsed);
+    var h = Math.floor(remaining / 3600000);
+    var m = Math.floor((remaining % 3600000) / 60000);
+    var s = Math.floor((remaining % 60000) / 1000);
+    return (h > 0 ? h + ':' : '') + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
   }
 
   _mats() {
@@ -263,7 +314,32 @@ class Component extends DCLogic {
       },
       entries: entries,
       noEntries: entries.length === 0,
-      adminSimulados: d.adminSimulados || [],
+      adminSimulados: (d.adminSimulados || []).map(function(sim) {
+        var tid = sim.id || sim.name;
+        var tInfo = (st.activeTimers || {})[tid];
+        var elapsed = tInfo ? Date.now() - tInfo.startMs : 0;
+        var limitMs = tInfo ? tInfo.limitMs : 0;
+        var expired = tInfo && elapsed >= limitMs;
+        return {
+          name: sim.name, url: sim.url, date: sim.date || '',
+          timerLabel: (sim.timer || 5) + 'h',
+          timerActive: !!tInfo && !expired,
+          timerExpired: !!expired,
+          timerDisplay: tInfo ? (expired ? 'TEMPO ESGOTADO' : self._fmtTimer(elapsed, limitMs)) : '',
+          onStart: (function(id, limitH){ return function(){
+            if (confirm('Iniciar timer de ' + limitH + 'h para este simulado?')) {
+              self._startTimer(id, limitH);
+            }
+          }; })(tid, sim.timer || 5),
+          onFinish: (function(id){ return function(){
+            self._stopTimer(id);
+            alert('Simulado finalizado! Registre seus acertos abaixo.');
+          }; })(tid),
+          onCancel: (function(id){ return function(){
+            if (confirm('Cancelar o timer deste simulado?')) self._stopTimer(id);
+          }; })(tid)
+        };
+      }),
       hasAdminSimulados: (d.adminSimulados || []).length > 0
     };
   }
