@@ -197,7 +197,7 @@
                 <div class="adm-label">E-mail</div>
                 <input class="adm-input" value="{{ newEmail }}" oninput="{{ onNewEmail }}" placeholder="email@exemplo.com" type="email">
               </div>
-              <button onclick="{{ onAddStudent }}" class="{{ platformView === 'cartorio' ? 'adm-btn-green' : 'adm-btn-primary' }}" style="{{ addingStudent ? 'opacity:.6;pointer-events:none' : '' }}">{{ addingStudent ? 'Criando...' : '+ Adicionar' }}</button>
+              <button onclick="{{ onAddStudent }}" class="{{ isCartorio ? 'adm-btn-green' : 'adm-btn-primary' }}" style="{{ addingStudent ? 'opacity:.6;pointer-events:none' : '' }}">{{ addingStudent ? 'Criando...' : '+ Adicionar' }}</button>
             </div>
             <sc-if value="{{ addMsg }}" hint-placeholder-val="">
               <div style="margin-top:10px;font-size:13px;font-weight:700;color:var(--blue)">{{ addMsg }}</div>
@@ -211,52 +211,7 @@
 
           <sc-if value="{{ hasPlatformStudents }}" hint-placeholder-val="{{ true }}">
             <div style="font-size:13px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">{{ platformStudentCount }} aluno(s)</div>
-            <sc-for list="{{ platformStudents }}" as="s">
-              <div class="{{ platformView === 'cartorio' ? 'adm-ct-card' : 'adm-student' }}">
-                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">
-                  <div style="flex:1;min-width:180px">
-                    <div class="adm-student-name" style="{{ platformView === 'cartorio' ? 'color:var(--ct-green)' : '' }}">{{ s.name }}</div>
-                    <div class="adm-student-email">{{ s.email }}</div>
-                    <div style="margin-top:6px">
-                      <span class="adm-badge" style="margin-left:0;background:{{ s.statusBg }};color:{{ s.statusColor }};border-color:{{ s.statusColor }}">{{ s.status }}</span>
-                      <span style="margin-left:8px;font-size:11px;color:#888">{{ s.lastLabel }}</span>
-                    </div>
-                  </div>
-                  <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-                    <button onclick="{{ s.onToggleTipo }}" class="adm-btn-sm" title="Mover para outra plataforma">🔄 Mover plataforma</button>
-                    <button onclick="{{ s.onImpersonate }}" class="adm-btn-sm">👁 Ver como aluno</button>
-                    <button onclick="{{ s.onReset }}" class="adm-btn-sm">↺ Resetar</button>
-                    <button onclick="{{ s.onRemove }}" class="adm-btn-danger">✕</button>
-                  </div>
-                </div>
-                <div class="adm-stat-row" style="{{ platformView === 'cartorio' ? 'border-color:var(--ct-green)' : '' }}">
-                  <div class="adm-stat-cell" style="{{ platformView === 'cartorio' ? 'border-right-color:var(--ct-green)' : '' }}">
-                    <div class="adm-stat-val" style="{{ platformView === 'cartorio' ? 'color:var(--ct-green)' : '' }}">{{ s.progPct }}%</div>
-                    <div class="adm-stat-lbl">Plano</div>
-                  </div>
-                  <div class="adm-stat-cell" style="{{ platformView === 'cartorio' ? 'border-right-color:var(--ct-green)' : '' }}">
-                    <div class="adm-stat-val" style="color:{{ s.taxa >= 70 ? '#007A3D' : s.taxa >= 50 ? '#FF6600' : '#D32F2F' }}">{{ s.taxa }}%</div>
-                    <div class="adm-stat-lbl">Acerto</div>
-                  </div>
-                  <div class="adm-stat-cell" style="{{ platformView === 'cartorio' ? 'border-right-color:var(--ct-green)' : '' }}">
-                    <div class="adm-stat-val">{{ s.totalQ }}</div>
-                    <div class="adm-stat-lbl">Questões</div>
-                  </div>
-                  <div class="adm-stat-cell" style="{{ platformView === 'cartorio' ? 'border-right-color:var(--ct-green)' : '' }}">
-                    <div class="adm-stat-val" style="color:var(--orange)">{{ s.streak }}</div>
-                    <div class="adm-stat-lbl">Sequência</div>
-                  </div>
-                  <div class="adm-stat-cell" style="{{ platformView === 'cartorio' ? 'border-right-color:var(--ct-green)' : '' }}">
-                    <div class="adm-stat-val" style="color:var(--cyan)">{{ s.adherence }}%</div>
-                    <div class="adm-stat-lbl">Aderência</div>
-                  </div>
-                  <div class="adm-stat-cell">
-                    <div class="adm-stat-val" style="font-size:14px;color:var(--purple)">{{ s.nota }}/80</div>
-                    <div class="adm-stat-lbl">Nota Est.</div>
-                  </div>
-                </div>
-              </div>
-            </sc-for>
+            <div inner-html="{{ studentsHtml }}"></div>
           </sc-if>
         </div>
       </sc-if>
@@ -275,7 +230,7 @@
               <div class="adm-report-label">Questões</div>
             </div>
             <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
-              <div class="adm-report-num" style="color:{{ rAvgTaxa >= 70 ? '#007A3D' : rAvgTaxa >= 50 ? '#FF6600' : '#D32F2F' }}">{{ rAvgTaxa }}%</div>
+              <div class="adm-report-num" style="color:{{ rAvgTaxaColor }}">{{ rAvgTaxa }}%</div>
               <div class="adm-report-label">Taxa Média</div>
             </div>
             <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
@@ -296,21 +251,7 @@
           <div class="adm-card">
             <div class="adm-card-title">🏆 Ranking — Taxa de Acerto</div>
             <sc-if value="{{ hasPlatformStudents }}" hint-placeholder-val="{{ true }}">
-              <sc-for list="{{ rankingStudents }}" as="s">
-                <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:10px 12px;background:{{ s.rank <= 3 ? '#FFF9E6' : '#fafafa' }};border:2px solid {{ s.rank <= 3 ? 'var(--black)' : '#ddd' }};border-radius:10px">
-                  <div style="font-size:18px;font-weight:900;width:28px;text-align:center;color:{{ s.rank === 1 ? '#FFB800' : s.rank === 2 ? '#888' : s.rank === 3 ? '#CD7F32' : '#999' }}">{{ s.rank }}°</div>
-                  <div style="flex:1">
-                    <div style="font-size:13px;font-weight:800">{{ s.name }}</div>
-                    <div style="margin-top:4px">
-                      <div class="adm-stat-bar-bg"><div class="adm-stat-bar-fill" style="width:{{ s.taxa }}%;background:{{ s.taxa >= 70 ? '#007A3D' : s.taxa >= 50 ? '#FF6600' : '#D32F2F' }}"></div></div>
-                    </div>
-                  </div>
-                  <div style="text-align:right;min-width:80px">
-                    <div style="font-size:16px;font-weight:900;color:{{ s.taxa >= 70 ? '#007A3D' : s.taxa >= 50 ? '#FF6600' : '#D32F2F' }}">{{ s.taxa }}%</div>
-                    <div style="font-size:11px;color:#888">{{ s.totalQ }} questões</div>
-                  </div>
-                </div>
-              </sc-for>
+              <div inner-html="{{ rankingHtml }}"></div>
             </sc-if>
             <sc-if value="{{ noPlatformStudents }}" hint-placeholder-val="">
               <div class="adm-empty"><div class="adm-empty-icon">📊</div><div style="font-weight:700">Sem dados ainda</div></div>
@@ -321,15 +262,7 @@
           <div class="adm-card" style="border-color:var(--red);box-shadow:5px 5px 0 var(--red)">
             <div class="adm-card-title" style="color:var(--red)">⚠️ Atenção — Parados há mais de 7 dias</div>
             <sc-if value="{{ hasInactiveStudents }}" hint-placeholder-val="{{ true }}">
-              <sc-for list="{{ inactiveStudents }}" as="s">
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#FFF5F5;border:2px solid #FFB0B0;border-radius:10px;margin-bottom:8px">
-                  <div>
-                    <div style="font-size:13px;font-weight:800">{{ s.name }}</div>
-                    <div style="font-size:11px;color:#888;margin-top:2px">{{ s.email }}</div>
-                  </div>
-                  <div style="background:var(--red);color:#fff;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:800">{{ s.daysSince }}d parado</div>
-                </div>
-              </sc-for>
+              <div inner-html="{{ inactiveHtml }}"></div>
             </sc-if>
             <sc-if value="{{ noInactiveStudents }}" hint-placeholder-val="">
               <div style="text-align:center;padding:20px;color:#007A3D;font-weight:700">✅ Todos os alunos estão ativos!</div>
@@ -339,43 +272,9 @@
           <!-- Detalhe individual -->
           <div class="adm-card">
             <div class="adm-card-title">📋 Relatório Individual</div>
-            <sc-for list="{{ platformStudents }}" as="s">
-              <div style="border:2px solid #ddd;border-radius:12px;padding:14px;margin-bottom:12px">
-                <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px">
-                  <div>
-                    <div style="font-size:14px;font-weight:900">{{ s.name }}</div>
-                    <div style="font-size:11px;color:#888">{{ s.email }} · {{ s.lastLabel }}</div>
-                  </div>
-                  <span class="adm-badge" style="background:{{ s.statusBg }};color:{{ s.statusColor }};border-color:{{ s.statusColor }}">{{ s.status }}</span>
-                </div>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px">
-                  <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px">
-                    <div style="font-size:20px;font-weight:900;color:var(--blue)">{{ s.progPct }}%</div>
-                    <div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Plano</div>
-                  </div>
-                  <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px">
-                    <div style="font-size:20px;font-weight:900;color:{{ s.taxa >= 70 ? '#007A3D' : s.taxa >= 50 ? '#FF6600' : '#D32F2F' }}">{{ s.taxa }}%</div>
-                    <div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Acerto</div>
-                  </div>
-                  <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px">
-                    <div style="font-size:20px;font-weight:900">{{ s.totalQ }}</div>
-                    <div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Questões</div>
-                  </div>
-                  <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px">
-                    <div style="font-size:20px;font-weight:900;color:var(--orange)">{{ s.streak }}</div>
-                    <div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Sequência</div>
-                  </div>
-                  <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px">
-                    <div style="font-size:20px;font-weight:900;color:var(--cyan)">{{ s.adherence }}%</div>
-                    <div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Aderência</div>
-                  </div>
-                  <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px">
-                    <div style="font-size:20px;font-weight:900;color:var(--purple)">{{ s.nota }}/80</div>
-                    <div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Nota Est.</div>
-                  </div>
-                </div>
-              </div>
-            </sc-for>
+            <sc-if value="{{ hasPlatformStudents }}" hint-placeholder-val="{{ true }}">
+              <div inner-html="{{ relIndividualHtml }}"></div>
+            </sc-if>
             <sc-if value="{{ noPlatformStudents }}" hint-placeholder-val="">
               <div class="adm-empty"><div class="adm-empty-icon">📋</div><div style="font-weight:700">Sem alunos nesta plataforma</div></div>
             </sc-if>
@@ -412,32 +311,13 @@
                   <option value="simulado">🎯 Simulado</option>
                 </select>
               </div>
-              <button onclick="{{ onSaveMaterial }}" class="{{ platformView === 'cartorio' ? 'adm-btn-green' : 'adm-btn-primary' }}" style="margin-top:18px">+ Adicionar</button>
+              <button onclick="{{ onSaveMaterial }}" class="{{ isCartorio ? 'adm-btn-green' : 'adm-btn-primary' }}" style="margin-top:18px">+ Adicionar</button>
             </div>
           </div>
 
           <!-- Lista de materiais -->
           <sc-if value="{{ hasMateriais }}" hint-placeholder-val="{{ true }}">
-            <!-- Agrupado por matéria -->
-            <sc-for list="{{ materiaisGrupos }}" as="g">
-              <div class="adm-card" style="margin-bottom:14px">
-                <div class="adm-card-title">
-                  <span style="background:{{ platformView === 'cartorio' ? 'var(--ct-green)' : 'var(--blue)' }};color:#fff;border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)">{{ g.materia }}</span>
-                </div>
-                <sc-for list="{{ g.items }}" as="m">
-                  <div class="adm-mat-item">
-                    <div style="flex:1">
-                      <div class="adm-mat-item-title">{{ m.tipoIcon }} {{ m.titulo }}</div>
-                      <div class="adm-mat-item-url">{{ m.url }}</div>
-                    </div>
-                    <div style="display:flex;gap:6px">
-                      <a href="{{ m.url }}" target="_blank" class="adm-btn-sm" style="text-decoration:none">↗ Abrir</a>
-                      <button onclick="{{ m.onDelete }}" class="adm-btn-danger">✕</button>
-                    </div>
-                  </div>
-                </sc-for>
-              </div>
-            </sc-for>
+            <div inner-html="{{ materiaisHtml }}"></div>
           </sc-if>
           <sc-if value="{{ noMateriais }}" hint-placeholder-val="">
             <div class="adm-empty"><div class="adm-empty-icon">📚</div><div style="font-weight:700">Nenhum material adicionado ainda</div><div style="font-size:13px;margin-top:6px">Adicione vídeos, PDFs e links de estudo para seus alunos</div></div>
@@ -463,18 +343,7 @@
 
           <sc-if value="{{ hasAvisos }}" hint-placeholder-val="{{ true }}">
             <div style="font-size:12px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Publicados ({{ avisoCount }})</div>
-            <sc-for list="{{ avisos }}" as="a">
-              <div class="adm-aviso">
-                <div style="flex:1">
-                  <div style="font-size:14px;font-weight:800;color:var(--blue)">{{ a.title }}</div>
-                  <sc-if value="{{ a.msg }}" hint-placeholder-val="">
-                    <div style="font-size:13px;color:#333;margin-top:4px">{{ a.msg }}</div>
-                  </sc-if>
-                  <div style="font-size:11px;color:#888;margin-top:6px">{{ a.date }}</div>
-                </div>
-                <button onclick="{{ a.onDelete }}" class="adm-btn-danger">✕ Remover</button>
-              </div>
-            </sc-for>
+            <div inner-html="{{ avisosHtml }}"></div>
           </sc-if>
           <sc-if value="{{ noAvisos }}" hint-placeholder-val="">
             <div class="adm-empty"><div class="adm-empty-icon">📭</div><div style="font-weight:700">Nenhum aviso publicado</div></div>
@@ -521,21 +390,7 @@
 
           <sc-if value="{{ hasSimulados }}" hint-placeholder-val="{{ true }}">
             <div style="font-size:12px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Simulados disponibilizados ({{ simCount }})</div>
-            <sc-for list="{{ simulados }}" as="sim">
-              <div class="adm-sim">
-                <div>
-                  <div style="font-size:14px;font-weight:800;color:var(--black)">{{ sim.name }}</div>
-                  <div style="margin-top:4px;display:flex;gap:8px;align-items:center">
-                    <span style="background:var(--purple);color:#fff;border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)">⏱ {{ sim.timerLabel }}</span>
-                    <span style="font-size:11px;color:#666">{{ sim.date }}</span>
-                  </div>
-                </div>
-                <div style="display:flex;gap:8px">
-                  <a href="{{ sim.url }}" target="_blank" class="adm-btn-sm" style="text-decoration:none">📄 Abrir</a>
-                  <button onclick="{{ sim.onDelete }}" class="adm-btn-danger">✕</button>
-                </div>
-              </div>
-            </sc-for>
+            <div inner-html="{{ simuladosHtml }}"></div>
           </sc-if>
           <sc-if value="{{ noSimulados }}" hint-placeholder-val="">
             <div class="adm-empty"><div class="adm-empty-icon">🎯</div><div style="font-weight:700">Nenhum simulado adicionado</div></div>
@@ -578,24 +433,24 @@
       <!-- ═══ CONFIGURAÇÕES ═══ -->
       <sc-if value="{{ tabConfig }}" hint-placeholder-val="">
         <div>
-          <div class="adm-card" style="{{ platformView === 'cartorio' ? 'border-color:var(--ct-green);box-shadow:5px 5px 0 var(--ct-green)' : '' }}">
-            <div class="adm-card-title" style="{{ platformView === 'cartorio' ? 'color:var(--ct-green)' : '' }}">{{ platformView === 'cartorio' ? '📜 Plataforma Cartório' : '⚙️ Plataforma OAB' }}</div>
+          <div class="adm-card" style="{{ isCartorio ? 'border-color:var(--ct-green);box-shadow:5px 5px 0 var(--ct-green)' : '' }}">
+            <div class="adm-card-title" style="{{ isCartorio ? 'color:var(--ct-green)' : '' }}">{{ isCartorio ? '📜 Plataforma Cartório' : '⚙️ Plataforma OAB' }}</div>
             <div class="adm-grid-2">
               <div>
                 <div class="adm-label">Nome da mentoria</div>
                 <input class="adm-input" value="{{ cfgBrand }}" oninput="{{ onCfgBrand }}" placeholder="Ex: Mentoria Prof. Líbero">
               </div>
               <div>
-                <div class="adm-label">{{ platformView === 'cartorio' ? 'Data da prova (Cartório)' : 'Data da prova OAB' }}</div>
+                <div class="adm-label">{{ isCartorio ? 'Data da prova (Cartório)' : 'Data da prova OAB' }}</div>
                 <input class="adm-input" value="{{ cfgExam }}" oninput="{{ onCfgExam }}" placeholder="YYYY-MM-DD" type="date">
               </div>
-              <sc-if value="{{ platformView !== 'cartorio' }}" hint-placeholder-val="">
+              <sc-if value="{{ isOAB }}" hint-placeholder-val="">
                 <div>
                   <div class="adm-label">Meta de questões/dia</div>
                   <input class="adm-input" value="{{ cfgGoal }}" oninput="{{ onCfgGoal }}" type="number" min="10" max="60" placeholder="27">
                 </div>
               </sc-if>
-              <sc-if value="{{ platformView === 'cartorio' }}" hint-placeholder-val="">
+              <sc-if value="{{ isCartorio }}" hint-placeholder-val="">
                 <div>
                   <div class="adm-label">Nome do concurso</div>
                   <input class="adm-input" value="{{ cfgCtBrand }}" oninput="{{ onCfgCtBrand }}" placeholder="Ex: Concurso de Cartórios SP 2026">
@@ -616,7 +471,7 @@
               </div>
             </div>
           </div>
-          <button onclick="{{ onSaveConfig }}" class="{{ platformView === 'cartorio' ? 'adm-btn-green' : 'adm-btn-primary' }}">💾 Salvar Configurações</button>
+          <button onclick="{{ onSaveConfig }}" class="{{ isCartorio ? 'adm-btn-green' : 'adm-btn-primary' }}">💾 Salvar Configurações</button>
         </div>
       </sc-if>
 
@@ -629,13 +484,161 @@
 class Component extends DCLogic {
   constructor(props) {
     super(props);
+    var self = this;
     var settings = (props.data && props.data.settings) || {};
-    // Stable bound methods — created once, not recreated each renderVals()
-    this._onBackToHome = function(){ this.setState({platformView:null, tab:'alunos', msg:''}); }.bind(this);
-    this._onSelectOAB = function(){ this.setState({platformView:'oab', tab:'alunos', msg:''}); }.bind(this);
-    this._onSelectCartorio = function(){ this.setState({platformView:'cartorio', tab:'alunos', msg:''}); }.bind(this);
+
+    // ── Stable nav handlers ──
+    this._onBackToHome = function(){ self.setState({platformView:null, tab:'alunos', msg:''}); };
+    this._onSelectOAB = function(){ self.setState({platformView:'oab', tab:'alunos', msg:''}); };
+    this._onSelectCartorio = function(){ self.setState({platformView:'cartorio', tab:'alunos', msg:''}); };
+
+    // ── Stable header handlers ──
+    this._onLogout = function(){ var d=self.props.data||{}; d.onLogout && d.onLogout(); };
+    this._onRefresh = function(){ var d=self.props.data||{}; d.onRefresh && d.onRefresh(); };
+
+    // ── Student list actions (called from innerHTML onclick) ──
+    this._sRemove = function(sid, sname){
+      var d=self.props.data||{};
+      if(confirm('Remover '+sname+'?')){ d.onRemoveStudent && d.onRemoveStudent(sid); }
+    };
+    this._sReset = function(sid, sname){
+      var d=self.props.data||{};
+      if(confirm('Resetar progresso de '+sname+'?')){ d.onResetProgress && d.onResetProgress(sid); }
+    };
+    this._sImpersonate = function(sid){
+      var d=self.props.data||{}; d.onImpersonate && d.onImpersonate(sid);
+    };
+    this._sToggleTipo = function(sid, curTipo){
+      var d=self.props.data||{};
+      var novo=curTipo==='cartorio'?'oab':'cartorio';
+      var label=curTipo==='cartorio'?'para OAB':'para Cartório';
+      if(confirm('Mover '+label+'?')){ d.onSetTipo && d.onSetTipo(sid, novo); }
+    };
+
+    // ── Material / aviso / simulado delete (from innerHTML onclick) ──
+    this._mDelete = function(matKey, idx){
+      var d=self.props.data||{}; var settings=d.settings||{};
+      var list=(settings[matKey]||[]).filter(function(_,j){ return j!==idx; });
+      var patch={}; patch[matKey]=list;
+      d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,patch));
+      self.setState({msg:'Material removido.',msgType:'ok'});
+    };
+    this._aDelete = function(idx){
+      var d=self.props.data||{}; var settings=d.settings||{};
+      var list=(settings.avisos||[]).filter(function(_,j){ return j!==idx; });
+      d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,{avisos:list}));
+      self.setState({msg:'Aviso removido.',msgType:'ok'});
+    };
+    this._simDelete = function(idx){
+      var d=self.props.data||{}; var settings=d.settings||{};
+      var list=(settings.simulados||[]).filter(function(_,j){ return j!==idx; });
+      d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,{simulados:list}));
+      self.setState({msg:'Simulado removido.',msgType:'ok'});
+    };
+
+    // ── Add student ──
+    this._onNewName = function(e){ self.setState({newName:e.target.value}); };
+    this._onNewEmail = function(e){ self.setState({newEmail:e.target.value}); };
+    this._onAddStudent = function(){
+      var st=self.state; var d=self.props.data||{};
+      if(!st.newName.trim()||!st.newEmail.trim()){ self.setState({addMsg:'Preencha nome e e-mail.'}); return; }
+      self.setState({addMsg:'Criando...',newName:'',newEmail:''});
+      d.onAddStudent && d.onAddStudent(st.newName.trim(), st.newEmail.trim(), st.platformView==='cartorio'?'cartorio':'oab');
+      setTimeout(function(){ self.setState({addMsg:'Criado! Senha: oab123'}); }, 1500);
+    };
+
+    // ── Materials ──
+    this._onMatMateria = function(e){ self.setState({matMateria:e.target.value}); };
+    this._onMatTitulo = function(e){ self.setState({matTitulo:e.target.value}); };
+    this._onMatUrl = function(e){ self.setState({matUrl:e.target.value}); };
+    this._onMatTipo = function(e){ self.setState({matTipo:e.target.value}); };
+    this._onSaveMaterial = function(){
+      var st=self.state; var d=self.props.data||{}; var settings=d.settings||{};
+      if(!st.matTitulo.trim()||!st.matUrl.trim()){ self.setState({msg:'Preencha título e URL.',msgType:'err'}); return; }
+      var mk=st.platformView==='cartorio'?'materiaisCartorio':'materiais';
+      var list=[{id:Date.now(),materia:st.matMateria.trim()||'Geral',titulo:st.matTitulo.trim(),url:st.matUrl.trim(),tipo:st.matTipo,date:new Date().toLocaleDateString('pt-BR')}].concat(settings[mk]||[]);
+      var patch={}; patch[mk]=list;
+      d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,patch));
+      self.setState({matTitulo:'',matUrl:'',msg:'Material adicionado!',msgType:'ok'});
+    };
+
+    // ── Avisos ──
+    this._onAvisoTitle = function(e){ self.setState({avisoTitle:e.target.value}); };
+    this._onAvisoMsg = function(e){ self.setState({avisoMsg:e.target.value}); };
+    this._onSaveAviso = function(){
+      var st=self.state; var d=self.props.data||{}; var settings=d.settings||{};
+      if(!st.avisoTitle.trim()) return;
+      var list=[{id:Date.now(),title:st.avisoTitle.trim(),msg:st.avisoMsg.trim(),date:new Date().toLocaleDateString('pt-BR')}].concat(settings.avisos||[]);
+      d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,{avisos:list}));
+      self.setState({avisoTitle:'',avisoMsg:'',msg:'Aviso publicado!',msgType:'ok'});
+    };
+
+    // ── Video ──
+    this._onVideoUrl = function(e){ self.setState({videoUrl:e.target.value}); };
+    this._onSaveVideoUrl = function(){
+      var st=self.state; var d=self.props.data||{}; var settings=d.settings||{};
+      if(!st.videoUrl.trim()) return;
+      d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,{welcomeVideoUrl:st.videoUrl.trim()}));
+      self.setState({msg:'Vídeo salvo!',msgType:'ok'});
+    };
+    this._onRemoveVideo = function(){
+      var d=self.props.data||{}; var settings=d.settings||{};
+      d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,{welcomeVideoUrl:''}));
+      self.setState({videoUrl:'',msg:'Vídeo removido.',msgType:'ok'});
+    };
+    this._onPickVideo = function(){ document.getElementById('adminVideoInput').click(); };
+    this._onVideoFileChange = function(e){
+      var file=e.target.files&&e.target.files[0]; if(!file) return;
+      var d=self.props.data||{}; var settings=d.settings||{};
+      e.target.value='';
+      self._uploadFile(file,'videos',function(url){
+        d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,{welcomeVideoUrl:url}));
+        self.setState({videoUrl:url,msg:'Vídeo enviado!',msgType:'ok'});
+      });
+    };
+
+    // ── Simulados ──
+    this._onSimName = function(e){ self.setState({simName:e.target.value}); };
+    this._onSimUrl = function(e){ self.setState({simUrl:e.target.value}); };
+    this._onSimTimer = function(e){ self.setState({simTimer:parseFloat(e.target.value)}); };
+    this._onSaveSimulado = function(){
+      var st=self.state; var d=self.props.data||{}; var settings=d.settings||{};
+      if(!st.simName.trim()||!st.simUrl.trim()){ self.setState({msg:'Preencha nome e URL.',msgType:'err'}); return; }
+      var list=[{id:Date.now(),name:st.simName.trim(),url:st.simUrl.trim(),timer:st.simTimer||5,date:new Date().toLocaleDateString('pt-BR')}].concat(settings.simulados||[]);
+      d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,{simulados:list}));
+      self.setState({simName:'',simUrl:'',simTimer:5,msg:'Simulado adicionado!',msgType:'ok'});
+    };
+    this._onPickPdf = function(){ document.getElementById('adminPdfInput').click(); };
+    this._onPdfFileChange = function(e){
+      var file=e.target.files&&e.target.files[0]; if(!file) return;
+      var st=self.state; var d=self.props.data||{}; var settings=d.settings||{};
+      var name=st.simName.trim()||file.name;
+      e.target.value='';
+      self._uploadFile(file,'simulados',function(url){
+        var list=[{id:Date.now(),name:name,url:url,timer:st.simTimer||5,date:new Date().toLocaleDateString('pt-BR')}].concat(settings.simulados||[]);
+        d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,{simulados:list}));
+        self.setState({simName:'',simUrl:'',simTimer:5,msg:'Arquivo enviado!',msgType:'ok'});
+      });
+    };
+
+    // ── Config ──
+    this._onCfgBrand = function(e){ self.setState({cfgBrand:e.target.value}); };
+    this._onCfgExam = function(e){ self.setState({cfgExam:e.target.value}); };
+    this._onCfgGoal = function(e){ self.setState({cfgGoal:e.target.value}); };
+    this._onCfgCtBrand = function(e){ self.setState({cfgCtBrand:e.target.value}); };
+    this._onCfgAdminEmail = function(e){ self.setState({cfgAdminEmail:e.target.value}); };
+    this._onCfgAdminPass = function(e){ self.setState({cfgAdminPass:e.target.value}); };
+    this._onSaveConfig = function(){
+      var st=self.state; var d=self.props.data||{}; var settings=d.settings||{};
+      var patch=st.platformView==='cartorio'
+        ? {brandName:st.cfgBrand,ctExamDate:st.cfgExam,ctBrand:st.cfgCtBrand,adminEmail:st.cfgAdminEmail,adminPass:st.cfgAdminPass}
+        : {brandName:st.cfgBrand,examDate:st.cfgExam,qPerDay:parseInt(st.cfgGoal)||27,adminEmail:st.cfgAdminEmail,adminPass:st.cfgAdminPass};
+      d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,patch));
+      self.setState({msg:'Configurações salvas!',msgType:'ok'});
+    };
+
     this.state = {
-      platformView: null, // null=home, 'oab', 'cartorio'
+      platformView: null,
       tab: 'alunos',
       newName: '', newEmail: '', addMsg: '',
       avisoTitle: '', avisoMsg: '',
@@ -668,17 +671,18 @@ class Component extends DCLogic {
 
   async _uploadFile(file, folder, onDone) {
     var sb = this._getSb();
-    if (!sb) { this.setState({msg: 'Supabase não disponível.', msgType: 'err'}); return; }
+    if (!sb) { this.setState({msg:'Supabase não disponível.',msgType:'err'}); return; }
+    var self = this;
     var setUploading = folder === 'videos'
-      ? function(v){ this.setState({uploadingVideo: v}); }.bind(this)
-      : function(v){ this.setState({uploadingPdf: v}); }.bind(this);
+      ? function(v){ self.setState({uploadingVideo:v}); }
+      : function(v){ self.setState({uploadingPdf:v}); };
     setUploading(true);
-    this.setState({msg: 'Enviando arquivo...', msgType: 'ok'});
-    var path = folder + '/' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-    var result = await sb.storage.from('media').upload(path, file, {upsert: true});
+    this.setState({msg:'Enviando arquivo...',msgType:'ok'});
+    var path = folder+'/'+Date.now()+'_'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+    var result = await sb.storage.from('media').upload(path, file, {upsert:true});
     if (result.error) {
       setUploading(false);
-      this.setState({msg: 'Erro no upload: ' + result.error.message, msgType: 'err'});
+      this.setState({msg:'Erro no upload: '+result.error.message,msgType:'err'});
       return;
     }
     var publicUrl = sb.storage.from('media').getPublicUrl(path).data.publicUrl;
@@ -690,300 +694,347 @@ class Component extends DCLogic {
     var d = this.props.data || {};
     var st = this.state;
     var settings = d.settings || {};
-    var self = this;
+    var pv = st.platformView;
+    var isCT = pv === 'cartorio';
 
-    // ── All students ──
-    var allStudents = (d.list || []).map(function(s) {
-      var statusBg = '#D4F7E0'; var statusColor = '#007A3D';
-      if (s.status === 'Atrasado' || s.status === 'Parou') { statusBg = '#FFE0E0'; statusColor = '#D32F2F'; }
-      else if (s.status === 'Atencao') { statusBg = '#FFF3CC'; statusColor = '#FF6600'; }
+    // ── HTML escape helpers ──
+    function h(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function esc(s){ return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+    var DC = "this.closest('x-dc').__dc";
+
+    // ── All students (plain data, no function props) ──
+    var allStudents = (d.list || []).map(function(s){
+      var statusBg='#D4F7E0', statusColor='#007A3D';
+      if(s.status==='Atrasado'||s.status==='Parou'){ statusBg='#FFE0E0'; statusColor='#D32F2F'; }
+      else if(s.status==='Atencao'){ statusBg='#FFF3CC'; statusColor='#FF6600'; }
       return {
-        name: s.name || 'Aluno', email: s.email || '',
-        progPct: s.progPct || 0, taxa: s.taxa || 0,
-        totalQ: s.totalQ || 0, streak: s.streak || 0,
-        adherence: s.adherence || 0, nota: s.nota || 0,
-        daysSince: s.daysSince || 999,
-        status: s.status || 'Em dia', statusColor: statusColor, statusBg: statusBg,
-        lastLabel: s.last ? (s.daysSince + 'd atrás') : 'Nunca',
-        tipo: s.tipo || 'oab',
-        onRemove: (function(sid, sname){ return function(){
-          if (confirm('Remover ' + sname + '?')) { d.onRemoveStudent && d.onRemoveStudent(sid); }
-        }; })(s.id, s.name),
-        onReset: (function(sid, sname){ return function(){
-          if (confirm('Resetar progresso de ' + sname + '?')) { d.onResetProgress && d.onResetProgress(sid); }
-        }; })(s.id, s.name),
-        onImpersonate: (function(sid){ return function(){ d.onImpersonate && d.onImpersonate(sid); }; })(s.id),
-        onToggleTipo: (function(sid, curTipo){ return function(){
-          var novo = curTipo === 'cartorio' ? 'oab' : 'cartorio';
-          var label = curTipo === 'cartorio' ? 'para OAB' : 'para Cartório';
-          if (confirm('Mover ' + label + '?')) { d.onSetTipo && d.onSetTipo(sid, novo); }
-        }; })(s.id, s.tipo || 'oab')
+        id: s.id||'', name: s.name||'Aluno', email: s.email||'',
+        progPct: s.progPct||0, taxa: s.taxa||0, totalQ: s.totalQ||0,
+        streak: s.streak||0, adherence: s.adherence||0, nota: s.nota||0,
+        daysSince: s.daysSince||999, tipo: s.tipo||'oab',
+        status: s.status||'Em dia', statusColor: statusColor, statusBg: statusBg,
+        lastLabel: s.last ? (s.daysSince+'d atrás') : 'Nunca'
       };
     });
 
-    var countOAB = allStudents.filter(function(s){ return s.tipo !== 'cartorio'; }).length;
-    var countCartorio = allStudents.filter(function(s){ return s.tipo === 'cartorio'; }).length;
+    var countOAB = allStudents.filter(function(s){ return s.tipo!=='cartorio'; }).length;
+    var countCartorio = allStudents.filter(function(s){ return s.tipo==='cartorio'; }).length;
 
-    // ── Platform-filtered students ──
-    var pv = st.platformView;
-    var platformStudents = pv === 'cartorio'
-      ? allStudents.filter(function(s){ return s.tipo === 'cartorio'; })
-      : allStudents.filter(function(s){ return s.tipo !== 'cartorio'; });
+    var platformStudents = isCT
+      ? allStudents.filter(function(s){ return s.tipo==='cartorio'; })
+      : allStudents.filter(function(s){ return s.tipo!=='cartorio'; });
 
-    // Sort by taxa desc for ranking
-    var rankingStudents = platformStudents.slice().sort(function(a,b){ return b.taxa - a.taxa; }).map(function(s,i){ return Object.assign({rank:i+1},s); });
+    var rankingStudents = platformStudents.slice().sort(function(a,b){ return b.taxa-a.taxa; }).map(function(s,i){ return Object.assign({rank:i+1},s); });
+    var inactiveStudents = platformStudents.filter(function(s){ return s.daysSince>=7; });
 
-    var inactiveStudents = platformStudents.filter(function(s){ return s.daysSince >= 7; });
-
-    // ── Totals for home ──
-    var totalQ = allStudents.reduce(function(a,s){ return a + s.totalQ; }, 0);
-    var avgTaxa = allStudents.length ? Math.round(allStudents.reduce(function(a,s){ return a + s.taxa; },0) / allStudents.length) : 0;
-    var activeStudents = allStudents.filter(function(s){ return s.daysSince < 7; }).length;
+    // ── Home totals ──
+    var totalQ = allStudents.reduce(function(a,s){ return a+s.totalQ; },0);
+    var avgTaxa = allStudents.length ? Math.round(allStudents.reduce(function(a,s){ return a+s.taxa; },0)/allStudents.length) : 0;
+    var activeStudents = allStudents.filter(function(s){ return s.daysSince<7; }).length;
 
     // ── Reports ──
-    var rTotalQ = platformStudents.reduce(function(a,s){ return a + s.totalQ; },0);
-    var rAvgTaxa = platformStudents.length ? Math.round(platformStudents.reduce(function(a,s){ return a + s.taxa; },0) / platformStudents.length) : 0;
-    var rAvgStreak = platformStudents.length ? Math.round(platformStudents.reduce(function(a,s){ return a + s.streak; },0) / platformStudents.length) : 0;
-    var rActiveCount = platformStudents.filter(function(s){ return s.daysSince < 7; }).length;
-    var rInactiveCount = inactiveStudents.length;
+    var rTotalQ = platformStudents.reduce(function(a,s){ return a+s.totalQ; },0);
+    var rAvgTaxa = platformStudents.length ? Math.round(platformStudents.reduce(function(a,s){ return a+s.taxa; },0)/platformStudents.length) : 0;
+    var rAvgStreak = platformStudents.length ? Math.round(platformStudents.reduce(function(a,s){ return a+s.streak; },0)/platformStudents.length) : 0;
+    var rActiveCount = platformStudents.filter(function(s){ return s.daysSince<7; }).length;
 
-    // ── Materials ──
-    var matKey = pv === 'cartorio' ? 'materiaisCartorio' : 'materiais';
+    // ── Materials (plain data) ──
+    var matKey = isCT ? 'materiaisCartorio' : 'materiais';
     var rawMateriais = settings[matKey] || [];
-    var tipoIcons = {video:'🎬', pdf:'📄', link:'🔗', simulado:'🎯'};
-    var materiais = rawMateriais.map(function(m, i) {
-      return {
-        materia: m.materia || '—', titulo: m.titulo || '—',
-        url: m.url || '', tipoIcon: tipoIcons[m.tipo] || '🔗',
-        onDelete: (function(idx){ return function(){
-          var list = rawMateriais.filter(function(_,j){ return j !== idx; });
-          var patch = {}; patch[matKey] = list;
-          d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, patch));
-          self.setState({msg:'Material removido.', msgType:'ok'});
-        }; })(i)
-      };
-    });
-    // Group by materia
-    var gruposMap = {};
-    materiais.forEach(function(m){ if(!gruposMap[m.materia]) gruposMap[m.materia] = []; gruposMap[m.materia].push(m); });
-    var materiaisGrupos = Object.keys(gruposMap).map(function(k){ return {materia:k, items:gruposMap[k]}; });
+    var tipoIcons = {video:'🎬',pdf:'📄',link:'🔗',simulado:'🎯'};
 
-    // ── Avisos ──
-    var avisos = (settings.avisos || []).map(function(a, i) {
-      return {
-        title: a.title, msg: a.msg || '', date: a.date || '',
-        onDelete: (function(idx){ return function(){
-          var list = (settings.avisos || []).filter(function(_,j){ return j !== idx; });
-          d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {avisos: list}));
-          self.setState({msg:'Aviso removido.', msgType:'ok'});
-        }; })(i)
-      };
-    });
+    // ── Avisos (plain data) ──
+    var rawAvisos = settings.avisos || [];
 
-    // ── Simulados ──
-    var simulados = (settings.simulados || []).map(function(s, i) {
-      return {
-        name: s.name, url: s.url, date: s.date || '',
-        timerLabel: (s.timer || 5) + 'h',
-        onDelete: (function(idx){ return function(){
-          var list = (settings.simulados || []).filter(function(_,j){ return j !== idx; });
-          d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {simulados: list}));
-          self.setState({msg:'Simulado removido.', msgType:'ok'});
-        }; })(i)
-      };
-    });
+    // ── Simulados (plain data) ──
+    var rawSimulados = settings.simulados || [];
 
-    // ── Tabs ──
+    // ── TABS HTML ──
     var tabDefsOAB = [
-      {id:'alunos', icon:'👥', label:'Alunos'},
-      {id:'relatorios', icon:'📊', label:'Relatórios'},
-      {id:'materiais', icon:'📚', label:'Materiais'},
-      {id:'simulados', icon:'🎯', label:'Simulados'},
-      {id:'avisos', icon:'📢', label:'Avisos'},
-      {id:'boas-vindas', icon:'🎬', label:'Boas-vindas'},
-      {id:'config', icon:'⚙️', label:'Config'},
+      {id:'alunos',icon:'👥',label:'Alunos'},
+      {id:'relatorios',icon:'📊',label:'Relatórios'},
+      {id:'materiais',icon:'📚',label:'Materiais'},
+      {id:'simulados',icon:'🎯',label:'Simulados'},
+      {id:'avisos',icon:'📢',label:'Avisos'},
+      {id:'boas-vindas',icon:'🎬',label:'Boas-vindas'},
+      {id:'config',icon:'⚙️',label:'Config'},
     ];
     var tabDefsCT = [
-      {id:'alunos', icon:'👥', label:'Alunos'},
-      {id:'relatorios', icon:'📊', label:'Relatórios'},
-      {id:'materiais', icon:'📚', label:'Materiais'},
-      {id:'avisos', icon:'📢', label:'Avisos'},
-      {id:'config', icon:'⚙️', label:'Config'},
+      {id:'alunos',icon:'👥',label:'Alunos'},
+      {id:'relatorios',icon:'📊',label:'Relatórios'},
+      {id:'materiais',icon:'📚',label:'Materiais'},
+      {id:'avisos',icon:'📢',label:'Avisos'},
+      {id:'config',icon:'⚙️',label:'Config'},
     ];
-    var tabDefs = pv === 'cartorio' ? tabDefsCT : tabDefsOAB;
-    var activeClass = pv === 'cartorio' ? 'active-ct' : 'active';
-    var tabsHtml = tabDefs.map(function(t) {
+    var tabDefs = isCT ? tabDefsCT : tabDefsOAB;
+    var activeClass = isCT ? 'active-ct' : 'active';
+    var tabsHtml = tabDefs.map(function(t){
       var active = st.tab === t.id;
-      return '<button onclick="this.closest(\'x-dc\').__dc.setState({tab:\'' + t.id + '\',msg:\'\'})" class="adm-tab' + (active ? ' ' + activeClass : '') + '">' + t.icon + ' ' + t.label + '</button>';
+      return '<button onclick="'+DC+'.setState({tab:\''+t.id+'\',msg:\'\'})" class="adm-tab'+(active?' '+activeClass:'')+'">'+t.icon+' '+t.label+'</button>';
+    }).join('');
+
+    // ── STUDENTS HTML ──
+    var cardCls = isCT ? 'adm-ct-card' : 'adm-student';
+    var nameColor = isCT ? 'color:var(--ct-green)' : '';
+    var statBorderColor = isCT ? 'var(--ct-green)' : 'var(--black)';
+    var statValColor = isCT ? 'var(--ct-green)' : 'var(--blue)';
+    var studentsHtml = platformStudents.map(function(s){
+      var taxaColor = s.taxa>=70?'#007A3D':s.taxa>=50?'#FF6600':'#D32F2F';
+      return '<div class="'+cardCls+'">'
+        +'<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">'
+          +'<div style="flex:1;min-width:180px">'
+            +'<div class="adm-student-name" style="'+nameColor+'">'+h(s.name)+'</div>'
+            +'<div class="adm-student-email">'+h(s.email)+'</div>'
+            +'<div style="margin-top:6px">'
+              +'<span class="adm-badge" style="margin-left:0;background:'+s.statusBg+';color:'+s.statusColor+';border-color:'+s.statusColor+'">'+h(s.status)+'</span>'
+              +'<span style="margin-left:8px;font-size:11px;color:#888">'+h(s.lastLabel)+'</span>'
+            +'</div>'
+          +'</div>'
+          +'<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">'
+            +'<button onclick="'+DC+'._sToggleTipo(\''+esc(s.id)+'\',\''+esc(s.tipo)+'\')" class="adm-btn-sm" title="Mover para outra plataforma">🔄 Mover plataforma</button>'
+            +'<button onclick="'+DC+'._sImpersonate(\''+esc(s.id)+'\')" class="adm-btn-sm">👁 Ver como aluno</button>'
+            +'<button onclick="'+DC+'._sReset(\''+esc(s.id)+'\',\''+esc(s.name)+'\')" class="adm-btn-sm">↺ Resetar</button>'
+            +'<button onclick="'+DC+'._sRemove(\''+esc(s.id)+'\',\''+esc(s.name)+'\')" class="adm-btn-danger">✕</button>'
+          +'</div>'
+        +'</div>'
+        +'<div class="adm-stat-row" style="border-color:'+statBorderColor+'">'
+          +'<div class="adm-stat-cell" style="border-right-color:'+statBorderColor+'"><div class="adm-stat-val" style="color:'+statValColor+'">'+s.progPct+'%</div><div class="adm-stat-lbl">Plano</div></div>'
+          +'<div class="adm-stat-cell" style="border-right-color:'+statBorderColor+'"><div class="adm-stat-val" style="color:'+taxaColor+'">'+s.taxa+'%</div><div class="adm-stat-lbl">Acerto</div></div>'
+          +'<div class="adm-stat-cell" style="border-right-color:'+statBorderColor+'"><div class="adm-stat-val">'+s.totalQ+'</div><div class="adm-stat-lbl">Questões</div></div>'
+          +'<div class="adm-stat-cell" style="border-right-color:'+statBorderColor+'"><div class="adm-stat-val" style="color:var(--orange)">'+s.streak+'</div><div class="adm-stat-lbl">Sequência</div></div>'
+          +'<div class="adm-stat-cell" style="border-right-color:'+statBorderColor+'"><div class="adm-stat-val" style="color:var(--cyan)">'+s.adherence+'%</div><div class="adm-stat-lbl">Aderência</div></div>'
+          +'<div class="adm-stat-cell"><div class="adm-stat-val" style="font-size:14px;color:var(--purple)">'+s.nota+'/80</div><div class="adm-stat-lbl">Nota Est.</div></div>'
+        +'</div>'
+      +'</div>';
+    }).join('');
+
+    // ── RANKING HTML ──
+    var rankingHtml = rankingStudents.map(function(s){
+      var rankColor = s.rank===1?'#FFB800':s.rank===2?'#888':s.rank===3?'#CD7F32':'#999';
+      var taxaColor = s.taxa>=70?'#007A3D':s.taxa>=50?'#FF6600':'#D32F2F';
+      var bg = s.rank<=3?'#FFF9E6':'#fafafa';
+      var bc = s.rank<=3?'var(--black)':'#ddd';
+      return '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:10px 12px;background:'+bg+';border:2px solid '+bc+';border-radius:10px">'
+        +'<div style="font-size:18px;font-weight:900;width:28px;text-align:center;color:'+rankColor+'">'+s.rank+'°</div>'
+        +'<div style="flex:1">'
+          +'<div style="font-size:13px;font-weight:800">'+h(s.name)+'</div>'
+          +'<div style="margin-top:4px"><div class="adm-stat-bar-bg"><div class="adm-stat-bar-fill" style="width:'+s.taxa+'%;background:'+taxaColor+'"></div></div></div>'
+        +'</div>'
+        +'<div style="text-align:right;min-width:80px">'
+          +'<div style="font-size:16px;font-weight:900;color:'+taxaColor+'">'+s.taxa+'%</div>'
+          +'<div style="font-size:11px;color:#888">'+s.totalQ+' questões</div>'
+        +'</div>'
+      +'</div>';
+    }).join('');
+
+    // ── INACTIVE HTML ──
+    var inactiveHtml = inactiveStudents.map(function(s){
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#FFF5F5;border:2px solid #FFB0B0;border-radius:10px;margin-bottom:8px">'
+        +'<div>'
+          +'<div style="font-size:13px;font-weight:800">'+h(s.name)+'</div>'
+          +'<div style="font-size:11px;color:#888;margin-top:2px">'+h(s.email)+'</div>'
+        +'</div>'
+        +'<div style="background:var(--red);color:#fff;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:800">'+s.daysSince+'d parado</div>'
+      +'</div>';
+    }).join('');
+
+    // ── RELATÓRIO INDIVIDUAL HTML ──
+    var relIndividualHtml = platformStudents.map(function(s){
+      var taxaColor = s.taxa>=70?'#007A3D':s.taxa>=50?'#FF6600':'#D32F2F';
+      return '<div style="border:2px solid #ddd;border-radius:12px;padding:14px;margin-bottom:12px">'
+        +'<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px">'
+          +'<div>'
+            +'<div style="font-size:14px;font-weight:900">'+h(s.name)+'</div>'
+            +'<div style="font-size:11px;color:#888">'+h(s.email)+' · '+h(s.lastLabel)+'</div>'
+          +'</div>'
+          +'<span class="adm-badge" style="background:'+s.statusBg+';color:'+s.statusColor+';border-color:'+s.statusColor+'">'+h(s.status)+'</span>'
+        +'</div>'
+        +'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px">'
+          +'<div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--blue)">'+s.progPct+'%</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Plano</div></div>'
+          +'<div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:'+taxaColor+'">'+s.taxa+'%</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Acerto</div></div>'
+          +'<div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900">'+s.totalQ+'</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Questões</div></div>'
+          +'<div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--orange)">'+s.streak+'</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Sequência</div></div>'
+          +'<div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--cyan)">'+s.adherence+'%</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Aderência</div></div>'
+          +'<div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--purple)">'+s.nota+'/80</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Nota Est.</div></div>'
+        +'</div>'
+      +'</div>';
+    }).join('');
+
+    // ── MATERIAIS HTML ──
+    var gruposMap = {};
+    rawMateriais.forEach(function(m){ var k=m.materia||'Geral'; if(!gruposMap[k]) gruposMap[k]=[]; gruposMap[k].push(m); });
+    var badgeColor = isCT ? 'var(--ct-green)' : 'var(--blue)';
+    var materiaisHtml = Object.keys(gruposMap).map(function(materia){
+      var items = gruposMap[materia];
+      var itemsHtml = items.map(function(m, localIdx){
+        // find global index
+        var globalIdx = rawMateriais.indexOf(m);
+        return '<div class="adm-mat-item">'
+          +'<div style="flex:1">'
+            +'<div class="adm-mat-item-title">'+(tipoIcons[m.tipo]||'🔗')+' '+h(m.titulo)+'</div>'
+            +'<div class="adm-mat-item-url">'+h(m.url)+'</div>'
+          +'</div>'
+          +'<div style="display:flex;gap:6px">'
+            +'<a href="'+h(m.url)+'" target="_blank" class="adm-btn-sm" style="text-decoration:none">↗ Abrir</a>'
+            +'<button onclick="'+DC+'._mDelete(\''+esc(matKey)+'\','+globalIdx+')" class="adm-btn-danger">✕</button>'
+          +'</div>'
+        +'</div>';
+      }).join('');
+      return '<div class="adm-card" style="margin-bottom:14px">'
+        +'<div class="adm-card-title">'
+          +'<span style="background:'+badgeColor+';color:#fff;border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)">'+h(materia)+'</span>'
+        +'</div>'
+        +itemsHtml
+      +'</div>';
+    }).join('');
+
+    // ── AVISOS HTML ──
+    var avisosHtml = rawAvisos.map(function(a, i){
+      return '<div class="adm-aviso">'
+        +'<div style="flex:1">'
+          +'<div style="font-size:14px;font-weight:800;color:var(--blue)">'+h(a.title)+'</div>'
+          +(a.msg?'<div style="font-size:13px;color:#333;margin-top:4px">'+h(a.msg)+'</div>':'')
+          +'<div style="font-size:11px;color:#888;margin-top:6px">'+h(a.date||'')+'</div>'
+        +'</div>'
+        +'<button onclick="'+DC+'._aDelete('+i+')" class="adm-btn-danger">✕ Remover</button>'
+      +'</div>';
+    }).join('');
+
+    // ── SIMULADOS HTML ──
+    var simuladosHtml = rawSimulados.map(function(s, i){
+      return '<div class="adm-sim">'
+        +'<div>'
+          +'<div style="font-size:14px;font-weight:800;color:var(--black)">'+h(s.name)+'</div>'
+          +'<div style="margin-top:4px;display:flex;gap:8px;align-items:center">'
+            +'<span style="background:var(--purple);color:#fff;border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)">⏱ '+(s.timer||5)+'h</span>'
+            +'<span style="font-size:11px;color:#666">'+h(s.date||'')+'</span>'
+          +'</div>'
+        +'</div>'
+        +'<div style="display:flex;gap:8px">'
+          +'<a href="'+h(s.url||'')+'" target="_blank" class="adm-btn-sm" style="text-decoration:none">📄 Abrir</a>'
+          +'<button onclick="'+DC+'._simDelete('+i+')" class="adm-btn-danger">✕</button>'
+        +'</div>'
+      +'</div>';
     }).join('');
 
     return {
-      brandName: d.brandName || 'Admin',
-      headerTitle: pv === 'oab' ? '⚡ OAB — Admin' : pv === 'cartorio' ? '📜 Cartório — Admin' : (d.brandName || 'Mentoria') + ' — Admin',
-      headerSub: pv === 'oab' ? 'Plataforma OAB' : pv === 'cartorio' ? 'Plataforma Cartório' : 'Painel de Controle',
+      // Header
+      headerTitle: pv==='oab'?'⚡ OAB — Admin':pv==='cartorio'?'📜 Cartório — Admin':(d.brandName||'Mentoria')+' — Admin',
+      headerSub: pv==='oab'?'Plataforma OAB':pv==='cartorio'?'Plataforma Cartório':'Painel de Controle',
       showBackBtn: !!pv,
       onBackToHome: this._onBackToHome,
       onSelectOAB: this._onSelectOAB,
       onSelectCartorio: this._onSelectCartorio,
-      platformView: pv || '',
-
-      onLogout: d.onLogout || function(){},
-      onRefresh: d.onRefresh || function(){},
+      onLogout: this._onLogout,
+      onRefresh: this._onRefresh,
       refreshing: !!d.refreshing,
 
+      // Screens
       screenHome: !pv,
       screenPlatform: !!pv,
+      isCartorio: isCT,
+      isOAB: pv==='oab',
+      platformView: pv||'',
 
       // Home stats
       countOAB: countOAB, countCartorio: countCartorio,
       totalStudents: allStudents.length,
       totalQ: totalQ, avgTaxa: avgTaxa, activeStudents: activeStudents,
 
+      // Tabs + msg
       tabsHtml: tabsHtml,
-      msg: st.msg, msgClass: st.msgType === 'ok' ? 'ok' : 'err',
-
-      tabAlunos: st.tab === 'alunos',
-      tabRelatorios: st.tab === 'relatorios',
-      tabMateriais: st.tab === 'materiais',
-      tabAvisos: st.tab === 'avisos',
-      tabVideo: st.tab === 'boas-vindas',
-      tabSimulados: st.tab === 'simulados',
-      tabConfig: st.tab === 'config',
+      msg: st.msg, msgClass: st.msgType==='ok'?'ok':'err',
+      tabAlunos: st.tab==='alunos',
+      tabRelatorios: st.tab==='relatorios',
+      tabMateriais: st.tab==='materiais',
+      tabAvisos: st.tab==='avisos',
+      tabVideo: st.tab==='boas-vindas',
+      tabSimulados: st.tab==='simulados',
+      tabConfig: st.tab==='config',
 
       // Students
-      platformStudents: platformStudents,
       platformStudentCount: platformStudents.length,
-      hasPlatformStudents: platformStudents.length > 0,
-      noPlatformStudents: platformStudents.length === 0,
-      rankingStudents: rankingStudents,
-      inactiveStudents: inactiveStudents,
-      hasInactiveStudents: inactiveStudents.length > 0,
-      noInactiveStudents: inactiveStudents.length === 0,
+      hasPlatformStudents: platformStudents.length>0,
+      noPlatformStudents: platformStudents.length===0,
+      hasInactiveStudents: inactiveStudents.length>0,
+      noInactiveStudents: inactiveStudents.length===0,
+      studentsHtml: studentsHtml,
+      rankingHtml: rankingHtml,
+      inactiveHtml: inactiveHtml,
+      relIndividualHtml: relIndividualHtml,
 
       // Reports
       rTotalAlunos: platformStudents.length,
       rTotalQ: rTotalQ, rAvgTaxa: rAvgTaxa, rAvgStreak: rAvgStreak,
-      rActiveCount: rActiveCount, rInactiveCount: rInactiveCount,
+      rActiveCount: rActiveCount, rInactiveCount: inactiveStudents.length,
+      rAvgTaxaColor: rAvgTaxa>=70?'#007A3D':rAvgTaxa>=50?'#FF6600':'#D32F2F',
 
       // Add student
-      newName: st.newName, newEmail: st.newEmail,
-      addMsg: st.addMsg,
-      onNewName: function(e){ self.setState({newName: e.target.value}); },
-      onNewEmail: function(e){ self.setState({newEmail: e.target.value}); },
+      newName: st.newName, newEmail: st.newEmail, addMsg: st.addMsg,
+      onNewName: this._onNewName,
+      onNewEmail: this._onNewEmail,
       addingStudent: !!d.addingStudent,
-      onAddStudent: function(){
-        if (!st.newName.trim() || !st.newEmail.trim()) { self.setState({addMsg:'Preencha nome e e-mail.'}); return; }
-        self.setState({addMsg:'Criando...', newName:'', newEmail:''});
-        d.onAddStudent && d.onAddStudent(st.newName.trim(), st.newEmail.trim(), pv === 'cartorio' ? 'cartorio' : 'oab');
-        setTimeout(function(){ self.setState({addMsg:'Criado! Senha: oab123'}); }, 1500);
-      },
+      onAddStudent: this._onAddStudent,
 
       // Materials
-      materiais: materiais, materiaisGrupos: materiaisGrupos,
-      hasMateriais: materiais.length > 0, noMateriais: materiais.length === 0,
+      hasMateriais: rawMateriais.length>0, noMateriais: rawMateriais.length===0,
+      materiaisHtml: materiaisHtml,
       matMateria: st.matMateria, matTitulo: st.matTitulo, matUrl: st.matUrl,
-      onMatMateria: function(e){ self.setState({matMateria: e.target.value}); },
-      onMatTitulo: function(e){ self.setState({matTitulo: e.target.value}); },
-      onMatUrl: function(e){ self.setState({matUrl: e.target.value}); },
-      onMatTipo: function(e){ self.setState({matTipo: e.target.value}); },
-      onSaveMaterial: function(){
-        if (!st.matTitulo.trim() || !st.matUrl.trim()) { self.setState({msg:'Preencha título e URL.', msgType:'err'}); return; }
-        var mk2 = pv === 'cartorio' ? 'materiaisCartorio' : 'materiais';
-        var list = [{
-          id: Date.now(), materia: st.matMateria.trim() || 'Geral',
-          titulo: st.matTitulo.trim(), url: st.matUrl.trim(), tipo: st.matTipo,
-          date: new Date().toLocaleDateString('pt-BR')
-        }].concat(settings[mk2] || []);
-        var patch = {}; patch[mk2] = list;
-        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, patch));
-        self.setState({matTitulo:'', matUrl:'', msg:'Material adicionado!', msgType:'ok'});
-      },
+      onMatMateria: this._onMatMateria,
+      onMatTitulo: this._onMatTitulo,
+      onMatUrl: this._onMatUrl,
+      onMatTipo: this._onMatTipo,
+      onSaveMaterial: this._onSaveMaterial,
 
       // Avisos
-      avisos: avisos, avisoCount: avisos.length,
-      hasAvisos: avisos.length > 0, noAvisos: avisos.length === 0,
+      avisoCount: rawAvisos.length,
+      hasAvisos: rawAvisos.length>0, noAvisos: rawAvisos.length===0,
+      avisosHtml: avisosHtml,
       avisoTitle: st.avisoTitle, avisoMsg: st.avisoMsg,
-      onAvisoTitle: function(e){ self.setState({avisoTitle: e.target.value}); },
-      onAvisoMsg: function(e){ self.setState({avisoMsg: e.target.value}); },
-      onSaveAviso: function(){
-        if (!st.avisoTitle.trim()) return;
-        var list = [{id:Date.now(), title:st.avisoTitle.trim(), msg:st.avisoMsg.trim(), date:new Date().toLocaleDateString('pt-BR')}].concat(settings.avisos||[]);
-        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {avisos: list}));
-        self.setState({avisoTitle:'', avisoMsg:'', msg:'Aviso publicado!', msgType:'ok'});
-      },
+      onAvisoTitle: this._onAvisoTitle,
+      onAvisoMsg: this._onAvisoMsg,
+      onSaveAviso: this._onSaveAviso,
 
       // Video
-      currentVideoUrl: settings.welcomeVideoUrl || '',
+      currentVideoUrl: settings.welcomeVideoUrl||'',
       videoUrl: st.videoUrl,
-      onVideoUrl: function(e){ self.setState({videoUrl: e.target.value}); },
-      onSaveVideoUrl: function(){
-        if (!st.videoUrl.trim()) return;
-        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {welcomeVideoUrl: st.videoUrl.trim()}));
-        self.setState({msg:'Vídeo salvo!', msgType:'ok'});
-      },
-      onRemoveVideo: function(){
-        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {welcomeVideoUrl: ''}));
-        self.setState({videoUrl:'', msg:'Vídeo removido.', msgType:'ok'});
-      },
-      uploadingVideoDisabled: st.uploadingVideo ? 'opacity:0.6;pointer-events:none' : '',
-      uploadVideoBtnLabel: st.uploadingVideo ? 'Enviando...' : 'Escolher vídeo',
-      uploadVideoLabel: st.uploadingVideo ? 'Aguarde, enviando...' : 'Clique para selecionar',
-      onPickVideo: function(){ document.getElementById('adminVideoInput').click(); },
-      onVideoFileChange: function(e){
-        var file = e.target.files && e.target.files[0]; if (!file) return;
-        e.target.value = '';
-        self._uploadFile(file, 'videos', function(url){
-          d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {welcomeVideoUrl: url}));
-          self.setState({videoUrl: url, msg:'Vídeo enviado!', msgType:'ok'});
-        });
-      },
+      onVideoUrl: this._onVideoUrl,
+      onSaveVideoUrl: this._onSaveVideoUrl,
+      onRemoveVideo: this._onRemoveVideo,
+      uploadingVideoDisabled: st.uploadingVideo?'opacity:0.6;pointer-events:none':'',
+      uploadVideoBtnLabel: st.uploadingVideo?'Enviando...':'Escolher vídeo',
+      uploadVideoLabel: st.uploadingVideo?'Aguarde, enviando...':'Clique para selecionar',
+      onPickVideo: this._onPickVideo,
+      onVideoFileChange: this._onVideoFileChange,
 
       // Simulados
-      simulados: simulados, simCount: simulados.length,
-      hasSimulados: simulados.length > 0, noSimulados: simulados.length === 0,
+      simCount: rawSimulados.length,
+      hasSimulados: rawSimulados.length>0, noSimulados: rawSimulados.length===0,
+      simuladosHtml: simuladosHtml,
       simName: st.simName, simUrl: st.simUrl, simTimer: st.simTimer,
-      onSimName: function(e){ self.setState({simName: e.target.value}); },
-      onSimUrl: function(e){ self.setState({simUrl: e.target.value}); },
-      onSimTimer: function(e){ self.setState({simTimer: parseFloat(e.target.value)}); },
-      onSaveSimulado: function(){
-        if (!st.simName.trim() || !st.simUrl.trim()) { self.setState({msg:'Preencha nome e URL.', msgType:'err'}); return; }
-        var list = [{id:Date.now(), name:st.simName.trim(), url:st.simUrl.trim(), timer:st.simTimer||5, date:new Date().toLocaleDateString('pt-BR')}].concat(settings.simulados||[]);
-        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {simulados: list}));
-        self.setState({simName:'', simUrl:'', simTimer:5, msg:'Simulado adicionado!', msgType:'ok'});
-      },
-      uploadingPdfDisabled: st.uploadingPdf ? 'opacity:0.6;pointer-events:none' : '',
-      uploadPdfBtnLabel: st.uploadingPdf ? 'Enviando...' : 'Fazer upload de PDF',
-      uploadPdfLabel: st.uploadingPdf ? 'Aguarde, enviando...' : 'Clique para selecionar',
-      onPickPdf: function(){ document.getElementById('adminPdfInput').click(); },
-      onPdfFileChange: function(e){
-        var file = e.target.files && e.target.files[0]; if (!file) return;
-        var name = st.simName.trim() || file.name;
-        e.target.value = '';
-        self._uploadFile(file, 'simulados', function(url){
-          var list = [{id:Date.now(), name:name, url:url, timer:st.simTimer||5, date:new Date().toLocaleDateString('pt-BR')}].concat(settings.simulados||[]);
-          d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, {simulados: list}));
-          self.setState({simName:'', simUrl:'', simTimer:5, msg:'Arquivo enviado!', msgType:'ok'});
-        });
-      },
+      onSimName: this._onSimName,
+      onSimUrl: this._onSimUrl,
+      onSimTimer: this._onSimTimer,
+      onSaveSimulado: this._onSaveSimulado,
+      uploadingPdfDisabled: st.uploadingPdf?'opacity:0.6;pointer-events:none':'',
+      uploadPdfBtnLabel: st.uploadingPdf?'Enviando...':'Fazer upload de PDF',
+      uploadPdfLabel: st.uploadingPdf?'Aguarde, enviando...':'Clique para selecionar',
+      onPickPdf: this._onPickPdf,
+      onPdfFileChange: this._onPdfFileChange,
 
       // Config
       cfgBrand: st.cfgBrand, cfgExam: st.cfgExam, cfgGoal: st.cfgGoal,
       cfgCtBrand: st.cfgCtBrand,
       cfgAdminEmail: st.cfgAdminEmail, cfgAdminPass: st.cfgAdminPass,
-      onCfgBrand: function(e){ self.setState({cfgBrand: e.target.value}); },
-      onCfgExam: function(e){ self.setState({cfgExam: e.target.value}); },
-      onCfgGoal: function(e){ self.setState({cfgGoal: e.target.value}); },
-      onCfgCtBrand: function(e){ self.setState({cfgCtBrand: e.target.value}); },
-      onCfgAdminEmail: function(e){ self.setState({cfgAdminEmail: e.target.value}); },
-      onCfgAdminPass: function(e){ self.setState({cfgAdminPass: e.target.value}); },
-      onSaveConfig: function(){
-        var patch = pv === 'cartorio'
-          ? { brandName: st.cfgBrand, ctExamDate: st.cfgExam, ctBrand: st.cfgCtBrand, adminEmail: st.cfgAdminEmail, adminPass: st.cfgAdminPass }
-          : { brandName: st.cfgBrand, examDate: st.cfgExam, qPerDay: parseInt(st.cfgGoal)||27, adminEmail: st.cfgAdminEmail, adminPass: st.cfgAdminPass };
-        d.onSaveSettings && d.onSaveSettings(Object.assign({}, settings, patch));
-        self.setState({msg:'Configurações salvas!', msgType:'ok'});
-      }
+      onCfgBrand: this._onCfgBrand,
+      onCfgExam: this._onCfgExam,
+      onCfgGoal: this._onCfgGoal,
+      onCfgCtBrand: this._onCfgCtBrand,
+      onCfgAdminEmail: this._onCfgAdminEmail,
+      onCfgAdminPass: this._onCfgAdminPass,
+      onSaveConfig: this._onSaveConfig
     };
   }
 }
 </script>
+</x-dc>
