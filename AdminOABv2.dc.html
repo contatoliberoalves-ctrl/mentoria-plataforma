@@ -630,6 +630,10 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     var settings = (props.data && props.data.settings) || {};
+    // Stable bound methods — created once, not recreated each renderVals()
+    this._onBackToHome = function(){ this.setState({platformView:null, tab:'alunos', msg:''}); }.bind(this);
+    this._onSelectOAB = function(){ this.setState({platformView:'oab', tab:'alunos', msg:''}); }.bind(this);
+    this._onSelectCartorio = function(){ this.setState({platformView:'cartorio', tab:'alunos', msg:''}); }.bind(this);
     this.state = {
       platformView: null, // null=home, 'oab', 'cartorio'
       tab: 'alunos',
@@ -818,9 +822,9 @@ class Component extends DCLogic {
       headerTitle: pv === 'oab' ? '⚡ OAB — Admin' : pv === 'cartorio' ? '📜 Cartório — Admin' : (d.brandName || 'Mentoria') + ' — Admin',
       headerSub: pv === 'oab' ? 'Plataforma OAB' : pv === 'cartorio' ? 'Plataforma Cartório' : 'Painel de Controle',
       showBackBtn: !!pv,
-      onBackToHome: function(){ self.setState({platformView:null, tab:'alunos', msg:''}); },
-      onSelectOAB: function(){ self.setState({platformView:'oab', tab:'alunos', msg:''}); },
-      onSelectCartorio: function(){ self.setState({platformView:'cartorio', tab:'alunos', msg:''}); },
+      onBackToHome: this._onBackToHome,
+      onSelectOAB: this._onSelectOAB,
+      onSelectCartorio: this._onSelectCartorio,
       platformView: pv || '',
 
       onLogout: d.onLogout || function(){},
