@@ -1,27 +1,10 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<x-dc>
 <style>
-:root {
-  --ct-green: #007A3D;
-  --ct-gold: #D4A017;
-  --ct-yellow: #FFE500;
-  --ct-black: #0D0D0D;
-  --ct-white: #FFFFFF;
-  --ct-bg: #FFFDF0;
-  --ct-purple: #7B2FFF;
-  --ct-orange: #FF6600;
-  --ct-cyan: #00A8E8;
-  --ct-red: #D32F2F;
-}
+:root{--ct-green:#007A3D;--ct-gold:#D4A017;--ct-yellow:#FFE500;--ct-black:#0D0D0D;--ct-white:#FFFFFF;--ct-bg:#FFFDF0;--ct-purple:#7B2FFF;--ct-orange:#FF6600;--ct-cyan:#00A8E8;--ct-red:#D32F2F}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:var(--ct-bg);color:var(--ct-black)}
-.ct-wrap{display:flex;flex-direction:column;min-height:100vh}
-
+.ct-wrap{display:flex;flex-direction:column;min-height:100vh;background:var(--ct-bg);color:var(--ct-black);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
 /* HEADER */
-.ct-header{background:var(--ct-green);border-bottom:4px solid var(--ct-black);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:60px}
+.ct-header{background:var(--ct-green);border-bottom:4px solid var(--ct-black);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:60px;position:sticky;top:0;z-index:30}
 .ct-logo{display:flex;align-items:center;gap:10px}
 .ct-logo-box{background:var(--ct-yellow);border:3px solid var(--ct-black);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:3px 3px 0 var(--ct-black)}
 .ct-logo-text{color:var(--ct-white);font-weight:800;font-size:16px;letter-spacing:.5px;text-transform:uppercase}
@@ -29,201 +12,69 @@ body{font-family:'Segoe UI',sans-serif;background:var(--ct-bg);color:var(--ct-bl
 .ct-header-right{display:flex;align-items:center;gap:10px}
 .ct-user-name{color:var(--ct-yellow);font-weight:700;font-size:14px}
 .ct-btn-sm{background:var(--ct-yellow);color:var(--ct-black);border:2px solid var(--ct-black);border-radius:6px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;box-shadow:2px 2px 0 var(--ct-black)}
-.ct-btn-sm:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ct-black)}
-
 /* STAT BAR */
-.ct-statbar{background:var(--ct-yellow);border-bottom:4px solid var(--ct-black);display:flex;align-items:center;gap:16px;padding:8px 20px;overflow-x:auto}
+.ct-statbar{background:var(--ct-yellow);border-bottom:4px solid var(--ct-black);display:flex;align-items:center;gap:12px;padding:8px 20px;overflow-x:auto}
 .ct-stat{display:flex;align-items:center;gap:6px;background:var(--ct-white);border:2px solid var(--ct-black);border-radius:8px;padding:4px 12px;box-shadow:2px 2px 0 var(--ct-black);white-space:nowrap}
 .ct-stat-icon{font-size:16px}
 .ct-stat-val{font-weight:800;font-size:16px;color:var(--ct-green)}
 .ct-stat-label{font-size:11px;font-weight:600;color:#555;text-transform:uppercase}
-
 /* NAV */
-.ct-nav{display:flex;border-bottom:4px solid var(--ct-black);background:var(--ct-white)}
-.ct-tab{flex:1;padding:12px 8px;text-align:center;font-weight:700;font-size:13px;cursor:pointer;border-right:2px solid var(--ct-black);text-transform:uppercase;letter-spacing:.5px;transition:background .15s}
+.ct-nav{display:flex;border-bottom:4px solid var(--ct-black);background:var(--ct-white);overflow-x:auto}
+.ct-tab{flex:1;min-width:80px;padding:14px 8px;text-align:center;font-weight:700;font-size:13px;cursor:pointer;border-right:2px solid var(--ct-black);text-transform:uppercase;letter-spacing:.5px;transition:background .15s;border:none;background:none}
 .ct-tab:last-child{border-right:none}
 .ct-tab.active{background:var(--ct-green);color:var(--ct-white)}
 .ct-tab:not(.active):hover{background:var(--ct-yellow)}
-
 /* CONTENT */
 .ct-content{padding:20px;max-width:900px;margin:0 auto;width:100%}
-
-/* COUNTDOWN CARD */
+/* COUNTDOWN */
 .ct-countdown{background:var(--ct-green);border:3px solid var(--ct-black);border-radius:16px;box-shadow:6px 6px 0 var(--ct-black);padding:24px;text-align:center;margin-bottom:20px;color:var(--ct-white)}
 .ct-countdown-num{font-size:72px;font-weight:900;color:var(--ct-yellow);line-height:1;text-shadow:3px 3px 0 var(--ct-black)}
 .ct-countdown-label{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:2px;opacity:.9}
 .ct-countdown-date{font-size:13px;margin-top:6px;color:var(--ct-yellow);font-weight:700}
-
-/* PROGRESS BAR */
+/* PROGRESS */
 .ct-progress-wrap{background:var(--ct-white);border:3px solid var(--ct-black);border-radius:12px;box-shadow:4px 4px 0 var(--ct-black);padding:16px;margin-bottom:20px}
 .ct-progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .ct-progress-title{font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
 .ct-progress-pct{font-size:20px;font-weight:900;color:var(--ct-green)}
 .ct-bar-track{background:#e8e8e8;border:2px solid var(--ct-black);border-radius:6px;height:20px;overflow:hidden}
-.ct-bar-fill{height:100%;background:repeating-linear-gradient(45deg,var(--ct-green),var(--ct-green) 10px,var(--ct-yellow) 10px,var(--ct-yellow) 20px);animation:stripe-move .8s linear infinite;transition:width .5s}
-@keyframes stripe-move{0%{background-position:0 0}100%{background-position:28px 0}}
-
-/* MONTH TABS */
+.ct-bar-fill{height:100%;background:repeating-linear-gradient(45deg,var(--ct-green),var(--ct-green) 10px,var(--ct-yellow) 10px,var(--ct-yellow) 20px);transition:width .5s}
+/* CARD */
+.ct-card{background:var(--ct-white);border:3px solid var(--ct-black);border-radius:12px;box-shadow:4px 4px 0 var(--ct-black);padding:16px;margin-bottom:16px}
+.ct-card-title{font-weight:800;font-size:15px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+/* MONTHS */
 .ct-months{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
 .ct-month-btn{background:var(--ct-white);border:2px solid var(--ct-black);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:2px 2px 0 var(--ct-black);text-transform:uppercase}
 .ct-month-btn.active{background:var(--ct-green);color:var(--ct-white)}
 .ct-month-btn:hover:not(.active){background:var(--ct-yellow)}
-
-/* WEEK CALENDAR */
+/* WEEK */
 .ct-week{margin-bottom:16px}
 .ct-week-label{font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;color:#555}
 .ct-days{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
-.ct-day{min-width:80px;border:3px solid var(--ct-black);border-radius:10px;padding:10px 8px;text-align:center;box-shadow:3px 3px 0 var(--ct-black);cursor:pointer;transition:transform .1s;flex-shrink:0}
+.ct-day{min-width:80px;border:3px solid var(--ct-black);border-radius:10px;padding:10px 8px;text-align:center;box-shadow:3px 3px 0 var(--ct-black);cursor:pointer;transition:transform .1s;flex-shrink:0;background:var(--ct-white)}
 .ct-day:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ct-black)}
 .ct-day.today{background:var(--ct-green);color:var(--ct-white)}
 .ct-day.done{background:#C8E6C9;border-color:var(--ct-green)}
 .ct-day.simulado{background:#E8D5FF;border-color:var(--ct-purple)}
 .ct-day.nocaute{background:#FFE0CC;border-color:var(--ct-orange)}
 .ct-day.exam{background:var(--ct-black);color:var(--ct-yellow)}
-.ct-day.future{background:var(--ct-white)}
 .ct-day-num{font-size:11px;font-weight:600;opacity:.7}
 .ct-day-name{font-size:13px;font-weight:800;margin:4px 0}
 .ct-day-type{font-size:10px;font-weight:700;text-transform:uppercase}
 .ct-day-theme{font-size:10px;color:#666;margin-top:3px;word-break:break-word}
 .ct-day-check{font-size:14px;margin-top:4px}
-
-/* EMPTY STATE */
+/* EMPTY */
 .ct-empty{text-align:center;padding:60px 20px;color:#888}
 .ct-empty-icon{font-size:48px;margin-bottom:16px}
 .ct-empty-text{font-size:16px;font-weight:600}
 .ct-empty-sub{font-size:13px;margin-top:8px}
-
-/* CARD */
-.ct-card{background:var(--ct-white);border:3px solid var(--ct-black);border-radius:12px;box-shadow:4px 4px 0 var(--ct-black);padding:16px;margin-bottom:16px}
-.ct-card-title{font-weight:800;font-size:15px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+/* REPORT */
+.ct-report-num{font-size:36px;font-weight:900;line-height:1;color:var(--ct-green)}
+.ct-report-label{font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+/* MATERIAL */
+.ct-mat-item{background:var(--ct-white);border:2px solid var(--ct-black);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ct-mat-title{font-size:13px;font-weight:800}
+.ct-mat-url{font-size:11px;color:var(--ct-cyan);word-break:break-all;margin-top:2px}
 </style>
-</head>
-<body>
-<x-dc>
-<script type="text/dc-logic">
-class CartorioApp extends DCLogic {
-  get brandName(){return this.data.brandName||'Mentoria Cartórios'}
-  get onLogout(){return this.data.onLogout||function(){}}
-  get onChangePw(){return this.data.onChangePw||function(){}}
-
-  get state(){return this._state||(this._state={view:'cronograma',activeMonth:0})}
-  setState(s){Object.assign(this._state,s);this.renderVals()}
-
-  renderVals(){
-    const st=this.state
-    const d=this.data||{}
-    const weeks=d.weeks||[]
-    const months=d.months||[]
-    const C=d.C||{}
-    const completed=d.completed||0
-    const studyDays=d.studyDays||0
-    const progPct=studyDays>0?Math.round(completed/studyDays*100):0
-
-    // Nav tabs
-    const tabs=[
-      {id:'cronograma',icon:'📅',label:'Cronograma'},
-      {id:'relatorio',icon:'📊',label:'Relatório'},
-      {id:'questoes',icon:'📝',label:'Questões'},
-      {id:'simulados',icon:'🎯',label:'Simulados'},
-    ]
-    const navTabs=tabs.map(t=>`
-      <div class="ct-tab${st.view===t.id?' active':''}" onclick="this.closest('x-dc').__dc.setState({view:'${t.id}'})">
-        ${t.icon} ${t.label}
-      </div>`).join('')
-
-    // Month tabs
-    const monthTabs=months.length?months.map((m,i)=>`
-      <button class="ct-month-btn${st.activeMonth===i?' active':''}"
-        onclick="this.closest('x-dc').__dc.setState({activeMonth:${i}})">
-        ${m.label}
-      </button>`).join(''):'<div style="color:#888;font-size:13px">Sem meses cadastrados</div>'
-
-    // Current month weeks
-    const curMonth=months[st.activeMonth]||null
-    const curWeeks=curMonth?weeks.filter(w=>w.month===st.activeMonth):[]
-
-    const styledWeeks=curWeeks.map(w=>{
-      const dayCards=w.days.map(day=>{
-        let cls='ct-day future',icon='',typeLabel=''
-        if(day.isExam){cls='ct-day exam';icon='🏆';typeLabel='PROVA'}
-        else if(day.isSimulado){cls='ct-day simulado';icon='🎯';typeLabel='SIMULADO'}
-        else if(day.isNocaute){cls='ct-day nocaute';icon='💪';typeLabel='NOCAUTE'}
-        else if(day.isToday){cls='ct-day today';icon='👇';typeLabel='HOJE'}
-        else if(day.done){cls='ct-day done';icon='✅';typeLabel='FEITO'}
-        else{typeLabel='ESTUDO'}
-        return `<div class="${cls}">
-          <div class="ct-day-num">${day.dateLabel||''}</div>
-          <div class="ct-day-name">${day.dayName||''}</div>
-          <div class="ct-day-type">${typeLabel}</div>
-          ${day.theme?`<div class="ct-day-theme">${day.theme}</div>`:''}
-          <div class="ct-day-check">${icon}</div>
-        </div>`
-      }).join('')
-      return `<div class="ct-week">
-        <div class="ct-week-label">Semana ${w.num||''}</div>
-        <div class="ct-days">${dayCards}</div>
-      </div>`
-    }).join('')
-
-    // Stat cards
-    const statCards=[
-      {icon:'📅',val:d.examCountdown!=null?d.examCountdown+'d':'—',label:'Pra Prova'},
-      {icon:'✅',val:completed,label:'Dias Feitos'},
-      {icon:'📈',val:progPct+'%',label:'Progresso'},
-      {icon:'📚',val:d.questoesData&&d.questoesData.total||0,label:'Questões'},
-    ].map(s=>`<div class="ct-stat">
-      <span class="ct-stat-icon">${s.icon}</span>
-      <span class="ct-stat-val">${s.val}</span>
-      <span class="ct-stat-label">${s.label}</span>
-    </div>`).join('')
-
-    // Avisos
-    const avisos=d.avisosData&&d.avisosData.avisos||[]
-    const avisosHtml=avisos.length?`
-      <div style="margin-bottom:16px">
-        <div style="font-size:12px;font-weight:800;color:#007A3D;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">📢 Avisos do Mentor</div>
-        ${avisos.map(av=>`
-          <div style="background:#fff;border:3px solid #007A3D;border-radius:12px;box-shadow:3px 3px 0 #007A3D;padding:14px 16px;margin-bottom:10px">
-            <div style="font-size:14px;font-weight:800;color:#007A3D">${av.title||''}</div>
-            ${av.msg?`<div style="font-size:13px;color:#333;margin-top:4px">${av.msg}</div>`:''}
-            <div style="font-size:11px;color:#888;margin-top:6px">${av.date||''}</div>
-          </div>`).join('')}
-      </div>`
-    :''
-
-    // Cronogram content
-    const cronContent=`
-      ${avisosHtml}
-      <div class="ct-countdown">
-        <div class="ct-countdown-num">${d.examCountdown!=null?d.examCountdown:'—'}</div>
-        <div class="ct-countdown-label">Dias para a Prova</div>
-        <div class="ct-countdown-date">📅 ${d.examDateLabel||'Data em breve'}</div>
-      </div>
-      <div class="ct-progress-wrap">
-        <div class="ct-progress-header">
-          <span class="ct-progress-title">Progresso Geral</span>
-          <span class="ct-progress-pct">${progPct}%</span>
-        </div>
-        <div class="ct-bar-track"><div class="ct-bar-fill" style="width:${progPct}%"></div></div>
-      </div>
-      <div class="ct-months">${monthTabs}</div>
-      ${styledWeeks||'<div class="ct-empty"><div class="ct-empty-icon">📅</div><div class="ct-empty-text">Cronograma em breve</div><div class="ct-empty-sub">O cronograma será disponibilizado em breve.</div></div>'}
-    `
-
-    return {
-      statCards,navTabs,cronContent,
-      showCronograma:st.view==='cronograma',
-      showRelatorio:st.view==='relatorio',
-      showQuestoes:st.view==='questoes',
-      showSimulados:st.view==='simulados',
-      userName:d.userName||'Aluno',
-      reportData:d.reportData||{},
-      questoesData:d.questoesData||{materias:[]},
-      simuladosData:d.simuladosData||{entries:[]},
-    }
-  }
-}
-</script>
 
 <div class="ct-wrap">
   <!-- HEADER -->
@@ -231,39 +82,237 @@ class CartorioApp extends DCLogic {
     <div class="ct-logo">
       <div class="ct-logo-box">📜</div>
       <div>
-        <div class="ct-logo-text">Mentoria Cartórios</div>
-        <div class="ct-logo-sub">Concurso de Cartórios</div>
+        <div class="ct-logo-text">{{ brandName }}</div>
+        <div class="ct-logo-sub">{{ contestName }}</div>
       </div>
     </div>
     <div class="ct-header-right">
       <span class="ct-user-name">{{ userName }}</span>
-      <button class="ct-btn-sm" onclick="this.closest('x-dc').__dc.onLogout()">Sair</button>
+      <button class="ct-btn-sm" onclick="{{ onLogout }}">Sair</button>
     </div>
   </div>
 
   <!-- STAT BAR -->
-  <div class="ct-statbar" inner-html="{{ statCards }}"></div>
+  <div class="ct-statbar" inner-html="{{ statCardsHtml }}"></div>
 
   <!-- NAV TABS -->
-  <div class="ct-nav" inner-html="{{ navTabs }}"></div>
+  <div class="ct-nav" inner-html="{{ navTabsHtml }}"></div>
 
   <!-- CONTENT -->
   <div class="ct-content">
-    <sc-if value="{{ showCronograma }}">
+
+    <!-- CRONOGRAMA -->
+    <sc-if value="{{ showCronograma }}" hint-placeholder-val="{{ true }}">
       <div inner-html="{{ cronContent }}"></div>
     </sc-if>
-    <sc-if value="{{ showRelatorio }}">
-      <dc-import name="RelatorioOAB" data="{{ reportData }}" hint-size="100%,auto"></dc-import>
+
+    <!-- RELATÓRIO -->
+    <sc-if value="{{ showRelatorio }}" hint-placeholder-val="">
+      <div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-bottom:20px">
+          <div class="ct-card" style="text-align:center;padding:16px;margin-bottom:0">
+            <div class="ct-report-num">{{ rQuestoes }}</div>
+            <div class="ct-report-label">Questões Feitas</div>
+          </div>
+          <div class="ct-card" style="text-align:center;padding:16px;margin-bottom:0">
+            <div class="ct-report-num" style="color:{{ rTaxaColor }}">{{ rTaxa }}%</div>
+            <div class="ct-report-label">Taxa de Acerto</div>
+          </div>
+          <div class="ct-card" style="text-align:center;padding:16px;margin-bottom:0">
+            <div class="ct-report-num" style="color:var(--ct-orange)">{{ rStreak }}</div>
+            <div class="ct-report-label">Sequência</div>
+          </div>
+          <div class="ct-card" style="text-align:center;padding:16px;margin-bottom:0">
+            <div class="ct-report-num" style="color:var(--ct-purple)">{{ rSimulados }}</div>
+            <div class="ct-report-label">Simulados</div>
+          </div>
+        </div>
+        <div class="ct-empty" style="padding:30px">
+          <div class="ct-empty-icon">📊</div>
+          <div class="ct-empty-text">Relatório detalhado em breve</div>
+        </div>
+      </div>
     </sc-if>
-    <sc-if value="{{ showQuestoes }}">
-      <dc-import name="BancoQuestoes" data="{{ questoesData }}" hint-size="100%,auto"></dc-import>
+
+    <!-- QUESTÕES / MATERIAIS -->
+    <sc-if value="{{ showQuestoes }}" hint-placeholder-val="">
+      <div>
+        <sc-if value="{{ hasMateriais }}" hint-placeholder-val="{{ true }}">
+          <div inner-html="{{ materiaisHtml }}"></div>
+        </sc-if>
+        <sc-if value="{{ noMateriais }}" hint-placeholder-val="">
+          <div class="ct-empty">
+            <div class="ct-empty-icon">📚</div>
+            <div class="ct-empty-text">Materiais em breve</div>
+            <div class="ct-empty-sub">O mentor ainda não adicionou materiais.</div>
+          </div>
+        </sc-if>
+      </div>
     </sc-if>
-    <sc-if value="{{ showSimulados }}">
-      <dc-import name="SimuladosOAB" data="{{ simuladosData }}" hint-size="100%,auto"></dc-import>
+
+    <!-- SIMULADOS -->
+    <sc-if value="{{ showSimulados }}" hint-placeholder-val="">
+      <div>
+        <sc-if value="{{ hasSimulados }}" hint-placeholder-val="{{ true }}">
+          <div inner-html="{{ simuladosHtml }}"></div>
+        </sc-if>
+        <sc-if value="{{ noSimulados }}" hint-placeholder-val="">
+          <div class="ct-empty">
+            <div class="ct-empty-icon">🎯</div>
+            <div class="ct-empty-text">Nenhum simulado disponível</div>
+            <div class="ct-empty-sub">O mentor ainda não adicionou simulados.</div>
+          </div>
+        </sc-if>
+      </div>
     </sc-if>
+
   </div>
 </div>
 
 </x-dc>
-</body>
-</html>
+<script data-dc-script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var self = this;
+    this._onLogout = function(){ var d=self.props.data||{}; d.onLogout && d.onLogout(); };
+    this._setView = function(v){ self.setState({view:v}); };
+    this._setMonth = function(i){ self.setState({activeMonth:i}); };
+    this.state = { view: 'cronograma', activeMonth: 0 };
+  }
+
+  renderVals() {
+    var d = this.props.data || {};
+    var st = this.state;
+    var weeks = d.weeks || [];
+    var months = d.months || [];
+    var C = d.C || {};
+    var completed = d.completed || 0;
+    var studyDays = d.studyDays || 0;
+    var progPct = studyDays > 0 ? Math.round(completed / studyDays * 100) : 0;
+
+    function h(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    var DC = "this.closest('x-dc').__dc";
+
+    // ── Nav tabs ──
+    var tabs = [
+      {id:'cronograma', icon:'📅', label:'Cronograma'},
+      {id:'relatorio',  icon:'📊', label:'Relatório'},
+      {id:'questoes',   icon:'📚', label:'Materiais'},
+      {id:'simulados',  icon:'🎯', label:'Simulados'},
+    ];
+    var navTabsHtml = tabs.map(function(t){
+      var active = st.view === t.id;
+      return '<button class="ct-tab'+(active?' active':'')+'" onclick="'+DC+'.setState({view:\''+t.id+'\'})">'+t.icon+' '+t.label+'</button>';
+    }).join('');
+
+    // ── Stat cards ──
+    var questTotal = (d.questoesData && d.questoesData.total) || 0;
+    var statCardsHtml = [
+      {icon:'📅', val: d.examCountdown != null ? d.examCountdown+'d' : '—', label:'Pra Prova'},
+      {icon:'✅', val: completed, label:'Dias Feitos'},
+      {icon:'📈', val: progPct+'%', label:'Progresso'},
+      {icon:'📚', val: questTotal, label:'Questões'},
+    ].map(function(s){
+      return '<div class="ct-stat"><span class="ct-stat-icon">'+s.icon+'</span><span class="ct-stat-val">'+h(String(s.val))+'</span><span class="ct-stat-label">'+s.label+'</span></div>';
+    }).join('');
+
+    // ── Month tabs ──
+    var monthTabsHtml = months.length
+      ? months.map(function(m,i){
+          return '<button class="ct-month-btn'+(st.activeMonth===i?' active':'')+'" onclick="'+DC+'.setState({activeMonth:'+i+'})">'+h(m.label||'')+'</button>';
+        }).join('')
+      : '<div style="color:#888;font-size:13px">Sem meses</div>';
+
+    // ── Week cards ──
+    var curMonth = months[st.activeMonth] || null;
+    var curWeeks = curMonth ? weeks.filter(function(w){ return w.month === st.activeMonth; }) : [];
+    var styledWeeks = curWeeks.map(function(w){
+      var dayCards = (w.days||[]).map(function(day){
+        var cls='ct-day', icon='', typeLabel='ESTUDO';
+        if(day.isExam){ cls+=' exam'; icon='🏆'; typeLabel='PROVA'; }
+        else if(day.isSimulado){ cls+=' simulado'; icon='🎯'; typeLabel='SIMULADO'; }
+        else if(day.isNocaute){ cls+=' nocaute'; icon='💪'; typeLabel='NOCAUTE'; }
+        else if(day.isToday){ cls+=' today'; icon='👇'; typeLabel='HOJE'; }
+        else if(day.done){ cls+=' done'; icon='✅'; typeLabel='FEITO'; }
+        return '<div class="'+cls+'"><div class="ct-day-num">'+h(day.dateLabel||'')+'</div><div class="ct-day-name">'+h(day.dayName||'')+'</div><div class="ct-day-type">'+typeLabel+'</div>'+(day.theme?'<div class="ct-day-theme">'+h(day.theme)+'</div>':'')+'<div class="ct-day-check">'+icon+'</div></div>';
+      }).join('');
+      return '<div class="ct-week"><div class="ct-week-label">Semana '+h(String(w.num||''))+'</div><div class="ct-days">'+dayCards+'</div></div>';
+    }).join('');
+
+    // ── Avisos ──
+    var avisos = (d.avisosData && d.avisosData.avisos) || [];
+    var avisosHtml = avisos.length ? '<div style="margin-bottom:16px"><div style="font-size:12px;font-weight:800;color:#007A3D;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">📢 Avisos do Mentor</div>'
+      + avisos.map(function(av){
+          return '<div style="background:#fff;border:3px solid #007A3D;border-radius:12px;box-shadow:3px 3px 0 #007A3D;padding:14px 16px;margin-bottom:10px"><div style="font-size:14px;font-weight:800;color:#007A3D">'+h(av.title||'')+'</div>'+(av.msg?'<div style="font-size:13px;color:#333;margin-top:4px">'+h(av.msg)+'</div>':'')+'<div style="font-size:11px;color:#888;margin-top:6px">'+h(av.date||'')+'</div></div>';
+        }).join('')+'</div>' : '';
+
+    // ── Cronograma content ──
+    var cronContent = avisosHtml
+      + '<div class="ct-countdown"><div class="ct-countdown-num">'+(d.examCountdown!=null?d.examCountdown:'—')+'</div><div class="ct-countdown-label">Dias para a Prova</div><div class="ct-countdown-date">📅 '+h(d.examDateLabel||'Data em breve')+'</div></div>'
+      + '<div class="ct-progress-wrap"><div class="ct-progress-header"><span class="ct-progress-title">Progresso Geral</span><span class="ct-progress-pct">'+progPct+'%</span></div><div class="ct-bar-track"><div class="ct-bar-fill" style="width:'+progPct+'%"></div></div></div>'
+      + '<div class="ct-months">'+monthTabsHtml+'</div>'
+      + (styledWeeks || '<div class="ct-empty"><div class="ct-empty-icon">📅</div><div class="ct-empty-text">Cronograma em breve</div><div class="ct-empty-sub">O cronograma será disponibilizado em breve.</div></div>');
+
+    // ── Materiais ──
+    var materias = (d.questoesData && d.questoesData.materias) || [];
+    var tipoIcons = {video:'🎬',pdf:'📄',link:'🔗',simulado:'🎯'};
+    var materiaisHtml = materias.map(function(mat){
+      var itemsHtml = (mat.items||[]).map(function(m){
+        return '<div class="ct-mat-item"><div style="flex:1"><div class="ct-mat-title">'+(tipoIcons[m.tipo]||'🔗')+' '+h(m.titulo||m.title||'')+'</div><div class="ct-mat-url">'+h(m.url||'')+'</div></div>'
+          +(m.url?'<a href="'+h(m.url)+'" target="_blank" style="background:#fff;border:2px solid #000;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:2px 2px 0 #000;text-decoration:none;color:#000">↗ Abrir</a>':'')
+          +'</div>';
+      }).join('');
+      return '<div class="ct-card"><div class="ct-card-title" style="color:var(--ct-green)">'+h(mat.name||mat.materia||'')+'</div>'+itemsHtml+'</div>';
+    }).join('');
+
+    // ── Simulados ──
+    var adminSims = (d.simuladosData && d.simuladosData.adminSimulados) || [];
+    var simuladosHtml = adminSims.map(function(s){
+      return '<div style="background:#fff;border:3px solid var(--ct-purple);border-radius:12px;box-shadow:4px 4px 0 var(--ct-purple);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">'
+        +'<div><div style="font-size:14px;font-weight:800">'+h(s.name||'')+'</div>'
+        +'<div style="margin-top:4px"><span style="background:var(--ct-purple);color:#fff;border:2px solid #000;border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800">⏱ '+(s.timer||5)+'h</span>'
+        +' <span style="font-size:11px;color:#666">'+h(s.date||'')+'</span></div></div>'
+        +(s.url?'<a href="'+h(s.url)+'" target="_blank" style="background:#fff;border:2px solid #000;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:2px 2px 0 #000;text-decoration:none;color:#000">📄 Abrir</a>':'')
+        +'</div>';
+    }).join('');
+
+    // ── Report data ──
+    var rep = d.reportData || {};
+    var rTaxa = rep.taxa || 0;
+
+    return {
+      brandName: d.brandName || 'Mentoria Cartórios',
+      contestName: d.contestName || 'Concurso de Cartórios',
+      userName: d.userName || 'Aluno',
+      onLogout: this._onLogout,
+
+      statCardsHtml: statCardsHtml,
+      navTabsHtml: navTabsHtml,
+      cronContent: cronContent,
+
+      showCronograma: st.view === 'cronograma',
+      showRelatorio:  st.view === 'relatorio',
+      showQuestoes:   st.view === 'questoes',
+      showSimulados:  st.view === 'simulados',
+
+      // Relatório
+      rQuestoes: rep.totalQ || 0,
+      rTaxa: rTaxa,
+      rTaxaColor: rTaxa >= 70 ? '#007A3D' : rTaxa >= 50 ? '#FF6600' : '#D32F2F',
+      rStreak: rep.streak || 0,
+      rSimulados: rep.simulados || 0,
+
+      // Materiais
+      hasMateriais: materias.length > 0,
+      noMateriais: materias.length === 0,
+      materiaisHtml: materiaisHtml,
+
+      // Simulados
+      hasSimulados: adminSims.length > 0,
+      noSimulados: adminSims.length === 0,
+      simuladosHtml: simuladosHtml,
+    };
+  }
+}
+</script>
