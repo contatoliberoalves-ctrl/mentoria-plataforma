@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Debug Users</title>
+<style>
+body{font-family:monospace;padding:20px;background:#111;color:#0f0}
+pre{background:#000;padding:16px;border-radius:8px;overflow:auto;white-space:pre-wrap;word-break:break-all}
+button{background:#0057FF;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;margin-bottom:16px}
+h2{color:#FFE500}
+.ok{color:#0f0} .err{color:#f55}
+</style>
+</head>
+<body>
+<h2>🔍 Debug — localStorage Users</h2>
+<button onclick="load()">🔄 Carregar / Atualizar</button>
+<button onclick="seedBeta()" style="background:#007A3D;margin-left:8px">🌱 Criar beta@cartorio.teste agora</button>
+<button onclick="clearSession()" style="background:#D32F2F;margin-left:8px">🗑 Limpar sessão</button>
+<pre id="out">Clique em "Carregar"...</pre>
+
+<script>
+const PFX = 'oabp_v4_';
+
+function gp(k) {
+  try { const v = localStorage.getItem(PFX+k); return v ? JSON.parse(v) : null; } catch(e) { return null; }
+}
+function sp(k, v) {
+  try { localStorage.setItem(PFX+k, JSON.stringify(v)); } catch(e) {}
+}
+
+function load() {
+  const users = gp('users') || [];
+  const session = gp('session');
+  const settings = gp('settings') || {};
+
+  let out = '';
+  out += '=== SESSÃO ATIVA ===\n';
+  out += JSON.stringify(session, null, 2) + '\n\n';
+
+  out += '=== USUÁRIOS (' + users.length + ') ===\n';
+  users.forEach((u, i) => {
+    out += `[${i}] id=${u.id}\n`;
+    out += `     name=${u.name}\n`;
+    out += `     email=${u.email}\n`;
+    out += `     tipo=${u.tipo||'(não definido)'}\n`;
+    out += `     password=${u.password}\n\n`;
+  });
+
+  out += '=== SETTINGS (resumo) ===\n';
+  out += `adminEmail: ${settings.adminEmail || '(padrão: admin@libero.com)'}\n`;
+  out += `adminPass:  ${settings.adminPass  || '(padrão: admin123)'}\n\n`;
+
+  out += '=== TODAS AS CHAVES localStorage (prefixo oabp_v4_) ===\n';
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k.startsWith(PFX)) out += k + '\n';
+  }
+
+  document.getElementById('out').textContent = out;
+}
+
+function seedBeta() {
+  let users = gp('users') || [];
+  const betaId = 'beta_cartorio_001';
+  if (!users.find(u => u.id === betaId)) {
+    users.push({id:betaId, name:'Beta Cartório', email:'beta@cartorio.teste', tipo:'cartorio', password:'cart123'});
+    sp('users', users);
+    alert('✅ beta@cartorio.teste criado!');
+  } else {
+    alert('ℹ️ beta@cartorio.teste já existe.');
+  }
+  load();
+}
+
+function clearSession() {
+  localStorage.removeItem(PFX+'session');
+  alert('Sessão limpa. Recarregue a página principal.');
+  load();
+}
+
+load();
+</script>
+</body>
+</html>
