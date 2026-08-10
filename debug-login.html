@@ -3,9 +3,10 @@
 <head><meta charset="utf-8"><title>Debug Login</title></head>
 <body>
 <h2>Diagnóstico de Login</h2>
-<div id="out" style="font-family:monospace;white-space:pre;border:1px solid #ccc;padding:10px;margin:10px 0;"></div>
-<button onclick="testar()">Testar Login Eduarda</button>
-<button onclick="testarSb()">Verificar Supabase JS</button>
+<div id="out" style="font-family:monospace;white-space:pre;border:1px solid #ccc;padding:10px;margin:10px 0;background:#f9f9f9"></div>
+<button onclick="testar('eduarda@enac.com','oab321')">Testar Eduarda</button>
+<button onclick="testar('maria@concurso.com','oab123')">Testar Maria (nova)</button>
+<button onclick="document.getElementById('out').textContent=''">Limpar</button>
 
 <script src="/supabase.js"></script>
 <script>
@@ -13,49 +14,50 @@ function log(msg) {
   document.getElementById('out').textContent += msg + '\n';
 }
 
-function testarSb() {
-  log('window.supabase: ' + (typeof window.supabase));
-  if (window.supabase) {
-    log('createClient: ' + (typeof window.supabase.createClient));
-    log('✅ Supabase JS carregou corretamente!');
-  } else {
-    log('❌ Supabase JS NAO carregou!');
-  }
-}
+const SB_URL = 'https://qijziqjpvtjwarkodzxp.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpanppcWpwdnRqd2Fya29kenhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMzY0ODAsImV4cCI6MjA5NTgxMjQ4MH0.TVLDYLvotFie0GDX6zhab9JGs1Vq0JFT0xIBuPXKBhQ';
 
-async function testar() {
-  document.getElementById('out').textContent = '';
-  log('Iniciando teste...');
+async function testar(email, senha) {
+  log('\n--- Testando: ' + email + ' ---');
 
-  if (!window.supabase) {
-    log('❌ window.supabase é null - supabase.js não carregou!');
-    return;
-  }
-  log('✅ Supabase JS carregado');
+  if (!window.supabase) { log('❌ Supabase JS não carregou!'); return; }
+  log('✅ Supabase JS OK');
 
-  const sb = window.supabase.createClient(
-    'https://qijziqjpvtjwarkodzxp.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpanppcWpwdnRqd2Fya29kenhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMzY0ODAsImV4cCI6MjA5NTgxMjQ4MH0.TVLDYLvotFie0GDX6zhab9JGs1Vq0JFT0xIBuPXKBhQ'
-  );
+  const sb = window.supabase.createClient(SB_URL, SB_KEY);
 
-  log('Tentando login: eduarda@enac.com / oab321');
-  const { data, error } = await sb.auth.signInWithPassword({
-    email: 'eduarda@enac.com',
-    password: 'oab321'
-  });
+  log('Consultando oab_profiles...');
+  const { data: prof, error } = await sb
+    .from('oab_profiles')
+    .select('*')
+    .eq('email', email)
+    .eq('login_pass', senha)
+    .maybeSingle();
 
   if (error) {
-    log('❌ ERRO: ' + error.message);
-    log('Código: ' + error.status);
-  } else {
-    log('✅ LOGIN OK!');
-    log('User ID: ' + data.user.id);
-    log('Email: ' + data.user.email);
+    log('❌ ERRO na query: ' + error.message);
+    return;
   }
+  if (!prof) {
+    log('❌ Email ou senha incorretos (não encontrado em oab_profiles)');
+    log('Verificando se o email existe...');
+    const { data: prof2 } = await sb.from('oab_profiles').select('email,login_pass').eq('email', email).maybeSingle();
+    if (prof2) {
+      log('Email encontrado, mas senha errada. login_pass no DB: ' + prof2.login_pass);
+    } else {
+      log('Email NÃO encontrado em oab_profiles!');
+    }
+    return;
+  }
+
+  log('✅ LOGIN OK!');
+  log('ID: ' + prof.id);
+  log('Nome: ' + prof.name);
+  log('Tipo: ' + prof.tipo);
+  log('Role: ' + prof.role);
 }
 
-window.onload = function() {
-  testarSb();
+window.onload = () => {
+  log('Supabase JS: ' + (window.supabase ? '✅ carregado' : '❌ NÃO carregado'));
 };
 </script>
 </body>
