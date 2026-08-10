@@ -90,6 +90,18 @@
 .ct-crono-badge.t-p{color:#DC2626;background:#FEE2E2}
 .ct-crono-date{font-size:12px;font-weight:700;color:#333}
 .ct-crono-q{font-size:11px;font-weight:700;color:#999;margin-left:auto;font-variant-numeric:tabular-nums}
+.ct-crono-q-meta{display:inline-flex;align-items:center;gap:5px;background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:8px;padding:3px 10px;font-size:12px;font-weight:800;color:#1D4ED8;margin-left:auto}
+.ct-quest-stats{margin-top:10px;padding-top:10px;border-top:1.5px dashed #e0e0e0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ct-quest-stats-title{font-size:11px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.04em;width:100%;margin-bottom:2px}
+.ct-quest-field{display:flex;align-items:center;gap:6px;background:#F8FAFC;border:2px solid #CBD5E1;border-radius:8px;padding:5px 10px}
+.ct-quest-field label{font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;white-space:nowrap}
+.ct-quest-field input{width:52px;border:none;background:transparent;font-size:14px;font-weight:800;color:#0F172A;text-align:center;outline:none;font-variant-numeric:tabular-nums}
+.ct-quest-field input::-webkit-inner-spin-button,.ct-quest-field input::-webkit-outer-spin-button{opacity:1}
+.ct-quest-sep{font-size:11px;font-weight:700;color:#94A3B8}
+.ct-quest-pct{display:flex;align-items:center;gap:4px;padding:5px 12px;border-radius:8px;border:2px solid #e0e0e0;font-size:14px;font-weight:900;background:#F8FAFC;color:#94A3B8;transition:all .2s}
+.ct-quest-pct.good{background:#D1FAE5;border-color:#059669;color:#065F46}
+.ct-quest-pct.mid{background:#FEF3C7;border-color:#D97706;color:#92400E}
+.ct-quest-pct.bad{background:#FEE2E2;border-color:#DC2626;color:#991B1B}
 .ct-crono-subject{font-size:13px;font-weight:800;color:var(--cb);margin-bottom:3px}
 .ct-crono-topic{font-size:12px;color:#555;line-height:1.4;margin-bottom:8px}
 .ct-crono-checks{display:flex;flex-direction:column;gap:6px;margin-top:8px;padding-top:8px;border-top:1.5px dashed #e0e0e0}
@@ -186,7 +198,7 @@
                   <span class="{{ cd.badgeCls }}">{{ cd.badge }}</span>
                   <span class="ct-crono-date">{{ cd.date }}</span>
                   <sc-if value="{{ cd.hasQ }}" hint-placeholder-val="">
-                    <span class="ct-crono-q">{{ cd.q }}q</span>
+                    <span class="ct-crono-q-meta">🎯 Meta: {{ cd.q }} questões</span>
                   </sc-if>
                 </div>
                 <div class="ct-crono-subject">{{ cd.subject }}</div>
@@ -201,6 +213,21 @@
                         <span class="ct-chk-lbl">{{ ck.label }}</span>
                       </button>
                     </sc-for>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ cd.hasQ }}" hint-placeholder-val="">
+                  <div class="ct-quest-stats">
+                    <div class="ct-quest-stats-title">📝 Questões realizadas</div>
+                    <div class="ct-quest-field">
+                      <label>Feitas</label>
+                      <input type="number" min="0" max="{{ cd.q }}" value="{{ cd.questFeitas }}" placeholder="0" oninput="{{ onQuestInput }}" data-day-key="{{ cd.dayKey }}" data-field="feitas">
+                      <span class="ct-quest-sep">/ {{ cd.q }}</span>
+                    </div>
+                    <div class="ct-quest-field">
+                      <label>Acertos</label>
+                      <input type="number" min="0" max="{{ cd.questFeitas }}" value="{{ cd.questAcertos }}" placeholder="0" oninput="{{ onQuestInput }}" data-day-key="{{ cd.dayKey }}" data-field="acertos">
+                    </div>
+                    <div class="{{ cd.questPctCls }}">{{ cd.questPctLabel }}</div>
                   </div>
                 </sc-if>
               </div>
@@ -320,6 +347,23 @@ class Component extends DCLogic {
       (function(idx){ self._monthHandlers[idx]=function(){ self.setState({activeMonth:idx}); }; })(i);
     }
 
+    // Quest stats input handler
+    this._onQuestInput = function(e){
+      var inp = e.currentTarget || e.target;
+      var dayKey = inp.dataset.dayKey;
+      var field  = inp.dataset.field;
+      var val    = Math.max(0, parseInt(inp.value,10)||0);
+      var stats  = Object.assign({}, self.state.questStats || {});
+      stats[dayKey] = Object.assign({feitas:0, acertos:0}, stats[dayKey] || {});
+      stats[dayKey][field] = val;
+      // clamp acertos <= feitas
+      if(stats[dayKey].acertos > stats[dayKey].feitas) stats[dayKey].acertos = stats[dayKey].feitas;
+      self.setState({ questStats: stats });
+      // persist via parent callback if provided
+      var d2 = self.props.data || {};
+      d2.onQuestStat && d2.onQuestStat(dayKey, stats[dayKey]);
+    };
+
     // Cronograma check handler — optimistic update + Supabase save
     this._onCronoCheck = function(e){
       var btn = e.currentTarget || e.target;
@@ -419,7 +463,7 @@ class Component extends DCLogic {
       ]},
     ];
 
-    this.state = { view:'cronograma', activeMonth:0, cronoChecks: (props.data && props.data.cronoChecks) || {} };
+    this.state = { view:'cronograma', activeMonth:0, cronoChecks: (props.data && props.data.cronoChecks) || {}, questStats: (props.data && props.data.questStats) || {} };
   }
 
   renderVals() {
@@ -439,6 +483,7 @@ class Component extends DCLogic {
       r: ['Revisei os temas de cartório/civil','Revisei as outras matérias','Refiz questões erradas'],
       s: ['Fiz o simulado completo','Revisei todos os erros'],
     };
+    var questStats = st.questStats || {};
     var cronoWeeks = this.CRONO.map(function(w, wi){
       var days = w.d.map(function(day, di){
         var typ = day[1], badge = day[2], subj = day[3], topic = day[4], q = day[5];
@@ -449,6 +494,17 @@ class Component extends DCLogic {
           totalCks++; if(on) doneCks++;
           return { key:key, label:lbl, tick:on?'✓':'', cls:'ct-chk'+(on?' done':'') };
         });
+        var dayKey = 'w'+wi+'_d'+di;
+        var qs = questStats[dayKey] || {};
+        var feitas = qs.feitas || 0;
+        var acertos = qs.acertos || 0;
+        var pct = feitas > 0 ? Math.round(acertos / feitas * 100) : null;
+        var pctCls = 'ct-quest-pct';
+        var pctLabel = '—%';
+        if(pct !== null){
+          pctLabel = pct+'%';
+          pctCls += pct >= 70 ? ' good' : pct >= 50 ? ' mid' : ' bad';
+        }
         return {
           cls: 'ct-crono-day t-'+typ,
           badgeCls: 'ct-crono-badge t-'+typ,
@@ -461,6 +517,11 @@ class Component extends DCLogic {
           q: q ? String(q) : '',
           hasChecks: dayChecks.length > 0,
           checks: dayChecks,
+          dayKey: dayKey,
+          questFeitas: feitas || '',
+          questAcertos: acertos || '',
+          questPctCls: pctCls,
+          questPctLabel: pctLabel,
         };
       });
       return { label: 'Semana '+w.n+' — '+w.r, days: days };
@@ -533,6 +594,7 @@ class Component extends DCLogic {
       progPct: cronoPct,
       cronoWeeks: cronoWeeks,
       onCronoCheck: this._onCronoCheck,
+      onQuestInput: this._onQuestInput,
       hasAvisos: avisos.length>0,
       avisos: avisos,
 
