@@ -70,6 +70,36 @@
 .ct-report-num{font-size:36px;font-weight:900;line-height:1;color:var(--cg)}
 .ct-report-label{font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
 .ct-report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-bottom:20px}
+/* ── Cronograma checks ── */
+.ct-crono-week{margin-bottom:20px}
+.ct-crono-week-hdr{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#666;border-bottom:2px solid var(--cb);padding-bottom:6px;margin-bottom:10px}
+.ct-crono-day{border:2px solid var(--cb);border-radius:12px;padding:12px 14px;margin-bottom:8px;background:var(--cw);border-left-width:5px;box-shadow:3px 3px 0 var(--cb)}
+.ct-crono-day.t-c{border-left-color:#2563EB}
+.ct-crono-day.t-o{border-left-color:#7C3AED}
+.ct-crono-day.t-r{border-left-color:#D97706;background:#FFFBEB}
+.ct-crono-day.t-s{border-left-color:#059669;background:#ECFDF5}
+.ct-crono-day.t-f{border-left-color:#9CA3AF;opacity:.6}
+.ct-crono-day.t-p{border-left-color:#DC2626;background:#FEF2F2}
+.ct-crono-day-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.ct-crono-badge{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:99px;border:1.5px solid currentColor}
+.ct-crono-badge.t-c{color:#2563EB;background:#EFF6FF}
+.ct-crono-badge.t-o{color:#7C3AED;background:#F5F3FF}
+.ct-crono-badge.t-r{color:#D97706;background:#FEF3C7}
+.ct-crono-badge.t-s{color:#059669;background:#D1FAE5}
+.ct-crono-badge.t-f{color:#6B7280;background:#F3F4F6}
+.ct-crono-badge.t-p{color:#DC2626;background:#FEE2E2}
+.ct-crono-date{font-size:12px;font-weight:700;color:#333}
+.ct-crono-q{font-size:11px;font-weight:700;color:#999;margin-left:auto;font-variant-numeric:tabular-nums}
+.ct-crono-subject{font-size:13px;font-weight:800;color:var(--cb);margin-bottom:3px}
+.ct-crono-topic{font-size:12px;color:#555;line-height:1.4;margin-bottom:8px}
+.ct-crono-checks{display:flex;flex-direction:column;gap:6px;margin-top:8px;padding-top:8px;border-top:1.5px dashed #e0e0e0}
+.ct-chk{display:flex;align-items:center;gap:8px;cursor:pointer;background:none;border:none;text-align:left;padding:4px 6px;border-radius:8px;width:100%;transition:background .1s}
+.ct-chk:hover{background:#f5f5f5}
+.ct-chk-box{width:18px;height:18px;border-radius:5px;border:2px solid #ccc;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:900;transition:all .15s}
+.ct-chk.done .ct-chk-box{background:var(--cg);border-color:var(--cg);color:#fff}
+.ct-chk.done .ct-chk-lbl{text-decoration:line-through;color:#aaa}
+.ct-chk-lbl{font-size:12px;color:#444}
+.ct-saving{font-size:10px;color:#aaa;margin-left:auto;flex-shrink:0}
 </style>
 
 <div class="ct-wrap">
@@ -146,44 +176,37 @@
           </div>
         </div>
 
-        <!-- Month tabs -->
-        <sc-if value="{{ hasMonths }}" hint-placeholder-val="">
-          <div class="ct-months">
-            <sc-for list="{{ monthTabs }}" as="m" hint-placeholder-count="3">
-              <button class="{{ m.cls }}" onclick="{{ m.onClick }}">{{ m.label }}</button>
+        <!-- Cronograma semanal -->
+        <sc-for list="{{ cronoWeeks }}" as="cw" hint-placeholder-count="9">
+          <div class="ct-crono-week">
+            <div class="ct-crono-week-hdr">{{ cw.label }}</div>
+            <sc-for list="{{ cw.days }}" as="cd" hint-placeholder-count="7">
+              <div class="{{ cd.cls }}">
+                <div class="ct-crono-day-meta">
+                  <span class="{{ cd.badgeCls }}">{{ cd.badge }}</span>
+                  <span class="ct-crono-date">{{ cd.date }}</span>
+                  <sc-if value="{{ cd.hasQ }}" hint-placeholder-val="">
+                    <span class="ct-crono-q">{{ cd.q }}q</span>
+                  </sc-if>
+                </div>
+                <div class="ct-crono-subject">{{ cd.subject }}</div>
+                <sc-if value="{{ cd.hasTopic }}" hint-placeholder-val="">
+                  <div class="ct-crono-topic">{{ cd.topic }}</div>
+                </sc-if>
+                <sc-if value="{{ cd.hasChecks }}" hint-placeholder-val="">
+                  <div class="ct-crono-checks">
+                    <sc-for list="{{ cd.checks }}" as="ck" hint-placeholder-count="3">
+                      <button class="{{ ck.cls }}" onclick="{{ onCronoCheck }}" data-key="{{ ck.key }}">
+                        <span class="ct-chk-box">{{ ck.tick }}</span>
+                        <span class="ct-chk-lbl">{{ ck.label }}</span>
+                      </button>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
             </sc-for>
           </div>
-        </sc-if>
-
-        <!-- Weeks -->
-        <sc-if value="{{ hasWeeks }}" hint-placeholder-val="{{ true }}">
-          <sc-for list="{{ curWeeks }}" as="w" hint-placeholder-count="2">
-            <div class="ct-week">
-              <div class="ct-week-label">{{ w.label }}</div>
-              <div class="ct-days">
-                <sc-for list="{{ w.days }}" as="day" hint-placeholder-count="5">
-                  <div class="{{ day.cls }}">
-                    <div class="ct-day-num">{{ day.dateLabel }}</div>
-                    <div class="ct-day-name">{{ day.dayName }}</div>
-                    <div class="ct-day-type">{{ day.typeLabel }}</div>
-                    <sc-if value="{{ day.theme }}" hint-placeholder-val="">
-                      <div class="ct-day-theme">{{ day.theme }}</div>
-                    </sc-if>
-                    <div class="ct-day-check">{{ day.icon }}</div>
-                  </div>
-                </sc-for>
-              </div>
-            </div>
-          </sc-for>
-        </sc-if>
-
-        <sc-if value="{{ noWeeks }}" hint-placeholder-val="">
-          <div class="ct-empty">
-            <div class="ct-empty-icon">📅</div>
-            <div class="ct-empty-text">Cronograma em breve</div>
-            <div class="ct-empty-sub">O cronograma será disponibilizado em breve.</div>
-          </div>
-        </sc-if>
+        </sc-for>
       </div>
     </sc-if>
 
@@ -296,7 +319,107 @@ class Component extends DCLogic {
     for(var i=0;i<24;i++){
       (function(idx){ self._monthHandlers[idx]=function(){ self.setState({activeMonth:idx}); }; })(i);
     }
-    this.state = { view:'cronograma', activeMonth:0 };
+
+    // Cronograma check handler — optimistic update + Supabase save
+    this._onCronoCheck = function(e){
+      var btn = e.currentTarget || e.target;
+      var key = btn.dataset.key;
+      var checks = self.state.cronoChecks || {};
+      var newVal = !checks[key];
+      var next = Object.assign({}, checks);
+      next[key] = newVal;
+      self.setState({ cronoChecks: next });
+      var d = self.props.data || {};
+      d.onCronoCheck && d.onCronoCheck(key, newVal);
+    };
+
+    // Schedule data — each day: [date, type, badge, subject, topic, questions]
+    // types: c=cartório  o=outras  r=revisão  s=simulado  f=folga  p=prova
+    this.CRONO = [
+      {n:1,r:'10–16 de agosto',d:[
+        ['Seg, 10/08','c','Cartório','TGRP I','Princípios · Espécies · Objeto e Finalidade · Função e Fé Pública · Poder Disciplinar e Responsabilidade',29],
+        ['Ter, 11/08','o','Constitucional','Const. I','Princípios Fundamentais (Arts. 1–4) · Direitos Individuais e Coletivos (Art. 5) · Remédios Constitucionais',30],
+        ['Qua, 12/08','c','Cartório','TGRP II','Delegação e Aspecto Institucional dos Serviços de Registros Públicos · Emolumentos',31],
+        ['Qui, 13/08','o','Constitucional','Const. II','Organização do Estado (Arts. 18–43) · Poder Judiciário · CNJ (Arts. 92–100) · Funções Essenciais à Justiça',28],
+        ['Sex, 14/08','c','Cartório','TGRP III','Deontologia: Direitos e Deveres de Tabeliães, Oficiais de Registro e Prepostos · Escrituração e Arquivo',32],
+        ['Sáb, 15/08','r','Revisão','Revisão Semanal','TGRP I/II/III · Constitucional I e II',null],
+        ['Dom, 16/08','f','Folga','Dia de Folga 🏖️',null,null],
+      ]},
+      {n:2,r:'17–23 de agosto',d:[
+        ['Seg, 17/08','c','Cartório','RCPN I','Competência e Atribuições · Livros e Escrituração · Nascimento e Natimorto',30],
+        ['Ter, 18/08','o','Administrativo','Adm. I','Organização Administrativa · Órgãos e Entidades · Ato Administrativo · Poderes da Administração',28],
+        ['Qua, 19/08','c','Cartório','RCPN II','Casamento · Conversão de União Estável em Casamento · Reconciliação',34],
+        ['Qui, 20/08','o','Administrativo','Adm. II','Licitação e Contratos Administrativos · Serviços Públicos · Servidores Públicos',27],
+        ['Sex, 21/08','c','Cartório','RCPN III','Óbito · Emancipação, Interdição e Ausência · Traslados de Assentos Lavrados no Exterior',34],
+        ['Sáb, 22/08','r','Revisão','Revisão Semanal','RCPN I/II/III · Administrativo I e II',null],
+        ['Dom, 23/08','f','Folga','Dia de Folga 🏖️',null,null],
+      ]},
+      {n:3,r:'24–30 de agosto',d:[
+        ['Seg, 24/08','c','Cartório','RCPN IV','Retificações, Restaurações e Suprimentos · Reconhecimento de Filhos',33],
+        ['Ter, 25/08','o','Tributário','Trib. I','Sistema Tributário Nacional · Princípios Tributários · Obrigação Tributária · Fato Gerador · Sujeição Passiva',30],
+        ['Qua, 26/08','c','Cartório','RCPN V','Adoção · Gratuidade · Registro Tardio · União Estável · Temas Combinados RCPN',34],
+        ['Qui, 27/08','o','Tributário','Trib. II','Crédito Tributário · Lançamento · ITBI · ITCMD · DOI (Declaração sobre Operações Imobiliárias)',30],
+        ['Sex, 28/08','c','Cartório','Tab. Notas I','Teoria Geral dos Atos Notariais · Princípios · Fé Pública Notarial · Competência e Atribuições',30],
+        ['Sáb, 29/08','r','Revisão','Revisão Semanal','RCPN IV/V · Tributário I e II · Tab. Notas I',null],
+        ['Dom, 30/08','s','Simulado','Simulado 1','Todos os temas estudados: TGRP · RCPN · Constitucional · Administrativo · Tributário',null],
+      ]},
+      {n:4,r:'31 ago – 6 set',d:[
+        ['Seg, 31/08','c','Cartório','Tab. Notas II','Livros, Classificadores e Escrituração · Atos Notariais em Espécie · Atos Notariais em Geral',28],
+        ['Ter, 01/09','o','Empresarial','Emp. I','Empresário · Estabelecimento Empresarial · Sociedade Simples · Sociedade Limitada · Sociedade Anônima',28],
+        ['Qua, 02/09','c','Cartório','Tab. Notas III','Escritura Pública: Requisitos · Escrituras de Imóveis em Geral',31],
+        ['Qui, 03/09','o','Empresarial','Emp. II','Títulos de Crédito: Letra de Câmbio, Nota Promissória, Cheque, Duplicata · Contratos Mercantis',30],
+        ['Sex, 04/09','c','Cartório','Tab. Notas IV','Lei 11.441/2007: Inventário, Partilha, Separação e Divórcio Consensuais · Procurações · Doações',31],
+        ['Sáb, 05/09','r','Revisão','Revisão Semanal','Tab. Notas II/III/IV · Empresarial I e II',null],
+        ['Dom, 06/09','s','Simulado','Simulado 2 — 1º dom/set','Tab. Notas · Empresarial · todos os temas acumulados',null],
+      ]},
+      {n:5,r:'7–13 de setembro',d:[
+        ['Seg, 07/09','c','Cartório','Tab. Notas V','Testamentos · Traslado e Certidão · Autenticação de Documentos · Reconhecimento de Firmas · Fiscalização Tributária (ITBI/ITCMD/DOI)',33],
+        ['Ter, 08/09','o','Constitucional','Const. III','Direitos Sociais (Arts. 6–11) · Ordem Econômica · Controle de Constitucionalidade · Ação Direta',30],
+        ['Qua, 09/09','c','Cartório','Tab. Protesto I','Teoria Geral · Competência e Atribuições · Livros e Espécies de Protesto · Prazo e Registro do Protesto',30],
+        ['Qui, 10/09','o','Administrativo','Adm. III','Responsabilidade Civil do Estado · Controle da Administração · Bens Públicos · Processo Administrativo',25],
+        ['Sex, 11/09','c','Cartório','Tab. Protesto II','Apresentação, Exame e Qualificação dos Títulos · Intimação · Pagamento · Sustação e Desistência · Certidões · Cancelamento',30],
+        ['Sáb, 12/09','r','Revisão','Revisão Semanal','Tab. Notas V · Tab. Protesto I/II · Constitucional III · Adm. III',null],
+        ['Dom, 13/09','s','Simulado','Simulado 3 — 2º dom/set','Tab. Notas · Tab. Protesto · todas as matérias acumuladas',null],
+      ]},
+      {n:6,r:'14–20 de setembro',d:[
+        ['Seg, 14/09','c','Cartório','Reg. Imóveis I','Competência · Princípios Informativos · Livros e Classificadores · Escrituração e Ordem dos Serviços · Certidões',30],
+        ['Ter, 15/09','o','Tributário','Trib. Revisão','ITBI, ITCMD e DOI na prática cartorária · Emolumentos fiscais · Fiscalização tributária notarial',28],
+        ['Qua, 16/09','c','Cartório','Reg. Imóveis II','Registros, Averbações e Prenotação · Títulos Extrajudiciais e Judiciais · Qualificação e Notificações',30],
+        ['Qui, 17/09','o','Empresarial','Emp. Revisão','Falência e Recuperação de Empresas · Direito do Consumidor · Revisão geral de títulos de crédito',28],
+        ['Sex, 18/09','c','Cartório','Reg. Imóveis III','Procedimento de Dúvida · Retificações e Georreferenciamento',26],
+        ['Sáb, 19/09','r','Revisão','Revisão Semanal','Reg. Imóveis I/II/III · Tributário/Empresarial revisão',null],
+        ['Dom, 20/09','s','Simulado','Simulado 4 — 3º dom/set','Simulado completo com todas as matérias do edital',null],
+      ]},
+      {n:7,r:'21–27 de setembro',d:[
+        ['Seg, 21/09','c','Cartório','Reg. Imóveis IV','Alienação Fiduciária em Garantia · SFH · Parcelamento do Solo Urbano e Rural · Condomínios e Incorporações',30],
+        ['Ter, 22/09','o','Constitucional','Const. Final','Revisão · Questões mistas (9q no edital) · Controle de Constitucionalidade aprofundado',30],
+        ['Qua, 23/09','c','Cartório','RCPJ + RTD','RCPJ: Competência, Registros, Associações · RTD: Competência, Registros, Averbações, Notificações',30],
+        ['Qui, 24/09','o','Administrativo','Adm. Final','Revisão · Questões mistas (4q no edital) · Princípios e Ato Administrativo',25],
+        ['Sex, 25/09','c','Civil','Civil I — Parte Geral','Pessoas Naturais · Pessoas Jurídicas · Bens · Fatos Jurídicos · Prescrição e Decadência',30],
+        ['Sáb, 26/09','r','Revisão','Revisão Semanal','Reg. Imóveis IV · RCPJ/RTD · Civil I · Const./Adm. Final',null],
+        ['Dom, 27/09','s','Simulado','Simulado 5','Simulado completo — 2 semanas antes da prova',null],
+      ]},
+      {n:8,r:'28 set – 4 out',d:[
+        ['Seg, 28/09','c','Civil','Civil II — Família','Casamento: regime de bens, dissolução · Parentesco e Filiação · União Estável · Alimentos · Bem de Família',30],
+        ['Ter, 29/09','o','Tributário','Trib. Final','Revisão geral (4q no edital) · ITBI/ITCMD aprofundado · DOI · Emolumentos',28],
+        ['Qua, 30/09','c','Civil','Civil III — Sucessões','Sucessão em Geral · Sucessão Legítima · Sucessão Testamentária (testamentos, legados, herdeiros)',30],
+        ['Qui, 01/10','o','Empresarial','Emp. Final','Revisão geral (4q no edital) · Títulos de Crédito · Falência e Recuperação',28],
+        ['Sex, 02/10','c','Proc. Civil','Proc. Civil I','Normas Fundamentais · Competência · Partes e Litisconsórcio · Atos Processuais · Prazos · Tutelas Provisórias',30],
+        ['Sáb, 03/10','r','Revisão','Revisão Semanal','Civil II/III · Proc. Civil I · Tributário/Empresarial Final',null],
+        ['Dom, 04/10','s','Simulado','Simulado 6','Simulado final completo — 1 semana antes da prova',null],
+      ]},
+      {n:9,r:'5–11 de outubro',d:[
+        ['Seg, 05/10','c','Cartório','Reg. Imóveis V','Regularização Fundiária · Cédulas de Crédito · Aquisição por Estrangeiro · Usucapião Extrajudicial · Centrais Eletrônicas',30],
+        ['Ter, 06/10','o','Revisão Final','Const. + Adm.','Revisão final: questões mistas de Constitucional (9q) + Administrativo (4q) do edital',30],
+        ['Qua, 07/10','c','Proc. Civil','Proc. Civil II','Provas · Sentença e Coisa Julgada · Liquidação · Cumprimento de Sentença · Execução',30],
+        ['Qui, 08/10','o','Revisão Final','Trib. + Emp.','Revisão final: questões mistas de Tributário (4q) + Empresarial (4q) do edital',28],
+        ['Sex, 09/10','c','Proc. Civil','Proc. Civil III','Recursos (Apelação, Agravo, REsp) · Revisão geral cartório/civil/proc.civil',30],
+        ['Sáb, 10/10','r','Revisão','Revisão Final 🔥','Pontos fracos · Lei seca dos temas mais cobrados · Descanso à tarde',null],
+        ['Dom, 11/10','p','Prova','🎯 DIA DA PROVA',null,null],
+      ]},
+    ];
+
+    this.state = { view:'cronograma', activeMonth:0, cronoChecks: (props.data && props.data.cronoChecks) || {} };
   }
 
   renderVals() {
@@ -305,10 +428,44 @@ class Component extends DCLogic {
     var view = st.view;
     var weeks = d.weeks || [];
     var months = d.months || [];
-    var completed = d.completed || 0;
-    var studyDays = d.studyDays || 0;
-    var progPct = studyDays > 0 ? Math.round(completed / studyDays * 100) : 0;
     var self = this;
+
+    // ── Cronograma weeks with check state ─────────────────────────────────
+    var checks = st.cronoChecks || {};
+    var totalCks = 0, doneCks = 0;
+    var checkLabels = {
+      c: ['Li o resumo do tema','Li a lei seca (opcional)','Resolvi as questões'],
+      o: ['Li o resumo do tema','Li a lei seca (opcional)','Resolvi as questões'],
+      r: ['Revisei os temas de cartório/civil','Revisei as outras matérias','Refiz questões erradas'],
+      s: ['Fiz o simulado completo','Revisei todos os erros'],
+    };
+    var cronoWeeks = this.CRONO.map(function(w, wi){
+      var days = w.d.map(function(day, di){
+        var typ = day[1], badge = day[2], subj = day[3], topic = day[4], q = day[5];
+        var lbls = checkLabels[typ] || [];
+        var dayChecks = lbls.map(function(lbl, ci){
+          var key = 'w'+wi+'_d'+di+'_c'+ci;
+          var on = !!checks[key];
+          totalCks++; if(on) doneCks++;
+          return { key:key, label:lbl, tick:on?'✓':'', cls:'ct-chk'+(on?' done':'') };
+        });
+        return {
+          cls: 'ct-crono-day t-'+typ,
+          badgeCls: 'ct-crono-badge t-'+typ,
+          badge: badge,
+          date: day[0],
+          subject: subj,
+          topic: topic || '',
+          hasTopic: !!(topic),
+          hasQ: !!q,
+          q: q ? String(q) : '',
+          hasChecks: dayChecks.length > 0,
+          checks: dayChecks,
+        };
+      });
+      return { label: 'Semana '+w.n+' — '+w.r, days: days };
+    });
+    var cronoPct = totalCks > 0 ? Math.round(doneCks / totalCks * 100) : 0;
 
     // Nav tabs
     var tabDefs = [
@@ -330,37 +487,10 @@ class Component extends DCLogic {
     var questTotal = (d.questoesData && d.questoesData.total) || 0;
     var statCards = [
       {icon:'📅', val:d.examCountdown!=null?d.examCountdown+'d':'—', label:'Pra Prova'},
-      {icon:'✅', val:String(completed), label:'Dias Feitos'},
-      {icon:'📈', val:progPct+'%', label:'Progresso'},
-      {icon:'📚', val:String(questTotal), label:'Questões'},
+      {icon:'✅', val:String(doneCks), label:'Metas Feitas'},
+      {icon:'📈', val:cronoPct+'%', label:'Progresso'},
+      {icon:'📚', val:String(questTotal||'—'), label:'Questões'},
     ];
-
-    // Month tabs
-    var monthTabs = months.map(function(m,i){
-      return {
-        cls: 'ct-month-btn' + (st.activeMonth===i?' active':''),
-        onClick: self._monthHandlers[i],
-        label: m.label||('Mês '+(i+1)),
-      };
-    });
-
-    // Current weeks
-    var curMonth = months[st.activeMonth]||null;
-    var rawWeeks = curMonth
-      ? weeks.filter(function(w){ return w.month===st.activeMonth; })
-      : (months.length===0 ? weeks : []);
-    var curWeeks = rawWeeks.map(function(w){
-      var days = (w.days||[]).map(function(day){
-        var cls='ct-day', icon='', typeLabel='ESTUDO';
-        if(day.isExam){cls+=' exam';icon='🏆';typeLabel='PROVA';}
-        else if(day.isSimulado){cls+=' simulado';icon='🎯';typeLabel='SIMULADO';}
-        else if(day.isNocaute){cls+=' nocaute';icon='💪';typeLabel='NOCAUTE';}
-        else if(day.isToday){cls+=' today';icon='👇';typeLabel='HOJE';}
-        else if(day.done){cls+=' done';icon='✅';typeLabel='FEITO';}
-        return {cls:cls, dateLabel:day.dateLabel||'', dayName:day.dayName||'', typeLabel:typeLabel, theme:day.theme||'', icon:icon};
-      });
-      return {label:'Semana '+(w.num||''), days:days};
-    });
 
     // Avisos
     var avisos = (d.avisosData && d.avisosData.avisos) || [];
@@ -400,12 +530,9 @@ class Component extends DCLogic {
       // Cronograma
       examCountdown: d.examCountdown!=null ? String(d.examCountdown) : '—',
       examDateLabel: d.examDateLabel || 'Data em breve',
-      progPct: progPct,
-      hasMonths: months.length>0,
-      hasWeeks: curWeeks.length>0,
-      noWeeks: curWeeks.length===0,
-      monthTabs: monthTabs,
-      curWeeks: curWeeks,
+      progPct: cronoPct,
+      cronoWeeks: cronoWeeks,
+      onCronoCheck: this._onCronoCheck,
       hasAvisos: avisos.length>0,
       avisos: avisos,
 
