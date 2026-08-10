@@ -3,7 +3,6 @@
 :root{--blue:#0057FF;--yellow:#FFE500;--black:#0D0D0D;--bg:#FFF9E6;--white:#FFFFFF;--green:#00C040;--purple:#7B2FFF;--cyan:#00A8E8;--orange:#FF6600;--red:#D32F2F;--ct-green:#007A3D;--ct-bg:#E6F7EE}
 *{box-sizing:border-box}
 .adm-wrap{min-height:100vh;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--black)}
-/* HEADER */
 .adm-header{background:var(--blue);border-bottom:4px solid var(--black);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:30}
 .adm-logo{display:flex;align-items:center;gap:10px}
 .adm-logo-box{background:var(--yellow);border:3px solid var(--black);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:3px 3px 0 var(--black)}
@@ -13,29 +12,23 @@
 .adm-btn-refresh{background:var(--yellow);color:var(--black);border:2px solid var(--black);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;box-shadow:2px 2px 0 var(--black)}
 .adm-btn-logout{background:transparent;color:var(--yellow);border:2px solid var(--yellow);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer}
 .adm-btn-back{background:rgba(255,255,255,.15);color:var(--white);border:2px solid rgba(255,255,255,.4);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer}
-/* TABS */
 .adm-tabs{background:var(--white);border-bottom:4px solid var(--black);display:flex;overflow-x:auto;padding:0 16px}
 .adm-tab{padding:14px 18px;border:none;border-bottom:4px solid transparent;background:transparent;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;text-transform:uppercase;letter-spacing:.3px;color:#666;margin-bottom:-4px;transition:color .15s}
 .adm-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
 .adm-tab.active-ct{color:var(--ct-green);border-bottom-color:var(--ct-green)}
 .adm-tab:hover:not(.active):not(.active-ct){color:var(--black)}
-/* MSG BANNER */
 .adm-msg{margin:14px 20px 0;padding:12px 16px;border-radius:10px;font-size:13px;font-weight:700;border:2px solid var(--black);box-shadow:3px 3px 0 var(--black)}
 .adm-msg.ok{background:#D4F7E0;color:#007A3D}
 .adm-msg.err{background:#FFE0E0;color:var(--red)}
-/* CONTENT */
 .adm-content{max-width:980px;margin:0 auto;padding:20px 16px}
-/* CARDS */
 .adm-card{background:var(--white);border:3px solid var(--black);border-radius:16px;box-shadow:5px 5px 0 var(--black);padding:20px;margin-bottom:18px}
 .adm-card-title{font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:var(--black);margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .adm-card-title-badge{background:var(--blue);color:var(--white);border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)}
-/* INPUTS */
 .adm-label{font-size:11px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
 .adm-input{width:100%;height:42px;border:2px solid var(--black);border-radius:10px;padding:0 12px;font-size:13px;font-weight:600;background:var(--bg);color:var(--black);box-sizing:border-box;outline:none}
 .adm-input:focus{border-color:var(--blue);box-shadow:3px 3px 0 var(--blue)}
 .adm-textarea{width:100%;border:2px solid var(--black);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:600;background:var(--bg);color:var(--black);box-sizing:border-box;resize:vertical;font-family:inherit;outline:none}
 .adm-textarea:focus{border-color:var(--blue)}
-/* BUTTONS */
 .adm-btn-primary{background:var(--blue);color:var(--white);border:3px solid var(--black);border-radius:10px;padding:10px 22px;font-size:13px;font-weight:900;cursor:pointer;text-transform:uppercase;box-shadow:4px 4px 0 var(--black);letter-spacing:.3px}
 .adm-btn-primary:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--black)}
 .adm-btn-yellow{background:var(--yellow);color:var(--black);border:3px solid var(--black);border-radius:10px;padding:10px 22px;font-size:13px;font-weight:900;cursor:pointer;text-transform:uppercase;box-shadow:4px 4px 0 var(--black)}
@@ -43,7 +36,6 @@
 .adm-btn-sm{background:var(--white);color:var(--black);border:2px solid var(--black);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:2px 2px 0 var(--black)}
 .adm-btn-danger{background:#FFE0E0;color:var(--red);border:2px solid var(--red);border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer}
 .adm-btn-green{background:var(--ct-green);color:#fff;border:3px solid var(--black);border-radius:10px;padding:10px 22px;font-size:13px;font-weight:900;cursor:pointer;text-transform:uppercase;box-shadow:4px 4px 0 var(--black)}
-/* STUDENT CARD */
 .adm-student{background:var(--white);border:3px solid var(--black);border-radius:14px;box-shadow:4px 4px 0 var(--black);padding:16px 18px;margin-bottom:12px}
 .adm-student-name{font-size:16px;font-weight:900;color:var(--blue)}
 .adm-student-email{font-size:12px;color:#666;margin-top:2px}
@@ -52,27 +44,16 @@
 .adm-stat-cell:last-child{border-right:none}
 .adm-stat-val{font-size:18px;font-weight:900;color:var(--blue)}
 .adm-stat-lbl{font-size:9px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.3px;margin-top:2px}
-/* STATUS BADGE */
 .adm-badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:800;border:2px solid var(--black);text-transform:uppercase}
-/* AVISO CARD */
 .adm-aviso{background:var(--white);border:3px solid var(--blue);border-radius:12px;box-shadow:3px 3px 0 var(--blue);padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-/* SIM CARD */
 .adm-sim{background:var(--white);border:3px solid var(--purple);border-radius:12px;box-shadow:3px 3px 0 var(--purple);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-/* UPLOAD ZONE */
 .adm-upload-zone{border:3px dashed var(--black);border-radius:14px;padding:24px;text-align:center;background:var(--bg);margin-bottom:14px;cursor:pointer}
 .adm-upload-zone:hover{background:#fff0c8}
-/* GRID */
 .adm-grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-/* SECTION DIVIDER */
 .adm-divider{height:3px;background:var(--black);border-radius:2px;margin:20px 0}
-/* EMPTY STATE */
 .adm-empty{text-align:center;padding:40px 20px;color:#888}
 .adm-empty-icon{font-size:40px;margin-bottom:10px}
-/* CARTÓRIO */
 .adm-ct-card{background:var(--white);border:3px solid var(--ct-green);border-radius:14px;box-shadow:4px 4px 0 var(--ct-green);padding:16px 18px;margin-bottom:12px}
-.adm-student-tipo-oab{background:#E8F0FF;color:var(--blue);border:2px solid var(--blue)}
-.adm-student-tipo-ct{background:#C8F7DC;color:var(--ct-green);border:2px solid var(--ct-green)}
-/* PLATFORM HOME */
 .adm-platform-home{padding:48px 16px}
 .adm-platform-card{border:4px solid var(--black);border-radius:20px;padding:36px 32px;cursor:pointer;transition:transform .12s,box-shadow .12s;text-align:center;background:var(--white)}
 .adm-platform-card:hover{transform:translate(-3px,-3px)}
@@ -84,19 +65,15 @@
 .adm-platform-name{font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
 .adm-platform-sub{font-size:13px;color:#666;font-weight:600}
 .adm-platform-badge{display:inline-block;margin-top:14px;padding:5px 16px;border-radius:8px;font-size:13px;font-weight:800;border:2px solid var(--black)}
-/* STATS BAR */
 .adm-stat-bar-bg{background:#eee;border-radius:6px;height:10px;overflow:hidden;margin-top:4px}
 .adm-stat-bar-fill{height:10px;border-radius:6px;transition:width .3s}
-/* REPORT CARD */
 .adm-report-num{font-size:36px;font-weight:900;line-height:1}
 .adm-report-label{font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
-/* MATERIAL ITEM */
 .adm-mat-item{background:var(--white);border:2px solid var(--black);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .adm-mat-item-title{font-size:13px;font-weight:800;color:var(--black)}
 .adm-mat-item-url{font-size:11px;color:var(--cyan);word-break:break-all;margin-top:2px}
 </style>
 
-<!-- hidden file inputs -->
 <input type="file" id="adminVideoInput" accept="video/mp4,video/webm,video/ogg,video/quicktime" onchange="{{ onVideoFileChange }}" style="display:none">
 <input type="file" id="adminPdfInput" accept="application/pdf,video/mp4,video/webm,video/quicktime" onchange="{{ onPdfFileChange }}" style="display:none">
 
@@ -115,12 +92,12 @@
       <sc-if value="{{ showBackBtn }}" hint-placeholder-val="">
         <button onclick="{{ onBackToHome }}" class="adm-btn-back">← Voltar</button>
       </sc-if>
-      <button onclick="{{ onRefresh }}" class="adm-btn-refresh">{{ refreshing ? '⟳ Atualizando...' : '⟳ Atualizar' }}</button>
+      <button onclick="{{ onRefresh }}" class="adm-btn-refresh">⟳ Atualizar</button>
       <button onclick="{{ onLogout }}" class="adm-btn-logout">Sair</button>
     </div>
   </div>
 
-  <!-- ═══ HOME: SELECIONAR PLATAFORMA ═══ -->
+  <!-- ═══ HOME ═══ -->
   <sc-if value="{{ screenHome }}" hint-placeholder-val="{{ true }}">
     <div class="adm-platform-home">
       <div style="text-align:center;margin-bottom:36px">
@@ -141,41 +118,31 @@
           <div class="adm-platform-badge" style="background:#C8F7DC;color:var(--ct-green)">{{ countCartorio }} aluno(s)</div>
         </div>
       </div>
-
-      <!-- Resumo geral -->
       <div style="max-width:700px;margin:32px auto 0">
         <div class="adm-card">
           <div class="adm-card-title">📊 Resumo Geral</div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:16px">
-            <div style="text-align:center">
-              <div class="adm-report-num" style="color:var(--blue)">{{ totalStudents }}</div>
-              <div class="adm-report-label">Alunos Totais</div>
-            </div>
-            <div style="text-align:center">
-              <div class="adm-report-num" style="color:var(--green)">{{ totalQ }}</div>
-              <div class="adm-report-label">Questões Feitas</div>
-            </div>
-            <div style="text-align:center">
-              <div class="adm-report-num" style="color:var(--orange)">{{ avgTaxa }}%</div>
-              <div class="adm-report-label">Taxa Média</div>
-            </div>
-            <div style="text-align:center">
-              <div class="adm-report-num" style="color:var(--purple)">{{ activeStudents }}</div>
-              <div class="adm-report-label">Ativos (7d)</div>
-            </div>
+            <div style="text-align:center"><div class="adm-report-num" style="color:var(--blue)">{{ totalStudents }}</div><div class="adm-report-label">Alunos Totais</div></div>
+            <div style="text-align:center"><div class="adm-report-num" style="color:var(--green)">{{ totalQ }}</div><div class="adm-report-label">Questões Feitas</div></div>
+            <div style="text-align:center"><div class="adm-report-num" style="color:var(--orange)">{{ avgTaxa }}%</div><div class="adm-report-label">Taxa Média</div></div>
+            <div style="text-align:center"><div class="adm-report-num" style="color:var(--purple)">{{ activeStudents }}</div><div class="adm-report-label">Ativos (7d)</div></div>
           </div>
         </div>
       </div>
     </div>
   </sc-if>
 
-  <!-- ═══ PLATAFORMA SELECIONADA: TABS ═══ -->
+  <!-- ═══ PLATAFORMA ═══ -->
   <sc-if value="{{ screenPlatform }}" hint-placeholder-val="">
 
-    <!-- TABS -->
-    <div class="adm-tabs" inner-html="{{ tabsHtml }}"></div>
+    <!-- TABS (sc-for) -->
+    <div class="adm-tabs">
+      <sc-for list="{{ navTabs }}" as="t" hint-placeholder-count="5">
+        <button class="{{ t.cls }}" onclick="{{ t.onClick }}">{{ t.icon }} {{ t.label }}</button>
+      </sc-for>
+    </div>
 
-    <!-- MSG BANNER -->
+    <!-- MSG -->
     <sc-if value="{{ msg }}" hint-placeholder-val="">
       <div class="adm-msg {{ msgClass }}">{{ msg }}</div>
     </sc-if>
@@ -185,7 +152,6 @@
       <!-- ═══ ALUNOS ═══ -->
       <sc-if value="{{ tabAlunos }}" hint-placeholder-val="{{ true }}">
         <div>
-          <!-- Adicionar aluno -->
           <div class="adm-card">
             <div class="adm-card-title">👤 Adicionar Aluno <span class="adm-card-title-badge">Senha inicial: oab123</span></div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
@@ -197,21 +163,47 @@
                 <div class="adm-label">E-mail</div>
                 <input class="adm-input" value="{{ newEmail }}" oninput="{{ onNewEmail }}" placeholder="email@exemplo.com" type="email">
               </div>
-              <button onclick="{{ onAddStudent }}" class="{{ isCartorio ? 'adm-btn-green' : 'adm-btn-primary' }}" style="{{ addingStudent ? 'opacity:.6;pointer-events:none' : '' }}">{{ addingStudent ? 'Criando...' : '+ Adicionar' }}</button>
+              <button onclick="{{ onAddStudent }}" class="{{ addBtnCls }}">{{ addBtnLabel }}</button>
             </div>
             <sc-if value="{{ addMsg }}" hint-placeholder-val="">
               <div style="margin-top:10px;font-size:13px;font-weight:700;color:var(--blue)">{{ addMsg }}</div>
             </sc-if>
           </div>
 
-          <!-- Lista -->
           <sc-if value="{{ noPlatformStudents }}" hint-placeholder-val="">
             <div class="adm-empty"><div class="adm-empty-icon">👥</div><div style="font-weight:700">Nenhum aluno nesta plataforma</div></div>
           </sc-if>
 
           <sc-if value="{{ hasPlatformStudents }}" hint-placeholder-val="{{ true }}">
             <div style="font-size:13px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">{{ platformStudentCount }} aluno(s)</div>
-            <div inner-html="{{ studentsHtml }}"></div>
+            <sc-for list="{{ students }}" as="s" hint-placeholder-count="2">
+              <div class="{{ s.cardCls }}">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">
+                  <div style="flex:1;min-width:180px">
+                    <div class="adm-student-name" style="{{ s.nameColor }}">{{ s.name }}</div>
+                    <div class="adm-student-email">{{ s.email }}</div>
+                    <div style="margin-top:6px">
+                      <span class="adm-badge" style="margin-left:0;background:{{ s.statusBg }};color:{{ s.statusColor }};border-color:{{ s.statusColor }}">{{ s.status }}</span>
+                      <span style="margin-left:8px;font-size:11px;color:#888">{{ s.lastLabel }}</span>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+                    <button onclick="{{ onStudentAction }}" data-action="toggle-tipo" data-sid="{{ s.id }}" data-sname="{{ s.name }}" data-tipo="{{ s.tipo }}" class="adm-btn-sm">🔄 Mover plataforma</button>
+                    <button onclick="{{ onStudentAction }}" data-action="impersonate" data-sid="{{ s.id }}" data-sname="{{ s.name }}" data-tipo="{{ s.tipo }}" class="adm-btn-sm">👁 Ver como aluno</button>
+                    <button onclick="{{ onStudentAction }}" data-action="reset" data-sid="{{ s.id }}" data-sname="{{ s.name }}" data-tipo="{{ s.tipo }}" class="adm-btn-sm">↺ Resetar</button>
+                    <button onclick="{{ onStudentAction }}" data-action="remove" data-sid="{{ s.id }}" data-sname="{{ s.name }}" data-tipo="{{ s.tipo }}" class="adm-btn-danger">✕</button>
+                  </div>
+                </div>
+                <div class="adm-stat-row" style="border-color:{{ s.borderColor }}">
+                  <div class="adm-stat-cell" style="border-right-color:{{ s.borderColor }}"><div class="adm-stat-val" style="color:{{ s.borderColor }}">{{ s.progPct }}%</div><div class="adm-stat-lbl">Plano</div></div>
+                  <div class="adm-stat-cell" style="border-right-color:{{ s.borderColor }}"><div class="adm-stat-val" style="color:{{ s.taxaColor }}">{{ s.taxa }}%</div><div class="adm-stat-lbl">Acerto</div></div>
+                  <div class="adm-stat-cell" style="border-right-color:{{ s.borderColor }}"><div class="adm-stat-val">{{ s.totalQ }}</div><div class="adm-stat-lbl">Questões</div></div>
+                  <div class="adm-stat-cell" style="border-right-color:{{ s.borderColor }}"><div class="adm-stat-val" style="color:var(--orange)">{{ s.streak }}</div><div class="adm-stat-lbl">Sequência</div></div>
+                  <div class="adm-stat-cell" style="border-right-color:{{ s.borderColor }}"><div class="adm-stat-val" style="color:var(--cyan)">{{ s.adherence }}%</div><div class="adm-stat-lbl">Aderência</div></div>
+                  <div class="adm-stat-cell"><div class="adm-stat-val" style="font-size:14px;color:var(--purple)">{{ s.nota }}/80</div><div class="adm-stat-lbl">Nota Est.</div></div>
+                </div>
+              </div>
+            </sc-for>
           </sc-if>
         </div>
       </sc-if>
@@ -219,61 +211,80 @@
       <!-- ═══ RELATÓRIOS ═══ -->
       <sc-if value="{{ tabRelatorios }}" hint-placeholder-val="">
         <div>
-          <!-- Cards de resumo -->
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:20px">
-            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
-              <div class="adm-report-num" style="color:var(--blue)">{{ rTotalAlunos }}</div>
-              <div class="adm-report-label">Alunos</div>
-            </div>
-            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
-              <div class="adm-report-num" style="color:var(--green)">{{ rTotalQ }}</div>
-              <div class="adm-report-label">Questões</div>
-            </div>
-            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
-              <div class="adm-report-num" style="color:{{ rAvgTaxaColor }}">{{ rAvgTaxa }}%</div>
-              <div class="adm-report-label">Taxa Média</div>
-            </div>
-            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
-              <div class="adm-report-num" style="color:var(--orange)">{{ rAvgStreak }}</div>
-              <div class="adm-report-label">Sequência Média</div>
-            </div>
-            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
-              <div class="adm-report-num" style="color:var(--purple)">{{ rActiveCount }}</div>
-              <div class="adm-report-label">Ativos (7d)</div>
-            </div>
-            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0">
-              <div class="adm-report-num" style="color:var(--red)">{{ rInactiveCount }}</div>
-              <div class="adm-report-label">Parados (+7d)</div>
-            </div>
+            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0"><div class="adm-report-num" style="color:var(--blue)">{{ rTotalAlunos }}</div><div class="adm-report-label">Alunos</div></div>
+            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0"><div class="adm-report-num" style="color:var(--green)">{{ rTotalQ }}</div><div class="adm-report-label">Questões</div></div>
+            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0"><div class="adm-report-num" style="color:{{ rAvgTaxaColor }}">{{ rAvgTaxa }}%</div><div class="adm-report-label">Taxa Média</div></div>
+            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0"><div class="adm-report-num" style="color:var(--orange)">{{ rAvgStreak }}</div><div class="adm-report-label">Sequência Média</div></div>
+            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0"><div class="adm-report-num" style="color:var(--purple)">{{ rActiveCount }}</div><div class="adm-report-label">Ativos (7d)</div></div>
+            <div class="adm-card" style="text-align:center;padding:16px;margin-bottom:0"><div class="adm-report-num" style="color:var(--red)">{{ rInactiveCount }}</div><div class="adm-report-label">Parados (+7d)</div></div>
           </div>
 
-          <!-- Ranking por taxa de acerto -->
+          <!-- Ranking -->
           <div class="adm-card">
             <div class="adm-card-title">🏆 Ranking — Taxa de Acerto</div>
             <sc-if value="{{ hasPlatformStudents }}" hint-placeholder-val="{{ true }}">
-              <div inner-html="{{ rankingHtml }}"></div>
+              <sc-for list="{{ rankingStudents }}" as="r" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:10px 12px;background:{{ r.bg }};border:2px solid {{ r.bc }};border-radius:10px">
+                  <div style="font-size:18px;font-weight:900;width:28px;text-align:center;color:{{ r.rankColor }}">{{ r.rank }}°</div>
+                  <div style="flex:1">
+                    <div style="font-size:13px;font-weight:800">{{ r.name }}</div>
+                    <div style="margin-top:4px"><div class="adm-stat-bar-bg"><div class="adm-stat-bar-fill" style="width:{{ r.taxa }}%;background:{{ r.taxaColor }}"></div></div></div>
+                  </div>
+                  <div style="text-align:right;min-width:80px">
+                    <div style="font-size:16px;font-weight:900;color:{{ r.taxaColor }}">{{ r.taxa }}%</div>
+                    <div style="font-size:11px;color:#888">{{ r.totalQ }} questões</div>
+                  </div>
+                </div>
+              </sc-for>
             </sc-if>
             <sc-if value="{{ noPlatformStudents }}" hint-placeholder-val="">
               <div class="adm-empty"><div class="adm-empty-icon">📊</div><div style="font-weight:700">Sem dados ainda</div></div>
             </sc-if>
           </div>
 
-          <!-- Alunos em risco -->
+          <!-- Inativos -->
           <div class="adm-card" style="border-color:var(--red);box-shadow:5px 5px 0 var(--red)">
             <div class="adm-card-title" style="color:var(--red)">⚠️ Atenção — Parados há mais de 7 dias</div>
             <sc-if value="{{ hasInactiveStudents }}" hint-placeholder-val="{{ true }}">
-              <div inner-html="{{ inactiveHtml }}"></div>
+              <sc-for list="{{ inactiveStudents }}" as="s" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#FFF5F5;border:2px solid #FFB0B0;border-radius:10px;margin-bottom:8px">
+                  <div>
+                    <div style="font-size:13px;font-weight:800">{{ s.name }}</div>
+                    <div style="font-size:11px;color:#888;margin-top:2px">{{ s.email }}</div>
+                  </div>
+                  <div style="background:var(--red);color:#fff;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:800">{{ s.daysSince }}d parado</div>
+                </div>
+              </sc-for>
             </sc-if>
             <sc-if value="{{ noInactiveStudents }}" hint-placeholder-val="">
               <div style="text-align:center;padding:20px;color:#007A3D;font-weight:700">✅ Todos os alunos estão ativos!</div>
             </sc-if>
           </div>
 
-          <!-- Detalhe individual -->
+          <!-- Individual -->
           <div class="adm-card">
             <div class="adm-card-title">📋 Relatório Individual</div>
             <sc-if value="{{ hasPlatformStudents }}" hint-placeholder-val="{{ true }}">
-              <div inner-html="{{ relIndividualHtml }}"></div>
+              <sc-for list="{{ students }}" as="s" hint-placeholder-count="2">
+                <div style="border:2px solid #ddd;border-radius:12px;padding:14px;margin-bottom:12px">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+                    <div>
+                      <div style="font-size:14px;font-weight:900">{{ s.name }}</div>
+                      <div style="font-size:11px;color:#888">{{ s.email }} · {{ s.lastLabel }}</div>
+                    </div>
+                    <span class="adm-badge" style="background:{{ s.statusBg }};color:{{ s.statusColor }};border-color:{{ s.statusColor }}">{{ s.status }}</span>
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px">
+                    <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:{{ s.borderColor }}">{{ s.progPct }}%</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Plano</div></div>
+                    <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:{{ s.taxaColor }}">{{ s.taxa }}%</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Acerto</div></div>
+                    <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900">{{ s.totalQ }}</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Questões</div></div>
+                    <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--orange)">{{ s.streak }}</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Sequência</div></div>
+                    <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--cyan)">{{ s.adherence }}%</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Aderência</div></div>
+                    <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--purple)">{{ s.nota }}/80</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Nota Est.</div></div>
+                  </div>
+                </div>
+              </sc-for>
             </sc-if>
             <sc-if value="{{ noPlatformStudents }}" hint-placeholder-val="">
               <div class="adm-empty"><div class="adm-empty-icon">📋</div><div style="font-weight:700">Sem alunos nesta plataforma</div></div>
@@ -282,20 +293,14 @@
         </div>
       </sc-if>
 
-      <!-- ═══ MATERIAIS / CONTEÚDO ═══ -->
+      <!-- ═══ MATERIAIS ═══ -->
       <sc-if value="{{ tabMateriais }}" hint-placeholder-val="">
         <div>
           <div class="adm-card">
             <div class="adm-card-title">📚 Adicionar Material</div>
             <div class="adm-grid-2" style="margin-bottom:12px">
-              <div>
-                <div class="adm-label">Matéria / Módulo</div>
-                <input class="adm-input" value="{{ matMateria }}" oninput="{{ onMatMateria }}" placeholder="Ex: Direito Constitucional">
-              </div>
-              <div>
-                <div class="adm-label">Título do material</div>
-                <input class="adm-input" value="{{ matTitulo }}" oninput="{{ onMatTitulo }}" placeholder="Ex: Aula 01 — Teoria da Constituição">
-              </div>
+              <div><div class="adm-label">Matéria / Módulo</div><input class="adm-input" value="{{ matMateria }}" oninput="{{ onMatMateria }}" placeholder="Ex: Direito Constitucional"></div>
+              <div><div class="adm-label">Título do material</div><input class="adm-input" value="{{ matTitulo }}" oninput="{{ onMatTitulo }}" placeholder="Ex: Aula 01 — Teoria da Constituição"></div>
             </div>
             <div style="margin-bottom:12px">
               <div class="adm-label">Link (YouTube, Google Drive, PDF, etc.)</div>
@@ -311,13 +316,30 @@
                   <option value="simulado">🎯 Simulado</option>
                 </select>
               </div>
-              <button onclick="{{ onSaveMaterial }}" class="{{ isCartorio ? 'adm-btn-green' : 'adm-btn-primary' }}" style="margin-top:18px">+ Adicionar</button>
+              <button onclick="{{ onSaveMaterial }}" class="{{ matBtnCls }}" style="margin-top:18px">+ Adicionar</button>
             </div>
           </div>
 
-          <!-- Lista de materiais -->
           <sc-if value="{{ hasMateriais }}" hint-placeholder-val="{{ true }}">
-            <div inner-html="{{ materiaisHtml }}"></div>
+            <sc-for list="{{ materiaisGroups }}" as="grp" hint-placeholder-count="2">
+              <div class="adm-card" style="margin-bottom:14px">
+                <div class="adm-card-title">
+                  <span style="background:{{ grp.badgeColor }};color:#fff;border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)">{{ grp.materia }}</span>
+                </div>
+                <sc-for list="{{ grp.items }}" as="m">
+                  <div class="adm-mat-item">
+                    <div style="flex:1">
+                      <div class="adm-mat-item-title">{{ m.icon }} {{ m.titulo }}</div>
+                      <div class="adm-mat-item-url">{{ m.url }}</div>
+                    </div>
+                    <div style="display:flex;gap:6px">
+                      <a href="{{ m.url }}" target="_blank" class="adm-btn-sm" style="text-decoration:none">↗ Abrir</a>
+                      <button onclick="{{ onMaterialDelete }}" data-matkey="{{ m.matKey }}" data-idx="{{ m.globalIdx }}" class="adm-btn-danger">✕</button>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-for>
           </sc-if>
           <sc-if value="{{ noMateriais }}" hint-placeholder-val="">
             <div class="adm-empty"><div class="adm-empty-icon">📚</div><div style="font-weight:700">Nenhum material adicionado ainda</div><div style="font-size:13px;margin-top:6px">Adicione vídeos, PDFs e links de estudo para seus alunos</div></div>
@@ -343,7 +365,18 @@
 
           <sc-if value="{{ hasAvisos }}" hint-placeholder-val="{{ true }}">
             <div style="font-size:12px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Publicados ({{ avisoCount }})</div>
-            <div inner-html="{{ avisosHtml }}"></div>
+            <sc-for list="{{ avisosList }}" as="av" hint-placeholder-count="2">
+              <div class="adm-aviso">
+                <div style="flex:1">
+                  <div style="font-size:14px;font-weight:800;color:var(--blue)">{{ av.title }}</div>
+                  <sc-if value="{{ av.msg }}" hint-placeholder-val="">
+                    <div style="font-size:13px;color:#333;margin-top:4px">{{ av.msg }}</div>
+                  </sc-if>
+                  <div style="font-size:11px;color:#888;margin-top:6px">{{ av.date }}</div>
+                </div>
+                <button onclick="{{ onAvisoDelete }}" data-idx="{{ av.idx }}" class="adm-btn-danger">✕ Remover</button>
+              </div>
+            </sc-for>
           </sc-if>
           <sc-if value="{{ noAvisos }}" hint-placeholder-val="">
             <div class="adm-empty"><div class="adm-empty-icon">📭</div><div style="font-weight:700">Nenhum aviso publicado</div></div>
@@ -357,10 +390,7 @@
           <div class="adm-card">
             <div class="adm-card-title">🎯 Adicionar Simulado</div>
             <div class="adm-grid-2" style="margin-bottom:14px">
-              <div>
-                <div class="adm-label">Nome do simulado</div>
-                <input class="adm-input" value="{{ simName }}" oninput="{{ onSimName }}" placeholder="Ex: Simulado OAB — Set/2026">
-              </div>
+              <div><div class="adm-label">Nome do simulado</div><input class="adm-input" value="{{ simName }}" oninput="{{ onSimName }}" placeholder="Ex: Simulado OAB — Set/2026"></div>
               <div>
                 <div class="adm-label">Tempo máximo — até 5h</div>
                 <div style="display:flex;align-items:center;gap:10px">
@@ -369,14 +399,12 @@
                 </div>
               </div>
             </div>
-
             <div class="adm-upload-zone" onclick="{{ onPickPdf }}">
               <div style="font-size:28px;margin-bottom:6px">📄</div>
               <div style="font-size:13px;font-weight:700;color:var(--black)">{{ uploadPdfLabel }}</div>
               <div style="font-size:11px;color:#666;margin-top:2px">PDF ou vídeo — até 500 MB</div>
               <button style="margin-top:12px;background:var(--purple);color:#fff;border:3px solid var(--black);border-radius:9px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:3px 3px 0 var(--black);pointer-events:none">{{ uploadPdfBtnLabel }}</button>
             </div>
-
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
               <div style="flex:1;height:2px;background:var(--black)"></div>
               <span style="font-size:11px;font-weight:800;color:#666;text-transform:uppercase">ou link externo</span>
@@ -390,7 +418,21 @@
 
           <sc-if value="{{ hasSimulados }}" hint-placeholder-val="{{ true }}">
             <div style="font-size:12px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Simulados disponibilizados ({{ simCount }})</div>
-            <div inner-html="{{ simuladosHtml }}"></div>
+            <sc-for list="{{ simuladosList }}" as="s" hint-placeholder-count="2">
+              <div class="adm-sim">
+                <div>
+                  <div style="font-size:14px;font-weight:800;color:var(--black)">{{ s.name }}</div>
+                  <div style="margin-top:4px;display:flex;gap:8px;align-items:center">
+                    <span style="background:var(--purple);color:#fff;border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)">⏱ {{ s.timer }}h</span>
+                    <span style="font-size:11px;color:#666">{{ s.date }}</span>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <a href="{{ s.url }}" target="_blank" class="adm-btn-sm" style="text-decoration:none">📄 Abrir</a>
+                  <button onclick="{{ onSimDelete }}" data-idx="{{ s.idx }}" class="adm-btn-danger">✕</button>
+                </div>
+              </div>
+            </sc-for>
           </sc-if>
           <sc-if value="{{ noSimulados }}" hint-placeholder-val="">
             <div class="adm-empty"><div class="adm-empty-icon">🎯</div><div style="font-weight:700">Nenhum simulado adicionado</div></div>
@@ -403,7 +445,7 @@
         <div>
           <div class="adm-card">
             <div class="adm-card-title">🎬 Vídeo de Boas-vindas</div>
-            <div style="font-size:13px;color:#555;margin-bottom:16px">Aparece na tela inicial do aluno. Faça upload ou cole um link do YouTube/Vimeo.</div>
+            <div style="font-size:13px;color:#555;margin-bottom:16px">Aparece na tela inicial do aluno.</div>
             <div class="adm-upload-zone" onclick="{{ onPickVideo }}">
               <div style="font-size:28px;margin-bottom:6px">🎬</div>
               <div style="font-size:13px;font-weight:700">{{ uploadVideoLabel }}</div>
@@ -430,48 +472,30 @@
         </div>
       </sc-if>
 
-      <!-- ═══ CONFIGURAÇÕES ═══ -->
+      <!-- ═══ CONFIG ═══ -->
       <sc-if value="{{ tabConfig }}" hint-placeholder-val="">
         <div>
           <div class="adm-card" style="{{ isCartorio ? 'border-color:var(--ct-green);box-shadow:5px 5px 0 var(--ct-green)' : '' }}">
-            <div class="adm-card-title" style="{{ isCartorio ? 'color:var(--ct-green)' : '' }}">{{ isCartorio ? '📜 Plataforma Cartório' : '⚙️ Plataforma OAB' }}</div>
+            <div class="adm-card-title" style="{{ isCartorio ? 'color:var(--ct-green)' : '' }}">{{ cfgPlatTitle }}</div>
             <div class="adm-grid-2">
-              <div>
-                <div class="adm-label">Nome da mentoria</div>
-                <input class="adm-input" value="{{ cfgBrand }}" oninput="{{ onCfgBrand }}" placeholder="Ex: Mentoria Prof. Líbero">
-              </div>
-              <div>
-                <div class="adm-label">{{ isCartorio ? 'Data da prova (Cartório)' : 'Data da prova OAB' }}</div>
-                <input class="adm-input" value="{{ cfgExam }}" oninput="{{ onCfgExam }}" placeholder="YYYY-MM-DD" type="date">
-              </div>
+              <div><div class="adm-label">Nome da mentoria</div><input class="adm-input" value="{{ cfgBrand }}" oninput="{{ onCfgBrand }}" placeholder="Ex: Mentoria Prof. Líbero"></div>
+              <div><div class="adm-label">{{ cfgExamLabel }}</div><input class="adm-input" value="{{ cfgExam }}" oninput="{{ onCfgExam }}" placeholder="YYYY-MM-DD" type="date"></div>
               <sc-if value="{{ isOAB }}" hint-placeholder-val="">
-                <div>
-                  <div class="adm-label">Meta de questões/dia</div>
-                  <input class="adm-input" value="{{ cfgGoal }}" oninput="{{ onCfgGoal }}" type="number" min="10" max="60" placeholder="27">
-                </div>
+                <div><div class="adm-label">Meta de questões/dia</div><input class="adm-input" value="{{ cfgGoal }}" oninput="{{ onCfgGoal }}" type="number" min="10" max="60" placeholder="27"></div>
               </sc-if>
               <sc-if value="{{ isCartorio }}" hint-placeholder-val="">
-                <div>
-                  <div class="adm-label">Nome do concurso</div>
-                  <input class="adm-input" value="{{ cfgCtBrand }}" oninput="{{ onCfgCtBrand }}" placeholder="Ex: Concurso de Cartórios SP 2026">
-                </div>
+                <div><div class="adm-label">Nome do concurso</div><input class="adm-input" value="{{ cfgCtBrand }}" oninput="{{ onCfgCtBrand }}" placeholder="Ex: Concurso de Cartórios SP 2026"></div>
               </sc-if>
             </div>
           </div>
           <div class="adm-card">
             <div class="adm-card-title">🔐 Acesso Admin</div>
             <div class="adm-grid-2">
-              <div>
-                <div class="adm-label">E-mail admin</div>
-                <input class="adm-input" value="{{ cfgAdminEmail }}" oninput="{{ onCfgAdminEmail }}" type="email">
-              </div>
-              <div>
-                <div class="adm-label">Senha admin (login local)</div>
-                <input class="adm-input" value="{{ cfgAdminPass }}" oninput="{{ onCfgAdminPass }}" type="text">
-              </div>
+              <div><div class="adm-label">E-mail admin</div><input class="adm-input" value="{{ cfgAdminEmail }}" oninput="{{ onCfgAdminEmail }}" type="email"></div>
+              <div><div class="adm-label">Senha admin</div><input class="adm-input" value="{{ cfgAdminPass }}" oninput="{{ onCfgAdminPass }}" type="text"></div>
             </div>
           </div>
-          <button onclick="{{ onSaveConfig }}" class="{{ isCartorio ? 'adm-btn-green' : 'adm-btn-primary' }}">💾 Salvar Configurações</button>
+          <button onclick="{{ onSaveConfig }}" class="{{ cfgSaveCls }}">💾 Salvar Configurações</button>
         </div>
       </sc-if>
 
@@ -487,51 +511,63 @@ class Component extends DCLogic {
     var self = this;
     var settings = (props.data && props.data.settings) || {};
 
-    // ── Stable nav handlers ──
+    // ── Nav ──
     this._onBackToHome = function(){ self.setState({platformView:null, tab:'alunos', msg:''}); };
     this._onSelectOAB = function(){ self.setState({platformView:'oab', tab:'alunos', msg:''}); };
     this._onSelectCartorio = function(){ self.setState({platformView:'cartorio', tab:'alunos', msg:''}); };
-
-    // ── Stable header handlers ──
     this._onLogout = function(){ var d=self.props.data||{}; d.onLogout && d.onLogout(); };
     this._onRefresh = function(){ var d=self.props.data||{}; d.onRefresh && d.onRefresh(); };
 
-    // ── Student list actions (called from innerHTML onclick) ──
-    this._sRemove = function(sid, sname){
-      var d=self.props.data||{};
-      if(confirm('Remover '+sname+'?')){ d.onRemoveStudent && d.onRemoveStudent(sid); }
-    };
-    this._sReset = function(sid, sname){
-      var d=self.props.data||{};
-      if(confirm('Resetar progresso de '+sname+'?')){ d.onResetProgress && d.onResetProgress(sid); }
-    };
-    this._sImpersonate = function(sid){
-      var d=self.props.data||{}; d.onImpersonate && d.onImpersonate(sid);
-    };
-    this._sToggleTipo = function(sid, curTipo){
-      var d=self.props.data||{};
-      var novo=curTipo==='cartorio'?'oab':'cartorio';
-      var label=curTipo==='cartorio'?'para OAB':'para Cartório';
-      if(confirm('Mover '+label+'?')){ d.onSetTipo && d.onSetTipo(sid, novo); }
+    // ── Tab handlers (stable) ──
+    this._tabHandlers = {};
+    ['alunos','relatorios','materiais','simulados','avisos','boas-vindas','config'].forEach(function(id){
+      self._tabHandlers[id] = function(){ self.setState({tab:id, msg:''}); };
+    });
+
+    // ── Student actions via data-* ──
+    this._onStudentAction = function(e){
+      var btn = e.currentTarget || e.target;
+      var ds = btn.dataset || {};
+      var action = ds.action, sid = ds.sid, sname = ds.sname, tipo = ds.tipo;
+      var d = self.props.data || {};
+      if(action==='remove'){ if(confirm('Remover '+sname+'?')){ d.onRemoveStudent && d.onRemoveStudent(sid); } }
+      else if(action==='reset'){ if(confirm('Resetar progresso de '+sname+'?')){ d.onResetProgress && d.onResetProgress(sid); } }
+      else if(action==='impersonate'){ d.onImpersonate && d.onImpersonate(sid); }
+      else if(action==='toggle-tipo'){
+        var novo = tipo==='cartorio'?'oab':'cartorio';
+        var label = tipo==='cartorio'?'para OAB':'para Cartório';
+        if(confirm('Mover '+label+'?')){ d.onSetTipo && d.onSetTipo(sid, novo); }
+      }
     };
 
-    // ── Material / aviso / simulado delete (from innerHTML onclick) ──
-    this._mDelete = function(matKey, idx){
-      var d=self.props.data||{}; var settings=d.settings||{};
-      var list=(settings[matKey]||[]).filter(function(_,j){ return j!==idx; });
-      var patch={}; patch[matKey]=list;
+    // ── Material delete via data-* ──
+    this._onMaterialDelete = function(e){
+      var btn = e.currentTarget || e.target;
+      var ds = btn.dataset || {};
+      var matKey = ds.matkey, idx = parseInt(ds.idx, 10);
+      var d = self.props.data || {}; var settings = d.settings || {};
+      var list = (settings[matKey]||[]).filter(function(_,j){ return j!==idx; });
+      var patch = {}; patch[matKey] = list;
       d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,patch));
       self.setState({msg:'Material removido.',msgType:'ok'});
     };
-    this._aDelete = function(idx){
-      var d=self.props.data||{}; var settings=d.settings||{};
-      var list=(settings.avisos||[]).filter(function(_,j){ return j!==idx; });
+
+    // ── Aviso delete via data-* ──
+    this._onAvisoDelete = function(e){
+      var btn = e.currentTarget || e.target;
+      var idx = parseInt((btn.dataset||{}).idx, 10);
+      var d = self.props.data || {}; var settings = d.settings || {};
+      var list = (settings.avisos||[]).filter(function(_,j){ return j!==idx; });
       d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,{avisos:list}));
       self.setState({msg:'Aviso removido.',msgType:'ok'});
     };
-    this._simDelete = function(idx){
-      var d=self.props.data||{}; var settings=d.settings||{};
-      var list=(settings.simulados||[]).filter(function(_,j){ return j!==idx; });
+
+    // ── Simulado delete via data-* ──
+    this._onSimDelete = function(e){
+      var btn = e.currentTarget || e.target;
+      var idx = parseInt((btn.dataset||{}).idx, 10);
+      var d = self.props.data || {}; var settings = d.settings || {};
+      var list = (settings.simulados||[]).filter(function(_,j){ return j!==idx; });
       d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,{simulados:list}));
       self.setState({msg:'Simulado removido.',msgType:'ok'});
     };
@@ -542,9 +578,8 @@ class Component extends DCLogic {
     this._onAddStudent = function(){
       var st=self.state; var d=self.props.data||{};
       if(!st.newName.trim()||!st.newEmail.trim()){ self.setState({addMsg:'Preencha nome e e-mail.'}); return; }
-      self.setState({addMsg:'Criando...',newName:'',newEmail:''});
       d.onAddStudent && d.onAddStudent(st.newName.trim(), st.newEmail.trim(), st.platformView==='cartorio'?'cartorio':'oab');
-      setTimeout(function(){ self.setState({addMsg:'Criado! Senha: oab123'}); }, 1500);
+      self.setState({addMsg:'',newName:'',newEmail:'',msg:'Aluno criado! Senha: oab123',msgType:'ok'});
     };
 
     // ── Materials ──
@@ -630,7 +665,7 @@ class Component extends DCLogic {
     this._onCfgAdminPass = function(e){ self.setState({cfgAdminPass:e.target.value}); };
     this._onSaveConfig = function(){
       var st=self.state; var d=self.props.data||{}; var settings=d.settings||{};
-      var patch=st.platformView==='cartorio'
+      var patch = st.platformView==='cartorio'
         ? {brandName:st.cfgBrand,ctExamDate:st.cfgExam,ctBrand:st.cfgCtBrand,adminEmail:st.cfgAdminEmail,adminPass:st.cfgAdminPass}
         : {brandName:st.cfgBrand,examDate:st.cfgExam,qPerDay:parseInt(st.cfgGoal)||27,adminEmail:st.cfgAdminEmail,adminPass:st.cfgAdminPass};
       d.onSaveSettings && d.onSaveSettings(Object.assign({},settings,patch));
@@ -638,28 +673,26 @@ class Component extends DCLogic {
     };
 
     this.state = {
-      platformView: null,
-      tab: 'alunos',
-      newName: '', newEmail: '', addMsg: '',
-      avisoTitle: '', avisoMsg: '',
+      platformView: null, tab: 'alunos',
+      newName:'', newEmail:'', addMsg:'',
+      avisoTitle:'', avisoMsg:'',
       videoUrl: settings.welcomeVideoUrl || '',
       uploadingVideo: false,
-      simName: '', simUrl: '', simTimer: 5,
-      uploadingPdf: false,
-      matMateria: '', matTitulo: '', matUrl: '', matTipo: 'video',
+      simName:'', simUrl:'', simTimer:5, uploadingPdf:false,
+      matMateria:'', matTitulo:'', matUrl:'', matTipo:'video',
       cfgBrand: settings.brandName || '',
       cfgExam: settings.examDate || '',
       cfgGoal: String(settings.qPerDay || 27),
       cfgCtBrand: settings.ctBrand || '',
       cfgAdminEmail: settings.adminEmail || '',
       cfgAdminPass: settings.adminPass || '',
-      msg: '', msgType: 'ok'
+      msg:'', msgType:'ok',
     };
   }
 
   _getSb() {
-    if (window._sb) return window._sb;
-    if (window.supabase) {
+    if(window._sb) return window._sb;
+    if(window.supabase){
       window._sb = window.supabase.createClient(
         'https://qijziqjpvtjwarkodzxp.supabase.co',
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpanppcWpwdnRqd2Fya29kenhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MjMzNDEsImV4cCI6MjA2NTQ5OTM0MX0.xNxWFGMPsCmSbu3lJp4H5TrEQbHzEZfJcmTP7gKRFVk'
@@ -671,20 +704,16 @@ class Component extends DCLogic {
 
   async _uploadFile(file, folder, onDone) {
     var sb = this._getSb();
-    if (!sb) { this.setState({msg:'Supabase não disponível.',msgType:'err'}); return; }
+    if(!sb){ this.setState({msg:'Supabase não disponível.',msgType:'err'}); return; }
     var self = this;
-    var setUploading = folder === 'videos'
+    var setUploading = folder==='videos'
       ? function(v){ self.setState({uploadingVideo:v}); }
       : function(v){ self.setState({uploadingPdf:v}); };
     setUploading(true);
     this.setState({msg:'Enviando arquivo...',msgType:'ok'});
     var path = folder+'/'+Date.now()+'_'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
     var result = await sb.storage.from('media').upload(path, file, {upsert:true});
-    if (result.error) {
-      setUploading(false);
-      this.setState({msg:'Erro no upload: '+result.error.message,msgType:'err'});
-      return;
-    }
+    if(result.error){ setUploading(false); this.setState({msg:'Erro no upload: '+result.error.message,msgType:'err'}); return; }
     var publicUrl = sb.storage.from('media').getPublicUrl(path).data.publicUrl;
     setUploading(false);
     onDone(publicUrl);
@@ -696,35 +725,41 @@ class Component extends DCLogic {
     var settings = d.settings || {};
     var pv = st.platformView;
     var isCT = pv === 'cartorio';
+    var self = this;
 
-    // ── HTML escape helpers ──
-    function h(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-    function esc(s){ return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
-    var DC = "this.closest('x-dc').__dc";
-
-    // ── All students (plain data, no function props) ──
+    // ── Students ──
     var allStudents = (d.list || []).map(function(s){
       var statusBg='#D4F7E0', statusColor='#007A3D';
       if(s.status==='Atrasado'||s.status==='Parou'){ statusBg='#FFE0E0'; statusColor='#D32F2F'; }
       else if(s.status==='Atencao'){ statusBg='#FFF3CC'; statusColor='#FF6600'; }
+      var taxaColor = (s.taxa||0)>=70?'#007A3D':(s.taxa||0)>=50?'#FF6600':'#D32F2F';
       return {
-        id: s.id||'', name: s.name||'Aluno', email: s.email||'',
-        progPct: s.progPct||0, taxa: s.taxa||0, totalQ: s.totalQ||0,
-        streak: s.streak||0, adherence: s.adherence||0, nota: s.nota||0,
-        daysSince: s.daysSince||999, tipo: s.tipo||'oab',
-        status: s.status||'Em dia', statusColor: statusColor, statusBg: statusBg,
-        lastLabel: s.last ? (s.daysSince+'d atrás') : 'Nunca'
+        id:s.id||'', name:s.name||'Aluno', email:s.email||'',
+        progPct:s.progPct||0, taxa:s.taxa||0, totalQ:s.totalQ||0,
+        streak:s.streak||0, adherence:s.adherence||0, nota:s.nota||0,
+        daysSince:s.daysSince||999, tipo:s.tipo||'oab',
+        status:s.status||'Em dia', statusColor:statusColor, statusBg:statusBg,
+        lastLabel:s.last?(s.daysSince+'d atrás'):'Nunca',
+        taxaColor:taxaColor,
+        cardCls: s.tipo==='cartorio' ? 'adm-ct-card' : 'adm-student',
+        nameColor: s.tipo==='cartorio' ? 'color:var(--ct-green)' : '',
+        borderColor: s.tipo==='cartorio' ? 'var(--ct-green)' : 'var(--black)',
       };
     });
 
     var countOAB = allStudents.filter(function(s){ return s.tipo!=='cartorio'; }).length;
     var countCartorio = allStudents.filter(function(s){ return s.tipo==='cartorio'; }).length;
-
     var platformStudents = isCT
       ? allStudents.filter(function(s){ return s.tipo==='cartorio'; })
       : allStudents.filter(function(s){ return s.tipo!=='cartorio'; });
-
-    var rankingStudents = platformStudents.slice().sort(function(a,b){ return b.taxa-a.taxa; }).map(function(s,i){ return Object.assign({rank:i+1},s); });
+    var rankingStudents = platformStudents.slice().sort(function(a,b){ return b.taxa-a.taxa; }).map(function(s,i){
+      return Object.assign({},s,{
+        rank:i+1,
+        rankColor:i===0?'#FFB800':i===1?'#888':i===2?'#CD7F32':'#999',
+        bg:i<3?'#FFF9E6':'#fafafa',
+        bc:i<3?'var(--black)':'#ddd',
+      });
+    });
     var inactiveStudents = platformStudents.filter(function(s){ return s.daysSince>=7; });
 
     // ── Home totals ──
@@ -732,24 +767,13 @@ class Component extends DCLogic {
     var avgTaxa = allStudents.length ? Math.round(allStudents.reduce(function(a,s){ return a+s.taxa; },0)/allStudents.length) : 0;
     var activeStudents = allStudents.filter(function(s){ return s.daysSince<7; }).length;
 
-    // ── Reports ──
+    // ── Report ──
     var rTotalQ = platformStudents.reduce(function(a,s){ return a+s.totalQ; },0);
     var rAvgTaxa = platformStudents.length ? Math.round(platformStudents.reduce(function(a,s){ return a+s.taxa; },0)/platformStudents.length) : 0;
     var rAvgStreak = platformStudents.length ? Math.round(platformStudents.reduce(function(a,s){ return a+s.streak; },0)/platformStudents.length) : 0;
     var rActiveCount = platformStudents.filter(function(s){ return s.daysSince<7; }).length;
 
-    // ── Materials (plain data) ──
-    var matKey = isCT ? 'materiaisCartorio' : 'materiais';
-    var rawMateriais = settings[matKey] || [];
-    var tipoIcons = {video:'🎬',pdf:'📄',link:'🔗',simulado:'🎯'};
-
-    // ── Avisos (plain data) ──
-    var rawAvisos = settings.avisos || [];
-
-    // ── Simulados (plain data) ──
-    var rawSimulados = settings.simulados || [];
-
-    // ── TABS HTML ──
+    // ── Nav tabs ──
     var tabDefsOAB = [
       {id:'alunos',icon:'👥',label:'Alunos'},
       {id:'relatorios',icon:'📊',label:'Relatórios'},
@@ -766,156 +790,33 @@ class Component extends DCLogic {
       {id:'avisos',icon:'📢',label:'Avisos'},
       {id:'config',icon:'⚙️',label:'Config'},
     ];
-    var tabDefs = isCT ? tabDefsCT : tabDefsOAB;
     var activeClass = isCT ? 'active-ct' : 'active';
-    var tabsHtml = tabDefs.map(function(t){
-      var active = st.tab === t.id;
-      return '<button onclick="'+DC+'.setState({tab:\''+t.id+'\',msg:\'\'})" class="adm-tab'+(active?' '+activeClass:'')+'">'+t.icon+' '+t.label+'</button>';
-    }).join('');
+    var navTabs = (isCT ? tabDefsCT : tabDefsOAB).map(function(t){
+      return { cls:'adm-tab'+(st.tab===t.id?' '+activeClass:''), onClick:self._tabHandlers[t.id], icon:t.icon, label:t.label };
+    });
 
-    // ── STUDENTS HTML ──
-    var cardCls = isCT ? 'adm-ct-card' : 'adm-student';
-    var nameColor = isCT ? 'color:var(--ct-green)' : '';
-    var statBorderColor = isCT ? 'var(--ct-green)' : 'var(--black)';
-    var statValColor = isCT ? 'var(--ct-green)' : 'var(--blue)';
-    var studentsHtml = platformStudents.map(function(s){
-      var taxaColor = s.taxa>=70?'#007A3D':s.taxa>=50?'#FF6600':'#D32F2F';
-      return '<div class="'+cardCls+'">'
-        +'<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">'
-          +'<div style="flex:1;min-width:180px">'
-            +'<div class="adm-student-name" style="'+nameColor+'">'+h(s.name)+'</div>'
-            +'<div class="adm-student-email">'+h(s.email)+'</div>'
-            +'<div style="margin-top:6px">'
-              +'<span class="adm-badge" style="margin-left:0;background:'+s.statusBg+';color:'+s.statusColor+';border-color:'+s.statusColor+'">'+h(s.status)+'</span>'
-              +'<span style="margin-left:8px;font-size:11px;color:#888">'+h(s.lastLabel)+'</span>'
-            +'</div>'
-          +'</div>'
-          +'<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">'
-            +'<button onclick="'+DC+'._sToggleTipo(\''+esc(s.id)+'\',\''+esc(s.tipo)+'\')" class="adm-btn-sm" title="Mover para outra plataforma">🔄 Mover plataforma</button>'
-            +'<button onclick="'+DC+'._sImpersonate(\''+esc(s.id)+'\')" class="adm-btn-sm">👁 Ver como aluno</button>'
-            +'<button onclick="'+DC+'._sReset(\''+esc(s.id)+'\',\''+esc(s.name)+'\')" class="adm-btn-sm">↺ Resetar</button>'
-            +'<button onclick="'+DC+'._sRemove(\''+esc(s.id)+'\',\''+esc(s.name)+'\')" class="adm-btn-danger">✕</button>'
-          +'</div>'
-        +'</div>'
-        +'<div class="adm-stat-row" style="border-color:'+statBorderColor+'">'
-          +'<div class="adm-stat-cell" style="border-right-color:'+statBorderColor+'"><div class="adm-stat-val" style="color:'+statValColor+'">'+s.progPct+'%</div><div class="adm-stat-lbl">Plano</div></div>'
-          +'<div class="adm-stat-cell" style="border-right-color:'+statBorderColor+'"><div class="adm-stat-val" style="color:'+taxaColor+'">'+s.taxa+'%</div><div class="adm-stat-lbl">Acerto</div></div>'
-          +'<div class="adm-stat-cell" style="border-right-color:'+statBorderColor+'"><div class="adm-stat-val">'+s.totalQ+'</div><div class="adm-stat-lbl">Questões</div></div>'
-          +'<div class="adm-stat-cell" style="border-right-color:'+statBorderColor+'"><div class="adm-stat-val" style="color:var(--orange)">'+s.streak+'</div><div class="adm-stat-lbl">Sequência</div></div>'
-          +'<div class="adm-stat-cell" style="border-right-color:'+statBorderColor+'"><div class="adm-stat-val" style="color:var(--cyan)">'+s.adherence+'%</div><div class="adm-stat-lbl">Aderência</div></div>'
-          +'<div class="adm-stat-cell"><div class="adm-stat-val" style="font-size:14px;color:var(--purple)">'+s.nota+'/80</div><div class="adm-stat-lbl">Nota Est.</div></div>'
-        +'</div>'
-      +'</div>';
-    }).join('');
-
-    // ── RANKING HTML ──
-    var rankingHtml = rankingStudents.map(function(s){
-      var rankColor = s.rank===1?'#FFB800':s.rank===2?'#888':s.rank===3?'#CD7F32':'#999';
-      var taxaColor = s.taxa>=70?'#007A3D':s.taxa>=50?'#FF6600':'#D32F2F';
-      var bg = s.rank<=3?'#FFF9E6':'#fafafa';
-      var bc = s.rank<=3?'var(--black)':'#ddd';
-      return '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:10px 12px;background:'+bg+';border:2px solid '+bc+';border-radius:10px">'
-        +'<div style="font-size:18px;font-weight:900;width:28px;text-align:center;color:'+rankColor+'">'+s.rank+'°</div>'
-        +'<div style="flex:1">'
-          +'<div style="font-size:13px;font-weight:800">'+h(s.name)+'</div>'
-          +'<div style="margin-top:4px"><div class="adm-stat-bar-bg"><div class="adm-stat-bar-fill" style="width:'+s.taxa+'%;background:'+taxaColor+'"></div></div></div>'
-        +'</div>'
-        +'<div style="text-align:right;min-width:80px">'
-          +'<div style="font-size:16px;font-weight:900;color:'+taxaColor+'">'+s.taxa+'%</div>'
-          +'<div style="font-size:11px;color:#888">'+s.totalQ+' questões</div>'
-        +'</div>'
-      +'</div>';
-    }).join('');
-
-    // ── INACTIVE HTML ──
-    var inactiveHtml = inactiveStudents.map(function(s){
-      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#FFF5F5;border:2px solid #FFB0B0;border-radius:10px;margin-bottom:8px">'
-        +'<div>'
-          +'<div style="font-size:13px;font-weight:800">'+h(s.name)+'</div>'
-          +'<div style="font-size:11px;color:#888;margin-top:2px">'+h(s.email)+'</div>'
-        +'</div>'
-        +'<div style="background:var(--red);color:#fff;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:800">'+s.daysSince+'d parado</div>'
-      +'</div>';
-    }).join('');
-
-    // ── RELATÓRIO INDIVIDUAL HTML ──
-    var relIndividualHtml = platformStudents.map(function(s){
-      var taxaColor = s.taxa>=70?'#007A3D':s.taxa>=50?'#FF6600':'#D32F2F';
-      return '<div style="border:2px solid #ddd;border-radius:12px;padding:14px;margin-bottom:12px">'
-        +'<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px">'
-          +'<div>'
-            +'<div style="font-size:14px;font-weight:900">'+h(s.name)+'</div>'
-            +'<div style="font-size:11px;color:#888">'+h(s.email)+' · '+h(s.lastLabel)+'</div>'
-          +'</div>'
-          +'<span class="adm-badge" style="background:'+s.statusBg+';color:'+s.statusColor+';border-color:'+s.statusColor+'">'+h(s.status)+'</span>'
-        +'</div>'
-        +'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px">'
-          +'<div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--blue)">'+s.progPct+'%</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Plano</div></div>'
-          +'<div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:'+taxaColor+'">'+s.taxa+'%</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Acerto</div></div>'
-          +'<div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900">'+s.totalQ+'</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Questões</div></div>'
-          +'<div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--orange)">'+s.streak+'</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Sequência</div></div>'
-          +'<div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--cyan)">'+s.adherence+'%</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Aderência</div></div>'
-          +'<div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--purple)">'+s.nota+'/80</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Nota Est.</div></div>'
-        +'</div>'
-      +'</div>';
-    }).join('');
-
-    // ── MATERIAIS HTML ──
+    // ── Materials ──
+    var matKey = isCT ? 'materiaisCartorio' : 'materiais';
+    var rawMateriais = settings[matKey] || [];
+    var tipoIcons = {video:'🎬',pdf:'📄',link:'🔗',simulado:'🎯'};
     var gruposMap = {};
-    rawMateriais.forEach(function(m){ var k=m.materia||'Geral'; if(!gruposMap[k]) gruposMap[k]=[]; gruposMap[k].push(m); });
+    rawMateriais.forEach(function(m,i){
+      var k = m.materia||'Geral';
+      if(!gruposMap[k]) gruposMap[k]=[];
+      gruposMap[k].push(Object.assign({},m,{globalIdx:i, matKey:matKey, icon:tipoIcons[m.tipo]||'🔗', titulo:m.titulo||m.title||''}));
+    });
     var badgeColor = isCT ? 'var(--ct-green)' : 'var(--blue)';
-    var materiaisHtml = Object.keys(gruposMap).map(function(materia){
-      var items = gruposMap[materia];
-      var itemsHtml = items.map(function(m, localIdx){
-        // find global index
-        var globalIdx = rawMateriais.indexOf(m);
-        return '<div class="adm-mat-item">'
-          +'<div style="flex:1">'
-            +'<div class="adm-mat-item-title">'+(tipoIcons[m.tipo]||'🔗')+' '+h(m.titulo)+'</div>'
-            +'<div class="adm-mat-item-url">'+h(m.url)+'</div>'
-          +'</div>'
-          +'<div style="display:flex;gap:6px">'
-            +'<a href="'+h(m.url)+'" target="_blank" class="adm-btn-sm" style="text-decoration:none">↗ Abrir</a>'
-            +'<button onclick="'+DC+'._mDelete(\''+esc(matKey)+'\','+globalIdx+')" class="adm-btn-danger">✕</button>'
-          +'</div>'
-        +'</div>';
-      }).join('');
-      return '<div class="adm-card" style="margin-bottom:14px">'
-        +'<div class="adm-card-title">'
-          +'<span style="background:'+badgeColor+';color:#fff;border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)">'+h(materia)+'</span>'
-        +'</div>'
-        +itemsHtml
-      +'</div>';
-    }).join('');
+    var materiaisGroups = Object.keys(gruposMap).map(function(mat){
+      return { materia:mat, badgeColor:badgeColor, items:gruposMap[mat] };
+    });
 
-    // ── AVISOS HTML ──
-    var avisosHtml = rawAvisos.map(function(a, i){
-      return '<div class="adm-aviso">'
-        +'<div style="flex:1">'
-          +'<div style="font-size:14px;font-weight:800;color:var(--blue)">'+h(a.title)+'</div>'
-          +(a.msg?'<div style="font-size:13px;color:#333;margin-top:4px">'+h(a.msg)+'</div>':'')
-          +'<div style="font-size:11px;color:#888;margin-top:6px">'+h(a.date||'')+'</div>'
-        +'</div>'
-        +'<button onclick="'+DC+'._aDelete('+i+')" class="adm-btn-danger">✕ Remover</button>'
-      +'</div>';
-    }).join('');
+    // ── Avisos ──
+    var rawAvisos = settings.avisos || [];
+    var avisosList = rawAvisos.map(function(av, i){ return Object.assign({},av,{idx:i}); });
 
-    // ── SIMULADOS HTML ──
-    var simuladosHtml = rawSimulados.map(function(s, i){
-      return '<div class="adm-sim">'
-        +'<div>'
-          +'<div style="font-size:14px;font-weight:800;color:var(--black)">'+h(s.name)+'</div>'
-          +'<div style="margin-top:4px;display:flex;gap:8px;align-items:center">'
-            +'<span style="background:var(--purple);color:#fff;border:2px solid var(--black);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800;box-shadow:2px 2px 0 var(--black)">⏱ '+(s.timer||5)+'h</span>'
-            +'<span style="font-size:11px;color:#666">'+h(s.date||'')+'</span>'
-          +'</div>'
-        +'</div>'
-        +'<div style="display:flex;gap:8px">'
-          +'<a href="'+h(s.url||'')+'" target="_blank" class="adm-btn-sm" style="text-decoration:none">📄 Abrir</a>'
-          +'<button onclick="'+DC+'._simDelete('+i+')" class="adm-btn-danger">✕</button>'
-        +'</div>'
-      +'</div>';
-    }).join('');
+    // ── Simulados ──
+    var rawSimulados = settings.simulados || [];
+    var simuladosList = rawSimulados.map(function(s, i){ return Object.assign({},s,{idx:i}); });
 
     return {
       // Header
@@ -927,114 +828,94 @@ class Component extends DCLogic {
       onSelectCartorio: this._onSelectCartorio,
       onLogout: this._onLogout,
       onRefresh: this._onRefresh,
-      refreshing: !!d.refreshing,
 
       // Screens
       screenHome: !pv,
       screenPlatform: !!pv,
       isCartorio: isCT,
       isOAB: pv==='oab',
-      platformView: pv||'',
 
-      // Home stats
-      countOAB: countOAB, countCartorio: countCartorio,
-      totalStudents: allStudents.length,
-      totalQ: totalQ, avgTaxa: avgTaxa, activeStudents: activeStudents,
+      // Home
+      countOAB:countOAB, countCartorio:countCartorio,
+      totalStudents:allStudents.length, totalQ:totalQ, avgTaxa:avgTaxa, activeStudents:activeStudents,
 
-      // Tabs + msg
-      tabsHtml: tabsHtml,
-      msg: st.msg, msgClass: st.msgType==='ok'?'ok':'err',
-      tabAlunos: st.tab==='alunos',
-      tabRelatorios: st.tab==='relatorios',
-      tabMateriais: st.tab==='materiais',
-      tabAvisos: st.tab==='avisos',
-      tabVideo: st.tab==='boas-vindas',
-      tabSimulados: st.tab==='simulados',
-      tabConfig: st.tab==='config',
+      // Tabs
+      navTabs: navTabs,
+      msg:st.msg, msgClass:st.msgType==='ok'?'ok':'err',
+      tabAlunos:st.tab==='alunos', tabRelatorios:st.tab==='relatorios',
+      tabMateriais:st.tab==='materiais', tabAvisos:st.tab==='avisos',
+      tabVideo:st.tab==='boas-vindas', tabSimulados:st.tab==='simulados', tabConfig:st.tab==='config',
 
       // Students
-      platformStudentCount: platformStudents.length,
-      hasPlatformStudents: platformStudents.length>0,
-      noPlatformStudents: platformStudents.length===0,
-      hasInactiveStudents: inactiveStudents.length>0,
-      noInactiveStudents: inactiveStudents.length===0,
-      studentsHtml: studentsHtml,
-      rankingHtml: rankingHtml,
-      inactiveHtml: inactiveHtml,
-      relIndividualHtml: relIndividualHtml,
+      students: platformStudents,
+      platformStudentCount:platformStudents.length,
+      hasPlatformStudents:platformStudents.length>0,
+      noPlatformStudents:platformStudents.length===0,
+      onStudentAction: this._onStudentAction,
+      rankingStudents: rankingStudents,
+      inactiveStudents: inactiveStudents,
+      hasInactiveStudents:inactiveStudents.length>0,
+      noInactiveStudents:inactiveStudents.length===0,
 
       // Reports
-      rTotalAlunos: platformStudents.length,
-      rTotalQ: rTotalQ, rAvgTaxa: rAvgTaxa, rAvgStreak: rAvgStreak,
-      rActiveCount: rActiveCount, rInactiveCount: inactiveStudents.length,
-      rAvgTaxaColor: rAvgTaxa>=70?'#007A3D':rAvgTaxa>=50?'#FF6600':'#D32F2F',
+      rTotalAlunos:platformStudents.length, rTotalQ:rTotalQ, rAvgTaxa:rAvgTaxa, rAvgStreak:rAvgStreak,
+      rActiveCount:rActiveCount, rInactiveCount:inactiveStudents.length,
+      rAvgTaxaColor:rAvgTaxa>=70?'#007A3D':rAvgTaxa>=50?'#FF6600':'#D32F2F',
 
       // Add student
-      newName: st.newName, newEmail: st.newEmail, addMsg: st.addMsg,
-      onNewName: this._onNewName,
-      onNewEmail: this._onNewEmail,
-      addingStudent: !!d.addingStudent,
-      onAddStudent: this._onAddStudent,
+      newName:st.newName, newEmail:st.newEmail, addMsg:st.addMsg,
+      onNewName:this._onNewName, onNewEmail:this._onNewEmail,
+      addingStudent:!!d.addingStudent,
+      onAddStudent:this._onAddStudent,
+      addBtnCls: isCT ? 'adm-btn-green' : 'adm-btn-primary',
+      addBtnLabel: d.addingStudent ? 'Criando...' : '+ Adicionar',
 
       // Materials
-      hasMateriais: rawMateriais.length>0, noMateriais: rawMateriais.length===0,
-      materiaisHtml: materiaisHtml,
-      matMateria: st.matMateria, matTitulo: st.matTitulo, matUrl: st.matUrl,
-      onMatMateria: this._onMatMateria,
-      onMatTitulo: this._onMatTitulo,
-      onMatUrl: this._onMatUrl,
-      onMatTipo: this._onMatTipo,
-      onSaveMaterial: this._onSaveMaterial,
+      hasMateriais:rawMateriais.length>0, noMateriais:rawMateriais.length===0,
+      materiaisGroups:materiaisGroups,
+      matMateria:st.matMateria, matTitulo:st.matTitulo, matUrl:st.matUrl,
+      onMatMateria:this._onMatMateria, onMatTitulo:this._onMatTitulo,
+      onMatUrl:this._onMatUrl, onMatTipo:this._onMatTipo,
+      onSaveMaterial:this._onSaveMaterial, onMaterialDelete:this._onMaterialDelete,
+      matBtnCls: isCT ? 'adm-btn-green' : 'adm-btn-primary',
 
       // Avisos
-      avisoCount: rawAvisos.length,
-      hasAvisos: rawAvisos.length>0, noAvisos: rawAvisos.length===0,
-      avisosHtml: avisosHtml,
-      avisoTitle: st.avisoTitle, avisoMsg: st.avisoMsg,
-      onAvisoTitle: this._onAvisoTitle,
-      onAvisoMsg: this._onAvisoMsg,
-      onSaveAviso: this._onSaveAviso,
-
-      // Video
-      currentVideoUrl: settings.welcomeVideoUrl||'',
-      videoUrl: st.videoUrl,
-      onVideoUrl: this._onVideoUrl,
-      onSaveVideoUrl: this._onSaveVideoUrl,
-      onRemoveVideo: this._onRemoveVideo,
-      uploadingVideoDisabled: st.uploadingVideo?'opacity:0.6;pointer-events:none':'',
-      uploadVideoBtnLabel: st.uploadingVideo?'Enviando...':'Escolher vídeo',
-      uploadVideoLabel: st.uploadingVideo?'Aguarde, enviando...':'Clique para selecionar',
-      onPickVideo: this._onPickVideo,
-      onVideoFileChange: this._onVideoFileChange,
+      avisoCount:rawAvisos.length,
+      hasAvisos:rawAvisos.length>0, noAvisos:rawAvisos.length===0,
+      avisosList:avisosList,
+      avisoTitle:st.avisoTitle, avisoMsg:st.avisoMsg,
+      onAvisoTitle:this._onAvisoTitle, onAvisoMsg:this._onAvisoMsg,
+      onSaveAviso:this._onSaveAviso, onAvisoDelete:this._onAvisoDelete,
 
       // Simulados
-      simCount: rawSimulados.length,
-      hasSimulados: rawSimulados.length>0, noSimulados: rawSimulados.length===0,
-      simuladosHtml: simuladosHtml,
-      simName: st.simName, simUrl: st.simUrl, simTimer: st.simTimer,
-      onSimName: this._onSimName,
-      onSimUrl: this._onSimUrl,
-      onSimTimer: this._onSimTimer,
-      onSaveSimulado: this._onSaveSimulado,
-      uploadingPdfDisabled: st.uploadingPdf?'opacity:0.6;pointer-events:none':'',
-      uploadPdfBtnLabel: st.uploadingPdf?'Enviando...':'Fazer upload de PDF',
-      uploadPdfLabel: st.uploadingPdf?'Aguarde, enviando...':'Clique para selecionar',
-      onPickPdf: this._onPickPdf,
-      onPdfFileChange: this._onPdfFileChange,
+      simCount:rawSimulados.length,
+      hasSimulados:rawSimulados.length>0, noSimulados:rawSimulados.length===0,
+      simuladosList:simuladosList,
+      simName:st.simName, simUrl:st.simUrl, simTimer:st.simTimer,
+      onSimName:this._onSimName, onSimUrl:this._onSimUrl, onSimTimer:this._onSimTimer,
+      onSaveSimulado:this._onSaveSimulado, onSimDelete:this._onSimDelete,
+      onPickPdf:this._onPickPdf, onPdfFileChange:this._onPdfFileChange,
+      uploadPdfLabel: st.uploadingPdf ? 'Enviando...' : 'Clique para enviar arquivo',
+      uploadPdfBtnLabel: st.uploadingPdf ? '⏳ Aguarde...' : '📎 Selecionar arquivo',
+
+      // Video
+      videoUrl:st.videoUrl, currentVideoUrl:settings.welcomeVideoUrl||'',
+      onVideoUrl:this._onVideoUrl, onSaveVideoUrl:this._onSaveVideoUrl,
+      onRemoveVideo:this._onRemoveVideo, onPickVideo:this._onPickVideo,
+      onVideoFileChange:this._onVideoFileChange,
+      uploadVideoLabel: st.uploadingVideo ? 'Enviando...' : 'Clique para enviar vídeo',
+      uploadVideoBtnLabel: st.uploadingVideo ? '⏳ Aguarde...' : '🎬 Selecionar vídeo',
 
       // Config
-      cfgBrand: st.cfgBrand, cfgExam: st.cfgExam, cfgGoal: st.cfgGoal,
-      cfgCtBrand: st.cfgCtBrand,
-      cfgAdminEmail: st.cfgAdminEmail, cfgAdminPass: st.cfgAdminPass,
-      onCfgBrand: this._onCfgBrand,
-      onCfgExam: this._onCfgExam,
-      onCfgGoal: this._onCfgGoal,
-      onCfgCtBrand: this._onCfgCtBrand,
-      onCfgAdminEmail: this._onCfgAdminEmail,
-      onCfgAdminPass: this._onCfgAdminPass,
-      onSaveConfig: this._onSaveConfig
+      cfgBrand:st.cfgBrand, cfgExam:st.cfgExam, cfgGoal:st.cfgGoal,
+      cfgCtBrand:st.cfgCtBrand, cfgAdminEmail:st.cfgAdminEmail, cfgAdminPass:st.cfgAdminPass,
+      onCfgBrand:this._onCfgBrand, onCfgExam:this._onCfgExam, onCfgGoal:this._onCfgGoal,
+      onCfgCtBrand:this._onCfgCtBrand, onCfgAdminEmail:this._onCfgAdminEmail, onCfgAdminPass:this._onCfgAdminPass,
+      onSaveConfig:this._onSaveConfig,
+      cfgPlatTitle: isCT ? '📜 Plataforma Cartório' : '⚙️ Plataforma OAB',
+      cfgExamLabel: isCT ? 'Data da prova (Cartório)' : 'Data da prova OAB',
+      cfgSaveCls: isCT ? 'adm-btn-green' : 'adm-btn-primary',
     };
   }
 }
 </script>
-</x-dc>
