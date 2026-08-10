@@ -175,7 +175,12 @@
           </sc-if>
 
           <sc-if value="{{ hasPlatformStudents }}" hint-placeholder-val="{{ true }}">
-            <div style="font-size:13px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">{{ platformStudentCount }} aluno(s)</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:6px">
+              <div style="font-size:13px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px">{{ platformStudentCount }} aluno(s)</div>
+              <sc-if value="{{ hasCronoUpdate }}" hint-placeholder-val="">
+                <div style="font-size:11px;font-weight:700;color:#007A3D;background:#E6F7EE;border:1.5px solid #007A3D;border-radius:6px;padding:3px 10px">🔄 {{ cronoLastUpdate }}</div>
+              </sc-if>
+            </div>
             <sc-for list="{{ students }}" as="s" hint-placeholder-count="2">
               <div class="{{ s.cardCls }}">
                 <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">
@@ -202,6 +207,15 @@
                   <div class="adm-stat-cell" style="border-right-color:{{ s.borderColor }}"><div class="adm-stat-val" style="color:var(--cyan)">{{ s.adherence }}%</div><div class="adm-stat-lbl">Aderência</div></div>
                   <div class="adm-stat-cell"><div class="adm-stat-val" style="font-size:14px;color:var(--purple)">{{ s.nota }}/80</div><div class="adm-stat-lbl">Nota Est.</div></div>
                 </div>
+                <sc-if value="{{ s.cronoTotal }}" hint-placeholder-val="">
+                  <div style="margin-top:10px;padding:8px 10px;background:#E6F7EE;border:1.5px solid var(--ct-green);border-radius:8px">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+                      <div style="font-size:10px;font-weight:800;color:#007A3D;text-transform:uppercase;letter-spacing:.4px">📋 Cronograma</div>
+                      <div style="font-size:12px;font-weight:900;color:{{ s.cronoColor }}">{{ s.cronoDone }}/{{ s.cronoTotal }} metas · {{ s.cronoPct }}%</div>
+                    </div>
+                    <div class="adm-stat-bar-bg"><div class="adm-stat-bar-fill" style="width:{{ s.cronoPctBar }}%;background:{{ s.cronoColor }}"></div></div>
+                  </div>
+                </sc-if>
               </div>
             </sc-for>
           </sc-if>
@@ -514,9 +528,39 @@ class Component extends DCLogic {
     // ── Nav ──
     this._onBackToHome = function(){ self.setState({platformView:null, tab:'alunos', msg:''}); };
     this._onSelectOAB = function(){ self.setState({platformView:'oab', tab:'alunos', msg:''}); };
-    this._onSelectCartorio = function(){ self.setState({platformView:'cartorio', tab:'alunos', msg:''}); };
+    this._onSelectCartorio = function(){
+      self.setState({platformView:'cartorio', tab:'alunos', msg:''});
+      setTimeout(function(){ self._loadCronoProgress(); }, 100);
+    };
     this._onLogout = function(){ var d=self.props.data||{}; d.onLogout && d.onLogout(); };
-    this._onRefresh = function(){ var d=self.props.data||{}; d.onRefresh && d.onRefresh(); };
+    this._onRefresh = function(){
+      var d=self.props.data||{}; d.onRefresh && d.onRefresh();
+      if(self.state.platformView==='cartorio') self._loadCronoProgress();
+    };
+
+    // Carrega progresso do cronograma do Supabase
+    this._loadCronoProgress = function(){
+      var sb = self._getSb();
+      if(!sb) return;
+      sb.from('const_cronograma_checks')
+        .select('user_id, checked')
+        .then(function(res){
+          var data = res.data;
+          if(!data) return;
+          var prog = {};
+          data.forEach(function(r){
+            if(!prog[r.user_id]) prog[r.user_id] = {done:0, total:0};
+            prog[r.user_id].total++;
+            if(r.checked) prog[r.user_id].done++;
+          });
+          self.setState({cronoProgress: prog, cronoLastUpdate: new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})});
+        });
+    };
+
+    // Auto-refresh a cada 30s
+    setInterval(function(){
+      if(self.state.platformView==='cartorio') self._loadCronoProgress();
+    }, 30000);
 
     // ── Tab handlers (stable) ──
     this._tabHandlers = {};
@@ -728,11 +772,16 @@ class Component extends DCLogic {
     var self = this;
 
     // ── Students ──
+    var cronoProgress = st.cronoProgress || {};
     var allStudents = (d.list || []).map(function(s){
       var statusBg='#D4F7E0', statusColor='#007A3D';
       if(s.status==='Atrasado'||s.status==='Parou'){ statusBg='#FFE0E0'; statusColor='#D32F2F'; }
       else if(s.status==='Atencao'){ statusBg='#FFF3CC'; statusColor='#FF6600'; }
       var taxaColor = (s.taxa||0)>=70?'#007A3D':(s.taxa||0)>=50?'#FF6600':'#D32F2F';
+      var cp = cronoProgress[s.id] || {done:0, total:0};
+      var cronoPct = cp.total>0 ? Math.round(cp.done/cp.total*100) : 0;
+      var cronoPctBar = Math.min(100, cronoPct);
+      var cronoColor = cronoPct>=70?'#007A3D':cronoPct>=40?'#FF6600':'#0057FF';
       return {
         id:s.id||'', name:s.name||'Aluno', email:s.email||'',
         progPct:s.progPct||0, taxa:s.taxa||0, totalQ:s.totalQ||0,
@@ -744,6 +793,8 @@ class Component extends DCLogic {
         cardCls: s.tipo==='cartorio' ? 'adm-ct-card' : 'adm-student',
         nameColor: s.tipo==='cartorio' ? 'color:var(--ct-green)' : '',
         borderColor: s.tipo==='cartorio' ? 'var(--ct-green)' : 'var(--black)',
+        cronoDone: cp.done, cronoTotal: cp.total,
+        cronoPct: cronoPct, cronoPctBar: cronoPctBar, cronoColor: cronoColor,
       };
     });
 
@@ -845,6 +896,10 @@ class Component extends DCLogic {
       tabAlunos:st.tab==='alunos', tabRelatorios:st.tab==='relatorios',
       tabMateriais:st.tab==='materiais', tabAvisos:st.tab==='avisos',
       tabVideo:st.tab==='boas-vindas', tabSimulados:st.tab==='simulados', tabConfig:st.tab==='config',
+
+      // Cronograma progress
+      cronoLastUpdate: isCT && st.cronoLastUpdate ? ('Cronograma atualizado às '+st.cronoLastUpdate) : '',
+      hasCronoUpdate: isCT && !!st.cronoLastUpdate,
 
       // Students
       students: platformStudents,
