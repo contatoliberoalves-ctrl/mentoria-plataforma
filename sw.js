@@ -1,5 +1,5 @@
 // Mentoria Cartórios — Service Worker v1
-var CACHE = 'mentoria-v1';
+var CACHE = 'mentoria-v3';
 var STATIC = [
   '/',
   '/index.html',
