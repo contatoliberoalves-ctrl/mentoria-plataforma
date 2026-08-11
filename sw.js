@@ -1,5 +1,5 @@
-// Mentoria Cartórios — Service Worker v1
-var CACHE = 'mentoria-v3';
+// Mentoria Cartórios — Service Worker v4
+var CACHE = 'mentoria-v4';
 var STATIC = [
   '/',
   '/index.html',
@@ -38,21 +38,16 @@ self.addEventListener('fetch', function(e) {
   if (req.method !== 'GET') return;
   // Don't cache Supabase API calls
   if (req.url.indexOf('supabase.co') >= 0) return;
-  // Network first for HTML, cache first for static assets
-  var isNavigation = req.mode === 'navigate';
+  // Always use network-first for everything to avoid stale cache issues
   e.respondWith(
-    caches.match(req).then(function(cached) {
-      var fetchP = fetch(req).then(function(res) {
-        if (res && res.status === 200) {
-          var clone = res.clone();
-          caches.open(CACHE).then(function(c) { c.put(req, clone); });
-        }
-        return res;
-      }).catch(function() { return cached; });
-      // For navigation: try network first, fallback to cache
-      if (isNavigation) return fetchP;
-      // For assets: try cache first, then network
-      return cached || fetchP;
+    fetch(req).then(function(res) {
+      if (res && res.status === 200) {
+        var clone = res.clone();
+        caches.open(CACHE).then(function(c) { c.put(req, clone); });
+      }
+      return res;
+    }).catch(function() {
+      return caches.match(req);
     })
   );
 });
