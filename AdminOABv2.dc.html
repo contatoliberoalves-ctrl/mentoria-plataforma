@@ -1,9 +1,37 @@
 <x-dc>
 <style>
-:root{--blue:#0057FF;--yellow:#FFE500;--black:#0D0D0D;--bg:#FFF9E6;--white:#FFFFFF;--green:#00C040;--purple:#7B2FFF;--cyan:#00A8E8;--orange:#FF6600;--red:#D32F2F;--ct-green:#007A3D;--ct-bg:#E6F7EE}
+:root{--blue:#0057FF;--yellow:#FFE500;--black:#0D0D0D;--bg:#FFF9E6;--white:#FFFFFF;--green:#00C040;--purple:#7B2FFF;--cyan:#00A8E8;--orange:#FF6600;--red:#D32F2F;--ct-green:#006060;--ct-bg:#E6F7EE;--teal:#006060;--teal-light:#00897B;--coral:#E8441A}
+/* ── DASHBOARD ── */
+.adm-dash-kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.adm-dash-kpi-card{background:var(--white);border:3px solid var(--black);border-radius:14px;box-shadow:4px 4px 0 var(--black);padding:16px 14px;text-align:center;position:relative;overflow:hidden}
+.adm-dash-kpi-icon{font-size:28px;margin-bottom:6px}
+.adm-dash-kpi-val{font-size:32px;font-weight:900;line-height:1}
+.adm-dash-kpi-lbl{font-size:10px;font-weight:800;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.adm-dash-student-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--white);border:2px solid #e5e7eb;border-radius:12px;margin-bottom:8px;transition:border-color .15s}
+.adm-dash-student-row:hover{border-color:var(--teal)}
+.adm-dash-student-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-light));border:2px solid var(--black);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0}
+.adm-dash-student-info{flex:1;min-width:0}
+.adm-dash-student-name{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adm-dash-student-sub{font-size:11px;color:#888;margin-top:1px}
+.adm-dash-prog-wrap{width:90px;flex-shrink:0}
+.adm-dash-prog-track{background:#e5e7eb;border-radius:99px;height:8px;overflow:hidden;margin-bottom:2px}
+.adm-dash-prog-fill{height:8px;border-radius:99px}
+.adm-dash-prog-lbl{font-size:10px;font-weight:800;text-align:right}
+.adm-dash-alert{background:#FFF5F5;border:2px solid #FFB0B0;border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.adm-dash-alert-pill{background:var(--red);color:#fff;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:800;white-space:nowrap}
+/* ── SUBJECT CHART ── */
+.adm-mat-chart{margin-top:16px}
+.adm-mat-chart-title{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:#555;margin-bottom:10px}
+.adm-mat-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.adm-mat-bar-label{font-size:11px;font-weight:700;width:120px;flex-shrink:0;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adm-mat-bar-track{flex:1;background:#e5e7eb;border-radius:99px;height:14px;overflow:hidden;position:relative}
+.adm-mat-bar-fill{height:14px;border-radius:99px;transition:width .4s}
+.adm-mat-bar-pct{font-size:11px;font-weight:800;width:38px;text-align:right;flex-shrink:0}
+.adm-student-chart-wrap{margin-top:10px;padding:10px 12px;background:#f8f8f8;border-radius:10px;border:1.5px solid #e5e7eb}
+.adm-student-chart-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:#888;margin-bottom:8px}
 *{box-sizing:border-box}
 .adm-wrap{min-height:100vh;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--black)}
-.adm-header{background:var(--blue);border-bottom:4px solid var(--black);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:30}
+.adm-header{background:linear-gradient(135deg,#001818 0%,var(--teal) 50%,#003030 100%);border-bottom:4px solid var(--black);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:30}
 .adm-logo{display:flex;align-items:center;gap:10px}
 .adm-logo-box{background:var(--yellow);border:3px solid var(--black);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:3px 3px 0 var(--black)}
 .adm-logo-title{color:var(--white);font-weight:900;font-size:15px;text-transform:uppercase;letter-spacing:.5px}
@@ -148,6 +176,98 @@
     </sc-if>
 
     <div class="adm-content">
+
+      <!-- ═══ DASHBOARD ═══ -->
+      <sc-if value="{{ tabDashboard }}" hint-placeholder-val="">
+        <div>
+          <!-- KPI cards -->
+          <div class="adm-dash-kpi">
+            <div class="adm-dash-kpi-card">
+              <div class="adm-dash-kpi-icon">👥</div>
+              <div class="adm-dash-kpi-val" style="color:var(--teal)">{{ dashTotal }}</div>
+              <div class="adm-dash-kpi-lbl">Alunos</div>
+            </div>
+            <div class="adm-dash-kpi-card">
+              <div class="adm-dash-kpi-icon">✅</div>
+              <div class="adm-dash-kpi-val" style="color:var(--green)">{{ dashActive }}</div>
+              <div class="adm-dash-kpi-lbl">Ativos (7d)</div>
+            </div>
+            <div class="adm-dash-kpi-card">
+              <div class="adm-dash-kpi-icon">📝</div>
+              <div class="adm-dash-kpi-val" style="color:var(--teal-light)">{{ dashQ }}</div>
+              <div class="adm-dash-kpi-lbl">Questões Feitas</div>
+            </div>
+            <div class="adm-dash-kpi-card">
+              <div class="adm-dash-kpi-icon">🎯</div>
+              <div class="adm-dash-kpi-val" style="color:{{ dashTaxaColor }}">{{ dashTaxa }}%</div>
+              <div class="adm-dash-kpi-lbl">Acerto Médio</div>
+            </div>
+            <div class="adm-dash-kpi-card">
+              <div class="adm-dash-kpi-icon">📋</div>
+              <div class="adm-dash-kpi-val" style="color:var(--coral)">{{ dashAvgProg }}%</div>
+              <div class="adm-dash-kpi-lbl">Progresso Médio</div>
+            </div>
+          </div>
+
+          <!-- Alertas -->
+          <sc-if value="{{ hasDashAlerts }}" hint-placeholder-val="">
+            <div class="adm-card" style="border-color:var(--red);box-shadow:4px 4px 0 var(--red);margin-bottom:16px">
+              <div class="adm-card-title" style="color:var(--red)">⚠️ Atenção — Alunos sem acesso recente</div>
+              <sc-for list="{{ dashAlerts }}" as="al" hint-placeholder-count="2">
+                <div class="adm-dash-alert">
+                  <div style="flex:1">
+                    <div style="font-size:13px;font-weight:800">{{ al.name }}</div>
+                    <div style="font-size:11px;color:#888">{{ al.email }}</div>
+                  </div>
+                  <div class="adm-dash-alert-pill">{{ al.daysSince }}d sem acesso</div>
+                  <div style="font-size:12px;font-weight:700;color:var(--teal)">{{ al.prog }}% concluído</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <!-- Students ranked by progress -->
+          <div class="adm-card">
+            <div class="adm-card-title">📊 Progresso dos Alunos</div>
+            <sc-if value="{{ hasPlatformStudents }}" hint-placeholder-val="{{ true }}">
+              <sc-for list="{{ dashStudents }}" as="ds" hint-placeholder-count="3">
+                <div class="adm-dash-student-row">
+                  <div class="adm-dash-student-avatar">{{ ds.initial }}</div>
+                  <div class="adm-dash-student-info">
+                    <div class="adm-dash-student-name">{{ ds.name }}</div>
+                    <div class="adm-dash-student-sub">{{ ds.statusLabel }} · {{ ds.taxa }}% acerto · {{ ds.streak }}🔥</div>
+                  </div>
+                  <div class="adm-dash-prog-wrap">
+                    <div class="adm-dash-prog-track"><div class="adm-dash-prog-fill" style="width:{{ ds.prog }}%;background:{{ ds.progColor }}"></div></div>
+                    <div class="adm-dash-prog-lbl" style="color:{{ ds.progColor }}">{{ ds.prog }}%</div>
+                  </div>
+                </div>
+              </sc-for>
+            </sc-if>
+            <sc-if value="{{ noPlatformStudents }}" hint-placeholder-val="">
+              <div class="adm-empty"><div class="adm-empty-icon">📊</div><div style="font-weight:700">Sem alunos nesta plataforma</div></div>
+            </sc-if>
+          </div>
+
+          <!-- Subject completion chart -->
+          <sc-if value="{{ hasSubjectData }}" hint-placeholder-val="">
+            <div class="adm-card">
+              <div class="adm-card-title">📚 Desempenho por Área — Média da Turma</div>
+              <div class="adm-mat-chart">
+                <sc-for list="{{ subjectChart }}" as="sc_" hint-placeholder-count="5">
+                  <div class="adm-mat-bar-row">
+                    <div class="adm-mat-bar-label" title="{{ sc_.label }}">{{ sc_.label }}</div>
+                    <div class="adm-mat-bar-track">
+                      <div class="adm-mat-bar-fill" style="width:{{ sc_.pct }}%;background:{{ sc_.color }}"></div>
+                    </div>
+                    <div class="adm-mat-bar-pct" style="color:{{ sc_.color }}">{{ sc_.pct }}%</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
 
       <!-- ═══ ALUNOS ═══ -->
       <sc-if value="{{ tabAlunos }}" hint-placeholder-val="{{ true }}">
@@ -295,8 +415,21 @@
                     <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900">{{ s.totalQ }}</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Questões</div></div>
                     <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--orange)">{{ s.streak }}</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Sequência</div></div>
                     <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--cyan)">{{ s.adherence }}%</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Aderência</div></div>
-                    <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--purple)">{{ s.nota }}/80</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Nota Est.</div></div>
+                    <div style="text-align:center;background:#f5f5f5;border-radius:8px;padding:8px"><div style="font-size:20px;font-weight:900;color:var(--teal)">{{ s.nota }}/80</div><div style="font-size:10px;color:#888;font-weight:700;text-transform:uppercase">Nota Est.</div></div>
                   </div>
+                  <!-- Subject mini-chart per student -->
+                  <sc-if value="{{ s.hasSubjectChart }}" hint-placeholder-val="">
+                    <div class="adm-student-chart-wrap">
+                      <div class="adm-student-chart-title">📚 Conclusão por Área</div>
+                      <sc-for list="{{ s.subjectChart }}" as="sc_">
+                        <div class="adm-mat-bar-row">
+                          <div class="adm-mat-bar-label" title="{{ sc_.label }}">{{ sc_.label }}</div>
+                          <div class="adm-mat-bar-track"><div class="adm-mat-bar-fill" style="width:{{ sc_.pct }}%;background:{{ sc_.color }}"></div></div>
+                          <div class="adm-mat-bar-pct" style="color:{{ sc_.color }}">{{ sc_.pct }}%</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
                 </div>
               </sc-for>
             </sc-if>
@@ -538,22 +671,55 @@ class Component extends DCLogic {
       if(self.state.platformView==='cartorio') self._loadCronoProgress();
     };
 
+    // CRONO type per week/day for subject grouping
+    // [week][day] = type (c/o/r/s/f/p), 3 checks for c/o/r, 2 for s, 0 for f/p
+    this.CRONO_TYPES = [
+      ['c','o','c','o','c','r','f'],  // wk 0
+      ['c','o','c','o','c','r','f'],  // wk 1
+      ['c','o','c','o','c','r','s'],  // wk 2
+      ['c','o','c','o','c','r','f'],  // wk 3
+      ['c','o','c','o','c','r','s'],  // wk 4
+      ['c','o','c','o','c','r','f'],  // wk 5
+      ['c','o','c','o','c','r','s'],  // wk 6
+      ['c','c','c','c','c','r','s'],  // wk 7
+      ['c','c','o','o','c','r','s'],  // wk 8
+      ['c','c','c','o','c','r','s'],  // wk 9
+      ['c','c','c','c','c','r','s'],  // wk 10
+      ['r','r','r','f','f','f','p'],  // wk 11
+    ];
+
     // Carrega progresso do cronograma do Supabase
     this._loadCronoProgress = function(){
       var sb = self._getSb();
       if(!sb) return;
       sb.from('const_cronograma_checks')
-        .select('user_id, checked')
+        .select('user_id, check_key, checked')
         .then(function(res){
           var data = res.data;
           if(!data) return;
           var prog = {};
+          // Per-user, per-type progress: {done, total} for types c, o, r, s
+          var typeProg = {};
+          var CRONO_TYPES = self.CRONO_TYPES;
           data.forEach(function(r){
             if(!prog[r.user_id]) prog[r.user_id] = {done:0, total:0};
             prog[r.user_id].total++;
             if(r.checked) prog[r.user_id].done++;
+            // Parse check_key: w{wi}_d{di}_c{ci}
+            if(r.check_key){
+              var m = r.check_key.match(/^w(\d+)_d(\d+)_c\d+$/);
+              if(m){
+                var wi=parseInt(m[1]),di=parseInt(m[2]);
+                var typ=(CRONO_TYPES[wi]&&CRONO_TYPES[wi][di])||'c';
+                if(!typeProg[r.user_id]) typeProg[r.user_id]={c:{d:0,t:0},o:{d:0,t:0},r:{d:0,t:0},s:{d:0,t:0}};
+                if(typeProg[r.user_id][typ]){
+                  typeProg[r.user_id][typ].t++;
+                  if(r.checked) typeProg[r.user_id][typ].d++;
+                }
+              }
+            }
           });
-          self.setState({cronoProgress: prog, cronoLastUpdate: new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})});
+          self.setState({cronoProgress: prog, cronoTypeProg: typeProg, cronoLastUpdate: new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})});
         });
     };
 
@@ -564,7 +730,7 @@ class Component extends DCLogic {
 
     // ── Tab handlers (stable) ──
     this._tabHandlers = {};
-    ['alunos','relatorios','materiais','simulados','avisos','boas-vindas','config'].forEach(function(id){
+    ['dashboard','alunos','relatorios','materiais','simulados','avisos','boas-vindas','config'].forEach(function(id){
       self._tabHandlers[id] = function(){ self.setState({tab:id, msg:''}); };
     });
 
@@ -717,7 +883,7 @@ class Component extends DCLogic {
     };
 
     this.state = {
-      platformView: null, tab: 'alunos',
+      platformView: null, tab: 'dashboard',
       newName:'', newEmail:'', addMsg:'',
       avisoTitle:'', avisoMsg:'',
       videoUrl: settings.welcomeVideoUrl || '',
@@ -826,6 +992,7 @@ class Component extends DCLogic {
 
     // ── Nav tabs ──
     var tabDefsOAB = [
+      {id:'dashboard',icon:'🏠',label:'Dashboard'},
       {id:'alunos',icon:'👥',label:'Alunos'},
       {id:'relatorios',icon:'📊',label:'Relatórios'},
       {id:'materiais',icon:'📚',label:'Materiais'},
@@ -835,6 +1002,7 @@ class Component extends DCLogic {
       {id:'config',icon:'⚙️',label:'Config'},
     ];
     var tabDefsCT = [
+      {id:'dashboard',icon:'🏠',label:'Dashboard'},
       {id:'alunos',icon:'👥',label:'Alunos'},
       {id:'relatorios',icon:'📊',label:'Relatórios'},
       {id:'materiais',icon:'📚',label:'Materiais'},
@@ -845,6 +1013,64 @@ class Component extends DCLogic {
     var navTabs = (isCT ? tabDefsCT : tabDefsOAB).map(function(t){
       return { cls:'adm-tab'+(st.tab===t.id?' '+activeClass:''), onClick:self._tabHandlers[t.id], icon:t.icon, label:t.label };
     });
+
+    // ── Subject chart helper ──
+    var cronoTypeProg = st.cronoTypeProg || {};
+    var subjectDefs = [
+      {key:'c', label:'Cartório', color:'#006060'},
+      {key:'o', label:'Outras Matérias', color:'#2563EB'},
+      {key:'r', label:'Revisão', color:'#D97706'},
+      {key:'s', label:'Simulados', color:'#E8441A'},
+    ];
+    function buildSubjectChart(uid){
+      var tp = cronoTypeProg[uid];
+      if(!tp) return null;
+      return subjectDefs.map(function(def){
+        var p = tp[def.key] || {d:0,t:0};
+        var pct = p.t>0 ? Math.round(p.d/p.t*100) : 0;
+        var color = pct>=70?def.color:pct>=40?'#D97706':'#DC2626';
+        return {label:def.label, pct:pct, color:color};
+      }).filter(function(x){ return x.pct>0 || (cronoTypeProg[uid] && cronoTypeProg[uid][x.key] && cronoTypeProg[uid][x.key].t>0); });
+    }
+
+    // Turma-level subject chart (avg)
+    var turmaSub = {};
+    subjectDefs.forEach(function(def){ turmaSub[def.key]={d:0,t:0}; });
+    platformStudents.forEach(function(s){
+      var tp = cronoTypeProg[s.id];
+      if(!tp) return;
+      subjectDefs.forEach(function(def){
+        var p = tp[def.key]||{d:0,t:0};
+        turmaSub[def.key].d+=p.d; turmaSub[def.key].t+=p.t;
+      });
+    });
+    var subjectChart = subjectDefs.map(function(def){
+      var p = turmaSub[def.key];
+      var pct = p.t>0 ? Math.round(p.d/p.t*100) : 0;
+      var color = pct>=70?def.color:pct>=40?'#D97706':'#DC2626';
+      return {label:def.label, pct:pct, color:color};
+    });
+    var hasSubjectData = subjectChart.some(function(x){ return x.pct>0; });
+
+    // ── Dashboard data ──
+    var dashAvgProg = platformStudents.length
+      ? Math.round(platformStudents.reduce(function(a,s){ return a+(s.cronoPct||0); },0)/platformStudents.length)
+      : 0;
+    var dashAlerts = platformStudents.filter(function(s){ return s.daysSince>=3; })
+      .sort(function(a,b){ return b.daysSince-a.daysSince; })
+      .slice(0,6)
+      .map(function(s){ return {name:s.name, email:s.email, daysSince:s.daysSince, prog:s.cronoPct}; });
+    var dashStudents = platformStudents.slice().sort(function(a,b){ return a.cronoPct-b.cronoPct; })
+      .map(function(s){
+        var prog = s.cronoPct||s.progPct||0;
+        var progColor = prog>=70?'#006060':prog>=40?'#D97706':'#DC2626';
+        return {
+          name:s.name, email:s.email, initial:(s.name[0]||'?').toUpperCase(),
+          prog:prog, progColor:progColor,
+          taxa:s.taxa, streak:s.streak,
+          statusLabel:s.daysSince<1?'Hoje':s.daysSince<7?(s.daysSince+'d atrás'):'Inativo',
+        };
+      });
 
     // ── Materials ──
     var matKey = isCT ? 'materiaisCartorio' : 'materiais';
@@ -893,16 +1119,28 @@ class Component extends DCLogic {
       // Tabs
       navTabs: navTabs,
       msg:st.msg, msgClass:st.msgType==='ok'?'ok':'err',
+      tabDashboard:st.tab==='dashboard',
       tabAlunos:st.tab==='alunos', tabRelatorios:st.tab==='relatorios',
       tabMateriais:st.tab==='materiais', tabAvisos:st.tab==='avisos',
       tabVideo:st.tab==='boas-vindas', tabSimulados:st.tab==='simulados', tabConfig:st.tab==='config',
+
+      // Dashboard
+      dashTotal:platformStudents.length, dashActive:rActiveCount, dashQ:rTotalQ,
+      dashTaxa:rAvgTaxa, dashTaxaColor:rAvgTaxa>=70?'#006060':rAvgTaxa>=50?'#D97706':'#DC2626',
+      dashAvgProg:dashAvgProg,
+      dashAlerts:dashAlerts, hasDashAlerts:dashAlerts.length>0,
+      dashStudents:dashStudents,
+      subjectChart:subjectChart, hasSubjectData:hasSubjectData,
 
       // Cronograma progress
       cronoLastUpdate: isCT && st.cronoLastUpdate ? ('Cronograma atualizado às '+st.cronoLastUpdate) : '',
       hasCronoUpdate: isCT && !!st.cronoLastUpdate,
 
-      // Students
-      students: platformStudents,
+      // Students (enrich with subject charts)
+      students: platformStudents.map(function(s){
+        var sc = buildSubjectChart(s.id) || [];
+        return Object.assign({}, s, {subjectChart: sc, hasSubjectChart: sc.length>0});
+      }),
       platformStudentCount:platformStudents.length,
       hasPlatformStudents:platformStudents.length>0,
       noPlatformStudents:platformStudents.length===0,
