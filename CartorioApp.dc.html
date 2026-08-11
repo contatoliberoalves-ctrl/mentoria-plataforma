@@ -101,18 +101,35 @@
 .ct-level-fill{height:100%;background:repeating-linear-gradient(45deg,var(--cg),var(--cg) 8px,#ff6bb5 8px,#ff6bb5 16px);border-radius:99px;transition:width .8s cubic-bezier(.34,1.56,.64,1)}
 
 /* ── WEEK NAVIGATOR ── */
-.ct-week-nav{background:var(--cw);border:3px solid var(--cb);border-radius:16px;box-shadow:4px 4px 0 var(--cb);padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.ct-week-nav-btn{width:36px;height:36px;border-radius:10px;border:2.5px solid var(--cb);background:var(--cbg);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;cursor:pointer;flex-shrink:0;box-shadow:3px 3px 0 var(--cb);transition:transform .1s;color:var(--cb)}
-.ct-week-nav-btn:hover{background:var(--cg);color:#fff;border-color:var(--cg)}
-.ct-week-nav-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--cb)}
-.ct-week-nav-btn:disabled{opacity:.35;cursor:default;pointer-events:none}
+.ct-week-nav{background:linear-gradient(135deg,#1a0030,var(--cy));border:3px solid var(--cb);border-radius:20px;box-shadow:5px 5px 0 var(--cb);padding:16px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.ct-week-nav-btn{width:44px;height:44px;border-radius:14px;border:2.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;cursor:pointer;flex-shrink:0;color:#fff;transition:all .15s;backdrop-filter:blur(4px)}
+.ct-week-nav-btn:hover{background:var(--cg);border-color:var(--cg);transform:scale(1.08)}
+.ct-week-nav-btn:active{transform:scale(.96)}
+.ct-week-nav-btn[data-disabled="true"]{opacity:.3;cursor:default;pointer-events:none}
 .ct-week-nav-center{flex:1;text-align:center}
-.ct-week-nav-label{font-size:16px;font-weight:900;color:var(--cb);letter-spacing:-.3px}
-.ct-week-nav-range{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
-.ct-week-nav-dots{display:flex;justify-content:center;gap:4px;margin-top:8px}
-.ct-week-dot{width:6px;height:6px;border-radius:50%;background:#ddd;transition:all .2s;cursor:pointer}
-.ct-week-dot.active{width:20px;border-radius:3px;background:var(--cg)}
-.ct-week-dot.done{background:var(--c-teal)}
+.ct-week-nav-eyebrow{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.5);margin-bottom:2px}
+.ct-week-nav-label{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.5px;text-shadow:1px 1px 0 rgba(0,0,0,.4);line-height:1}
+.ct-week-nav-range{font-size:11px;font-weight:700;color:rgba(255,180,220,.85);text-transform:uppercase;letter-spacing:.8px;margin-top:3px}
+.ct-week-nav-dots{display:flex;justify-content:center;gap:5px;margin-top:10px;flex-wrap:wrap;max-width:200px;margin-left:auto;margin-right:auto}
+.ct-week-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.15);transition:all .2s;cursor:pointer}
+.ct-week-dot:hover{background:rgba(255,255,255,.4)}
+.ct-week-dot.active{width:24px;border-radius:4px;background:var(--cg);border-color:var(--cg);box-shadow:0 0 8px rgba(212,43,85,.6)}
+.ct-week-dot.done{background:var(--c-teal);border-color:var(--c-teal)}
+
+/* ── DAY NOTES ── */
+.ct-day-notes{margin-top:10px;padding-top:10px;border-top:2px dashed rgba(255,255,255,.12)}
+.ct-crono-day.t-c .ct-day-notes,.ct-crono-day.t-o .ct-day-notes{border-top-color:#e2e8f0}
+.ct-day-notes-hdr{display:flex;align-items:center;gap:6px;margin-bottom:6px;cursor:pointer;user-select:none}
+.ct-day-notes-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.5);flex:1}
+.ct-crono-day.t-c .ct-day-notes-title,.ct-crono-day.t-o .ct-day-notes-title{color:#94a3b8}
+.ct-day-notes-toggle{font-size:10px;color:rgba(255,255,255,.4);font-weight:700}
+.ct-crono-day.t-c .ct-day-notes-toggle,.ct-crono-day.t-o .ct-day-notes-toggle{color:#94a3b8}
+.ct-day-notes-area{width:100%;background:rgba(0,0,0,.2);border:2px solid rgba(255,255,255,.15);border-radius:10px;padding:10px 12px;font-size:12.5px;color:rgba(255,255,255,.85);resize:none;outline:none;font-family:inherit;line-height:1.5;min-height:72px;transition:border-color .15s}
+.ct-crono-day.t-c .ct-day-notes-area,.ct-crono-day.t-o .ct-day-notes-area{background:#f8fafc;border-color:#e2e8f0;color:#374151}
+.ct-day-notes-area:focus{border-color:var(--cg);background:rgba(212,43,85,.04)}
+.ct-crono-day.t-c .ct-day-notes-area:focus,.ct-crono-day.t-o .ct-day-notes-area:focus{background:#fff;border-color:var(--cg)}
+.ct-day-notes-area::placeholder{color:rgba(255,255,255,.3);font-style:italic}
+.ct-crono-day.t-c .ct-day-notes-area::placeholder,.ct-crono-day.t-o .ct-day-notes-area::placeholder{color:#94a3b8}
 
 /* ── DAY CARDS ── */
 .ct-crono-day{border:3px solid var(--cb);border-radius:14px;margin-bottom:10px;background:var(--cw);box-shadow:4px 4px 0 var(--cb);overflow:hidden;transition:transform .1s}
@@ -362,6 +379,7 @@
         <div class="ct-week-nav">
           <button class="ct-week-nav-btn" onclick="{{ onWeekPrev }}" data-disabled="{{ weekIsFirst }}">‹</button>
           <div class="ct-week-nav-center">
+            <div class="ct-week-nav-eyebrow">Cronograma</div>
             <div class="ct-week-nav-label">{{ activeWeekLabel }}</div>
             <div class="ct-week-nav-range">{{ activeWeekRange }}</div>
             <div class="ct-week-nav-dots">
@@ -428,6 +446,13 @@
                   <div class="{{ cd.questPctCls }}">{{ cd.questPctLabel }}</div>
                 </div>
               </sc-if>
+              <!-- ANOTAÇÕES DO DIA -->
+              <div class="ct-day-notes">
+                <div class="ct-day-notes-hdr">
+                  <span class="ct-day-notes-title">✏️ Anotações</span>
+                </div>
+                <textarea class="ct-day-notes-area" placeholder="Escreva observações, dúvidas ou insights do dia..." oninput="{{ onDayNote }}" data-day-key="{{ cd.dayKey }}">{{ cd.note }}</textarea>
+              </div>
             </div>
           </div>
         </sc-for>
@@ -581,6 +606,16 @@ class Component extends DCLogic {
 
     this._onWeekPrev = function(){ var w=self.state.activeWeek||0; if(w>0) self.setState({activeWeek:w-1}); };
     this._onWeekNext = function(){ var w=self.state.activeWeek||0; if(w<self.CRONO.length-1) self.setState({activeWeek:w+1}); };
+
+    this._onDayNote = function(e){
+      var ta = e.currentTarget || e.target;
+      var dayKey = ta.dataset.dayKey;
+      var val = ta.value;
+      var notes = Object.assign({}, self.state.dayNotes || {});
+      notes[dayKey] = val;
+      self.setState({ dayNotes: notes });
+      try{ localStorage.setItem('_ct_notes', JSON.stringify(notes)); }catch(ex){}
+    };
     this._weekDotHandlers = [];
     for(var _wi=0;_wi<20;_wi++){
       (function(wi){ self._weekDotHandlers[wi]=function(){ self.setState({activeWeek:wi}); }; })(_wi);
@@ -758,6 +793,8 @@ class Component extends DCLogic {
 
     var _sp = {};
     try{ _sp = JSON.parse(localStorage.getItem('_ct_profile')||'{}'); }catch(e){}
+    var _sn = {};
+    try{ _sn = JSON.parse(localStorage.getItem('_ct_notes')||'{}'); }catch(e){}
     // Auto-detect current week based on today's date
     var _todayStr = (function(){var d=new Date();return (d.getMonth()+1)+'/'+d.getDate();})();
     var _startWeek = 0;
@@ -780,6 +817,7 @@ class Component extends DCLogic {
       questStats:  (props.data && props.data.questStats)  || {},
       profileOpen: false,
       profileName: _sp.name||'', profilePhone: _sp.phone||'', profileCity: _sp.city||'', profilePhoto: _sp.photo||'',
+      dayNotes: _sn,
     };
   }
 
@@ -791,6 +829,7 @@ class Component extends DCLogic {
 
     var checks = st.cronoChecks || {};
     var questStats = st.questStats || {};
+    var dayNotes = st.dayNotes || {};
     var totalCks = 0, doneCks = 0;
     var checkLabels = {
       c: ['Li o resumo do tema','Li a lei seca (opcional)','Resolvi as questões'],
@@ -829,6 +868,7 @@ class Component extends DCLogic {
           hasChecks: dayChecks.length>0, checks: dayChecks,
           doneChecks: dayChecks.filter(function(x){return x.cls.indexOf('done')>=0;}).length,
           totalChecks: dayChecks.length,
+          note: dayNotes[dayKey] || '',
           dayKey: dayKey,
           questFeitas: feitas||'', questAcertos: acertos||'',
           questPctCls: pctCls, questPctLabel: pctLabel,
@@ -944,6 +984,7 @@ class Component extends DCLogic {
       onWeekNext: this._onWeekNext,
       onCronoCheck: this._onCronoCheck,
       onQuestInput: this._onQuestInput,
+      onDayNote: this._onDayNote,
       hasAvisos: avisos.length>0, avisos: avisos,
 
       // Relatório
