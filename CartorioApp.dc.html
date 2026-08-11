@@ -13,10 +13,10 @@
 @keyframes star-spin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.3)}100%{transform:rotate(360deg) scale(1)}}
 
 /* ── WRAP ── */
-.ct-wrap{display:flex;flex-direction:column;min-height:100vh;background:var(--cbg);color:var(--cb);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.ct-wrap{display:flex;flex-direction:column;min-height:100vh;background:var(--cbg);color:var(--cb);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow-x:hidden;width:100%;max-width:100vw}
 
 /* ── HEADER ── */
-.ct-header{background:linear-gradient(135deg,#001818 0%,var(--cy) 50%,#003030 100%);border-bottom:4px solid var(--cb);display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:62px;position:sticky;top:0;z-index:30;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.ct-header{background:linear-gradient(135deg,#001818 0%,var(--cy) 50%,#003030 100%);border-bottom:4px solid var(--cb);display:flex;align-items:center;justify-content:space-between;padding:0 12px;height:62px;position:sticky;top:0;z-index:30;box-shadow:0 4px 12px rgba(0,0,0,.35);box-sizing:border-box;width:100%;overflow:hidden}
 .ct-logo{display:flex;align-items:center;gap:12px}
 .ct-logo-box{background:var(--cg);border:3px solid rgba(255,255,255,.3);border-radius:12px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 16px rgba(232,68,26,.5);animation:float 3s ease-in-out infinite;flex-shrink:0}
 .ct-logo-text{color:var(--cw);font-weight:900;font-size:14px;letter-spacing:.8px;text-transform:uppercase;text-shadow:1px 1px 0 rgba(0,0,0,.4)}
@@ -77,31 +77,31 @@
 .ct-tab:not(.active):hover{background:rgba(232,68,26,.1)}
 
 /* ── CONTENT ── */
-.ct-content{padding:16px;max-width:900px;margin:0 auto;width:100%}
+.ct-content{padding:12px;max-width:900px;margin:0 auto;width:100%;box-sizing:border-box;overflow-x:hidden}
 
 /* ── COUNTDOWN (BOSS TIMER) ── */
-.ct-countdown{background:linear-gradient(135deg,#001208 0%,var(--cy) 100%);border:4px solid var(--cb);border-radius:20px;box-shadow:6px 6px 0 var(--cb);padding:20px 24px;text-align:center;margin-bottom:16px;color:var(--cw);position:relative;overflow:hidden}
+.ct-countdown{background:linear-gradient(135deg,#001208 0%,var(--cy) 100%);border:4px solid var(--cb);border-radius:20px;box-shadow:4px 4px 0 var(--cb);padding:18px 16px;text-align:center;margin-bottom:16px;color:var(--cw);position:relative;overflow:hidden;box-sizing:border-box;width:100%}
 .ct-countdown::before{content:'⚡';position:absolute;top:-10px;left:10px;font-size:60px;opacity:.08}
 .ct-countdown::after{content:'⚡';position:absolute;bottom:-10px;right:10px;font-size:60px;opacity:.08;transform:scaleX(-1)}
 .ct-countdown-eyebrow{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px}
-.ct-countdown-num{font-size:76px;font-weight:900;color:var(--cw);line-height:1;text-shadow:4px 4px 0 rgba(0,0,0,.4)}
+.ct-countdown-num{font-size:clamp(48px,15vw,76px);font-weight:900;color:var(--cw);line-height:1;text-shadow:4px 4px 0 rgba(0,0,0,.4)}
 .ct-countdown-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFB89A;margin-top:2px}
 .ct-countdown-date{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:12px;font-weight:700;color:#fff}
 
 /* ── LEVEL / RANK CARD ── */
-.ct-level-card{background:var(--cw);border:3px solid var(--cb);border-radius:16px;box-shadow:5px 5px 0 var(--cb);padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.ct-level-card{background:var(--cw);border:3px solid var(--cb);border-radius:16px;box-shadow:4px 4px 0 var(--cb);padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-sizing:border-box;width:100%;overflow:hidden}
 .ct-level-badge{width:60px;height:60px;border-radius:50%;border:4px solid var(--cb);display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:3px 3px 0 var(--cb);flex-shrink:0;background:linear-gradient(135deg,var(--cg),var(--cy))}
-.ct-level-info{flex:1;min-width:160px}
+.ct-level-info{flex:1;min-width:120px}
 .ct-level-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#888;margin-bottom:2px}
-.ct-level-name{font-size:20px;font-weight:900;color:var(--cg);line-height:1}
+.ct-level-name{font-size:18px;font-weight:900;color:var(--cg);line-height:1}
 .ct-level-sub{font-size:11px;color:#666;margin-top:2px}
-.ct-level-bar-wrap{flex:2;min-width:140px}
+.ct-level-bar-wrap{flex:2;min-width:100px;max-width:100%}
 .ct-level-bar-label{display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:#666;margin-bottom:4px}
 .ct-level-track{background:#e8e8e8;border:2px solid var(--cb);border-radius:99px;height:18px;overflow:hidden}
 .ct-level-fill{height:100%;background:repeating-linear-gradient(45deg,var(--cg),var(--cg) 8px,#FF8C5A 8px,#FF8C5A 16px);border-radius:99px;transition:width .8s cubic-bezier(.34,1.56,.64,1)}
 
 /* ── WEEK NAVIGATOR ── */
-.ct-week-nav{background:linear-gradient(135deg,#001818,var(--cy));border:3px solid var(--cb);border-radius:20px;box-shadow:5px 5px 0 var(--cb);padding:16px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.ct-week-nav{background:linear-gradient(135deg,#001818,var(--cy));border:3px solid var(--cb);border-radius:20px;box-shadow:4px 4px 0 var(--cb);padding:14px 12px;margin-bottom:16px;display:flex;align-items:center;gap:8px;box-sizing:border-box;width:100%;overflow:hidden}
 .ct-week-nav-btn{width:44px;height:44px;border-radius:14px;border:2.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;cursor:pointer;flex-shrink:0;color:#fff;transition:all .15s;backdrop-filter:blur(4px)}
 .ct-week-nav-btn:hover{background:var(--cg);border-color:var(--cg);transform:scale(1.08)}
 .ct-week-nav-btn:active{transform:scale(.96)}
@@ -132,7 +132,7 @@
 .ct-crono-day.t-c .ct-day-notes-area::placeholder,.ct-crono-day.t-o .ct-day-notes-area::placeholder{color:#94a3b8}
 
 /* ── DAY CARDS ── */
-.ct-crono-day{border:3px solid var(--cb);border-radius:14px;margin-bottom:10px;background:var(--cw);box-shadow:4px 4px 0 var(--cb);overflow:hidden;transition:transform .1s}
+.ct-crono-day{border:3px solid var(--cb);border-radius:14px;margin-bottom:10px;background:var(--cw);box-shadow:4px 4px 0 var(--cb);overflow:hidden;transition:transform .1s;box-sizing:border-box;width:100%}
 .ct-crono-day:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--cb)}
 .ct-day-stripe{height:6px;width:100%}
 .ct-crono-day.t-c .ct-day-stripe{background:linear-gradient(90deg,var(--c-blue),#60a5fa)}
@@ -222,7 +222,7 @@
 .ct-chk.done .ct-chk-box{background:linear-gradient(135deg,#10b981,#22c55e);border-color:#10b981}
 
 /* QUEST STATS */
-.ct-quest-stats{margin-top:10px;padding-top:10px;border-top:2px dashed rgba(255,255,255,.12);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ct-quest-stats{margin-top:10px;padding-top:10px;border-top:2px dashed rgba(255,255,255,.12);display:flex;align-items:center;gap:6px;flex-wrap:wrap;width:100%;box-sizing:border-box}
 .ct-crono-day.t-c .ct-quest-stats,.ct-crono-day.t-o .ct-quest-stats{border-top-color:#e5e7eb}
 .ct-quest-stats-title{font-size:10px;font-weight:900;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;width:100%}
 .ct-crono-day.t-c .ct-quest-stats-title,.ct-crono-day.t-o .ct-quest-stats-title{color:#94a3b8}
@@ -230,7 +230,7 @@
 .ct-crono-day.t-c .ct-quest-field,.ct-crono-day.t-o .ct-quest-field{background:#f8fafc;border-color:#cbd5e1}
 .ct-quest-field label{font-size:10px;font-weight:800;color:rgba(255,255,255,.7);text-transform:uppercase;white-space:nowrap}
 .ct-crono-day.t-c .ct-quest-field label,.ct-crono-day.t-o .ct-quest-field label{color:#64748b}
-.ct-quest-field input{width:48px;border:none;background:transparent;font-size:15px;font-weight:900;color:var(--cw);text-align:center;outline:none;font-variant-numeric:tabular-nums}
+.ct-quest-field input{width:44px;border:none;background:transparent;font-size:14px;font-weight:900;color:var(--cw);text-align:center;outline:none;font-variant-numeric:tabular-nums}
 .ct-crono-day.t-c .ct-quest-field input,.ct-crono-day.t-o .ct-quest-field input{color:var(--cb)}
 .ct-quest-field input::-webkit-inner-spin-button,.ct-quest-field input::-webkit-outer-spin-button{opacity:1}
 .ct-quest-sep{font-size:11px;font-weight:700;color:rgba(255,255,255,.4)}
@@ -261,11 +261,43 @@
 .ct-empty-sub{font-size:13px;margin-top:8px}
 
 /* REPORT CARDS */
-.ct-report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:20px}
+.ct-report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px}
 .ct-report-card{background:var(--cw);border:3px solid var(--cb);border-radius:14px;box-shadow:4px 4px 0 var(--cb);padding:16px;text-align:center;overflow:hidden;position:relative}
 .ct-report-card::before{content:attr(data-icon);position:absolute;top:-8px;right:-4px;font-size:44px;opacity:.08;line-height:1}
-.ct-report-num{font-size:40px;font-weight:900;line-height:1;color:var(--cg)}
+.ct-report-num{font-size:36px;font-weight:900;line-height:1;color:var(--cg)}
 .ct-report-label{font-size:10px;font-weight:800;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-top:6px}
+
+/* ── PREVIEW STATES ── */
+@keyframes preview-pulse{0%,100%{opacity:.5}50%{opacity:1}}
+.ct-preview-hero{background:linear-gradient(135deg,#001818 0%,var(--cy) 60%,#004040 100%);border:3px solid var(--cb);border-radius:20px;box-shadow:4px 4px 0 var(--cb);padding:28px 20px;text-align:center;margin-bottom:16px;color:#fff;position:relative;overflow:hidden}
+.ct-preview-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(0,191,168,.18),transparent 60%)}
+.ct-preview-hero-icon{font-size:52px;margin-bottom:10px;animation:float 3s ease-in-out infinite}
+.ct-preview-hero-title{font-size:20px;font-weight:900;margin-bottom:6px;text-shadow:1px 1px 0 rgba(0,0,0,.4)}
+.ct-preview-hero-sub{font-size:13px;color:rgba(255,255,255,.75);line-height:1.5;max-width:280px;margin:0 auto}
+.ct-preview-badge{display:inline-flex;align-items:center;gap:6px;margin-top:14px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:6px 16px;font-size:12px;font-weight:800;color:#fff}
+.ct-preview-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.ct-preview-card{background:var(--cw);border:2.5px solid var(--cb);border-radius:14px;box-shadow:3px 3px 0 var(--cb);padding:14px 12px;text-align:center;overflow:hidden;position:relative}
+.ct-preview-card-icon{font-size:28px;margin-bottom:6px}
+.ct-preview-card-title{font-size:12px;font-weight:900;color:var(--cy);margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}
+.ct-preview-card-sub{font-size:11px;color:#888;line-height:1.4}
+.ct-preview-lock{position:absolute;top:8px;right:8px;font-size:14px;opacity:.35}
+.ct-preview-bar-demo{background:var(--cw);border:2.5px solid var(--cb);border-radius:14px;box-shadow:3px 3px 0 var(--cb);padding:16px;margin-bottom:14px}
+.ct-preview-bar-title{font-size:12px;font-weight:900;text-transform:uppercase;color:#555;letter-spacing:.4px;margin-bottom:12px}
+.ct-preview-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ct-preview-bar-lbl{font-size:11px;font-weight:700;color:#888;width:80px;flex-shrink:0}
+.ct-preview-bar-track{flex:1;height:10px;background:#e5e7eb;border-radius:99px;overflow:hidden}
+.ct-preview-bar-fill{height:10px;border-radius:99px;animation:preview-pulse 2s infinite}
+.ct-preview-sim-item{background:linear-gradient(135deg,#001818,#002828);border:2.5px dashed var(--cp);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;opacity:.6}
+.ct-preview-sim-icon{font-size:32px;flex-shrink:0}
+.ct-preview-sim-name{font-size:14px;font-weight:900;color:#fff}
+.ct-preview-sim-sub{font-size:11px;color:#67E8F9;margin-top:3px}
+.ct-preview-mat-item{background:#f8fafc;border:2px solid #e2e8f0;border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;opacity:.65}
+.ct-preview-mat-icon{font-size:22px;flex-shrink:0}
+.ct-preview-mat-name{font-size:13px;font-weight:800;color:#374151}
+.ct-preview-mat-sub{font-size:11px;color:#9ca3af;margin-top:2px}
+.ct-preview-tip{background:linear-gradient(135deg,rgba(0,96,96,.08),rgba(0,96,96,.03));border:1.5px solid rgba(0,96,96,.2);border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;margin-top:14px}
+.ct-preview-tip-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.ct-preview-tip-text{font-size:12px;color:#444;line-height:1.5;font-weight:600}
 </style>
 
 <div class="ct-wrap">
@@ -462,6 +494,7 @@
     <!-- RELATÓRIO -->
     <sc-if value="{{ showRel }}" hint-placeholder-val="">
       <div>
+        <!-- KPI cards sempre visíveis -->
         <div class="ct-report-grid">
           <div class="ct-report-card" data-icon="📝">
             <div class="ct-report-num">{{ rQuestoes }}</div>
@@ -480,9 +513,59 @@
             <div class="ct-report-label">XP Total</div>
           </div>
         </div>
-        <div class="ct-empty" style="padding:30px">
-          <div class="ct-empty-icon">📊</div>
-          <div class="ct-empty-text">Relatório detalhado em breve</div>
+
+        <!-- Preview desempenho por área -->
+        <div class="ct-preview-bar-demo">
+          <div class="ct-preview-bar-title">📚 Desempenho por Área</div>
+          <div class="ct-preview-bar-row">
+            <div class="ct-preview-bar-lbl">Cartório</div>
+            <div class="ct-preview-bar-track"><div class="ct-preview-bar-fill" style="width:{{ rCartorioBar }}%;background:linear-gradient(90deg,var(--cy),var(--cp))"></div></div>
+            <span style="font-size:11px;font-weight:800;color:var(--cy);width:32px;text-align:right">{{ rCartorioBar }}%</span>
+          </div>
+          <div class="ct-preview-bar-row">
+            <div class="ct-preview-bar-lbl">Civil / Proc.</div>
+            <div class="ct-preview-bar-track"><div class="ct-preview-bar-fill" style="width:{{ rCivilBar }}%;background:linear-gradient(90deg,#2563EB,#60a5fa)"></div></div>
+            <span style="font-size:11px;font-weight:800;color:#2563EB;width:32px;text-align:right">{{ rCivilBar }}%</span>
+          </div>
+          <div class="ct-preview-bar-row">
+            <div class="ct-preview-bar-lbl">Revisões</div>
+            <div class="ct-preview-bar-track"><div class="ct-preview-bar-fill" style="width:{{ rRevisaoBar }}%;background:linear-gradient(90deg,#D97706,#fbbf24)"></div></div>
+            <span style="font-size:11px;font-weight:800;color:#D97706;width:32px;text-align:right">{{ rRevisaoBar }}%</span>
+          </div>
+          <div class="ct-preview-bar-row">
+            <div class="ct-preview-bar-lbl">Simulados</div>
+            <div class="ct-preview-bar-track"><div class="ct-preview-bar-fill" style="width:{{ rSimBar }}%;background:linear-gradient(90deg,var(--cg),#FF8C5A)"></div></div>
+            <span style="font-size:11px;font-weight:800;color:var(--cg);width:32px;text-align:right">{{ rSimBar }}%</span>
+          </div>
+        </div>
+
+        <!-- Quadro de metas semanais preview -->
+        <div class="ct-preview-cards">
+          <div class="ct-preview-card">
+            <div class="ct-preview-card-icon">🗓️</div>
+            <div class="ct-preview-card-title">Meta Semanal</div>
+            <div class="ct-preview-card-sub">Dias de estudo na semana atual</div>
+          </div>
+          <div class="ct-preview-card">
+            <div class="ct-preview-card-icon">🏆</div>
+            <div class="ct-preview-card-title">Ranking</div>
+            <div class="ct-preview-card-sub">Compare seu avanço com a turma</div>
+          </div>
+          <div class="ct-preview-card">
+            <div class="ct-preview-card-icon">📈</div>
+            <div class="ct-preview-card-title">Evolução</div>
+            <div class="ct-preview-card-sub">Histórico de questões por semana</div>
+          </div>
+          <div class="ct-preview-card">
+            <div class="ct-preview-card-icon">🎯</div>
+            <div class="ct-preview-card-title">Projeção</div>
+            <div class="ct-preview-card-sub">Nota estimada na prova final</div>
+          </div>
+        </div>
+
+        <div class="ct-preview-tip">
+          <div class="ct-preview-tip-icon">💡</div>
+          <div class="ct-preview-tip-text">Continue respondendo as questões diárias no cronograma para desbloquear seu relatório completo com análise por matéria e projeção de nota.</div>
         </div>
       </div>
     </sc-if>
@@ -509,10 +592,65 @@
           </sc-for>
         </sc-if>
         <sc-if value="{{ noMateriais }}" hint-placeholder-val="">
-          <div class="ct-empty">
-            <div class="ct-empty-icon">📚</div>
-            <div class="ct-empty-text">Materiais em breve</div>
-            <div class="ct-empty-sub">O mentor ainda não adicionou materiais.</div>
+          <!-- Preview hero -->
+          <div class="ct-preview-hero">
+            <div class="ct-preview-hero-icon">📚</div>
+            <div class="ct-preview-hero-title">Biblioteca de Materiais</div>
+            <div class="ct-preview-hero-sub">Aulas, PDFs e links selecionados pelo Prof. Líbero Filho chegarão aqui em breve.</div>
+            <div class="ct-preview-badge">🔔 Você será avisado quando disponíveis</div>
+          </div>
+          <!-- Preview de categorias -->
+          <div class="ct-preview-cards">
+            <div class="ct-preview-card">
+              <div class="ct-preview-lock">🔒</div>
+              <div class="ct-preview-card-icon">🎬</div>
+              <div class="ct-preview-card-title">Videoaulas</div>
+              <div class="ct-preview-card-sub">Aulas gravadas por matéria</div>
+            </div>
+            <div class="ct-preview-card">
+              <div class="ct-preview-lock">🔒</div>
+              <div class="ct-preview-card-icon">📄</div>
+              <div class="ct-preview-card-title">PDFs e Resumos</div>
+              <div class="ct-preview-card-sub">Mapas mentais e leis secas</div>
+            </div>
+            <div class="ct-preview-card">
+              <div class="ct-preview-lock">🔒</div>
+              <div class="ct-preview-card-icon">🔗</div>
+              <div class="ct-preview-card-title">Links Extras</div>
+              <div class="ct-preview-card-sub">Fontes e referências do edital</div>
+            </div>
+            <div class="ct-preview-card">
+              <div class="ct-preview-lock">🔒</div>
+              <div class="ct-preview-card-icon">📝</div>
+              <div class="ct-preview-card-title">Banco de Questões</div>
+              <div class="ct-preview-card-sub">Questões comentadas</div>
+            </div>
+          </div>
+          <!-- Preview de itens (mock) -->
+          <div class="ct-preview-mat-item">
+            <div class="ct-preview-mat-icon">🎬</div>
+            <div>
+              <div class="ct-preview-mat-name">Aula 01 — Teoria Geral dos Registros Públicos</div>
+              <div class="ct-preview-mat-sub">Videoaula · Em breve</div>
+            </div>
+          </div>
+          <div class="ct-preview-mat-item">
+            <div class="ct-preview-mat-icon">📄</div>
+            <div>
+              <div class="ct-preview-mat-name">Resumo — RCPN: Registro Civil</div>
+              <div class="ct-preview-mat-sub">PDF · Em breve</div>
+            </div>
+          </div>
+          <div class="ct-preview-mat-item">
+            <div class="ct-preview-mat-icon">🎬</div>
+            <div>
+              <div class="ct-preview-mat-name">Aula 05 — Tabelionato de Notas</div>
+              <div class="ct-preview-mat-sub">Videoaula · Em breve</div>
+            </div>
+          </div>
+          <div class="ct-preview-tip">
+            <div class="ct-preview-tip-icon">✨</div>
+            <div class="ct-preview-tip-text">O Prof. Líbero Filho está preparando os materiais exclusivos da mentoria. Assim que forem publicados você verá aqui automaticamente.</div>
           </div>
         </sc-if>
       </div>
@@ -538,10 +676,65 @@
           </sc-for>
         </sc-if>
         <sc-if value="{{ noSimulados }}" hint-placeholder-val="">
-          <div class="ct-empty">
-            <div class="ct-empty-icon">🎯</div>
-            <div class="ct-empty-text">Nenhum simulado disponível</div>
-            <div class="ct-empty-sub">O mentor ainda não adicionou simulados.</div>
+          <!-- Preview hero simulados -->
+          <div class="ct-preview-hero" style="background:linear-gradient(135deg,#001818 0%,#003838 50%,#001818 100%)">
+            <div class="ct-preview-hero-icon">🎯</div>
+            <div class="ct-preview-hero-title">Arena dos Simulados</div>
+            <div class="ct-preview-hero-sub">Simulados cronometrados com gabarito comentado. Teste seu preparo antes da hora.</div>
+            <div class="ct-preview-badge" style="background:rgba(0,191,168,.2);border-color:var(--cp)">⚡ Liberados conforme o cronograma</div>
+          </div>
+
+          <!-- Como funciona -->
+          <div class="ct-preview-cards">
+            <div class="ct-preview-card" style="border-color:var(--cp);box-shadow:3px 3px 0 var(--cp)">
+              <div class="ct-preview-card-icon">⏱️</div>
+              <div class="ct-preview-card-title" style="color:var(--cp)">Cronometrado</div>
+              <div class="ct-preview-card-sub">Tempo real igual à prova — até 5h</div>
+            </div>
+            <div class="ct-preview-card" style="border-color:var(--cp);box-shadow:3px 3px 0 var(--cp)">
+              <div class="ct-preview-card-icon">📊</div>
+              <div class="ct-preview-card-title" style="color:var(--cp)">Análise</div>
+              <div class="ct-preview-card-sub">Veja onde acertou e onde errou</div>
+            </div>
+            <div class="ct-preview-card" style="border-color:var(--cp);box-shadow:3px 3px 0 var(--cp)">
+              <div class="ct-preview-card-icon">🏆</div>
+              <div class="ct-preview-card-title" style="color:var(--cp)">Ranking</div>
+              <div class="ct-preview-card-sub">Compare com a turma</div>
+            </div>
+            <div class="ct-preview-card" style="border-color:var(--cp);box-shadow:3px 3px 0 var(--cp)">
+              <div class="ct-preview-card-icon">🔁</div>
+              <div class="ct-preview-card-title" style="color:var(--cp)">Revisão</div>
+              <div class="ct-preview-card-sub">Refaça quantas vezes quiser</div>
+            </div>
+          </div>
+
+          <!-- Mock de simulados futuros -->
+          <div style="margin-bottom:8px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#888">Próximos simulados</div>
+          <div class="ct-preview-sim-item">
+            <div class="ct-preview-sim-icon">🎯</div>
+            <div>
+              <div class="ct-preview-sim-name">Simulado 1 — TGRP + RCPN + Const. + Adm.</div>
+              <div class="ct-preview-sim-sub">⏱ 5h · Liberado na Semana 3 (30/08)</div>
+            </div>
+          </div>
+          <div class="ct-preview-sim-item">
+            <div class="ct-preview-sim-icon">🎯</div>
+            <div>
+              <div class="ct-preview-sim-name">Simulado 2 — Tab. Notas + Protesto + todas as matérias</div>
+              <div class="ct-preview-sim-sub">⏱ 5h · Liberado na Semana 5 (13/09)</div>
+            </div>
+          </div>
+          <div class="ct-preview-sim-item">
+            <div class="ct-preview-sim-icon">🎯</div>
+            <div>
+              <div class="ct-preview-sim-name">Simulado 3 — Simulado completo (todas as matérias)</div>
+              <div class="ct-preview-sim-sub">⏱ 5h · Liberado na Semana 7 (27/09)</div>
+            </div>
+          </div>
+
+          <div class="ct-preview-tip">
+            <div class="ct-preview-tip-icon">🔥</div>
+            <div class="ct-preview-tip-text">Os simulados são liberados progressivamente conforme o cronograma. Mantenha o ritmo para estar preparado quando o primeiro chegar!</div>
           </div>
         </sc-if>
       </div>
@@ -928,6 +1121,14 @@ class Component extends DCLogic {
     var rep=d.reportData||{};
     var rTaxa=rep.taxa||0;
 
+    // Compute per-area completion from cronoChecks
+    var areaChecks={c:{d:0,t:0},o:{d:0,t:0},r:{d:0,t:0},s:{d:0,t:0}};
+    var AREA_TYPES=[['c','o','c','o','c','r','f'],['c','o','c','o','c','r','f'],['c','o','c','o','c','r','s'],['c','o','c','o','c','r','f'],['c','o','c','o','c','r','s'],['c','o','c','o','c','r','f'],['c','o','c','o','c','r','s'],['c','c','c','c','c','r','s'],['c','c','o','o','c','r','s'],['c','c','c','o','c','r','s'],['c','c','c','c','c','r','s'],['r','r','r','f','f','f','p']];
+    var CHECKS_PER={c:3,o:3,r:3,s:2,f:0,p:0};
+    AREA_TYPES.forEach(function(wk,wi){wk.forEach(function(typ,di){var n=CHECKS_PER[typ]||0;if(!n)return;areaChecks[typ]&&(areaChecks[typ].t+=n);for(var ci=0;ci<n;ci++){var k='w'+wi+'_d'+di+'_c'+ci;if(checks[k]){areaChecks[typ]&&areaChecks[typ].d++;}}});});
+    function areaPct(key){var a=areaChecks[key];return a.t>0?Math.round(a.d/a.t*100):0;}
+    var rCartorioBar=areaPct('c'), rCivilBar=areaPct('o'), rRevisaoBar=areaPct('r'), rSimBar=areaPct('s');
+
     // Profile
     var pName = st.profileName || d.userName || 'Aluno';
     var pPhoto = st.profilePhoto || '';
@@ -992,6 +1193,8 @@ class Component extends DCLogic {
       rTaxa: rTaxa,
       rTaxaColor: rTaxa>=70?'var(--cg)':rTaxa>=50?'var(--co)':'var(--cr)',
       rStreak: rep.streak||0,
+      rCartorioBar: rCartorioBar, rCivilBar: rCivilBar,
+      rRevisaoBar: rRevisaoBar, rSimBar: rSimBar,
 
       // Materiais
       hasMateriais: materias.length>0, noMateriais: materias.length===0, materias: materias,
