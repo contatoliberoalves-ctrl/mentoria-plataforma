@@ -100,12 +100,19 @@
 .ct-level-track{background:#e8e8e8;border:2px solid var(--cb);border-radius:99px;height:18px;overflow:hidden}
 .ct-level-fill{height:100%;background:repeating-linear-gradient(45deg,var(--cg),var(--cg) 8px,#ff6bb5 8px,#ff6bb5 16px);border-radius:99px;transition:width .8s cubic-bezier(.34,1.56,.64,1)}
 
-/* ── WEEK HEADER ── */
-.ct-crono-week{margin-bottom:20px}
-.ct-crono-week-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.ct-crono-week-num{background:var(--cb);color:var(--cw);border-radius:8px;padding:3px 10px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.5px}
-.ct-crono-week-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#777;flex:1}
-.ct-crono-week-hdr::after{content:'';flex:1;height:2px;background:linear-gradient(90deg,var(--cb),transparent)}
+/* ── WEEK NAVIGATOR ── */
+.ct-week-nav{background:var(--cw);border:3px solid var(--cb);border-radius:16px;box-shadow:4px 4px 0 var(--cb);padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.ct-week-nav-btn{width:36px;height:36px;border-radius:10px;border:2.5px solid var(--cb);background:var(--cbg);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;cursor:pointer;flex-shrink:0;box-shadow:3px 3px 0 var(--cb);transition:transform .1s;color:var(--cb)}
+.ct-week-nav-btn:hover{background:var(--cg);color:#fff;border-color:var(--cg)}
+.ct-week-nav-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--cb)}
+.ct-week-nav-btn:disabled{opacity:.35;cursor:default;pointer-events:none}
+.ct-week-nav-center{flex:1;text-align:center}
+.ct-week-nav-label{font-size:16px;font-weight:900;color:var(--cb);letter-spacing:-.3px}
+.ct-week-nav-range{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.ct-week-nav-dots{display:flex;justify-content:center;gap:4px;margin-top:8px}
+.ct-week-dot{width:6px;height:6px;border-radius:50%;background:#ddd;transition:all .2s;cursor:pointer}
+.ct-week-dot.active{width:20px;border-radius:3px;background:var(--cg)}
+.ct-week-dot.done{background:var(--c-teal)}
 
 /* ── DAY CARDS ── */
 .ct-crono-day{border:3px solid var(--cb);border-radius:14px;margin-bottom:10px;background:var(--cw);box-shadow:4px 4px 0 var(--cb);overflow:hidden;transition:transform .1s}
@@ -152,9 +159,14 @@
 .ct-crono-badge.t-p{color:#ffd700;background:rgba(255,215,0,.15);border-color:#ffd700}
 .ct-crono-date{font-size:12px;font-weight:700;color:#555}
 .ct-crono-day.t-s .ct-crono-badge.t-s,.ct-crono-day.t-r .ct-crono-badge.t-r,.ct-crono-day.t-p .ct-crono-badge.t-p{border-color:currentColor}
-.ct-crono-q-meta{display:inline-flex;align-items:center;gap:4px;background:rgba(37,99,235,.12);border:2px solid rgba(37,99,235,.3);border-radius:8px;padding:3px 9px;font-size:11px;font-weight:900;color:#1D4ED8;margin-left:auto}
-.ct-crono-day.t-s .ct-crono-q-meta{background:rgba(196,181,253,.15);border-color:rgba(196,181,253,.4);color:#d8b4fe}
-.ct-crono-day.t-r .ct-crono-q-meta{background:rgba(253,211,77,.15);border-color:rgba(253,211,77,.4);color:#fcd34d}
+/* QUEST COUNT — redesigned */
+.ct-crono-q-meta{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#1e3a8a,#2563eb);border:none;border-radius:10px;padding:4px 10px;font-size:12px;font-weight:900;color:#fff;box-shadow:2px 2px 0 rgba(30,58,138,.4);letter-spacing:.2px}
+.ct-crono-q-meta-icon{font-size:13px;line-height:1}
+.ct-crono-q-meta-text{display:flex;flex-direction:column;line-height:1.1}
+.ct-crono-q-meta-num{font-size:14px;font-weight:900}
+.ct-crono-q-meta-lbl{font-size:9px;font-weight:700;opacity:.8;text-transform:uppercase;letter-spacing:.5px}
+.ct-crono-day.t-s .ct-crono-q-meta{background:linear-gradient(135deg,#4c1d95,var(--cp));box-shadow:2px 2px 0 rgba(76,29,149,.5)}
+.ct-crono-day.t-r .ct-crono-q-meta{background:linear-gradient(135deg,#92400e,var(--c-amber));box-shadow:2px 2px 0 rgba(146,64,14,.4)}
 
 /* XP badge */
 .ct-xp-badge{display:inline-flex;align-items:center;gap:3px;background:linear-gradient(135deg,#ffd700,#ff9500);border:2px solid var(--cb);border-radius:8px;padding:2px 8px;font-size:10px;font-weight:900;color:#1a0a00;margin-left:auto}
@@ -346,64 +358,77 @@
           </div>
         </div>
 
-        <!-- Cronograma semanal -->
-        <sc-for list="{{ cronoWeeks }}" as="cw" hint-placeholder-count="9">
-          <div class="ct-crono-week">
-            <div class="ct-crono-week-hdr">
-              <span class="ct-crono-week-num">{{ cw.numLabel }}</span>
-              <span class="ct-crono-week-label">{{ cw.range }}</span>
+        <!-- WEEK NAVIGATOR -->
+        <div class="ct-week-nav">
+          <button class="ct-week-nav-btn" onclick="{{ onWeekPrev }}" data-disabled="{{ weekIsFirst }}">‹</button>
+          <div class="ct-week-nav-center">
+            <div class="ct-week-nav-label">{{ activeWeekLabel }}</div>
+            <div class="ct-week-nav-range">{{ activeWeekRange }}</div>
+            <div class="ct-week-nav-dots">
+              <sc-for list="{{ weekDots }}" as="dot" hint-placeholder-count="12">
+                <div class="{{ dot.cls }}" onclick="{{ dot.onClick }}"></div>
+              </sc-for>
             </div>
-            <sc-for list="{{ cw.days }}" as="cd" hint-placeholder-count="7">
-              <div class="{{ cd.cls }}">
-                <div class="ct-day-stripe"></div>
-                <div class="ct-day-body">
-                  <div class="ct-crono-day-meta">
-                    <span class="{{ cd.badgeCls }}">{{ cd.badge }}</span>
-                    <span class="ct-crono-date">{{ cd.date }}</span>
-                    <sc-if value="{{ cd.hasQ }}" hint-placeholder-val="">
-                      <span class="ct-crono-q-meta">🎯 {{ cd.q }}q</span>
-                    </sc-if>
-                    <sc-if value="{{ cd.hasQ }}" hint-placeholder-val="">
-                      <span class="ct-xp-badge">⚡+{{ cd.xpReward }}xp</span>
-                    </sc-if>
-                  </div>
-                  <div class="ct-crono-subject">{{ cd.subject }}</div>
-                  <sc-if value="{{ cd.hasTopic }}" hint-placeholder-val="">
-                    <div class="ct-crono-topic">{{ cd.topic }}</div>
-                  </sc-if>
-                  <sc-if value="{{ cd.hasChecks }}" hint-placeholder-val="">
-                    <div class="ct-crono-checks">
-                      <div class="ct-checks-hdr">
-                        <span class="ct-checks-title">📋 Metas do Dia</span>
-                        <span class="ct-checks-prog">{{ cd.doneChecks }}/{{ cd.totalChecks }} concluídas</span>
-                      </div>
-                      <sc-for list="{{ cd.checks }}" as="ck" hint-placeholder-count="3">
-                        <button class="{{ ck.cls }}" onclick="{{ onCronoCheck }}" data-key="{{ ck.key }}">
-                          <span class="ct-chk-step">{{ ck.step }}</span>
-                          <span class="ct-chk-lbl">{{ ck.label }}</span>
-                          <span class="ct-chk-box"></span>
-                        </button>
-                      </sc-for>
-                    </div>
-                  </sc-if>
-                  <sc-if value="{{ cd.hasQ }}" hint-placeholder-val="">
-                    <div class="ct-quest-stats">
-                      <div class="ct-quest-stats-title">📝 Missão de questões</div>
-                      <div class="ct-quest-field">
-                        <label>Feitas</label>
-                        <input type="number" min="0" max="{{ cd.q }}" value="{{ cd.questFeitas }}" placeholder="0" oninput="{{ onQuestInput }}" data-day-key="{{ cd.dayKey }}" data-field="feitas">
-                        <span class="ct-quest-sep">/ {{ cd.q }}</span>
-                      </div>
-                      <div class="ct-quest-field">
-                        <label>Acertos</label>
-                        <input type="number" min="0" max="{{ cd.questFeitas }}" value="{{ cd.questAcertos }}" placeholder="0" oninput="{{ onQuestInput }}" data-day-key="{{ cd.dayKey }}" data-field="acertos">
-                      </div>
-                      <div class="{{ cd.questPctCls }}">{{ cd.questPctLabel }}</div>
-                    </div>
-                  </sc-if>
-                </div>
+          </div>
+          <button class="ct-week-nav-btn" onclick="{{ onWeekNext }}" data-disabled="{{ weekIsLast }}">›</button>
+        </div>
+
+        <!-- Dias da semana ativa -->
+        <sc-for list="{{ activeWeekDays }}" as="cd" hint-placeholder-count="7">
+          <div class="{{ cd.cls }}">
+            <div class="ct-day-stripe"></div>
+            <div class="ct-day-body">
+              <div class="ct-crono-day-meta">
+                <span class="{{ cd.badgeCls }}">{{ cd.badge }}</span>
+                <span class="ct-crono-date">{{ cd.date }}</span>
+                <sc-if value="{{ cd.hasQ }}" hint-placeholder-val="">
+                  <span class="ct-crono-q-meta" style="margin-left:auto">
+                    <span class="ct-crono-q-meta-icon">🎯</span>
+                    <span class="ct-crono-q-meta-text">
+                      <span class="ct-crono-q-meta-num">{{ cd.q }}</span>
+                      <span class="ct-crono-q-meta-lbl">questões</span>
+                    </span>
+                  </span>
+                </sc-if>
+                <sc-if value="{{ cd.hasQ }}" hint-placeholder-val="">
+                  <span class="ct-xp-badge">⚡+{{ cd.xpReward }}xp</span>
+                </sc-if>
               </div>
-            </sc-for>
+              <div class="ct-crono-subject">{{ cd.subject }}</div>
+              <sc-if value="{{ cd.hasTopic }}" hint-placeholder-val="">
+                <div class="ct-crono-topic">{{ cd.topic }}</div>
+              </sc-if>
+              <sc-if value="{{ cd.hasChecks }}" hint-placeholder-val="">
+                <div class="ct-crono-checks">
+                  <div class="ct-checks-hdr">
+                    <span class="ct-checks-title">📋 Metas do Dia</span>
+                    <span class="ct-checks-prog">{{ cd.doneChecks }}/{{ cd.totalChecks }} concluídas</span>
+                  </div>
+                  <sc-for list="{{ cd.checks }}" as="ck" hint-placeholder-count="3">
+                    <button class="{{ ck.cls }}" onclick="{{ onCronoCheck }}" data-key="{{ ck.key }}">
+                      <span class="ct-chk-step">{{ ck.step }}</span>
+                      <span class="ct-chk-lbl">{{ ck.label }}</span>
+                      <span class="ct-chk-box"></span>
+                    </button>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ cd.hasQ }}" hint-placeholder-val="">
+                <div class="ct-quest-stats">
+                  <div class="ct-quest-stats-title">📝 Missão de questões</div>
+                  <div class="ct-quest-field">
+                    <label>Feitas</label>
+                    <input type="number" min="0" max="{{ cd.q }}" value="{{ cd.questFeitas }}" placeholder="0" oninput="{{ onQuestInput }}" data-day-key="{{ cd.dayKey }}" data-field="feitas">
+                    <span class="ct-quest-sep">/ {{ cd.q }}</span>
+                  </div>
+                  <div class="ct-quest-field">
+                    <label>Acertos</label>
+                    <input type="number" min="0" max="{{ cd.questFeitas }}" value="{{ cd.questAcertos }}" placeholder="0" oninput="{{ onQuestInput }}" data-day-key="{{ cd.dayKey }}" data-field="acertos">
+                  </div>
+                  <div class="{{ cd.questPctCls }}">{{ cd.questPctLabel }}</div>
+                </div>
+              </sc-if>
+            </div>
           </div>
         </sc-for>
       </div>
@@ -553,6 +578,13 @@ class Component extends DCLogic {
       questoes:   function(){ self.setState({view:'questoes'}); },
       simulados:  function(){ self.setState({view:'simulados'}); },
     };
+
+    this._onWeekPrev = function(){ var w=self.state.activeWeek||0; if(w>0) self.setState({activeWeek:w-1}); };
+    this._onWeekNext = function(){ var w=self.state.activeWeek||0; if(w<self.CRONO.length-1) self.setState({activeWeek:w+1}); };
+    this._weekDotHandlers = [];
+    for(var _wi=0;_wi<20;_wi++){
+      (function(wi){ self._weekDotHandlers[wi]=function(){ self.setState({activeWeek:wi}); }; })(_wi);
+    }
 
     this._onQuestInput = function(e){
       var inp = e.currentTarget || e.target;
@@ -726,8 +758,24 @@ class Component extends DCLogic {
 
     var _sp = {};
     try{ _sp = JSON.parse(localStorage.getItem('_ct_profile')||'{}'); }catch(e){}
+    // Auto-detect current week based on today's date
+    var _todayStr = (function(){var d=new Date();return (d.getMonth()+1)+'/'+d.getDate();})();
+    var _startWeek = 0;
+    // Find the week that contains today or is the nearest future week
+    for(var _wii=0;_wii<this.CRONO.length;_wii++){
+      var _wd=this.CRONO[_wii].d;
+      // Parse first day of week to find current position
+      var _fd=_wd[0][0]; // e.g. "Seg, 10/08"
+      var _fdm=_fd.match(/(\d+)\/(\d+)/);
+      if(_fdm){
+        var _fdDate=new Date(2026,parseInt(_fdm[2])-1,parseInt(_fdm[1]));
+        if(new Date()<=_fdDate){_startWeek=_wii;break;}
+        _startWeek=_wii;
+      }
+    }
     this.state = {
       view:'cronograma', activeMonth:0,
+      activeWeek: _startWeek,
       cronoChecks: (props.data && props.data.cronoChecks) || {},
       questStats:  (props.data && props.data.questStats)  || {},
       profileOpen: false,
@@ -845,6 +893,16 @@ class Component extends DCLogic {
     var pPhoto = st.profilePhoto || '';
     var pInitial = (pName[0]||'?').toUpperCase();
 
+    // Active week
+    var activeWeekIdx = st.activeWeek || 0;
+    var activeW = cronoWeeks[activeWeekIdx] || cronoWeeks[0];
+    var weekDots = cronoWeeks.map(function(w, wi){
+      // A week is "done" if all its days' checks are done
+      var wDone = w.days.every(function(cd){ return !cd.hasChecks || cd.doneChecks===cd.totalChecks; });
+      var cls = 'ct-week-dot'+(wi===activeWeekIdx?' active':wDone?' done':'');
+      return { cls:cls, onClick: self._weekDotHandlers[wi] };
+    });
+
     return {
       brandName: d.brandName||'Mentoria Cartórios',
       contestName: d.contestName||'Concurso de Cartórios',
@@ -875,6 +933,15 @@ class Component extends DCLogic {
       progPct: cronoPct,
       doneCks: doneCks, totalCks: totalCks,
       cronoWeeks: cronoWeeks,
+      // Active week view
+      activeWeekLabel: activeW ? activeW.numLabel : 'S1',
+      activeWeekRange: activeW ? activeW.range : '',
+      activeWeekDays: activeW ? activeW.days : [],
+      weekDots: weekDots,
+      weekIsFirst: activeWeekIdx===0,
+      weekIsLast: activeWeekIdx===cronoWeeks.length-1,
+      onWeekPrev: this._onWeekPrev,
+      onWeekNext: this._onWeekNext,
       onCronoCheck: this._onCronoCheck,
       onQuestInput: this._onQuestInput,
       hasAvisos: avisos.length>0, avisos: avisos,
