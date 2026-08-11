@@ -29,6 +29,30 @@
 .ct-btn-sm{background:var(--cy);color:var(--cw);border:2px solid var(--cb);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:800;cursor:pointer;text-transform:uppercase;box-shadow:2px 2px 0 var(--cb);transition:transform .1s}
 .ct-btn-sm:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--cb)}
 
+/* ── PROFILE AVATAR ── */
+.ct-avatar-btn{width:36px;height:36px;border-radius:50%;border:3px solid rgba(255,255,255,.6);background:linear-gradient(135deg,var(--cy),var(--cp));display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;font-size:15px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:2px 2px 0 rgba(0,0,0,.3);transition:transform .15s}
+.ct-avatar-btn:hover{transform:scale(1.08)}
+.ct-avatar-btn img{width:100%;height:100%;object-fit:cover}
+
+/* ── PROFILE PANEL ── */
+.ct-profile-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:flex;align-items:flex-start;justify-content:flex-end}
+.ct-profile-panel{background:var(--cw);width:min(340px,100vw);height:100vh;border-left:4px solid var(--cb);box-shadow:-6px 0 0 var(--cb);display:flex;flex-direction:column;overflow:hidden}
+.ct-profile-hdr{background:linear-gradient(135deg,var(--cg),#b01e42);border-bottom:4px solid var(--cb);padding:20px 20px 24px;color:#fff;text-align:center;position:relative}
+.ct-profile-close{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.5);border-radius:8px;color:#fff;font-size:16px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-weight:900}
+.ct-profile-photo-wrap{margin:0 auto 10px;position:relative;width:80px;height:80px}
+.ct-profile-photo{width:80px;height:80px;border-radius:50%;border:4px solid #fff;background:linear-gradient(135deg,var(--cy),var(--cp));display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff;overflow:hidden;box-shadow:3px 3px 0 rgba(0,0,0,.3)}
+.ct-profile-photo img{width:100%;height:100%;object-fit:cover}
+.ct-profile-photo-edit{position:absolute;bottom:0;right:0;width:24px;height:24px;background:var(--cy);border:2px solid var(--cb);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px}
+.ct-profile-name-preview{font-size:16px;font-weight:900;color:#fff;text-shadow:1px 1px 0 rgba(0,0,0,.3)}
+.ct-profile-body{padding:20px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.ct-profile-field{display:flex;flex-direction:column;gap:5px}
+.ct-profile-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#666}
+.ct-profile-input{border:2px solid var(--cb);border-radius:10px;padding:10px 14px;font-size:14px;color:var(--cb);outline:none;transition:border-color .15s,box-shadow .15s;background:#fff}
+.ct-profile-input:focus{border-color:var(--cg);box-shadow:3px 3px 0 var(--cg)}
+.ct-profile-save{background:var(--cg);color:#fff;border:3px solid var(--cb);border-radius:10px;padding:12px;font-size:14px;font-weight:900;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;box-shadow:4px 4px 0 var(--cb);transition:transform .1s;margin-top:4px}
+.ct-profile-save:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--cb)}
+.ct-profile-file-input{display:none}
+
 /* ── XP BAR (below header) ── */
 .ct-xp-strip{background:rgba(0,0,0,.15);border-bottom:3px solid var(--cb);padding:6px 16px;display:flex;align-items:center;gap:10px;background:var(--cy)}
 .ct-xp-label{font-size:11px;font-weight:900;color:var(--cw);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;min-width:70px}
@@ -137,20 +161,34 @@
 .ct-crono-subject{font-size:14px;font-weight:900;color:var(--cb);margin-bottom:3px;letter-spacing:.2px}
 .ct-crono-topic{font-size:12px;color:#555;line-height:1.45;margin-bottom:6px}
 
-/* CHECKS */
-.ct-crono-checks{display:flex;flex-direction:column;gap:5px;margin-top:10px;padding-top:10px;border-top:2px dashed rgba(255,255,255,.12)}
-.ct-crono-day.t-c .ct-crono-checks,.ct-crono-day.t-o .ct-crono-checks{border-top-color:#e5e7eb}
-.ct-chk{display:flex;align-items:center;gap:10px;cursor:pointer;background:none;border:none;text-align:left;padding:5px 8px;border-radius:10px;width:100%;transition:background .1s}
-.ct-chk:hover{background:rgba(255,255,255,.07)}
-.ct-crono-day.t-c .ct-chk:hover,.ct-crono-day.t-o .ct-chk:hover{background:rgba(0,0,0,.04)}
-.ct-chk-box{width:22px;height:22px;border-radius:7px;border:2.5px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:900;transition:all .2s;background:rgba(255,255,255,.08)}
-.ct-crono-day.t-c .ct-chk-box,.ct-crono-day.t-o .ct-chk-box{border-color:#cbd5e1;background:#f8fafc}
-.ct-chk.done .ct-chk-box{background:linear-gradient(135deg,var(--cg),#ff6bb5);border-color:var(--cg);color:#fff;animation:pop .3s ease}
-.ct-crono-day.t-s .ct-chk.done .ct-chk-box{background:linear-gradient(135deg,var(--cp),#a855f7);border-color:var(--cp)}
-.ct-crono-day.t-r .ct-chk.done .ct-chk-box{background:linear-gradient(135deg,var(--c-amber),#fbbf24);border-color:var(--c-amber)}
+/* CHECKS (redesigned as step cards) */
+.ct-crono-checks{display:flex;flex-direction:column;gap:8px;margin-top:12px;padding-top:12px;border-top:2px dashed rgba(255,255,255,.15)}
+.ct-crono-day.t-c .ct-crono-checks,.ct-crono-day.t-o .ct-crono-checks{border-top-color:#e2e8f0}
+.ct-checks-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.ct-checks-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.5)}
+.ct-crono-day.t-c .ct-checks-title,.ct-crono-day.t-o .ct-checks-title{color:#94a3b8}
+.ct-checks-prog{font-size:10px;font-weight:900;color:rgba(255,255,255,.6)}
+.ct-crono-day.t-c .ct-checks-prog,.ct-crono-day.t-o .ct-checks-prog{color:#64748b}
+.ct-chk{display:flex;align-items:center;gap:10px;cursor:pointer;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);border-left:4px solid rgba(255,255,255,.15);text-align:left;padding:9px 12px;border-radius:10px;width:100%;transition:all .15s;position:relative}
+.ct-crono-day.t-c .ct-chk,.ct-crono-day.t-o .ct-chk{background:#f8fafc;border-color:#e2e8f0;border-left-color:#cbd5e1}
+.ct-chk:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25)}
+.ct-crono-day.t-c .ct-chk:hover,.ct-crono-day.t-o .ct-chk:hover{background:#f1f5f9;border-color:#94a3b8}
+.ct-chk.done{background:rgba(5,150,105,.12);border-color:rgba(5,150,105,.3);border-left-color:#10b981}
+.ct-crono-day.t-c .ct-chk.done,.ct-crono-day.t-o .ct-chk.done{background:#f0fdf4;border-color:#86efac;border-left-color:#22c55e}
+.ct-crono-day.t-s .ct-chk.done{background:rgba(168,85,247,.15);border-color:rgba(168,85,247,.4);border-left-color:#a855f7}
+.ct-crono-day.t-r .ct-chk.done{background:rgba(234,179,8,.12);border-color:rgba(234,179,8,.35);border-left-color:#eab308}
+.ct-chk-step{width:22px;height:22px;border-radius:8px;border:2px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:900;color:rgba(255,255,255,.6);background:rgba(255,255,255,.05);transition:all .2s}
+.ct-crono-day.t-c .ct-chk-step,.ct-crono-day.t-o .ct-chk-step{border-color:#cbd5e1;background:#fff;color:#64748b}
+.ct-chk.done .ct-chk-step{background:linear-gradient(135deg,#10b981,#22c55e);border-color:#10b981;color:#fff;font-size:13px;animation:pop .3s ease}
+.ct-crono-day.t-c .ct-chk.done .ct-chk-step,.ct-crono-day.t-o .ct-chk.done .ct-chk-step{background:linear-gradient(135deg,#22c55e,#16a34a);border-color:#22c55e;color:#fff}
+.ct-crono-day.t-s .ct-chk.done .ct-chk-step{background:linear-gradient(135deg,var(--cp),#a855f7);border-color:var(--cp)}
+.ct-crono-day.t-r .ct-chk.done .ct-chk-step{background:linear-gradient(135deg,#eab308,#fbbf24);border-color:#eab308;color:#1a1000}
+.ct-chk-lbl{font-size:12.5px;color:rgba(255,255,255,.85);font-weight:600;flex:1;line-height:1.35}
+.ct-crono-day.t-c .ct-chk-lbl,.ct-crono-day.t-o .ct-chk-lbl{color:#374151}
 .ct-chk.done .ct-chk-lbl{text-decoration:line-through;opacity:.5}
-.ct-chk-lbl{font-size:12px;color:rgba(255,255,255,.85);font-weight:500}
-.ct-crono-day.t-c .ct-chk-lbl,.ct-crono-day.t-o .ct-chk-lbl{color:#444}
+.ct-chk-box{width:20px;height:20px;border-radius:6px;border:2px solid rgba(255,255,255,.25);background:rgba(255,255,255,.05);flex-shrink:0}
+.ct-crono-day.t-c .ct-chk-box,.ct-crono-day.t-o .ct-chk-box{border-color:#cbd5e1;background:#fff}
+.ct-chk.done .ct-chk-box{background:linear-gradient(135deg,#10b981,#22c55e);border-color:#10b981}
 
 /* QUEST STATS */
 .ct-quest-stats{margin-top:10px;padding-top:10px;border-top:2px dashed rgba(255,255,255,.12);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -214,7 +252,12 @@
         <span class="ct-rank-icon">{{ rankIcon }}</span>
         <span class="ct-rank-name">{{ rankName }}</span>
       </div>
-      <span class="ct-user-name">{{ userName }}</span>
+      <button class="ct-avatar-btn" onclick="{{ onProfileOpen }}" title="Meu Perfil">
+        <sc-if value="{{ hasProfilePhoto }}" hint-placeholder-val="">
+          <img src="{{ profilePhoto }}" alt="Foto">
+        </sc-if>
+        <sc-if value="{{ noProfilePhoto }}" hint-placeholder-val="{{ true }}">{{ profileInitial }}</sc-if>
+      </button>
       <button class="ct-btn-sm" onclick="{{ onLogout }}">Sair</button>
     </div>
   </div>
@@ -322,10 +365,15 @@
                   </sc-if>
                   <sc-if value="{{ cd.hasChecks }}" hint-placeholder-val="">
                     <div class="ct-crono-checks">
+                      <div class="ct-checks-hdr">
+                        <span class="ct-checks-title">📋 Metas do Dia</span>
+                        <span class="ct-checks-prog">{{ cd.doneChecks }}/{{ cd.totalChecks }} concluídas</span>
+                      </div>
                       <sc-for list="{{ cd.checks }}" as="ck" hint-placeholder-count="3">
                         <button class="{{ ck.cls }}" onclick="{{ onCronoCheck }}" data-key="{{ ck.key }}">
-                          <span class="ct-chk-box">{{ ck.tick }}</span>
+                          <span class="ct-chk-step">{{ ck.step }}</span>
                           <span class="ct-chk-lbl">{{ ck.label }}</span>
+                          <span class="ct-chk-box"></span>
                         </button>
                       </sc-for>
                     </div>
@@ -442,6 +490,46 @@
     </sc-if>
 
   </div>
+
+  <!-- PROFILE PANEL -->
+  <sc-if value="{{ profileOpen }}" hint-placeholder-val="">
+    <div class="ct-profile-overlay" onclick="{{ onProfileClose }}">
+      <div class="ct-profile-panel" onclick="{{ stopProp }}">
+        <div class="ct-profile-hdr">
+          <button class="ct-profile-close" onclick="{{ onProfileClose }}">✕</button>
+          <div class="ct-profile-photo-wrap">
+            <div class="ct-profile-photo">
+              <sc-if value="{{ hasProfilePhoto }}" hint-placeholder-val="">
+                <img src="{{ profilePhoto }}" alt="Foto">
+              </sc-if>
+              <sc-if value="{{ noProfilePhoto }}" hint-placeholder-val="{{ true }}">{{ profileInitial }}</sc-if>
+            </div>
+            <label class="ct-profile-photo-edit" title="Alterar foto">
+              📷
+              <input type="file" accept="image/*" class="ct-profile-file-input" onchange="{{ onProfilePhoto }}">
+            </label>
+          </div>
+          <div class="ct-profile-name-preview">{{ profileDisplayName }}</div>
+        </div>
+        <div class="ct-profile-body">
+          <div class="ct-profile-field">
+            <label class="ct-profile-label">Nome</label>
+            <input class="ct-profile-input" type="text" value="{{ profileName }}" oninput="{{ onProfileName }}" placeholder="Seu nome completo">
+          </div>
+          <div class="ct-profile-field">
+            <label class="ct-profile-label">Telefone / WhatsApp</label>
+            <input class="ct-profile-input" type="tel" value="{{ profilePhone }}" oninput="{{ onProfilePhone }}" placeholder="(00) 00000-0000">
+          </div>
+          <div class="ct-profile-field">
+            <label class="ct-profile-label">Cidade / Estado</label>
+            <input class="ct-profile-input" type="text" value="{{ profileCity }}" oninput="{{ onProfileCity }}" placeholder="Ex: São Paulo – SP">
+          </div>
+          <button class="ct-profile-save" onclick="{{ onProfileSave }}">💾 Salvar Perfil</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
 </div>
 
 </x-dc>
@@ -482,6 +570,28 @@ class Component extends DCLogic {
       self.setState({ cronoChecks: next });
       var d = self.props.data || {};
       d.onCronoCheck && d.onCronoCheck(key, newVal);
+    };
+
+    // ── PROFILE ──
+    var _storedProfile = {};
+    try{ _storedProfile = JSON.parse(localStorage.getItem('_ct_profile')||'{}'); }catch(e){}
+    this._onProfileOpen  = function(){ self.setState({profileOpen:true}); };
+    this._onProfileClose = function(){ self.setState({profileOpen:false}); };
+    this._stopProp = function(e){ e.stopPropagation(); };
+    this._onProfileName  = function(e){ self.setState({profileName:(e.target||e.currentTarget).value}); };
+    this._onProfilePhone = function(e){ self.setState({profilePhone:(e.target||e.currentTarget).value}); };
+    this._onProfileCity  = function(e){ self.setState({profileCity:(e.target||e.currentTarget).value}); };
+    this._onProfileSave  = function(){
+      var st=self.state;
+      var data={name:st.profileName||'',phone:st.profilePhone||'',city:st.profileCity||'',photo:st.profilePhoto||''};
+      try{localStorage.setItem('_ct_profile',JSON.stringify(data));}catch(e){}
+      self.setState({profileOpen:false});
+    };
+    this._onProfilePhoto = function(e){
+      var file=(e.target||e.currentTarget).files[0]; if(!file)return;
+      var reader=new FileReader();
+      reader.onload=function(ev){ self.setState({profilePhoto:ev.target.result}); };
+      reader.readAsDataURL(file);
     };
 
     // ── RANK SYSTEM ──
@@ -606,10 +716,14 @@ class Component extends DCLogic {
       ]},
     ];
 
+    var _sp = {};
+    try{ _sp = JSON.parse(localStorage.getItem('_ct_profile')||'{}'); }catch(e){}
     this.state = {
       view:'cronograma', activeMonth:0,
       cronoChecks: (props.data && props.data.cronoChecks) || {},
       questStats:  (props.data && props.data.questStats)  || {},
+      profileOpen: false,
+      profileName: _sp.name||'', profilePhone: _sp.phone||'', profileCity: _sp.city||'', profilePhoto: _sp.photo||'',
     };
   }
 
@@ -633,11 +747,12 @@ class Component extends DCLogic {
       var days = w.d.map(function(day, di){
         var typ = day[1], badge = day[2], subj = day[3], topic = day[4], q = day[5];
         var lbls = checkLabels[typ] || [];
+        var stepIcons = ['1°','2°','3°','4°','5°'];
         var dayChecks = lbls.map(function(lbl, ci){
           var key = 'w'+wi+'_d'+di+'_c'+ci;
           var on = !!checks[key];
           totalCks++; if(on) doneCks++;
-          return { key:key, label:lbl, tick:on?'✓':'', cls:'ct-chk'+(on?' done':'') };
+          return { key:key, label:lbl, step:on?'✓':(stepIcons[ci]||String(ci+1)+'°'), cls:'ct-chk'+(on?' done':'') };
         });
         var dayKey = 'w'+wi+'_d'+di;
         var qs = questStats[dayKey] || {};
@@ -656,6 +771,8 @@ class Component extends DCLogic {
           hasTopic: !!(topic), hasQ: !!q,
           q: q?String(q):'', xpReward: xpReward,
           hasChecks: dayChecks.length>0, checks: dayChecks,
+          doneChecks: dayChecks.filter(function(x){return x.cls.indexOf('done')>=0;}).length,
+          totalChecks: dayChecks.length,
           dayKey: dayKey,
           questFeitas: feitas||'', questAcertos: acertos||'',
           questPctCls: pctCls, questPctLabel: pctLabel,
@@ -715,11 +832,26 @@ class Component extends DCLogic {
     var rep=d.reportData||{};
     var rTaxa=rep.taxa||0;
 
+    // Profile
+    var pName = st.profileName || d.userName || 'Aluno';
+    var pPhoto = st.profilePhoto || '';
+    var pInitial = (pName[0]||'?').toUpperCase();
+
     return {
       brandName: d.brandName||'Mentoria Cartórios',
       contestName: d.contestName||'Concurso de Cartórios',
-      userName: d.userName||'Aluno',
+      userName: pName,
       onLogout: this._onLogout,
+
+      // Profile
+      profileOpen: !!st.profileOpen, profileName: st.profileName||'', profilePhone: st.profilePhone||'',
+      profileCity: st.profileCity||'', profilePhoto: pPhoto,
+      profileInitial: pInitial, profileDisplayName: pName,
+      hasProfilePhoto: !!pPhoto, noProfilePhoto: !pPhoto,
+      onProfileOpen: this._onProfileOpen, onProfileClose: this._onProfileClose,
+      onProfileName: this._onProfileName, onProfilePhone: this._onProfilePhone,
+      onProfileCity: this._onProfileCity, onProfileSave: this._onProfileSave,
+      onProfilePhoto: this._onProfilePhoto, stopProp: this._stopProp,
 
       // XP / Rank
       xpTotal: xpTotal, xpPct: xpPct, levelNum: levelNum,
