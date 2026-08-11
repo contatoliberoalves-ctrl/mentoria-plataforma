@@ -1,117 +1,202 @@
 <x-dc>
 <style>
-:root{--cg:#D42B55;--cy:#5B1F8A;--cb:#0D0D0D;--cw:#FFFFFF;--co:#FF6600;--cp:#7B2FFF;--cc:#00A8E8;--cr:#C92030;--cbg:#FAE8CC}
+:root{--cg:#D42B55;--cy:#5B1F8A;--cb:#0D0D0D;--cw:#FFFFFF;--co:#FF6600;--cp:#7B2FFF;--cc:#00A8E8;--cr:#C92030;--cbg:#FAE8CC;
+  --c-blue:#2563EB;--c-violet:#7C3AED;--c-amber:#D97706;--c-teal:#059669;--c-gray:#6B7280}
 *{box-sizing:border-box;margin:0;padding:0}
+
+/* ── KEYFRAMES ── */
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(212,43,85,.5)}70%{box-shadow:0 0 0 10px rgba(212,43,85,0)}100%{box-shadow:0 0 0 0 rgba(212,43,85,0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes xp-fill{from{width:0}to{width:var(--xp-w,0%)}}
+@keyframes star-spin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.3)}100%{transform:rotate(360deg) scale(1)}}
+
+/* ── WRAP ── */
 .ct-wrap{display:flex;flex-direction:column;min-height:100vh;background:var(--cbg);color:var(--cb);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
-.ct-header{background:var(--cg);border-bottom:4px solid var(--cb);display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:60px;position:sticky;top:0;z-index:30}
+
+/* ── HEADER ── */
+.ct-header{background:linear-gradient(135deg,var(--cg) 0%,#b01e42 100%);border-bottom:4px solid var(--cb);display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:58px;position:sticky;top:0;z-index:30;box-shadow:0 4px 0 var(--cb)}
 .ct-logo{display:flex;align-items:center;gap:10px}
-.ct-logo-box{background:var(--cy);border:3px solid var(--cb);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:3px 3px 0 var(--cb)}
-.ct-logo-text{color:var(--cw);font-weight:800;font-size:16px;letter-spacing:.5px;text-transform:uppercase}
-.ct-logo-sub{color:var(--cy);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
-.ct-header-right{display:flex;align-items:center;gap:10px}
-.ct-user-name{color:var(--cy);font-weight:700;font-size:14px}
-.ct-btn-sm{background:var(--cy);color:var(--cb);border:2px solid var(--cb);border-radius:6px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;box-shadow:2px 2px 0 var(--cb)}
-.ct-statbar{background:var(--cy);border-bottom:4px solid var(--cb);display:flex;align-items:center;gap:12px;padding:8px 20px;overflow-x:auto}
-.ct-stat{display:flex;align-items:center;gap:6px;background:var(--cw);border:2px solid var(--cb);border-radius:8px;padding:4px 12px;box-shadow:2px 2px 0 var(--cb);white-space:nowrap;flex-shrink:0}
+.ct-logo-box{background:var(--cy);border:3px solid var(--cb);border-radius:10px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:3px 3px 0 var(--cb);animation:float 3s ease-in-out infinite}
+.ct-logo-text{color:var(--cw);font-weight:900;font-size:15px;letter-spacing:.5px;text-transform:uppercase;text-shadow:2px 2px 0 rgba(0,0,0,.3)}
+.ct-logo-sub{color:#ffb8cc;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.ct-header-right{display:flex;align-items:center;gap:8px}
+.ct-rank-pill{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.4);border-radius:20px;padding:3px 10px}
+.ct-rank-icon{font-size:14px}
+.ct-rank-name{color:var(--cw);font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.ct-user-name{color:#ffb8cc;font-weight:700;font-size:13px}
+.ct-btn-sm{background:var(--cy);color:var(--cw);border:2px solid var(--cb);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:800;cursor:pointer;text-transform:uppercase;box-shadow:2px 2px 0 var(--cb);transition:transform .1s}
+.ct-btn-sm:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--cb)}
+
+/* ── XP BAR (below header) ── */
+.ct-xp-strip{background:rgba(0,0,0,.15);border-bottom:3px solid var(--cb);padding:6px 16px;display:flex;align-items:center;gap:10px;background:var(--cy)}
+.ct-xp-label{font-size:11px;font-weight:900;color:var(--cw);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;min-width:70px}
+.ct-xp-track{flex:1;background:rgba(0,0,0,.2);border:2px solid var(--cb);border-radius:99px;height:14px;overflow:hidden;position:relative}
+.ct-xp-fill{height:100%;background:linear-gradient(90deg,#ff6bb5,var(--cg));border-radius:99px;transition:width .8s cubic-bezier(.34,1.56,.64,1);position:relative}
+.ct-xp-fill::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);background-size:200% 100%;animation:shimmer 2s infinite}
+.ct-xp-val{font-size:11px;font-weight:900;color:var(--cb);white-space:nowrap}
+
+/* ── STAT BAR ── */
+.ct-statbar{background:linear-gradient(90deg,var(--cy),#7a2ab5);border-bottom:4px solid var(--cb);display:flex;align-items:center;gap:8px;padding:8px 16px;overflow-x:auto}
+.ct-stat{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.35);border-radius:10px;padding:5px 12px;white-space:nowrap;flex-shrink:0;backdrop-filter:blur(4px)}
 .ct-stat-icon{font-size:16px}
-.ct-stat-val{font-weight:800;font-size:16px;color:var(--cg)}
-.ct-stat-label{font-size:11px;font-weight:600;color:#555;text-transform:uppercase}
+.ct-stat-val{font-weight:900;font-size:16px;color:var(--cw);text-shadow:1px 1px 0 rgba(0,0,0,.3)}
+.ct-stat-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.5px}
+
+/* ── NAV ── */
 .ct-nav{display:flex;border-bottom:4px solid var(--cb);background:var(--cw);overflow-x:auto}
-.ct-tab{flex:1;min-width:80px;padding:14px 8px;text-align:center;font-weight:700;font-size:13px;cursor:pointer;border-right:2px solid var(--cb);text-transform:uppercase;letter-spacing:.5px;transition:background .15s;border:none;background:none;border-right:2px solid var(--cb)}
+.ct-tab{flex:1;min-width:80px;padding:13px 8px;text-align:center;font-weight:800;font-size:12px;cursor:pointer;border-right:2px solid var(--cb);text-transform:uppercase;letter-spacing:.3px;transition:all .15s;border:none;background:none;border-right:2px solid var(--cb);color:var(--cb)}
 .ct-tab.active{background:var(--cg);color:var(--cw)}
-.ct-tab:not(.active):hover{background:var(--cy)}
-.ct-content{padding:20px;max-width:900px;margin:0 auto;width:100%}
-.ct-countdown{background:var(--cg);border:3px solid var(--cb);border-radius:16px;box-shadow:6px 6px 0 var(--cb);padding:24px;text-align:center;margin-bottom:20px;color:var(--cw)}
-.ct-countdown-num{font-size:72px;font-weight:900;color:var(--cy);line-height:1;text-shadow:3px 3px 0 var(--cb)}
-.ct-countdown-label{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:2px;opacity:.9}
-.ct-countdown-date{font-size:13px;margin-top:6px;color:var(--cy);font-weight:700}
-.ct-progress-wrap{background:var(--cw);border:3px solid var(--cb);border-radius:12px;box-shadow:4px 4px 0 var(--cb);padding:16px;margin-bottom:20px}
-.ct-progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.ct-progress-title{font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
-.ct-progress-pct{font-size:20px;font-weight:900;color:var(--cg)}
-.ct-bar-track{background:#e8e8e8;border:2px solid var(--cb);border-radius:6px;height:20px;overflow:hidden}
-.ct-bar-fill{height:100%;background:repeating-linear-gradient(45deg,var(--cg),var(--cg) 10px,var(--cy) 10px,var(--cy) 20px);transition:width .5s}
-.ct-months{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
-.ct-month-btn{background:var(--cw);border:2px solid var(--cb);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:2px 2px 0 var(--cb);text-transform:uppercase}
-.ct-month-btn.active{background:var(--cg);color:var(--cw)}
-.ct-month-btn:hover:not(.active){background:var(--cy)}
-.ct-week{margin-bottom:16px}
-.ct-week-label{font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;color:#555}
-.ct-days{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
-.ct-day{min-width:80px;border:3px solid var(--cb);border-radius:10px;padding:10px 8px;text-align:center;box-shadow:3px 3px 0 var(--cb);cursor:pointer;transition:transform .1s;flex-shrink:0;background:var(--cw)}
-.ct-day.today{background:var(--cg);color:var(--cw)}
-.ct-day.done{background:#C8E6C9;border-color:var(--cg)}
-.ct-day.simulado{background:#E8D5FF;border-color:var(--cp)}
-.ct-day.nocaute{background:#FFE0CC;border-color:var(--co)}
-.ct-day.exam{background:var(--cb);color:var(--cy)}
-.ct-day-num{font-size:11px;font-weight:600;opacity:.7}
-.ct-day-name{font-size:13px;font-weight:800;margin:4px 0}
-.ct-day-type{font-size:10px;font-weight:700;text-transform:uppercase}
-.ct-day-theme{font-size:10px;color:#666;margin-top:3px;word-break:break-word}
-.ct-day-check{font-size:14px;margin-top:4px}
-.ct-card{background:var(--cw);border:3px solid var(--cb);border-radius:12px;box-shadow:4px 4px 0 var(--cb);padding:16px;margin-bottom:16px}
-.ct-card-title{font-weight:800;font-size:15px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--cg)}
-.ct-mat-item{background:var(--cw);border:2px solid var(--cb);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ct-tab:not(.active):hover{background:rgba(212,43,85,.1)}
+
+/* ── CONTENT ── */
+.ct-content{padding:16px;max-width:900px;margin:0 auto;width:100%}
+
+/* ── COUNTDOWN (BOSS TIMER) ── */
+.ct-countdown{background:linear-gradient(135deg,#1a0030 0%,var(--cy) 100%);border:4px solid var(--cb);border-radius:20px;box-shadow:6px 6px 0 var(--cb);padding:20px 24px;text-align:center;margin-bottom:16px;color:var(--cw);position:relative;overflow:hidden}
+.ct-countdown::before{content:'⚡';position:absolute;top:-10px;left:10px;font-size:60px;opacity:.08}
+.ct-countdown::after{content:'⚡';position:absolute;bottom:-10px;right:10px;font-size:60px;opacity:.08;transform:scaleX(-1)}
+.ct-countdown-eyebrow{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px}
+.ct-countdown-num{font-size:76px;font-weight:900;color:var(--cw);line-height:1;text-shadow:4px 4px 0 rgba(0,0,0,.4)}
+.ct-countdown-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#ffb8cc;margin-top:2px}
+.ct-countdown-date{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:12px;font-weight:700;color:#fff}
+
+/* ── LEVEL / RANK CARD ── */
+.ct-level-card{background:var(--cw);border:3px solid var(--cb);border-radius:16px;box-shadow:5px 5px 0 var(--cb);padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.ct-level-badge{width:60px;height:60px;border-radius:50%;border:4px solid var(--cb);display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:3px 3px 0 var(--cb);flex-shrink:0;background:linear-gradient(135deg,var(--cg),var(--cy))}
+.ct-level-info{flex:1;min-width:160px}
+.ct-level-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#888;margin-bottom:2px}
+.ct-level-name{font-size:20px;font-weight:900;color:var(--cg);line-height:1}
+.ct-level-sub{font-size:11px;color:#666;margin-top:2px}
+.ct-level-bar-wrap{flex:2;min-width:140px}
+.ct-level-bar-label{display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:#666;margin-bottom:4px}
+.ct-level-track{background:#e8e8e8;border:2px solid var(--cb);border-radius:99px;height:18px;overflow:hidden}
+.ct-level-fill{height:100%;background:repeating-linear-gradient(45deg,var(--cg),var(--cg) 8px,#ff6bb5 8px,#ff6bb5 16px);border-radius:99px;transition:width .8s cubic-bezier(.34,1.56,.64,1)}
+
+/* ── WEEK HEADER ── */
+.ct-crono-week{margin-bottom:20px}
+.ct-crono-week-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ct-crono-week-num{background:var(--cb);color:var(--cw);border-radius:8px;padding:3px 10px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.5px}
+.ct-crono-week-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#777;flex:1}
+.ct-crono-week-hdr::after{content:'';flex:1;height:2px;background:linear-gradient(90deg,var(--cb),transparent)}
+
+/* ── DAY CARDS ── */
+.ct-crono-day{border:3px solid var(--cb);border-radius:14px;margin-bottom:10px;background:var(--cw);box-shadow:4px 4px 0 var(--cb);overflow:hidden;transition:transform .1s}
+.ct-crono-day:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--cb)}
+.ct-day-stripe{height:6px;width:100%}
+.ct-crono-day.t-c .ct-day-stripe{background:linear-gradient(90deg,var(--c-blue),#60a5fa)}
+.ct-crono-day.t-o .ct-day-stripe{background:linear-gradient(90deg,var(--c-violet),#a78bfa)}
+.ct-crono-day.t-r .ct-day-stripe{background:linear-gradient(90deg,var(--c-amber),#fbbf24)}
+.ct-crono-day.t-s .ct-day-stripe{background:linear-gradient(90deg,var(--cg),#ff6bb5)}
+.ct-crono-day.t-f .ct-day-stripe{background:#e5e7eb}
+.ct-crono-day.t-p .ct-day-stripe{background:linear-gradient(90deg,#7c0000,var(--cr),#ff6600,#ffd700,#7c0000);background-size:300% 100%;animation:shimmer 1.5s infinite}
+.ct-day-body{padding:12px 14px}
+
+/* BOSS card (simulado) */
+.ct-crono-day.t-s{background:linear-gradient(135deg,#0d001a 0%,#1e0036 100%);border-color:var(--cp);box-shadow:4px 4px 0 var(--cp),0 0 20px rgba(91,31,138,.25)}
+.ct-crono-day.t-s .ct-day-body{color:var(--cw)}
+.ct-crono-day.t-s .ct-crono-date{color:#d8b4fe}
+.ct-crono-day.t-s .ct-crono-subject{color:var(--cw)}
+.ct-crono-day.t-s .ct-crono-topic{color:#c4b5fd}
+
+/* CHECKPOINT card (revisão) */
+.ct-crono-day.t-r{background:linear-gradient(135deg,#1a1000 0%,#2d1f00 100%);border-color:var(--c-amber);box-shadow:4px 4px 0 var(--c-amber)}
+.ct-crono-day.t-r .ct-day-body{color:var(--cw)}
+.ct-crono-day.t-r .ct-crono-date{color:#fde68a}
+.ct-crono-day.t-r .ct-crono-subject{color:var(--cw)}
+.ct-crono-day.t-r .ct-crono-topic{color:#fcd34d}
+
+/* FOLGA card */
+.ct-crono-day.t-f{background:#f3f4f6;border-color:#9ca3af;box-shadow:4px 4px 0 #9ca3af;opacity:.75}
+
+/* PROVA card (FINAL BOSS) */
+.ct-crono-day.t-p{background:linear-gradient(135deg,#2d0000 0%,#7c0000 50%,#2d0000 100%);border-color:#ffd700;border-width:4px;box-shadow:4px 4px 0 #7c0000,0 0 30px rgba(255,215,0,.3);animation:pulse-ring 2s infinite}
+.ct-crono-day.t-p .ct-day-body{color:var(--cw)}
+.ct-crono-day.t-p .ct-crono-subject{color:#ffd700;font-size:18px;text-align:center;letter-spacing:1px;text-shadow:0 0 10px rgba(255,215,0,.5)}
+
+/* META badges */
+.ct-crono-day-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.ct-crono-badge{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;padding:3px 10px;border-radius:99px;border:2px solid currentColor}
+.ct-crono-badge.t-c{color:var(--c-blue);background:#EFF6FF}
+.ct-crono-badge.t-o{color:var(--c-violet);background:#F5F3FF}
+.ct-crono-badge.t-r{color:#92400E;background:#FEF3C7}
+.ct-crono-badge.t-s{color:var(--cw);background:var(--cp);border-color:rgba(255,255,255,.3)}
+.ct-crono-badge.t-f{color:var(--c-gray);background:#F3F4F6}
+.ct-crono-badge.t-p{color:#ffd700;background:rgba(255,215,0,.15);border-color:#ffd700}
+.ct-crono-date{font-size:12px;font-weight:700;color:#555}
+.ct-crono-day.t-s .ct-crono-badge.t-s,.ct-crono-day.t-r .ct-crono-badge.t-r,.ct-crono-day.t-p .ct-crono-badge.t-p{border-color:currentColor}
+.ct-crono-q-meta{display:inline-flex;align-items:center;gap:4px;background:rgba(37,99,235,.12);border:2px solid rgba(37,99,235,.3);border-radius:8px;padding:3px 9px;font-size:11px;font-weight:900;color:#1D4ED8;margin-left:auto}
+.ct-crono-day.t-s .ct-crono-q-meta{background:rgba(196,181,253,.15);border-color:rgba(196,181,253,.4);color:#d8b4fe}
+.ct-crono-day.t-r .ct-crono-q-meta{background:rgba(253,211,77,.15);border-color:rgba(253,211,77,.4);color:#fcd34d}
+
+/* XP badge */
+.ct-xp-badge{display:inline-flex;align-items:center;gap:3px;background:linear-gradient(135deg,#ffd700,#ff9500);border:2px solid var(--cb);border-radius:8px;padding:2px 8px;font-size:10px;font-weight:900;color:#1a0a00;margin-left:auto}
+
+/* SUBJECT & TOPIC */
+.ct-crono-subject{font-size:14px;font-weight:900;color:var(--cb);margin-bottom:3px;letter-spacing:.2px}
+.ct-crono-topic{font-size:12px;color:#555;line-height:1.45;margin-bottom:6px}
+
+/* CHECKS */
+.ct-crono-checks{display:flex;flex-direction:column;gap:5px;margin-top:10px;padding-top:10px;border-top:2px dashed rgba(255,255,255,.12)}
+.ct-crono-day.t-c .ct-crono-checks,.ct-crono-day.t-o .ct-crono-checks{border-top-color:#e5e7eb}
+.ct-chk{display:flex;align-items:center;gap:10px;cursor:pointer;background:none;border:none;text-align:left;padding:5px 8px;border-radius:10px;width:100%;transition:background .1s}
+.ct-chk:hover{background:rgba(255,255,255,.07)}
+.ct-crono-day.t-c .ct-chk:hover,.ct-crono-day.t-o .ct-chk:hover{background:rgba(0,0,0,.04)}
+.ct-chk-box{width:22px;height:22px;border-radius:7px;border:2.5px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:900;transition:all .2s;background:rgba(255,255,255,.08)}
+.ct-crono-day.t-c .ct-chk-box,.ct-crono-day.t-o .ct-chk-box{border-color:#cbd5e1;background:#f8fafc}
+.ct-chk.done .ct-chk-box{background:linear-gradient(135deg,var(--cg),#ff6bb5);border-color:var(--cg);color:#fff;animation:pop .3s ease}
+.ct-crono-day.t-s .ct-chk.done .ct-chk-box{background:linear-gradient(135deg,var(--cp),#a855f7);border-color:var(--cp)}
+.ct-crono-day.t-r .ct-chk.done .ct-chk-box{background:linear-gradient(135deg,var(--c-amber),#fbbf24);border-color:var(--c-amber)}
+.ct-chk.done .ct-chk-lbl{text-decoration:line-through;opacity:.5}
+.ct-chk-lbl{font-size:12px;color:rgba(255,255,255,.85);font-weight:500}
+.ct-crono-day.t-c .ct-chk-lbl,.ct-crono-day.t-o .ct-chk-lbl{color:#444}
+
+/* QUEST STATS */
+.ct-quest-stats{margin-top:10px;padding-top:10px;border-top:2px dashed rgba(255,255,255,.12);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ct-crono-day.t-c .ct-quest-stats,.ct-crono-day.t-o .ct-quest-stats{border-top-color:#e5e7eb}
+.ct-quest-stats-title{font-size:10px;font-weight:900;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;width:100%}
+.ct-crono-day.t-c .ct-quest-stats-title,.ct-crono-day.t-o .ct-quest-stats-title{color:#94a3b8}
+.ct-quest-field{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);border-radius:10px;padding:5px 10px}
+.ct-crono-day.t-c .ct-quest-field,.ct-crono-day.t-o .ct-quest-field{background:#f8fafc;border-color:#cbd5e1}
+.ct-quest-field label{font-size:10px;font-weight:800;color:rgba(255,255,255,.7);text-transform:uppercase;white-space:nowrap}
+.ct-crono-day.t-c .ct-quest-field label,.ct-crono-day.t-o .ct-quest-field label{color:#64748b}
+.ct-quest-field input{width:48px;border:none;background:transparent;font-size:15px;font-weight:900;color:var(--cw);text-align:center;outline:none;font-variant-numeric:tabular-nums}
+.ct-crono-day.t-c .ct-quest-field input,.ct-crono-day.t-o .ct-quest-field input{color:var(--cb)}
+.ct-quest-field input::-webkit-inner-spin-button,.ct-quest-field input::-webkit-outer-spin-button{opacity:1}
+.ct-quest-sep{font-size:11px;font-weight:700;color:rgba(255,255,255,.4)}
+.ct-crono-day.t-c .ct-quest-sep,.ct-crono-day.t-o .ct-quest-sep{color:#94a3b8}
+.ct-quest-pct{display:flex;align-items:center;gap:4px;padding:5px 12px;border-radius:10px;border:2px solid rgba(255,255,255,.2);font-size:15px;font-weight:900;background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);transition:all .3s}
+.ct-quest-pct.good{background:rgba(5,150,105,.25);border-color:#34d399;color:#34d399}
+.ct-quest-pct.mid{background:rgba(217,119,6,.2);border-color:#fbbf24;color:#fbbf24}
+.ct-quest-pct.bad{background:rgba(220,38,38,.2);border-color:#f87171;color:#f87171}
+
+/* ── CARDS & REPORT ── */
+.ct-card{background:var(--cw);border:3px solid var(--cb);border-radius:14px;box-shadow:4px 4px 0 var(--cb);padding:16px;margin-bottom:16px}
+.ct-card-title{font-weight:900;font-size:14px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--cg)}
+.ct-mat-item{background:#f8f8f8;border:2px solid var(--cb);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .ct-mat-title{font-size:13px;font-weight:800}
 .ct-mat-url{font-size:11px;color:var(--cc);word-break:break-all;margin-top:2px}
-.ct-mat-open{background:var(--cw);border:2px solid var(--cb);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:2px 2px 0 var(--cb);text-decoration:none;color:var(--cb)}
-.ct-sim-item{background:var(--cw);border:3px solid var(--cp);border-radius:12px;box-shadow:4px 4px 0 var(--cp);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.ct-sim-name{font-size:14px;font-weight:800}
-.ct-sim-badge{background:var(--cp);color:var(--cw);border:2px solid var(--cb);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:800}
-.ct-sim-open{background:var(--cw);border:2px solid var(--cb);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:2px 2px 0 var(--cb);text-decoration:none;color:var(--cb)}
+.ct-mat-open{background:var(--cy);color:var(--cw);border:2px solid var(--cb);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:2px 2px 0 var(--cb);text-decoration:none}
+.ct-sim-item{background:linear-gradient(135deg,#0d001a,#1e0036);border:3px solid var(--cp);border-radius:14px;box-shadow:4px 4px 0 var(--cp);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--cw)}
+.ct-sim-name{font-size:14px;font-weight:900;color:var(--cw)}
+.ct-sim-badge{background:var(--cp);color:var(--cw);border:2px solid rgba(255,255,255,.3);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:900}
+.ct-sim-open{background:var(--cw);border:2px solid var(--cb);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:2px 2px 0 var(--cb);text-decoration:none;color:var(--cb)}
 .ct-aviso{background:var(--cw);border:3px solid var(--cg);border-radius:12px;box-shadow:3px 3px 0 var(--cg);padding:14px 16px;margin-bottom:10px}
-.ct-aviso-title{font-size:14px;font-weight:800;color:var(--cg)}
+.ct-aviso-title{font-size:14px;font-weight:900;color:var(--cg)}
 .ct-aviso-msg{font-size:13px;color:#333;margin-top:4px}
 .ct-aviso-date{font-size:11px;color:#888;margin-top:6px}
 .ct-empty{text-align:center;padding:60px 20px;color:#888}
 .ct-empty-icon{font-size:48px;margin-bottom:16px}
-.ct-empty-text{font-size:16px;font-weight:600}
+.ct-empty-text{font-size:16px;font-weight:700}
 .ct-empty-sub{font-size:13px;margin-top:8px}
-.ct-report-num{font-size:36px;font-weight:900;line-height:1;color:var(--cg)}
-.ct-report-label{font-size:11px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
-.ct-report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-bottom:20px}
-/* ── Cronograma checks ── */
-.ct-crono-week{margin-bottom:20px}
-.ct-crono-week-hdr{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#666;border-bottom:2px solid var(--cb);padding-bottom:6px;margin-bottom:10px}
-.ct-crono-day{border:2px solid var(--cb);border-radius:12px;padding:12px 14px;margin-bottom:8px;background:var(--cw);border-left-width:5px;box-shadow:3px 3px 0 var(--cb)}
-.ct-crono-day.t-c{border-left-color:#2563EB}
-.ct-crono-day.t-o{border-left-color:#7C3AED}
-.ct-crono-day.t-r{border-left-color:#D97706;background:#FFFBEB}
-.ct-crono-day.t-s{border-left-color:#059669;background:#ECFDF5}
-.ct-crono-day.t-f{border-left-color:#9CA3AF;opacity:.6}
-.ct-crono-day.t-p{border-left-color:#DC2626;background:#FEF2F2}
-.ct-crono-day-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
-.ct-crono-badge{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:99px;border:1.5px solid currentColor}
-.ct-crono-badge.t-c{color:#2563EB;background:#EFF6FF}
-.ct-crono-badge.t-o{color:#7C3AED;background:#F5F3FF}
-.ct-crono-badge.t-r{color:#D97706;background:#FEF3C7}
-.ct-crono-badge.t-s{color:#059669;background:#D1FAE5}
-.ct-crono-badge.t-f{color:#6B7280;background:#F3F4F6}
-.ct-crono-badge.t-p{color:#DC2626;background:#FEE2E2}
-.ct-crono-date{font-size:12px;font-weight:700;color:#333}
-.ct-crono-q{font-size:11px;font-weight:700;color:#999;margin-left:auto;font-variant-numeric:tabular-nums}
-.ct-crono-q-meta{display:inline-flex;align-items:center;gap:5px;background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:8px;padding:3px 10px;font-size:12px;font-weight:800;color:#1D4ED8;margin-left:auto}
-.ct-quest-stats{margin-top:10px;padding-top:10px;border-top:1.5px dashed #e0e0e0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.ct-quest-stats-title{font-size:11px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.04em;width:100%;margin-bottom:2px}
-.ct-quest-field{display:flex;align-items:center;gap:6px;background:#F8FAFC;border:2px solid #CBD5E1;border-radius:8px;padding:5px 10px}
-.ct-quest-field label{font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;white-space:nowrap}
-.ct-quest-field input{width:52px;border:none;background:transparent;font-size:14px;font-weight:800;color:#0F172A;text-align:center;outline:none;font-variant-numeric:tabular-nums}
-.ct-quest-field input::-webkit-inner-spin-button,.ct-quest-field input::-webkit-outer-spin-button{opacity:1}
-.ct-quest-sep{font-size:11px;font-weight:700;color:#94A3B8}
-.ct-quest-pct{display:flex;align-items:center;gap:4px;padding:5px 12px;border-radius:8px;border:2px solid #e0e0e0;font-size:14px;font-weight:900;background:#F8FAFC;color:#94A3B8;transition:all .2s}
-.ct-quest-pct.good{background:#D1FAE5;border-color:#059669;color:#065F46}
-.ct-quest-pct.mid{background:#FEF3C7;border-color:#D97706;color:#92400E}
-.ct-quest-pct.bad{background:#FEE2E2;border-color:#DC2626;color:#991B1B}
-.ct-crono-subject{font-size:13px;font-weight:800;color:var(--cb);margin-bottom:3px}
-.ct-crono-topic{font-size:12px;color:#555;line-height:1.4;margin-bottom:8px}
-.ct-crono-checks{display:flex;flex-direction:column;gap:6px;margin-top:8px;padding-top:8px;border-top:1.5px dashed #e0e0e0}
-.ct-chk{display:flex;align-items:center;gap:8px;cursor:pointer;background:none;border:none;text-align:left;padding:4px 6px;border-radius:8px;width:100%;transition:background .1s}
-.ct-chk:hover{background:#f5f5f5}
-.ct-chk-box{width:18px;height:18px;border-radius:5px;border:2px solid #ccc;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:900;transition:all .15s}
-.ct-chk.done .ct-chk-box{background:var(--cg);border-color:var(--cg);color:#fff}
-.ct-chk.done .ct-chk-lbl{text-decoration:line-through;color:#aaa}
-.ct-chk-lbl{font-size:12px;color:#444}
-.ct-saving{font-size:10px;color:#aaa;margin-left:auto;flex-shrink:0}
+
+/* REPORT CARDS */
+.ct-report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:20px}
+.ct-report-card{background:var(--cw);border:3px solid var(--cb);border-radius:14px;box-shadow:4px 4px 0 var(--cb);padding:16px;text-align:center;overflow:hidden;position:relative}
+.ct-report-card::before{content:attr(data-icon);position:absolute;top:-8px;right:-4px;font-size:44px;opacity:.08;line-height:1}
+.ct-report-num{font-size:40px;font-weight:900;line-height:1;color:var(--cg)}
+.ct-report-label{font-size:10px;font-weight:800;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-top:6px}
 </style>
 
 <div class="ct-wrap">
@@ -125,9 +210,22 @@
       </div>
     </div>
     <div class="ct-header-right">
+      <div class="ct-rank-pill">
+        <span class="ct-rank-icon">{{ rankIcon }}</span>
+        <span class="ct-rank-name">{{ rankName }}</span>
+      </div>
       <span class="ct-user-name">{{ userName }}</span>
       <button class="ct-btn-sm" onclick="{{ onLogout }}">Sair</button>
     </div>
+  </div>
+
+  <!-- XP BAR -->
+  <div class="ct-xp-strip">
+    <span class="ct-xp-label">⚡ {{ xpTotal }} XP</span>
+    <div class="ct-xp-track">
+      <div class="ct-xp-fill" style="width:{{ xpPct }}%"></div>
+    </div>
+    <span class="ct-xp-val">Nível {{ levelNum }}</span>
   </div>
 
   <!-- STAT BAR -->
@@ -156,11 +254,10 @@
       <div>
         <!-- Avisos -->
         <sc-if value="{{ hasAvisos }}" hint-placeholder-val="">
-          <div style="margin-bottom:16px">
-            <div style="font-size:12px;font-weight:800;color:var(--cg);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">📢 Avisos do Mentor</div>
+          <div style="margin-bottom:14px">
             <sc-for list="{{ avisos }}" as="av">
               <div class="ct-aviso">
-                <div class="ct-aviso-title">{{ av.title }}</div>
+                <div class="ct-aviso-title">📢 {{ av.title }}</div>
                 <sc-if value="{{ av.msg }}" hint-placeholder-val="">
                   <div class="ct-aviso-msg">{{ av.msg }}</div>
                 </sc-if>
@@ -170,66 +267,85 @@
           </div>
         </sc-if>
 
-        <!-- Countdown -->
+        <!-- Countdown BOSS TIMER -->
         <div class="ct-countdown">
+          <div class="ct-countdown-eyebrow">⚔️ Contagem Regressiva</div>
           <div class="ct-countdown-num">{{ examCountdown }}</div>
-          <div class="ct-countdown-label">Dias para a Prova</div>
+          <div class="ct-countdown-label">dias para a prova</div>
           <div class="ct-countdown-date">📅 {{ examDateLabel }}</div>
         </div>
 
-        <!-- Progress -->
-        <div class="ct-progress-wrap">
-          <div class="ct-progress-header">
-            <span class="ct-progress-title">Progresso Geral</span>
-            <span class="ct-progress-pct">{{ progPct }}%</span>
+        <!-- LEVEL / RANK CARD -->
+        <div class="ct-level-card">
+          <div class="ct-level-badge">{{ rankIcon }}</div>
+          <div class="ct-level-info">
+            <div class="ct-level-title">Seu Rank</div>
+            <div class="ct-level-name">{{ rankName }}</div>
+            <div class="ct-level-sub">{{ doneCks }} de {{ totalCks }} metas concluídas</div>
           </div>
-          <div class="ct-bar-track">
-            <div class="ct-bar-fill" style="width:{{ progPct }}%"></div>
+          <div class="ct-level-bar-wrap">
+            <div class="ct-level-bar-label">
+              <span>Progresso</span>
+              <span>{{ progPct }}%</span>
+            </div>
+            <div class="ct-level-track">
+              <div class="ct-level-fill" style="width:{{ progPct }}%"></div>
+            </div>
+            <div style="font-size:10px;color:#aaa;margin-top:4px;font-weight:700">{{ nextRankMsg }}</div>
           </div>
         </div>
 
         <!-- Cronograma semanal -->
         <sc-for list="{{ cronoWeeks }}" as="cw" hint-placeholder-count="9">
           <div class="ct-crono-week">
-            <div class="ct-crono-week-hdr">{{ cw.label }}</div>
+            <div class="ct-crono-week-hdr">
+              <span class="ct-crono-week-num">{{ cw.numLabel }}</span>
+              <span class="ct-crono-week-label">{{ cw.range }}</span>
+            </div>
             <sc-for list="{{ cw.days }}" as="cd" hint-placeholder-count="7">
               <div class="{{ cd.cls }}">
-                <div class="ct-crono-day-meta">
-                  <span class="{{ cd.badgeCls }}">{{ cd.badge }}</span>
-                  <span class="ct-crono-date">{{ cd.date }}</span>
+                <div class="ct-day-stripe"></div>
+                <div class="ct-day-body">
+                  <div class="ct-crono-day-meta">
+                    <span class="{{ cd.badgeCls }}">{{ cd.badge }}</span>
+                    <span class="ct-crono-date">{{ cd.date }}</span>
+                    <sc-if value="{{ cd.hasQ }}" hint-placeholder-val="">
+                      <span class="ct-crono-q-meta">🎯 {{ cd.q }}q</span>
+                    </sc-if>
+                    <sc-if value="{{ cd.hasQ }}" hint-placeholder-val="">
+                      <span class="ct-xp-badge">⚡+{{ cd.xpReward }}xp</span>
+                    </sc-if>
+                  </div>
+                  <div class="ct-crono-subject">{{ cd.subject }}</div>
+                  <sc-if value="{{ cd.hasTopic }}" hint-placeholder-val="">
+                    <div class="ct-crono-topic">{{ cd.topic }}</div>
+                  </sc-if>
+                  <sc-if value="{{ cd.hasChecks }}" hint-placeholder-val="">
+                    <div class="ct-crono-checks">
+                      <sc-for list="{{ cd.checks }}" as="ck" hint-placeholder-count="3">
+                        <button class="{{ ck.cls }}" onclick="{{ onCronoCheck }}" data-key="{{ ck.key }}">
+                          <span class="ct-chk-box">{{ ck.tick }}</span>
+                          <span class="ct-chk-lbl">{{ ck.label }}</span>
+                        </button>
+                      </sc-for>
+                    </div>
+                  </sc-if>
                   <sc-if value="{{ cd.hasQ }}" hint-placeholder-val="">
-                    <span class="ct-crono-q-meta">🎯 Meta: {{ cd.q }} questões</span>
+                    <div class="ct-quest-stats">
+                      <div class="ct-quest-stats-title">📝 Missão de questões</div>
+                      <div class="ct-quest-field">
+                        <label>Feitas</label>
+                        <input type="number" min="0" max="{{ cd.q }}" value="{{ cd.questFeitas }}" placeholder="0" oninput="{{ onQuestInput }}" data-day-key="{{ cd.dayKey }}" data-field="feitas">
+                        <span class="ct-quest-sep">/ {{ cd.q }}</span>
+                      </div>
+                      <div class="ct-quest-field">
+                        <label>Acertos</label>
+                        <input type="number" min="0" max="{{ cd.questFeitas }}" value="{{ cd.questAcertos }}" placeholder="0" oninput="{{ onQuestInput }}" data-day-key="{{ cd.dayKey }}" data-field="acertos">
+                      </div>
+                      <div class="{{ cd.questPctCls }}">{{ cd.questPctLabel }}</div>
+                    </div>
                   </sc-if>
                 </div>
-                <div class="ct-crono-subject">{{ cd.subject }}</div>
-                <sc-if value="{{ cd.hasTopic }}" hint-placeholder-val="">
-                  <div class="ct-crono-topic">{{ cd.topic }}</div>
-                </sc-if>
-                <sc-if value="{{ cd.hasChecks }}" hint-placeholder-val="">
-                  <div class="ct-crono-checks">
-                    <sc-for list="{{ cd.checks }}" as="ck" hint-placeholder-count="3">
-                      <button class="{{ ck.cls }}" onclick="{{ onCronoCheck }}" data-key="{{ ck.key }}">
-                        <span class="ct-chk-box">{{ ck.tick }}</span>
-                        <span class="ct-chk-lbl">{{ ck.label }}</span>
-                      </button>
-                    </sc-for>
-                  </div>
-                </sc-if>
-                <sc-if value="{{ cd.hasQ }}" hint-placeholder-val="">
-                  <div class="ct-quest-stats">
-                    <div class="ct-quest-stats-title">📝 Questões realizadas</div>
-                    <div class="ct-quest-field">
-                      <label>Feitas</label>
-                      <input type="number" min="0" max="{{ cd.q }}" value="{{ cd.questFeitas }}" placeholder="0" oninput="{{ onQuestInput }}" data-day-key="{{ cd.dayKey }}" data-field="feitas">
-                      <span class="ct-quest-sep">/ {{ cd.q }}</span>
-                    </div>
-                    <div class="ct-quest-field">
-                      <label>Acertos</label>
-                      <input type="number" min="0" max="{{ cd.questFeitas }}" value="{{ cd.questAcertos }}" placeholder="0" oninput="{{ onQuestInput }}" data-day-key="{{ cd.dayKey }}" data-field="acertos">
-                    </div>
-                    <div class="{{ cd.questPctCls }}">{{ cd.questPctLabel }}</div>
-                  </div>
-                </sc-if>
               </div>
             </sc-for>
           </div>
@@ -241,21 +357,21 @@
     <sc-if value="{{ showRel }}" hint-placeholder-val="">
       <div>
         <div class="ct-report-grid">
-          <div class="ct-card" style="text-align:center;padding:16px;margin-bottom:0">
+          <div class="ct-report-card" data-icon="📝">
             <div class="ct-report-num">{{ rQuestoes }}</div>
             <div class="ct-report-label">Questões Feitas</div>
           </div>
-          <div class="ct-card" style="text-align:center;padding:16px;margin-bottom:0">
+          <div class="ct-report-card" data-icon="🎯">
             <div class="ct-report-num" style="color:{{ rTaxaColor }}">{{ rTaxa }}%</div>
             <div class="ct-report-label">Taxa de Acerto</div>
           </div>
-          <div class="ct-card" style="text-align:center;padding:16px;margin-bottom:0">
+          <div class="ct-report-card" data-icon="🔥">
             <div class="ct-report-num" style="color:var(--co)">{{ rStreak }}</div>
             <div class="ct-report-label">Sequência</div>
           </div>
-          <div class="ct-card" style="text-align:center;padding:16px;margin-bottom:0">
-            <div class="ct-report-num" style="color:var(--cp)">{{ rSimulados }}</div>
-            <div class="ct-report-label">Simulados</div>
+          <div class="ct-report-card" data-icon="⚡">
+            <div class="ct-report-num" style="color:var(--cy)">{{ xpTotal }}</div>
+            <div class="ct-report-label">XP Total</div>
           </div>
         </div>
         <div class="ct-empty" style="padding:30px">
@@ -303,10 +419,10 @@
           <sc-for list="{{ simulados }}" as="s">
             <div class="ct-sim-item">
               <div>
-                <div class="ct-sim-name">{{ s.name }}</div>
+                <div class="ct-sim-name">🎯 {{ s.name }}</div>
                 <div style="margin-top:4px">
                   <span class="ct-sim-badge">⏱ {{ s.timer }}h</span>
-                  <span style="font-size:11px;color:#666;margin-left:6px">{{ s.date }}</span>
+                  <span style="font-size:11px;color:#d8b4fe;margin-left:6px">{{ s.date }}</span>
                 </div>
               </div>
               <sc-if value="{{ s.url }}" hint-placeholder-val="">
@@ -334,7 +450,6 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     var self = this;
-    // Stable handlers
     this._onLogout = function(){ var d=self.props.data||{}; d.onLogout && d.onLogout(); };
     this._tabHandlers = {
       cronograma: function(){ self.setState({view:'cronograma'}); },
@@ -342,12 +457,7 @@ class Component extends DCLogic {
       questoes:   function(){ self.setState({view:'questoes'}); },
       simulados:  function(){ self.setState({view:'simulados'}); },
     };
-    this._monthHandlers = [];
-    for(var i=0;i<24;i++){
-      (function(idx){ self._monthHandlers[idx]=function(){ self.setState({activeMonth:idx}); }; })(i);
-    }
 
-    // Quest stats input handler
     this._onQuestInput = function(e){
       var inp = e.currentTarget || e.target;
       var dayKey = inp.dataset.dayKey;
@@ -356,15 +466,12 @@ class Component extends DCLogic {
       var stats  = Object.assign({}, self.state.questStats || {});
       stats[dayKey] = Object.assign({feitas:0, acertos:0}, stats[dayKey] || {});
       stats[dayKey][field] = val;
-      // clamp acertos <= feitas
       if(stats[dayKey].acertos > stats[dayKey].feitas) stats[dayKey].acertos = stats[dayKey].feitas;
       self.setState({ questStats: stats });
-      // persist via parent callback if provided
       var d2 = self.props.data || {};
       d2.onQuestStat && d2.onQuestStat(dayKey, stats[dayKey]);
     };
 
-    // Cronograma check handler — optimistic update + Supabase save
     this._onCronoCheck = function(e){
       var btn = e.currentTarget || e.target;
       var key = btn.dataset.key;
@@ -377,9 +484,17 @@ class Component extends DCLogic {
       d.onCronoCheck && d.onCronoCheck(key, newVal);
     };
 
-    // Schedule data — each day: [date, type, badge, subject, topic, questions]
-    // types: c=cartório  o=outras  r=revisão  s=simulado  f=folga  p=prova
-    // Simulados: a cada 15 dias (ago–set), todo domingo em outubro. Prova: 01/11.
+    // ── RANK SYSTEM ──
+    this.RANKS = [
+      {min:0,  icon:'🌱', name:'Calouro',   next:'Chegar a 15%'},
+      {min:15, icon:'⚔️', name:'Aprendiz',  next:'Chegar a 35%'},
+      {min:35, icon:'🛡️', name:'Veterano',  next:'Chegar a 55%'},
+      {min:55, icon:'💎', name:'Expert',    next:'Chegar a 75%'},
+      {min:75, icon:'👑', name:'Campeão',   next:'Chegar a 90%'},
+      {min:90, icon:'🏆', name:'Mestre',    next:'Você é Mestre!'},
+    ];
+
+    // Schedule — [date, type, badge, subject, topic, questions]
     this.CRONO = [
       {n:1,r:'10–16 de agosto',d:[
         ['Seg, 10/08','c','Cartório','TGRP I','Princípios · Espécies de Serventias · Objeto e Finalidade dos Registros Públicos · Função Social e Fé Pública · Responsabilidade Civil e Disciplinar',30],
@@ -418,11 +533,11 @@ class Component extends DCLogic {
         ['Dom, 06/09','f','Folga','Dia de Folga 🏖️',null,null],
       ]},
       {n:5,r:'7–13 de setembro',d:[
-        ['Seg, 07/09','c','Cartório','Tab. Notas V','Testamentos: espécies, requisitos, revogação · Codicilo · Traslado e Certidão · Autenticação de Documentos · Reconhecimento de Firmas · Fiscalização Tributária',33],
+        ['Seg, 07/09','c','Cartório','Tab. Notas V','Testamentos: espécies, requisitos, revogação · Codicilo · Traslado e Certidão · Autenticação de Documentos · Reconhecimento de Firmas · Atos Eletrônicos',33],
         ['Ter, 08/09','o','Constitucional','Const. III','Direitos Sociais (Arts. 6–11) · Ordem Econômica e Financeira · Controle de Constitucionalidade: ADI · ADC · ADPF · Arguição Incidental',30],
-        ['Qua, 09/09','c','Cartório','Tab. Protesto I','Teoria Geral do Protesto · Competência e Atribuições · Livros e Espécies de Protesto · Prazo e Registro do Protesto · Qualificação dos Títulos',30],
+        ['Qua, 09/09','c','Cartório','Tab. Protesto I','Teoria Geral do Protesto · Competência e Atribuições · Livros e Espécies de Protesto · Prazo e Registro · Qualificação dos Títulos',30],
         ['Qui, 10/09','o','Administrativo','Adm. III','Responsabilidade Civil do Estado · Controle da Administração (Interno e Externo) · Bens Públicos · Processo Administrativo (Lei 9.784/99)',26],
-        ['Sex, 11/09','c','Cartório','Tab. Protesto II','Apresentação · Exame e Qualificação · Intimação do Devedor · Pagamento e Anuência · Sustação e Desistência · Certidões · Cancelamento do Protesto',32],
+        ['Sex, 11/09','c','Cartório','Tab. Protesto II','Apresentação · Exame e Qualificação · Intimação do Devedor · Pagamento e Anuência · Sustação e Desistência · Certidões · Cancelamento · Central Eletrônica',32],
         ['Sáb, 12/09','r','Revisão','Revisão Semanal 5','Tab. Notas IV/V · Tab. Protesto I/II · Constitucional III · Administrativo III — questões erradas',null],
         ['Dom, 13/09','s','Simulado','🎯 Simulado 2','Temas: Tab. Notas · Tab. Protesto · todas as matérias acumuladas',null],
       ]},
@@ -476,7 +591,7 @@ class Component extends DCLogic {
         ['Ter, 20/10','c','Revisão','Revisão Final II — Civil','Civil Parte Geral + Obrigações + Contratos + Resp. Civil + Coisas: questões cronometradas · Pontos mais cobrados em cartório',32],
         ['Qua, 21/10','c','Revisão','Revisão Final III — Cartório','Tab. Notas + Tab. Protesto + Reg. Imóveis: revisão final · Pontos de atenção da banca · Lei seca dos artigos principais',35],
         ['Qui, 22/10','c','Revisão','Revisão Final IV — Civil/Proc.','Civil Família + Sucessões + Proc. Civil + Matérias Gerais (Const./Adm./Trib./Emp./Penal/Proc. Penal): revisão geral final',30],
-        ['Sex, 23/10','c','Revisão','Simulação de Prova 🎯','Simulação parcial 30q cronometrada · Gestão de tempo (x minutos por questão) · Estratégia de resolução · Revisão de anotações e mapas mentais',30],
+        ['Sex, 23/10','c','Revisão','Simulação de Prova 🎯','Simulação parcial 30q cronometrada · Gestão de tempo · Estratégia de resolução · Revisão de anotações e mapas mentais',30],
         ['Sáb, 24/10','r','Revisão','Revisão Leve 🧘','Lei seca rápida dos tópicos-chave · Descanso mental — sem conteúdo novo',null],
         ['Dom, 25/10','s','Simulado','🎯 Simulado 7 — Final','Último simulado completo · 1 semana antes da prova · Análise de desempenho e pontos fracos',null],
       ]},
@@ -491,19 +606,21 @@ class Component extends DCLogic {
       ]},
     ];
 
-    this.state = { view:'cronograma', activeMonth:0, cronoChecks: (props.data && props.data.cronoChecks) || {}, questStats: (props.data && props.data.questStats) || {} };
+    this.state = {
+      view:'cronograma', activeMonth:0,
+      cronoChecks: (props.data && props.data.cronoChecks) || {},
+      questStats:  (props.data && props.data.questStats)  || {},
+    };
   }
 
   renderVals() {
     var d = this.props.data || {};
     var st = this.state;
     var view = st.view;
-    var weeks = d.weeks || [];
-    var months = d.months || [];
     var self = this;
 
-    // ── Cronograma weeks with check state ─────────────────────────────────
     var checks = st.cronoChecks || {};
+    var questStats = st.questStats || {};
     var totalCks = 0, doneCks = 0;
     var checkLabels = {
       c: ['Li o resumo do tema','Li a lei seca (opcional)','Resolvi as questões'],
@@ -511,7 +628,7 @@ class Component extends DCLogic {
       r: ['Revisei os temas de cartório/civil','Revisei as outras matérias','Refiz questões erradas'],
       s: ['Fiz o simulado completo','Revisei todos os erros'],
     };
-    var questStats = st.questStats || {};
+
     var cronoWeeks = this.CRONO.map(function(w, wi){
       var days = w.d.map(function(day, di){
         var typ = day[1], badge = day[2], subj = day[3], topic = day[4], q = day[5];
@@ -529,119 +646,110 @@ class Component extends DCLogic {
         var pct = feitas > 0 ? Math.round(acertos / feitas * 100) : null;
         var pctCls = 'ct-quest-pct';
         var pctLabel = '—%';
-        if(pct !== null){
-          pctLabel = pct+'%';
-          pctCls += pct >= 70 ? ' good' : pct >= 50 ? ' mid' : ' bad';
-        }
+        if(pct !== null){ pctLabel = pct+'%'; pctCls += pct>=70?' good':pct>=50?' mid':' bad'; }
+        var xpReward = q ? Math.round(q * 2) : 0;
         return {
           cls: 'ct-crono-day t-'+typ,
           badgeCls: 'ct-crono-badge t-'+typ,
-          badge: badge,
-          date: day[0],
-          subject: subj,
-          topic: topic || '',
-          hasTopic: !!(topic),
-          hasQ: !!q,
-          q: q ? String(q) : '',
-          hasChecks: dayChecks.length > 0,
-          checks: dayChecks,
+          badge: badge, date: day[0],
+          subject: subj, topic: topic||'',
+          hasTopic: !!(topic), hasQ: !!q,
+          q: q?String(q):'', xpReward: xpReward,
+          hasChecks: dayChecks.length>0, checks: dayChecks,
           dayKey: dayKey,
-          questFeitas: feitas || '',
-          questAcertos: acertos || '',
-          questPctCls: pctCls,
-          questPctLabel: pctLabel,
+          questFeitas: feitas||'', questAcertos: acertos||'',
+          questPctCls: pctCls, questPctLabel: pctLabel,
         };
       });
-      return { label: 'Semana '+w.n+' — '+w.r, days: days };
+      return { numLabel:'S'+w.n, range:w.r, days:days };
     });
-    var cronoPct = totalCks > 0 ? Math.round(doneCks / totalCks * 100) : 0;
 
-    // Nav tabs
-    var tabDefs = [
-      {id:'cronograma', icon:'📅', label:'Cronograma'},
-      {id:'relatorio',  icon:'📊', label:'Relatório'},
-      {id:'questoes',   icon:'📚', label:'Materiais'},
-      {id:'simulados',  icon:'🎯', label:'Simulados'},
+    var cronoPct = totalCks>0 ? Math.round(doneCks/totalCks*100) : 0;
+
+    // XP & Rank
+    var xpTotal = doneCks * 25;
+    var maxXp = totalCks * 25;
+    var xpPct = maxXp>0 ? Math.round(xpTotal/maxXp*100) : 0;
+    var levelNum = Math.floor(xpPct/10)+1;
+    var rank = this.RANKS[0];
+    for(var ri=this.RANKS.length-1;ri>=0;ri--){
+      if(cronoPct>=this.RANKS[ri].min){rank=this.RANKS[ri];break;}
+    }
+    var nextRankMsg = rank.next;
+
+    // Nav
+    var tabDefs=[
+      {id:'cronograma',icon:'📅',label:'Cronograma'},
+      {id:'relatorio', icon:'📊',label:'Relatório'},
+      {id:'questoes',  icon:'📚',label:'Materiais'},
+      {id:'simulados', icon:'🎯',label:'Simulados'},
     ];
     var navTabs = tabDefs.map(function(t){
-      return {
-        cls: 'ct-tab' + (view===t.id?' active':''),
-        onClick: self._tabHandlers[t.id],
-        icon: t.icon,
-        label: t.label,
-      };
+      return {cls:'ct-tab'+(view===t.id?' active':''), onClick:self._tabHandlers[t.id], icon:t.icon, label:t.label};
     });
 
-    // Stat cards
-    var questTotal = (d.questoesData && d.questoesData.total) || 0;
+    // Stats
     var statCards = [
       {icon:'📅', val:d.examCountdown!=null?d.examCountdown+'d':'—', label:'Pra Prova'},
-      {icon:'✅', val:String(doneCks), label:'Metas Feitas'},
+      {icon:'⚡', val:String(xpTotal)+' XP', label:'XP Total'},
+      {icon:'✅', val:String(doneCks)+'/'+String(totalCks), label:'Metas'},
       {icon:'📈', val:cronoPct+'%', label:'Progresso'},
-      {icon:'📚', val:String(questTotal||'—'), label:'Questões'},
     ];
 
     // Avisos
-    var avisos = (d.avisosData && d.avisosData.avisos) || [];
+    var avisos=(d.avisosData&&d.avisosData.avisos)||[];
 
     // Materiais
-    var tipoIcons = {video:'🎬',pdf:'📄',link:'🔗',simulado:'🎯'};
-    var materias = ((d.questoesData && d.questoesData.materias) || []).map(function(mat){
-      var items = (mat.items||[]).map(function(m){
-        return {icon:tipoIcons[m.tipo]||'🔗', titulo:m.titulo||m.title||'', url:m.url||''};
-      });
-      return {name:mat.name||mat.materia||'', items:items};
+    var tipoIcons={video:'🎬',pdf:'📄',link:'🔗',simulado:'🎯'};
+    var materias=((d.questoesData&&d.questoesData.materias)||[]).map(function(mat){
+      var items=(mat.items||[]).map(function(m){return{icon:tipoIcons[m.tipo]||'🔗',titulo:m.titulo||m.title||'',url:m.url||''};});
+      return{name:mat.name||mat.materia||'',items:items};
     });
 
     // Simulados
-    var simulados = ((d.simuladosData && d.simuladosData.adminSimulados) || []).map(function(s){
-      return {name:s.name||'', timer:s.timer||5, date:s.date||'', url:s.url||''};
+    var simulados=((d.simuladosData&&d.simuladosData.adminSimulados)||[]).map(function(s){
+      return{name:s.name||'',timer:s.timer||5,date:s.date||'',url:s.url||''};
     });
 
     // Report
-    var rep = d.reportData || {};
-    var rTaxa = rep.taxa || 0;
+    var rep=d.reportData||{};
+    var rTaxa=rep.taxa||0;
 
     return {
-      brandName: d.brandName || 'Mentoria Cartórios',
-      contestName: d.contestName || 'Concurso de Cartórios',
-      userName: d.userName || 'Aluno',
+      brandName: d.brandName||'Mentoria Cartórios',
+      contestName: d.contestName||'Concurso de Cartórios',
+      userName: d.userName||'Aluno',
       onLogout: this._onLogout,
 
-      statCards: statCards,
-      navTabs: navTabs,
+      // XP / Rank
+      xpTotal: xpTotal, xpPct: xpPct, levelNum: levelNum,
+      rankIcon: rank.icon, rankName: rank.name, nextRankMsg: nextRankMsg,
 
-      showCron: view==='cronograma',
-      showRel:  view==='relatorio',
-      showMat:  view==='questoes',
-      showSim:  view==='simulados',
+      statCards: statCards, navTabs: navTabs,
+      showCron: view==='cronograma', showRel: view==='relatorio',
+      showMat: view==='questoes',    showSim: view==='simulados',
 
       // Cronograma
-      examCountdown: d.examCountdown!=null ? String(d.examCountdown) : '—',
-      examDateLabel: d.examDateLabel || 'Data em breve',
+      examCountdown: d.examCountdown!=null?String(d.examCountdown):'—',
+      examDateLabel: d.examDateLabel||'Data em breve',
       progPct: cronoPct,
+      doneCks: doneCks, totalCks: totalCks,
       cronoWeeks: cronoWeeks,
       onCronoCheck: this._onCronoCheck,
       onQuestInput: this._onQuestInput,
-      hasAvisos: avisos.length>0,
-      avisos: avisos,
+      hasAvisos: avisos.length>0, avisos: avisos,
 
       // Relatório
-      rQuestoes: rep.totalQ || 0,
+      rQuestoes: rep.totalQ||0,
       rTaxa: rTaxa,
-      rTaxaColor: rTaxa>=70?'#007A3D':rTaxa>=50?'#FF6600':'#D32F2F',
-      rStreak: rep.streak || 0,
-      rSimulados: rep.simulados || 0,
+      rTaxaColor: rTaxa>=70?'var(--cg)':rTaxa>=50?'var(--co)':'var(--cr)',
+      rStreak: rep.streak||0,
 
       // Materiais
-      hasMateriais: materias.length>0,
-      noMateriais: materias.length===0,
-      materias: materias,
+      hasMateriais: materias.length>0, noMateriais: materias.length===0, materias: materias,
 
       // Simulados
-      hasSimulados: simulados.length>0,
-      noSimulados: simulados.length===0,
-      simulados: simulados,
+      hasSimulados: simulados.length>0, noSimulados: simulados.length===0, simulados: simulados,
     };
   }
 }
