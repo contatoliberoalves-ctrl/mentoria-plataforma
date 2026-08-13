@@ -318,6 +318,14 @@
 .ct-bq-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
 .ct-bq-opt{display:flex;gap:10px;padding:8px 10px;border-radius:8px;border:2px solid #e5e7eb;background:#f8fafc;font-size:13px;line-height:1.45;transition:all .15s}
 .ct-bq-opt.gabarito-revealed.correct{background:#f0fdf4;border-color:#22c55e;color:#15803d;font-weight:700}
+.ct-bq-opt.resp-correta{background:#f0fdf4;border-color:#22c55e;color:#15803d;font-weight:700;cursor:default}
+.ct-bq-opt.resp-errada{background:#fff1f2;border-color:#f43f5e;color:#be123c;font-weight:700;cursor:default}
+.ct-bq-opt.resp-certa-ref{background:#f0fdf4;border-color:#22c55e;color:#15803d;font-weight:700;cursor:default}
+.ct-bq-opt.selecionar{cursor:pointer}
+.ct-bq-opt.selecionar:hover{background:#e0f2fe;border-color:var(--cy)}
+.ct-bq-resp-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:8px;font-size:12px;font-weight:900;margin-left:8px}
+.ct-bq-resp-badge.acertou{background:#f0fdf4;border:2px solid #22c55e;color:#15803d}
+.ct-bq-resp-badge.errou{background:#fff1f2;border:2px solid #f43f5e;color:#be123c}
 .ct-bq-opt-letter{font-weight:900;color:var(--cy);flex-shrink:0;min-width:18px}
 .ct-bq-reveal-btn{background:var(--cy);color:#fff;border:2.5px solid var(--cb);border-radius:10px;padding:8px 16px;font-size:12px;font-weight:900;cursor:pointer;box-shadow:3px 3px 0 var(--cb);transition:transform .1s;text-transform:uppercase;letter-spacing:.3px}
 .ct-bq-reveal-btn:active{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--cb)}
@@ -545,6 +553,24 @@
           </div>
         </div>
 
+        <!-- Banco de Questões Stats -->
+        <div class="ct-report-card" style="margin-bottom:14px;padding:14px 16px;background:#fff;border:3px solid var(--cb);border-radius:16px;box-shadow:4px 4px 0 var(--cb)">
+          <div style="font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.4px;color:var(--cy);margin-bottom:10px">📝 Banco de Questões — Desempenho</div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px">
+            <div style="text-align:center"><div style="font-size:24px;font-weight:900;color:var(--cb)">{{ bancoStats.total }}</div><div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase">Respondidas</div></div>
+            <div style="text-align:center"><div style="font-size:24px;font-weight:900;color:#15803d">{{ bancoStats.acertos }}</div><div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase">Acertos</div></div>
+            <div style="text-align:center"><div style="font-size:24px;font-weight:900;color:var(--cg)">{{ bancoStats.pct }}%</div><div style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase">Taxa</div></div>
+          </div>
+          <sc-for list="{{ bancoStats.porMat }}" as="bm" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <div style="font-size:11px;font-weight:700;color:#444;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ bm.nome }}</div>
+              <div style="width:80px;background:#e5e7eb;border-radius:99px;height:8px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,var(--cy),var(--cp));border-radius:99px;width:{{ bm.pct }}%"></div></div>
+              <div style="font-size:11px;font-weight:900;color:var(--cy);width:36px;text-align:right">{{ bm.pct }}%</div>
+              <div style="font-size:10px;color:#888;width:40px;text-align:right">{{ bm.acertos }}/{{ bm.total }}</div>
+            </div>
+          </sc-for>
+        </div>
+
         <!-- Preview desempenho por área -->
         <div class="ct-preview-bar-demo">
           <div class="ct-preview-bar-title">📚 Desempenho por Área</div>
@@ -742,18 +768,23 @@
               <div class="ct-bq-enunciado">{{ bq.enunciado }}</div>
               <div class="ct-bq-opts">
                 <sc-for list="{{ bq.opts }}" as="opt">
-                  <div class="{{ opt.cls }}">
+                  <div class="{{ opt.cls }}" onclick="{{ opt.onSelect }}" data-qid="{{ bq.qid }}" data-aidx="{{ opt.aidx }}">
                     <span class="ct-bq-opt-letter">{{ opt.letra }}</span>
                     <span>{{ opt.texto }}</span>
                   </div>
                 </sc-for>
               </div>
               <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-                <button class="{{ bq.btnCls }}" onclick="{{ onReveal }}" data-idx="{{ bq.idx }}">
-                  {{ bq.btnLabel }}
-                </button>
-                <sc-if value="{{ bq.revealed }}" hint-placeholder-val="">
-                  <span class="ct-bq-gabarito">✅ Gabarito: {{ bq.gabarito }}</span>
+                <sc-if value="{{ bq.naoRespondida }}" hint-placeholder-val="">
+                  <button class="{{ bq.btnCls }}" onclick="{{ onReveal }}" data-idx="{{ bq.idx }}">
+                    {{ bq.btnLabel }}
+                  </button>
+                  <sc-if value="{{ bq.revealed }}" hint-placeholder-val="">
+                    <span class="ct-bq-gabarito">✅ Gabarito: {{ bq.gabarito }}</span>
+                  </sc-if>
+                </sc-if>
+                <sc-if value="{{ bq.respondida }}" hint-placeholder-val="">
+                  <span class="{{ bq.respBadgeCls }}">{{ bq.respBadgeLabel }}</span>
                 </sc-if>
               </div>
             </div>
@@ -934,25 +965,28 @@ class Component extends DCLogic {
           if(!Array.isArray(data)){self.setState({bancoLoading:false,bancoError:true});return;}
           self.setState({bancoLoading:false,bancoLoaded:true,bancoError:false,bancoQuestoes:data,bancoTotal:total,bancoPage:pg,bancoMateria:mat,bancoTema:tem,buscaTexto:btext,revealed:{}});
           if(!self.state.bancoMaterias||!self.state.bancoMaterias.length) self._loadMaterias();
-          if(mat && !self.state.bancoTemasMap) self._loadTemas();
-          if(mat && (!self.state.bancoTemasMap||!self.state.bancoTemasMap[mat])) self._loadTemas();
+          if(!self.state.bancoTemasMap) self._loadTemas();
         });
       }).catch(function(){self.setState({bancoLoading:false,bancoError:true});});
     };
 
     this._loadMaterias = function(){
-      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=materia&order=materia';
-      fetch(url,{headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY}}).then(function(r){return r.json();}).then(function(rows){
-        if(!Array.isArray(rows)) return;
-        var seen={},mats=[];
-        rows.forEach(function(r){if(r.materia&&!seen[r.materia]){seen[r.materia]=1;mats.push(r.materia);}});
-        self.setState({bancoMaterias:mats});
-      }).catch(function(){});
+      // Hardcoded to avoid 1000-row Supabase default limit (2920 rows total)
+      var mats = [
+        'Direito Administrativo','Direito Civil','Direito Constitucional',
+        'Direito Empresarial','Direito Penal','Direito Processual Civil',
+        'Direito Processual Penal','Direito Tributário',
+        'Registro Civil de Pessoas Jurídicas','Registro Civil de Pessoas Naturais',
+        'Registro de Imóveis','Registro de Títulos e Documentos',
+        'Tabelionato de Notas','Tabelionato de Protesto',
+        'Teoria Geral dos Registros Públicos'
+      ];
+      self.setState({bancoMaterias:mats});
     };
 
     this._loadTemas = function(){
-      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=materia,tema&order=materia,tema';
-      fetch(url,{headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY}}).then(function(r){return r.json();}).then(function(rows){
+      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=materia,tema&order=materia,tema&limit=3000';
+      fetch(url,{headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY,'Range':'0-2999'}}).then(function(r){return r.json();}).then(function(rows){
         if(!Array.isArray(rows)) return;
         var map={};
         rows.forEach(function(r){
@@ -962,6 +996,25 @@ class Component extends DCLogic {
         });
         self.setState({bancoTemasMap:map});
       }).catch(function(){});
+    };
+
+    this._onResponder = function(e){
+      var btn = e.currentTarget || e.target;
+      var qid  = btn.dataset.qid;
+      var aidx = parseInt(btn.dataset.aidx, 10);
+      if(isNaN(aidx) || !qid) return;
+      var qs = self.state.bancoQuestoes || [];
+      var q  = null;
+      for(var i=0;i<qs.length;i++){if(qs[i].id===qid){q=qs[i];break;}}
+      if(!q) return;
+      var resp = Object.assign({}, self.state.bancoRespostas || {});
+      if(resp[qid]) return; // já respondida, não permite mudar
+      var corrIdx = typeof q.correta === 'number' ? q.correta : -1;
+      var acertou = aidx === corrIdx;
+      resp[qid] = {escolha: aidx, correta: corrIdx, acertou: acertou, materia: q.materia||''};
+      // persist
+      try{ var all=JSON.parse(localStorage.getItem('_ct_bq_resp')||'{}'); all[qid]=resp[qid]; localStorage.setItem('_ct_bq_resp',JSON.stringify(all)); }catch(ex){}
+      self.setState({bancoRespostas: resp});
     };
 
     this._onReveal = function(e){
@@ -1177,6 +1230,8 @@ class Component extends DCLogic {
     try{ _sp = JSON.parse(localStorage.getItem('_ct_profile')||'{}'); }catch(e){}
     var _sn = {};
     try{ _sn = JSON.parse(localStorage.getItem('_ct_notes')||'{}'); }catch(e){}
+    var _bqResp = {};
+    try{ _bqResp = JSON.parse(localStorage.getItem('_ct_bq_resp')||'{}'); }catch(e){}
     // Auto-detect current week based on today's date
     var _todayStr = (function(){var d=new Date();return (d.getMonth()+1)+'/'+d.getDate();})();
     var _startWeek = 0;
@@ -1200,6 +1255,7 @@ class Component extends DCLogic {
       profileOpen: false,
       profileName: _sp.name||'', profilePhone: _sp.phone||'', profileCity: _sp.city||'', profilePhoto: _sp.photo||'',
       dayNotes: _sn,
+      bancoRespostas: _bqResp,
     };
   }
 
@@ -1407,6 +1463,7 @@ class Component extends DCLogic {
       onBancoNext:  this._onBancoNext,
       onBuscaInput: this._onBuscaInput,
       onReveal:     this._onReveal,
+      onResponder:  this._onResponder,
       bancoMateriaFiltros: (function(){
         var mats = st.bancoMaterias || [];
         var cur  = st.bancoMateria || '';
@@ -1437,6 +1494,7 @@ class Component extends DCLogic {
       bancoQuestoesVisiveis: (function(){
         var qs      = st.bancoQuestoes || [];
         var rev     = st.revealed || {};
+        var resp    = st.bancoRespostas || {};
         var base    = (st.bancoPage||0) * self._PAGE_SIZE;
         var letters = ['A','B','C','D','E'];
         return qs.map(function(q, i){
@@ -1444,24 +1502,66 @@ class Component extends DCLogic {
           var corrIdx = typeof q.correta === 'number' ? q.correta : -1;
           var gabLetter = corrIdx >= 0 ? (letters[corrIdx] || '') : '';
           var isRev   = !!rev[String(i)];
+          var qid     = q.id || String(i);
+          var qResp   = resp[qid] || null;
+          var respondida = !!qResp;
           var optObjs = opts.map(function(txt, ai){
             var letter = letters[ai] || String(ai+1);
-            var isGab  = isRev && ai === corrIdx;
-            return {letra: letter, texto: String(txt||''), cls: 'ct-bq-opt' + (isGab?' gabarito-revealed correct':'')};
+            var cls = 'ct-bq-opt';
+            if(respondida){
+              if(ai === qResp.escolha && qResp.acertou) cls += ' resp-correta';
+              else if(ai === qResp.escolha && !qResp.acertou) cls += ' resp-errada';
+              else if(ai === corrIdx && !qResp.acertou) cls += ' resp-certa-ref';
+            } else {
+              // allow selection
+              var isGab = isRev && ai === corrIdx;
+              if(isGab) cls += ' gabarito-revealed correct';
+              else cls += ' selecionar';
+            }
+            return {
+              letra: letter,
+              texto: String(txt||''),
+              cls: cls,
+              aidx: String(ai),
+              onSelect: respondida ? null : self._onResponder,
+            };
           });
           return {
-            idx:      String(i),
-            num:      String(base + i + 1),
-            materia:  q.tema || '',
-            banca:    q.prova || '',
-            enunciado:q.enunciado || '',
-            opts:     optObjs,
-            gabarito: gabLetter,
-            revealed: isRev,
-            btnCls:   'ct-bq-reveal-btn' + (isRev?' shown':''),
-            btnLabel: isRev ? '🙈 Ocultar gabarito' : '👁 Ver gabarito',
+            idx:           String(i),
+            qid:           qid,
+            num:           String(base + i + 1),
+            materia:       q.tema || '',
+            banca:         q.prova || '',
+            enunciado:     q.enunciado || '',
+            opts:          optObjs,
+            gabarito:      gabLetter,
+            revealed:      isRev,
+            naoRespondida: !respondida,
+            respondida:    respondida,
+            btnCls:        'ct-bq-reveal-btn' + (isRev?' shown':''),
+            btnLabel:      isRev ? '🙈 Ocultar' : '👁 Ver gabarito',
+            respBadgeCls:  'ct-bq-resp-badge ' + (qResp&&qResp.acertou?'acertou':'errou'),
+            respBadgeLabel:qResp ? (qResp.acertou ? '✅ Acertou!' : '❌ Errou — gabarito: '+(letters[corrIdx]||'?')) : '',
           };
         });
+      })(),
+      bancoStats: (function(){
+        var resp = st.bancoRespostas || {};
+        var total=0, acertos=0, porMat={};
+        Object.keys(resp).forEach(function(k){
+          var r=resp[k]; total++;
+          if(r.acertou) acertos++;
+          var m=r.materia||'Geral';
+          if(!porMat[m]) porMat[m]={total:0,acertos:0};
+          porMat[m].total++;
+          if(r.acertou) porMat[m].acertos++;
+        });
+        var pct = total>0 ? Math.round(acertos/total*100) : 0;
+        var matList = Object.keys(porMat).sort().map(function(m){
+          var pm=porMat[m];
+          return {nome:m, total:pm.total, acertos:pm.acertos, pct:Math.round(pm.acertos/pm.total*100)};
+        });
+        return {total:total, acertos:acertos, pct:pct, porMat:matList};
       })(),
     };
   }
