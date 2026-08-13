@@ -983,19 +983,25 @@ class Component extends DCLogic {
       self.setState({bancoMaterias:mats});
     };
 
-    this._loadTemas = function(materia){
-      // Fetch temas only for the specific matéria to avoid 1000-row server limit
-      if(!materia) return;
-      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=tema&order=tema&limit=200&materia=eq.' + encodeURIComponent(materia);
-      fetch(url,{headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY}}).then(function(r){return r.json();}).then(function(rows){
-        if(!Array.isArray(rows)) return;
-        var seen={}, temas=[];
-        rows.forEach(function(r){var t=r.tema||''; if(t&&!seen[t]){seen[t]=1;temas.push(t);}});
-        var map = Object.assign({}, self.state.bancoTemasMap||{});
-        map[materia] = temas;
-        self.setState({bancoTemasMap:map});
-      }).catch(function(){});
+    // Hardcoded matéria→temas map (from DB query; avoids async + server-limit issues)
+    this._TEMAS_MAP = {
+      'Direito Administrativo':              ['PRINCÍPIOS DO DIREITO ADMINISTRATIVO'],
+      'Direito Civil':                       ['LEI DE INTRODUÇÃO ÀS NORMAS DO DIREITO BRASILEIRO'],
+      'Direito Constitucional':              ['TEORIA DA CONSTITUIÇÃO, PODER CONSTITUINTE E PRINCÍPIOS FUNDAMENTAIS'],
+      'Direito Empresarial':                 ['EMPRESA E EMPRESÁRIO'],
+      'Direito Penal':                       ['CONCEITO, FONTES, PRINCÍPIOS E APLICAÇÃO DA LEI PENAL'],
+      'Direito Processual Civil':            ['PRINCÍPIOS DO PROCESSO CIVIL'],
+      'Direito Processual Penal':            ['FONTES, PRINCÍPIOS GERAIS E EFICÁCIA DA LEI PROCESSUAL PENAL'],
+      'Direito Tributário':                  ['COMPETÊNCIA TRIBUTÁRIA'],
+      'Registro Civil de Pessoas Jurídicas': ['COMPETÊNCIA E PRINCÍPIOS'],
+      'Registro Civil de Pessoas Naturais':  ['COMPETÊNCIA E ATRIBUIÇÕES'],
+      'Registro de Imóveis':                 ['COMPETÊNCIA E PRINCÍPIOS'],
+      'Registro de Títulos e Documentos':    ['COMPETÊNCIA E PRINCÍPIOS'],
+      'Tabelionato de Notas':                ['TEORIA GERAL DOS ATOS NOTARIAIS'],
+      'Tabelionato de Protesto':             ['TEORIA GERAL, PRINCÍPIOS, ESPÉCIES, OBJETO E FINALIDADE'],
+      'Teoria Geral dos Registros Públicos': ['PRINCÍPIOS'],
     };
+    this._loadTemas = function(materia){ /* now hardcoded — no-op */ };
 
     this._onResponder = function(e){
       var btn = e.currentTarget || e.target;
@@ -1471,18 +1477,14 @@ class Component extends DCLogic {
           return {
             label: m.label,
             cls: 'ct-bq-filter'+(cur===m.id?' active':''),
-            onClick: (function(id){return function(){
-              self._loadBanco(0,id,'',st.buscaTexto||'');
-              if(id && (!self.state.bancoTemasMap || !self.state.bancoTemasMap[id])) self._loadTemas(id);
-            };})(m.id),
+            onClick: (function(id){return function(){self._loadBanco(0,id,'',st.buscaTexto||'');};})(m.id),
           };
         });
       })(),
       bancoTemaMostrar: !!(st.bancoMateria),
       bancoTemaFiltros: (function(){
         var mat   = st.bancoMateria || '';
-        var map   = st.bancoTemasMap || {};
-        var temas = mat ? (map[mat] || []) : [];
+        var temas = mat ? (self._TEMAS_MAP[mat] || []) : [];
         var cur   = st.bancoTema || '';
         var all   = [{label:'Todos os temas',id:''}].concat(temas.map(function(t){return{label:t,id:t};}));
         return all.map(function(t){
