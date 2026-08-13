@@ -711,12 +711,23 @@
           <!-- Busca -->
           <input class="ct-bq-search" type="text" placeholder="🔍 Buscar por palavra-chave..." value="{{ buscaTexto }}" oninput="{{ onBuscaInput }}">
 
-          <!-- Filtros por matéria -->
-          <div class="ct-bq-filters">
-            <sc-for list="{{ bancoFiltros }}" as="bf" hint-placeholder-count="6">
+          <!-- Filtro nível 1: Matéria -->
+          <div style="font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#666;margin-bottom:6px">📚 Matéria</div>
+          <div class="ct-bq-filters" style="margin-bottom:10px">
+            <sc-for list="{{ bancoMateriaFiltros }}" as="bf" hint-placeholder-count="5">
               <button class="{{ bf.cls }}" onclick="{{ bf.onClick }}">{{ bf.label }}</button>
             </sc-for>
           </div>
+
+          <!-- Filtro nível 2: Tema (aparece só quando matéria selecionada) -->
+          <sc-if value="{{ bancoTemaMostrar }}" hint-placeholder-val="">
+            <div style="font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#666;margin-bottom:6px">🏷️ Tema</div>
+            <div class="ct-bq-filters" style="margin-bottom:14px">
+              <sc-for list="{{ bancoTemaFiltros }}" as="tf" hint-placeholder-count="3">
+                <button class="{{ tf.cls }}" onclick="{{ tf.onClick }}">{{ tf.label }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
 
           <!-- Questões -->
           <sc-for list="{{ bancoQuestoesVisiveis }}" as="bq" hint-placeholder-count="5">
@@ -904,34 +915,52 @@ class Component extends DCLogic {
       banco:      function(){ self.setState({view:'banco'}); if(!self.state.bancoLoaded && !self.state.bancoLoading){ self._loadBanco(0); } },
     };
 
-    this._loadBanco = function(page, filtro, busca) {
-      var pg     = page   != null ? page   : (self.state.bancoPage || 0);
-      var filt   = filtro != null ? filtro : (self.state.bancoFiltro || '');
-      var btext  = busca  != null ? busca  : (self.state.buscaTexto || '');
-      var from   = pg * self._PAGE_SIZE;
-      var base   = self._SB_URL + '/rest/v1/const_banco_questoes?select=id,tema,enunciado,opcoes,correta,prova&order=tema,id&limit=' + self._PAGE_SIZE + '&offset=' + from;
-      if(filt) base += '&tema=eq.' + encodeURIComponent(filt);
+    this._loadBanco = function(page, materia, tema, busca) {
+      var pg    = page    != null ? page    : (self.state.bancoPage || 0);
+      var mat   = materia != null ? materia : (self.state.bancoMateria || '');
+      var tem   = tema    != null ? tema    : (self.state.bancoTema || '');
+      var btext = busca   != null ? busca   : (self.state.buscaTexto || '');
+      var from  = pg * self._PAGE_SIZE;
+      var base  = self._SB_URL + '/rest/v1/const_banco_questoes?select=id,materia,tema,enunciado,opcoes,correta,prova&order=materia,tema,id&limit=' + self._PAGE_SIZE + '&offset=' + from;
+      if(mat)   base += '&materia=eq.' + encodeURIComponent(mat);
+      if(tem)   base += '&tema=eq.'    + encodeURIComponent(tem);
       if(btext) base += '&enunciado=ilike.*' + encodeURIComponent(btext) + '*';
-      var hdrs = { 'apikey': self._SB_KEY, 'Authorization': 'Bearer ' + self._SB_KEY, 'Prefer': 'count=exact' };
-      self.setState({bancoLoading: true, bancoError: false, bancoLoaded: false});
-      fetch(base, {headers: hdrs}).then(function(res){
+      var hdrs = {'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY,'Prefer':'count=exact'};
+      self.setState({bancoLoading:true, bancoError:false, bancoLoaded:false});
+      fetch(base, {headers:hdrs}).then(function(res){
         var crange = res.headers.get('content-range') || '';
-        var total  = parseInt((crange.split('/')[1]) || '0', 10) || 0;
+        var total  = parseInt((crange.split('/')[1])||'0',10)||0;
         return res.json().then(function(data){
-          if(!Array.isArray(data)){ self.setState({bancoLoading:false, bancoError:true}); return; }
-          self.setState({bancoLoading:false, bancoLoaded:true, bancoError:false, bancoQuestoes: data, bancoTotal: total, bancoPage: pg, bancoFiltro: filt, buscaTexto: btext, revealed: {}});
-          if(!self.state.bancoMaterias || !self.state.bancoMaterias.length) self._loadMaterias();
+          if(!Array.isArray(data)){self.setState({bancoLoading:false,bancoError:true});return;}
+          self.setState({bancoLoading:false,bancoLoaded:true,bancoError:false,bancoQuestoes:data,bancoTotal:total,bancoPage:pg,bancoMateria:mat,bancoTema:tem,buscaTexto:btext,revealed:{}});
+          if(!self.state.bancoMaterias||!self.state.bancoMaterias.length) self._loadMaterias();
+          if(mat && !self.state.bancoTemasMap) self._loadTemas();
+          if(mat && (!self.state.bancoTemasMap||!self.state.bancoTemasMap[mat])) self._loadTemas();
         });
-      }).catch(function(){ self.setState({bancoLoading:false, bancoError:true}); });
+      }).catch(function(){self.setState({bancoLoading:false,bancoError:true});});
     };
 
     this._loadMaterias = function(){
-      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=tema&order=tema';
-      fetch(url, {headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY}}).then(function(r){return r.json();}).then(function(rows){
+      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=materia&order=materia';
+      fetch(url,{headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY}}).then(function(r){return r.json();}).then(function(rows){
         if(!Array.isArray(rows)) return;
-        var seen={}, mats=[];
-        rows.forEach(function(r){ if(r.tema && !seen[r.tema]){seen[r.tema]=1;mats.push(r.tema);} });
-        self.setState({bancoMaterias: mats});
+        var seen={},mats=[];
+        rows.forEach(function(r){if(r.materia&&!seen[r.materia]){seen[r.materia]=1;mats.push(r.materia);}});
+        self.setState({bancoMaterias:mats});
+      }).catch(function(){});
+    };
+
+    this._loadTemas = function(){
+      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=materia,tema&order=materia,tema';
+      fetch(url,{headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY}}).then(function(r){return r.json();}).then(function(rows){
+        if(!Array.isArray(rows)) return;
+        var map={};
+        rows.forEach(function(r){
+          var m=r.materia||'';var t=r.tema||'';
+          if(!map[m]) map[m]=[];
+          if(t&&map[m].indexOf(t)<0) map[m].push(t);
+        });
+        self.setState({bancoTemasMap:map});
       }).catch(function(){});
     };
 
@@ -943,18 +972,18 @@ class Component extends DCLogic {
       self.setState({revealed: rev});
     };
 
-    this._onBancoPrev = function(){ var pg=self.state.bancoPage||0; if(pg>0) self._loadBanco(pg-1); };
+    this._onBancoPrev = function(){ var pg=self.state.bancoPage||0; if(pg>0) self._loadBanco(pg-1,null,null,null); };
     this._onBancoNext = function(){
       var pg=self.state.bancoPage||0;
       var tot=self.state.bancoTotal||0;
       var pages=Math.ceil(tot/self._PAGE_SIZE);
-      if(pg<pages-1) self._loadBanco(pg+1);
+      if(pg<pages-1) self._loadBanco(pg+1,null,null,null);
     };
     this._onBuscaInput = function(e){
       var v=(e.target||e.currentTarget).value;
       clearTimeout(self._buscaTimer);
       self.setState({buscaTexto:v});
-      self._buscaTimer = setTimeout(function(){ self._loadBanco(0, self.state.bancoFiltro, v); }, 500);
+      self._buscaTimer = setTimeout(function(){ self._loadBanco(0,null,null,v); }, 500);
     };
 
     this._onWeekPrev = function(){ var w=self.state.activeWeek||0; if(w>0) self.setState({activeWeek:w-1}); };
@@ -1378,15 +1407,30 @@ class Component extends DCLogic {
       onBancoNext:  this._onBancoNext,
       onBuscaInput: this._onBuscaInput,
       onReveal:     this._onReveal,
-      bancoFiltros: (function(){
+      bancoMateriaFiltros: (function(){
         var mats = st.bancoMaterias || [];
-        var cur  = st.bancoFiltro || '';
-        var all  = [{label:'Todas', id:''}].concat(mats.map(function(m){return {label:m,id:m};}));
+        var cur  = st.bancoMateria || '';
+        var all  = [{label:'Todas',id:''}].concat(mats.map(function(m){return{label:m,id:m};}));
         return all.map(function(m){
           return {
             label: m.label,
-            cls: 'ct-bq-filter' + (cur===m.id?' active':''),
-            onClick: (function(id){ return function(){ self._loadBanco(0, id, st.buscaTexto||''); }; })(m.id),
+            cls: 'ct-bq-filter'+(cur===m.id?' active':''),
+            onClick: (function(id){return function(){self._loadBanco(0,id,'',st.buscaTexto||'');};})(m.id),
+          };
+        });
+      })(),
+      bancoTemaMostrar: !!(st.bancoMateria),
+      bancoTemaFiltros: (function(){
+        var mat   = st.bancoMateria || '';
+        var map   = st.bancoTemasMap || {};
+        var temas = mat ? (map[mat] || []) : [];
+        var cur   = st.bancoTema || '';
+        var all   = [{label:'Todos os temas',id:''}].concat(temas.map(function(t){return{label:t,id:t};}));
+        return all.map(function(t){
+          return {
+            label: t.label,
+            cls: 'ct-bq-filter'+(cur===t.id?' active':''),
+            onClick: (function(id){return function(){self._loadBanco(0,null,id,null);};})(t.id),
           };
         });
       })(),
