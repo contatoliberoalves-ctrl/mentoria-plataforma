@@ -909,8 +909,8 @@ class Component extends DCLogic {
       var filt   = filtro != null ? filtro : (self.state.bancoFiltro || '');
       var btext  = busca  != null ? busca  : (self.state.buscaTexto || '');
       var from   = pg * self._PAGE_SIZE;
-      var base   = self._SB_URL + '/rest/v1/const_banco_questoes?select=id,materia,enunciado,alternativa_a,alternativa_b,alternativa_c,alternativa_d,alternativa_e,gabarito,banca,ano&order=materia,id&limit=' + self._PAGE_SIZE + '&offset=' + from;
-      if(filt) base += '&materia=eq.' + encodeURIComponent(filt);
+      var base   = self._SB_URL + '/rest/v1/const_banco_questoes?select=id,tema,enunciado,opcoes,correta,prova&order=tema,id&limit=' + self._PAGE_SIZE + '&offset=' + from;
+      if(filt) base += '&tema=eq.' + encodeURIComponent(filt);
       if(btext) base += '&enunciado=ilike.*' + encodeURIComponent(btext) + '*';
       var hdrs = { 'apikey': self._SB_KEY, 'Authorization': 'Bearer ' + self._SB_KEY, 'Prefer': 'count=exact' };
       self.setState({bancoLoading: true, bancoError: false, bancoLoaded: false});
@@ -926,11 +926,11 @@ class Component extends DCLogic {
     };
 
     this._loadMaterias = function(){
-      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=materia&order=materia';
+      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=tema&order=tema';
       fetch(url, {headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY}}).then(function(r){return r.json();}).then(function(rows){
         if(!Array.isArray(rows)) return;
         var seen={}, mats=[];
-        rows.forEach(function(r){ if(r.materia && !seen[r.materia]){seen[r.materia]=1;mats.push(r.materia);} });
+        rows.forEach(function(r){ if(r.tema && !seen[r.tema]){seen[r.tema]=1;mats.push(r.tema);} });
         self.setState({bancoMaterias: mats});
       }).catch(function(){});
     };
@@ -1391,26 +1391,27 @@ class Component extends DCLogic {
         });
       })(),
       bancoQuestoesVisiveis: (function(){
-        var qs   = st.bancoQuestoes || [];
-        var rev  = st.revealed || {};
-        var base = (st.bancoPage||0) * self._PAGE_SIZE;
+        var qs      = st.bancoQuestoes || [];
+        var rev     = st.revealed || {};
+        var base    = (st.bancoPage||0) * self._PAGE_SIZE;
+        var letters = ['A','B','C','D','E'];
         return qs.map(function(q, i){
-          var letters = ['A','B','C','D','E'];
-          var alts = [q.alternativa_a, q.alternativa_b, q.alternativa_c, q.alternativa_d, q.alternativa_e];
-          var gabLetter = (q.gabarito||'').toUpperCase().trim();
-          var isRev = !!rev[String(i)];
-          var opts = alts.map(function(txt, ai){
-            var letter = letters[ai];
-            var isGab = isRev && letter === gabLetter;
-            return {letra: letter, texto: txt||'', cls: 'ct-bq-opt' + (isGab?' gabarito-revealed correct':'')};
-          }).filter(function(o){return !!o.texto;});
+          var opts    = Array.isArray(q.opcoes) ? q.opcoes : [];
+          var corrIdx = typeof q.correta === 'number' ? q.correta : -1;
+          var gabLetter = corrIdx >= 0 ? (letters[corrIdx] || '') : '';
+          var isRev   = !!rev[String(i)];
+          var optObjs = opts.map(function(txt, ai){
+            var letter = letters[ai] || String(ai+1);
+            var isGab  = isRev && ai === corrIdx;
+            return {letra: letter, texto: String(txt||''), cls: 'ct-bq-opt' + (isGab?' gabarito-revealed correct':'')};
+          });
           return {
             idx:      String(i),
             num:      String(base + i + 1),
-            materia:  q.materia || '',
-            banca:    q.banca ? (q.banca + (q.ano?' '+q.ano:'')) : '',
+            materia:  q.tema || '',
+            banca:    q.prova || '',
             enunciado:q.enunciado || '',
-            opts:     opts,
+            opts:     optObjs,
             gabarito: gabLetter,
             revealed: isRev,
             btnCls:   'ct-bq-reveal-btn' + (isRev?' shown':''),
