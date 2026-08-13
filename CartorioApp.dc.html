@@ -298,6 +298,37 @@
 .ct-preview-tip{background:linear-gradient(135deg,rgba(0,96,96,.08),rgba(0,96,96,.03));border:1.5px solid rgba(0,96,96,.2);border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;margin-top:14px}
 .ct-preview-tip-icon{font-size:18px;flex-shrink:0;margin-top:1px}
 .ct-preview-tip-text{font-size:12px;color:#444;line-height:1.5;font-weight:600}
+
+/* ── BANCO DE QUESTÕES ── */
+.ct-bq-header{background:linear-gradient(135deg,#001818,var(--cy));border:3px solid var(--cb);border-radius:16px;box-shadow:4px 4px 0 var(--cb);padding:16px;margin-bottom:14px;color:#fff}
+.ct-bq-title{font-size:16px;font-weight:900;letter-spacing:.3px;margin-bottom:4px}
+.ct-bq-sub{font-size:12px;color:rgba(255,255,255,.7)}
+.ct-bq-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.ct-bq-filter{background:var(--cw);border:2px solid var(--cb);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:.3px;transition:all .15s;color:var(--cb)}
+.ct-bq-filter.active{background:var(--cy);color:#fff;border-color:var(--cy)}
+.ct-bq-filter:hover:not(.active){background:#f0f0f0}
+.ct-bq-search{width:100%;border:2.5px solid var(--cb);border-radius:10px;padding:10px 14px;font-size:14px;outline:none;margin-bottom:12px;box-sizing:border-box;font-family:inherit}
+.ct-bq-search:focus{border-color:var(--cy)}
+.ct-bq-card{background:var(--cw);border:3px solid var(--cb);border-radius:14px;box-shadow:4px 4px 0 var(--cb);padding:16px;margin-bottom:12px;overflow:hidden}
+.ct-bq-card-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.ct-bq-num{font-size:11px;font-weight:900;color:#888;min-width:32px}
+.ct-bq-mat{background:var(--cy);color:#fff;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.3px}
+.ct-bq-banca{background:#f0f0f0;color:#555;border-radius:20px;padding:3px 8px;font-size:10px;font-weight:700}
+.ct-bq-enunciado{font-size:13.5px;color:var(--cb);line-height:1.6;margin-bottom:12px;font-weight:500}
+.ct-bq-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.ct-bq-opt{display:flex;gap:10px;padding:8px 10px;border-radius:8px;border:2px solid #e5e7eb;background:#f8fafc;font-size:13px;line-height:1.45;transition:all .15s}
+.ct-bq-opt.gabarito-revealed.correct{background:#f0fdf4;border-color:#22c55e;color:#15803d;font-weight:700}
+.ct-bq-opt-letter{font-weight:900;color:var(--cy);flex-shrink:0;min-width:18px}
+.ct-bq-reveal-btn{background:var(--cy);color:#fff;border:2.5px solid var(--cb);border-radius:10px;padding:8px 16px;font-size:12px;font-weight:900;cursor:pointer;box-shadow:3px 3px 0 var(--cb);transition:transform .1s;text-transform:uppercase;letter-spacing:.3px}
+.ct-bq-reveal-btn:active{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--cb)}
+.ct-bq-reveal-btn.shown{background:#059669;border-color:var(--cb)}
+.ct-bq-gabarito{display:inline-flex;align-items:center;gap:6px;background:#f0fdf4;border:2px solid #22c55e;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:900;color:#15803d;margin-left:8px}
+.ct-bq-pagination{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;padding:12px 0}
+.ct-bq-page-btn{background:var(--cw);border:2.5px solid var(--cb);border-radius:10px;padding:8px 18px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:3px 3px 0 var(--cb);transition:all .15s}
+.ct-bq-page-btn:hover{background:var(--cy);color:#fff;border-color:var(--cy)}
+.ct-bq-page-btn[disabled]{opacity:.35;cursor:default;pointer-events:none}
+.ct-bq-page-info{font-size:12px;font-weight:700;color:#666}
+.ct-bq-loading{text-align:center;padding:40px;color:#888;font-weight:700;font-size:14px}
 </style>
 
 <div class="ct-wrap">
@@ -656,6 +687,77 @@
       </div>
     </sc-if>
 
+    <!-- BANCO DE QUESTÕES -->
+    <sc-if value="{{ showBanco }}" hint-placeholder-val="">
+      <div>
+        <div class="ct-bq-header">
+          <div class="ct-bq-title">📝 Banco de Questões</div>
+          <div class="ct-bq-sub">{{ bancoTotal }} questões disponíveis · Página {{ bancoPagina }} de {{ bancoPaginas }}</div>
+        </div>
+
+        <sc-if value="{{ bancoLoading }}" hint-placeholder-val="">
+          <div class="ct-bq-loading">⏳ Carregando questões...</div>
+        </sc-if>
+
+        <sc-if value="{{ bancoError }}" hint-placeholder-val="">
+          <div class="ct-empty">
+            <div class="ct-empty-icon">⚠️</div>
+            <div class="ct-empty-text">Erro ao carregar questões</div>
+            <div class="ct-empty-sub">Verifique sua conexão e tente novamente.</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ bancoReady }}" hint-placeholder-val="">
+          <!-- Busca -->
+          <input class="ct-bq-search" type="text" placeholder="🔍 Buscar por palavra-chave..." value="{{ buscaTexto }}" oninput="{{ onBuscaInput }}">
+
+          <!-- Filtros por matéria -->
+          <div class="ct-bq-filters">
+            <sc-for list="{{ bancoFiltros }}" as="bf" hint-placeholder-count="6">
+              <button class="{{ bf.cls }}" onclick="{{ bf.onClick }}">{{ bf.label }}</button>
+            </sc-for>
+          </div>
+
+          <!-- Questões -->
+          <sc-for list="{{ bancoQuestoesVisiveis }}" as="bq" hint-placeholder-count="5">
+            <div class="ct-bq-card">
+              <div class="ct-bq-card-top">
+                <span class="ct-bq-num">#{{ bq.num }}</span>
+                <span class="ct-bq-mat">{{ bq.materia }}</span>
+                <sc-if value="{{ bq.banca }}" hint-placeholder-val="">
+                  <span class="ct-bq-banca">{{ bq.banca }}</span>
+                </sc-if>
+              </div>
+              <div class="ct-bq-enunciado">{{ bq.enunciado }}</div>
+              <div class="ct-bq-opts">
+                <sc-for list="{{ bq.opts }}" as="opt">
+                  <div class="{{ opt.cls }}">
+                    <span class="ct-bq-opt-letter">{{ opt.letra }}</span>
+                    <span>{{ opt.texto }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                <button class="{{ bq.btnCls }}" onclick="{{ onReveal }}" data-idx="{{ bq.idx }}">
+                  {{ bq.btnLabel }}
+                </button>
+                <sc-if value="{{ bq.revealed }}" hint-placeholder-val="">
+                  <span class="ct-bq-gabarito">✅ Gabarito: {{ bq.gabarito }}</span>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+
+          <!-- Paginação -->
+          <div class="ct-bq-pagination">
+            <button class="ct-bq-page-btn" onclick="{{ onBancoPrev }}" disabled="{{ bancoPrevDis }}">‹ Anterior</button>
+            <span class="ct-bq-page-info">{{ bancoPagina }} / {{ bancoPaginas }}</span>
+            <button class="ct-bq-page-btn" onclick="{{ onBancoNext }}" disabled="{{ bancoNextDis }}">Próxima ›</button>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
     <!-- SIMULADOS -->
     <sc-if value="{{ showSim }}" hint-placeholder-val="">
       <div>
@@ -790,11 +892,69 @@ class Component extends DCLogic {
     super(props);
     var self = this;
     this._onLogout = function(){ var d=self.props.data||{}; d.onLogout && d.onLogout(); };
+    this._SB_URL  = 'https://qijziqjpvtjwarkodzxp.supabase.co';
+    this._SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpanppcWpwdnRqd2Fya29kenhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMzY0ODAsImV4cCI6MjA5NTgxMjQ4MH0.TVLDYLvotFie0GDX6zhab9JGs1Vq0JFT0xIBuPXKBhQ';
+    this._PAGE_SIZE = 15;
+
     this._tabHandlers = {
       cronograma: function(){ self.setState({view:'cronograma'}); },
       relatorio:  function(){ self.setState({view:'relatorio'}); },
       questoes:   function(){ self.setState({view:'questoes'}); },
       simulados:  function(){ self.setState({view:'simulados'}); },
+      banco:      function(){ self.setState({view:'banco'}); if(!self.state.bancoLoaded && !self.state.bancoLoading){ self._loadBanco(0); } },
+    };
+
+    this._loadBanco = function(page, filtro, busca) {
+      var pg     = page   != null ? page   : (self.state.bancoPage || 0);
+      var filt   = filtro != null ? filtro : (self.state.bancoFiltro || '');
+      var btext  = busca  != null ? busca  : (self.state.buscaTexto || '');
+      var from   = pg * self._PAGE_SIZE;
+      var base   = self._SB_URL + '/rest/v1/const_banco_questoes?select=id,materia,enunciado,alternativa_a,alternativa_b,alternativa_c,alternativa_d,alternativa_e,gabarito,banca,ano&order=materia,id&limit=' + self._PAGE_SIZE + '&offset=' + from;
+      if(filt) base += '&materia=eq.' + encodeURIComponent(filt);
+      if(btext) base += '&enunciado=ilike.*' + encodeURIComponent(btext) + '*';
+      var hdrs = { 'apikey': self._SB_KEY, 'Authorization': 'Bearer ' + self._SB_KEY, 'Prefer': 'count=exact' };
+      self.setState({bancoLoading: true, bancoError: false, bancoLoaded: false});
+      fetch(base, {headers: hdrs}).then(function(res){
+        var crange = res.headers.get('content-range') || '';
+        var total  = parseInt((crange.split('/')[1]) || '0', 10) || 0;
+        return res.json().then(function(data){
+          if(!Array.isArray(data)){ self.setState({bancoLoading:false, bancoError:true}); return; }
+          self.setState({bancoLoading:false, bancoLoaded:true, bancoError:false, bancoQuestoes: data, bancoTotal: total, bancoPage: pg, bancoFiltro: filt, buscaTexto: btext, revealed: {}});
+          if(!self.state.bancoMaterias || !self.state.bancoMaterias.length) self._loadMaterias();
+        });
+      }).catch(function(){ self.setState({bancoLoading:false, bancoError:true}); });
+    };
+
+    this._loadMaterias = function(){
+      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=materia&order=materia';
+      fetch(url, {headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY}}).then(function(r){return r.json();}).then(function(rows){
+        if(!Array.isArray(rows)) return;
+        var seen={}, mats=[];
+        rows.forEach(function(r){ if(r.materia && !seen[r.materia]){seen[r.materia]=1;mats.push(r.materia);} });
+        self.setState({bancoMaterias: mats});
+      }).catch(function(){});
+    };
+
+    this._onReveal = function(e){
+      var btn = e.currentTarget || e.target;
+      var idx = btn.dataset.idx;
+      var rev = Object.assign({}, self.state.revealed || {});
+      rev[idx] = !rev[idx];
+      self.setState({revealed: rev});
+    };
+
+    this._onBancoPrev = function(){ var pg=self.state.bancoPage||0; if(pg>0) self._loadBanco(pg-1); };
+    this._onBancoNext = function(){
+      var pg=self.state.bancoPage||0;
+      var tot=self.state.bancoTotal||0;
+      var pages=Math.ceil(tot/self._PAGE_SIZE);
+      if(pg<pages-1) self._loadBanco(pg+1);
+    };
+    this._onBuscaInput = function(e){
+      var v=(e.target||e.currentTarget).value;
+      clearTimeout(self._buscaTimer);
+      self.setState({buscaTexto:v});
+      self._buscaTimer = setTimeout(function(){ self._loadBanco(0, self.state.bancoFiltro, v); }, 500);
     };
 
     this._onWeekPrev = function(){ var w=self.state.activeWeek||0; if(w>0) self.setState({activeWeek:w-1}); };
@@ -1089,6 +1249,7 @@ class Component extends DCLogic {
       {id:'relatorio', icon:'📊',label:'Relatório'},
       {id:'questoes',  icon:'📚',label:'Materiais'},
       {id:'simulados', icon:'🎯',label:'Simulados'},
+      {id:'banco',     icon:'📝',label:'Banco Q.'},
     ];
     var navTabs = tabDefs.map(function(t){
       return {cls:'ct-tab'+(view===t.id?' active':''), onClick:self._tabHandlers[t.id], icon:t.icon, label:t.label};
@@ -1167,6 +1328,7 @@ class Component extends DCLogic {
       statCards: statCards, navTabs: navTabs,
       showCron: view==='cronograma', showRel: view==='relatorio',
       showMat: view==='questoes',    showSim: view==='simulados',
+      showBanco: view==='banco',
 
       // Cronograma
       examCountdown: d.examCountdown!=null?String(d.examCountdown):'—',
@@ -1201,6 +1363,61 @@ class Component extends DCLogic {
 
       // Simulados
       hasSimulados: simulados.length>0, noSimulados: simulados.length===0, simulados: simulados,
+
+      // Banco de Questões
+      bancoLoading: !!st.bancoLoading,
+      bancoError:   !!st.bancoError,
+      bancoReady:   !!st.bancoLoaded && !st.bancoLoading,
+      bancoTotal:   st.bancoTotal || 0,
+      bancoPagina:  (st.bancoPage || 0) + 1,
+      bancoPaginas: Math.max(1, Math.ceil((st.bancoTotal||0) / self._PAGE_SIZE)),
+      bancoPrevDis: !(st.bancoPage > 0),
+      bancoNextDis: !((st.bancoPage||0) < Math.ceil((st.bancoTotal||0)/self._PAGE_SIZE)-1),
+      buscaTexto:   st.buscaTexto || '',
+      onBancoPrev:  this._onBancoPrev,
+      onBancoNext:  this._onBancoNext,
+      onBuscaInput: this._onBuscaInput,
+      onReveal:     this._onReveal,
+      bancoFiltros: (function(){
+        var mats = st.bancoMaterias || [];
+        var cur  = st.bancoFiltro || '';
+        var all  = [{label:'Todas', id:''}].concat(mats.map(function(m){return {label:m,id:m};}));
+        return all.map(function(m){
+          return {
+            label: m.label,
+            cls: 'ct-bq-filter' + (cur===m.id?' active':''),
+            onClick: (function(id){ return function(){ self._loadBanco(0, id, st.buscaTexto||''); }; })(m.id),
+          };
+        });
+      })(),
+      bancoQuestoesVisiveis: (function(){
+        var qs   = st.bancoQuestoes || [];
+        var rev  = st.revealed || {};
+        var base = (st.bancoPage||0) * self._PAGE_SIZE;
+        return qs.map(function(q, i){
+          var letters = ['A','B','C','D','E'];
+          var alts = [q.alternativa_a, q.alternativa_b, q.alternativa_c, q.alternativa_d, q.alternativa_e];
+          var gabLetter = (q.gabarito||'').toUpperCase().trim();
+          var isRev = !!rev[String(i)];
+          var opts = alts.map(function(txt, ai){
+            var letter = letters[ai];
+            var isGab = isRev && letter === gabLetter;
+            return {letra: letter, texto: txt||'', cls: 'ct-bq-opt' + (isGab?' gabarito-revealed correct':'')};
+          }).filter(function(o){return !!o.texto;});
+          return {
+            idx:      String(i),
+            num:      String(base + i + 1),
+            materia:  q.materia || '',
+            banca:    q.banca ? (q.banca + (q.ano?' '+q.ano:'')) : '',
+            enunciado:q.enunciado || '',
+            opts:     opts,
+            gabarito: gabLetter,
+            revealed: isRev,
+            btnCls:   'ct-bq-reveal-btn' + (isRev?' shown':''),
+            btnLabel: isRev ? '🙈 Ocultar gabarito' : '👁 Ver gabarito',
+          };
+        });
+      })(),
     };
   }
 }
