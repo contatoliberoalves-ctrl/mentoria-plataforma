@@ -1,0 +1,414 @@
+<x-dc>
+<style>
+:root{--cg:#0057FF;--cb:#0D0D0D;--cw:#FFFFFF;--cy:#FFE500;--cp:#7B2FFF;--cc:#00A8E8;--cok:#00C040;--cr:#FF3B30;--cbg:#F5F7FF}
+*{box-sizing:border-box;margin:0;padding:0}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.oab-wrap{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--cbg);min-height:100vh;padding-bottom:40px}
+
+/* ONBOARDING */
+.oab-onboard{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:999;padding:16px}
+.oab-onboard-card{background:#fff;border:3px solid var(--cb);border-radius:20px;box-shadow:6px 6px 0 var(--cb);padding:32px 24px;max-width:420px;width:100%;animation:fadeIn .3s ease}
+.oab-onboard-title{font-size:22px;font-weight:900;color:var(--cg);margin-bottom:6px}
+.oab-onboard-sub{font-size:13px;color:#555;margin-bottom:28px;line-height:1.5}
+.oab-onboard-opts{display:flex;flex-direction:column;gap:12px}
+.oab-onboard-btn{background:#fff;border:3px solid var(--cb);border-radius:12px;box-shadow:4px 4px 0 var(--cb);padding:16px 20px;cursor:pointer;text-align:left;transition:transform .1s,box-shadow .1s}
+.oab-onboard-btn:hover{transform:translateY(-2px);box-shadow:4px 6px 0 var(--cb)}
+.oab-onboard-btn:active{transform:translateY(2px);box-shadow:2px 2px 0 var(--cb)}
+.oab-onboard-btn-date{font-size:16px;font-weight:900;color:var(--cb);margin-bottom:3px}
+.oab-onboard-btn-label{font-size:12px;color:#666;font-weight:600}
+.oab-onboard-btn.today{background:var(--cg);border-color:var(--cb)}
+.oab-onboard-btn.today .oab-onboard-btn-date,.oab-onboard-btn.today .oab-onboard-btn-label{color:#fff}
+
+/* HEADER */
+.oab-header{background:var(--cg);padding:20px 16px 16px;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,87,255,.2)}
+.oab-header-top{display:flex;align-items:center;justify-content:space-between;max-width:640px;margin:0 auto;flex-wrap:wrap;gap:8px}
+.oab-header-title{font-size:16px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:.5px}
+.oab-header-reset{background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer}
+.oab-countdown-row{display:flex;gap:8px;margin-top:12px;max-width:640px;margin-left:auto;margin-right:auto;flex-wrap:wrap}
+.oab-stat{background:rgba(255,255,255,.15);border-radius:10px;padding:8px 14px;flex:1;min-width:80px;text-align:center}
+.oab-stat-val{font-size:20px;font-weight:900;color:#fff}
+.oab-stat-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.3px}
+
+/* BODY */
+.oab-body{max-width:640px;margin:0 auto;padding:16px}
+
+/* SECTION HEADERS */
+.oab-section-hd{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:#888;margin:20px 0 8px;padding-left:4px}
+
+/* DAY CARD */
+.oab-day{background:#fff;border:2px solid #e0e0e0;border-radius:14px;margin-bottom:8px;overflow:hidden;animation:fadeIn .25s ease}
+.oab-day.today-card{border-color:var(--cg);box-shadow:0 0 0 3px rgba(0,87,255,.15)}
+.oab-day.done-card{background:#f0fdf4;border-color:#bbf7d0}
+.oab-day.reta-card{background:#FFF9E6;border-color:#FFE500;border-width:3px}
+.oab-day.sim-card{background:#F5F0FF;border-color:var(--cp);border-width:3px}
+.oab-day.prova-card{background:#0057FF;border-color:var(--cb);border-width:3px;box-shadow:4px 4px 0 var(--cb)}
+
+.oab-day-head{display:flex;align-items:center;gap:12px;padding:12px 14px}
+.oab-day-date-box{min-width:44px;text-align:center;flex-shrink:0}
+.oab-day-dow{font-size:9px;font-weight:900;text-transform:uppercase;color:#999;letter-spacing:.4px}
+.oab-day-dm{font-size:17px;font-weight:900;color:var(--cb);line-height:1.1}
+.today-card .oab-day-dm{color:var(--cg)}
+.done-card .oab-day-dm{color:#16a34a}
+
+.oab-day-info{flex:1;min-width:0}
+.oab-day-badge{display:inline-block;font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px}
+.badge-maxima{background:#FFF3CD;color:#92400E;border:1.5px solid #F59E0B}
+.badge-alta{background:#EDE9FE;color:#5B21B6;border:1.5px solid #8B5CF6}
+.badge-seletiva{background:#F3F4F6;color:#374151;border:1.5px solid #9CA3AF}
+.badge-simulado{background:var(--cp);color:#fff;border:1.5px solid var(--cb)}
+.badge-reta{background:#FFE500;color:#0D0D0D;border:1.5px solid var(--cb)}
+.badge-prova{background:#fff;color:var(--cg);border:1.5px solid rgba(255,255,255,.4)}
+.badge-today{background:var(--cg);color:#fff;border:1.5px solid var(--cb)}
+
+.oab-day-mat{font-size:13px;font-weight:800;color:var(--cb);margin-bottom:2px}
+.prova-card .oab-day-mat,.prova-card .oab-day-topics{color:#fff}
+.oab-day-topics{font-size:11px;color:#555;line-height:1.5;font-weight:500}
+
+.oab-day-check{flex-shrink:0;width:32px;height:32px;border-radius:50%;border:2px solid #ddd;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;background:#f9f9f9;transition:all .15s}
+.oab-day-check.checked{background:var(--cok);border-color:var(--cok);animation:pop .3s ease}
+.oab-day-check.no-check{border:none;background:none;cursor:default;font-size:20px}
+
+/* RETA FINAL SPECIAL */
+.reta-special{background:linear-gradient(135deg,#FFF9E6,#FFF3CD);border:3px solid #FFE500;border-radius:16px;box-shadow:4px 4px 0 var(--cb);margin-bottom:8px;padding:16px}
+.reta-special-title{font-size:14px;font-weight:900;color:var(--cb);margin-bottom:4px}
+.reta-special-sub{font-size:12px;color:#555;margin-bottom:12px;line-height:1.5}
+.reta-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(255,255,255,.7);border-radius:10px;margin-bottom:6px}
+.reta-item-icon{font-size:18px;flex-shrink:0}
+.reta-item-text{font-size:12px;font-weight:700;color:var(--cb)}
+.reta-item-sub{font-size:11px;color:#666;font-weight:500}
+
+/* PROVA CARD special */
+.oab-prova-card{background:var(--cg);border:3px solid var(--cb);border-radius:16px;box-shadow:5px 5px 0 var(--cb);padding:20px;margin-top:8px;text-align:center}
+.oab-prova-emoji{font-size:36px;margin-bottom:8px}
+.oab-prova-title{font-size:18px;font-weight:900;color:#fff;margin-bottom:4px}
+.oab-prova-sub{font-size:12px;color:rgba(255,255,255,.8);font-weight:600}
+
+/* PROGRESS BAR */
+.oab-prog-bar-wrap{background:#e0e0e0;border-radius:8px;height:8px;margin-top:10px;overflow:hidden;max-width:640px;margin-left:auto;margin-right:auto}
+.oab-prog-bar-fill{height:100%;background:#fff;border-radius:8px;transition:width .4s ease}
+
+/* LEGEND */
+.oab-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;max-width:640px;margin-left:auto;margin-right:auto;padding:0 16px}
+.oab-legend-item{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:rgba(255,255,255,.85)}
+.oab-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+</style>
+
+<div class="oab-wrap">
+
+  <!-- ONBOARDING: escolha da data de início -->
+  <sc-if value="{{ showOnboard }}" hint-placeholder-val="">
+  <div class="oab-onboard">
+    <div class="oab-onboard-card">
+      <div style="font-size:32px;margin-bottom:12px">📅</div>
+      <div class="oab-onboard-title">Sua Reta Final OAB</div>
+      <div class="oab-onboard-sub">Prova em <strong>6 de setembro de 2026</strong>. Escolha a data em que você começa o cronograma — o plano é montado automaticamente com base nos temas prioritários.</div>
+      <div class="oab-onboard-opts">
+        <button class="oab-onboard-btn today" onclick="{{ onStartToday }}">
+          <div class="oab-onboard-btn-date">📅 Hoje — 13 de agosto</div>
+          <div class="oab-onboard-btn-label">17 dias de estudo + 7 dias de reta final</div>
+        </button>
+        <button class="oab-onboard-btn" onclick="{{ onStartTomorrow }}">
+          <div class="oab-onboard-btn-date">📅 Amanhã — 14 de agosto</div>
+          <div class="oab-onboard-btn-label">16 dias de estudo + 7 dias de reta final</div>
+        </button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- HEADER -->
+  <div class="oab-header">
+    <div class="oab-header-top">
+      <div>
+        <div class="oab-header-title">🏛️ Cronograma OAB</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.75);font-weight:600;margin-top:2px">Reta final — Prova 6/set/2026</div>
+      </div>
+      <button class="oab-header-reset" onclick="{{ onReset }}">Alterar início</button>
+    </div>
+
+    <div class="oab-countdown-row">
+      <div class="oab-stat"><div class="oab-stat-val">{{ daysLeft }}</div><div class="oab-stat-lbl">Dias p/ prova</div></div>
+      <div class="oab-stat"><div class="oab-stat-val">{{ doneCount }}/{{ totalStudy }}</div><div class="oab-stat-lbl">Dias feitos</div></div>
+      <div class="oab-stat"><div class="oab-stat-val">{{ progPct }}%</div><div class="oab-stat-lbl">Progresso</div></div>
+      <div class="oab-stat"><div class="oab-stat-val">{{ simDone }}/3</div><div class="oab-stat-lbl">Simulados</div></div>
+    </div>
+
+    <div class="oab-prog-bar-wrap" style="margin-top:12px">
+      <div class="oab-prog-bar-fill" style="width:{{ progPct }}%"></div>
+    </div>
+
+    <div class="oab-legend" style="padding:8px 0 0;max-width:none">
+      <div class="oab-legend-item"><div class="oab-legend-dot" style="background:#FFF"></div> Concluído</div>
+      <div class="oab-legend-item"><div class="oab-legend-dot" style="background:#FFE500"></div> Reta Final</div>
+      <div class="oab-legend-item"><div class="oab-legend-dot" style="background:#B48EFF"></div> Simulado</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="oab-body">
+
+    <!-- Dias de estudo -->
+    <div class="oab-section-hd">📚 Dias de estudo</div>
+
+    <sc-for list="{{ days }}" as="day">
+      <div class="{{ day.cardCls }}">
+        <div class="oab-day-head">
+          <div class="oab-day-date-box">
+            <div class="oab-day-dow">{{ day.dow }}</div>
+            <div class="oab-day-dm">{{ day.dm }}</div>
+          </div>
+          <div class="oab-day-info">
+            <div class="{{ day.badgeCls }}">{{ day.badgeLabel }}</div>
+            <div class="oab-day-mat">{{ day.mat }}</div>
+            <div class="oab-day-topics">{{ day.topics }}</div>
+          </div>
+          <div class="{{ day.checkCls }}" onclick="{{ day.onCheck }}">{{ day.checkIcon }}</div>
+        </div>
+      </div>
+    </sc-for>
+
+    <!-- Reta Final -->
+    <div class="oab-section-hd">🔥 Reta Final — 30/ago a 5/set</div>
+
+    <div class="reta-special">
+      <div class="reta-special-title">🎯 Modo Imersão Total — 7 dias</div>
+      <div class="reta-special-sub">Concentração total na revisão. Nada de conteúdo novo — só consolidar o que você já estudou.</div>
+      <div class="reta-item">
+        <div class="reta-item-icon">☀️</div>
+        <div>
+          <div class="reta-item-text">Manhã: Revisão Nocaute</div>
+          <div class="reta-item-sub">Assista às aulas de revisão nocaute no período da manhã</div>
+        </div>
+      </div>
+      <div class="reta-item">
+        <div class="reta-item-icon">🌙</div>
+        <div>
+          <div class="reta-item-text">Tarde/Noite: Material Prof. Líbero Filho</div>
+          <div class="reta-item-sub">Acesso enviado para o e-mail cadastrado — leitura e revisão do material de revisão</div>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <sc-for list="{{ retaDays }}" as="rd">
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:rgba(255,229,0,.2);border-radius:8px;margin-bottom:5px">
+            <span style="font-size:13px;min-width:20px">{{ rd.emoji }}</span>
+            <span style="font-size:12px;font-weight:800;color:#0D0D0D;flex:1">{{ rd.label }}</span>
+            <div class="{{ rd.checkCls }}" onclick="{{ rd.onCheck }}" style="width:28px;height:28px;border-radius:50%;border:2px solid #0D0D0D;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;flex-shrink:0">{{ rd.checkIcon }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- Prova -->
+    <div class="oab-prova-card">
+      <div class="oab-prova-emoji">🏆</div>
+      <div class="oab-prova-title">6 de Setembro — DIA DA PROVA</div>
+      <div class="oab-prova-sub">OAB 1ª Fase — Exame de Ordem Unificado<br>Você está pronto. Confie no processo! 💙</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+class CronogramaOAB extends React.Component {
+  constructor(props) {
+    super(props);
+
+    var saved = null;
+    try { saved = localStorage.getItem('_oab_crono_start'); } catch(e){}
+    var checks = {};
+    try { checks = JSON.parse(localStorage.getItem('_oab_crono_checks')||'{}'); } catch(e){}
+    var retaChecks = {};
+    try { retaChecks = JSON.parse(localStorage.getItem('_oab_reta_checks')||'{}'); } catch(e){}
+
+    this.state = {
+      startDate: saved,
+      checks: checks,
+      retaChecks: retaChecks,
+    };
+
+    var self = this;
+    this.onStartToday    = function(){ self._setStart('2026-08-13'); };
+    this.onStartTomorrow = function(){ self._setStart('2026-08-14'); };
+    this.onReset = function(){
+      try{ localStorage.removeItem('_oab_crono_start'); }catch(e){}
+      self.setState({startDate:null});
+    };
+  }
+
+  _setStart(iso) {
+    try { localStorage.setItem('_oab_crono_start', iso); } catch(e){}
+    this.setState({ startDate: iso });
+  }
+
+  _toggleCheck(key) {
+    var self = this;
+    var checks = Object.assign({}, self.state.checks);
+    checks[key] = !checks[key];
+    try { localStorage.setItem('_oab_crono_checks', JSON.stringify(checks)); } catch(e){}
+    self.setState({ checks: checks });
+  }
+
+  _toggleRetaCheck(key) {
+    var self = this;
+    var retaChecks = Object.assign({}, self.state.retaChecks);
+    retaChecks[key] = !retaChecks[key];
+    try { localStorage.setItem('_oab_reta_checks', JSON.stringify(retaChecks)); } catch(e){}
+    self.setState({ retaChecks: retaChecks });
+  }
+
+  render() {
+    var self   = this;
+    var st     = this.state;
+    var checks = st.checks;
+
+    var DOWS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    var MONTHS = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+
+    function parseISO(iso){
+      var p = iso.split('-');
+      return new Date(+p[0], +p[1]-1, +p[2]);
+    }
+    function addDays(d, n){
+      var r = new Date(d);
+      r.setDate(r.getDate()+n);
+      return r;
+    }
+    function isoOf(d){
+      return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    }
+    function todayISO(){
+      var t = new Date();
+      return isoOf(t);
+    }
+    function fmtDow(d){ return DOWS[d.getDay()]; }
+    function fmtDm(d){ return d.getDate()+'/'+MONTHS[d.getMonth()]; }
+
+    // ── PLANO DE ESTUDO ─────────────────────────────────────────────────────
+    var PLAN = [
+      // [tipo, prioridade, materia, topics, isSimulado?]
+      ['study','maxima','⚖️ Ética','Prerrogativas da advocacia · Atividades privativas da OAB · Honorários advocatícios',false],
+      ['study','maxima','⚖️ Ética','Incompatibilidades e impedimentos · Publicidade na advocacia · Infrações, sanções e processo disciplinar',false],
+      ['study','maxima','🏛️ Constitucional','Direitos fundamentais (Art. 5) · Remédios constitucionais · Direitos e garantias individuais',false],
+      ['study','maxima','🏛️ Constitucional','Organização do Estado · Repartição de competências · Poder Legislativo · Controle de constitucionalidade',false],
+      ['study','maxima','⚖️ Processo Civil','Procedimento comum · Partes e procuradores · Competência absoluta e relativa · Litisconsórcio',false],
+      ['study','maxima','⚖️ Processo Civil','Tutela provisória (urgência e evidência) · Sentença · Coisa julgada · Recursos em espécie',false],
+      ['sim','simulado','🎯 Simulado 1','Questões de Ética + Constitucional + Processo Civil — 40 questões cronometradas',true],
+      ['study','maxima','📋 Administrativo','Atos administrativos · Agentes públicos · Poderes administrativos · Organização da Adm. Pública',false],
+      ['study','maxima','📋 Administrativo','Responsabilidade civil do Estado · Licitações (Nova Lei) · Improbidade administrativa',false],
+      ['study','alta','📗 Civil','Negócio jurídico · Obrigações (modalidades, extinção, inadimplemento) · Contratos em geral',false],
+      ['study','alta','📗 Civil','Prescrição e decadência · Posse e propriedade · Sucessões (legítima e testamentária)',false],
+      ['study','alta','👷 Trabalho','Relação de emprego · Empregado e empregador · Duração do trabalho · Remuneração · Extinção · Estabilidade',false],
+      ['sim','simulado','🎯 Simulado 2','Questões de Administrativo + Civil + Trabalho — 40 questões cronometradas · Corrigir todos os erros',true],
+      ['study','alta','👷 Proc. Trabalho','Competência da Justiça do Trabalho · Ação trabalhista · Defesa e audiência · Provas · Despesas processuais',false],
+      ['study','alta','💰 Tributário','Limitações ao poder de tributar · Imunidades tributárias · Obrigação tributária · Crédito e responsabilidade',false],
+      ['study','seletiva','🔒 Penal + Proc. Penal','Fato típico · Ilicitude · Culpabilidade · Concurso de crimes · Extinção da punibilidade · Crimes patrimoniais · Inquérito · Ação penal · Prisões cautelares',false],
+      ['sim','simulado','💼 Empresarial + 🎯 Simulado 3','Empresário · Estabelecimento · Direito societário · Títulos de crédito · Simulado completo (80 questões — todas as matérias)',true],
+    ];
+
+    var PRIORITY_BADGE = {
+      maxima:   {cls:'oab-day-badge badge-maxima',  lbl:'⭐ Prioridade Máxima'},
+      alta:     {cls:'oab-day-badge badge-alta',    lbl:'🔵 Alta Prioridade'},
+      seletiva: {cls:'oab-day-badge badge-seletiva',lbl:'🔘 Prioridade Seletiva'},
+      simulado: {cls:'oab-day-badge badge-simulado',lbl:'🎯 Simulado'},
+    };
+
+    var TODAY = todayISO();
+    var startDate = st.startDate;
+    var showOnboard = !startDate;
+
+    var days = [];
+    var doneCount = 0;
+    var simDone = 0;
+
+    if (startDate) {
+      var base = parseISO(startDate);
+
+      for (var i = 0; i < PLAN.length; i++) {
+        var p = PLAN[i];
+        var d = addDays(base, i);
+        var iso = isoOf(d);
+        var isToday = iso === TODAY;
+        var isDone  = !!checks['d'+i];
+        if (isDone) { doneCount++; if (p[4]) simDone++; }
+
+        var cardCls = 'oab-day';
+        if (isToday)     cardCls += ' today-card';
+        else if (isDone) cardCls += ' done-card';
+        if (p[0]==='sim') cardCls += ' sim-card';
+
+        var pb = PRIORITY_BADGE[p[1]];
+        var badgeCls   = pb.cls;
+        var badgeLabel = pb.lbl;
+        if (isToday) { badgeCls = 'oab-day-badge badge-today'; badgeLabel = '👉 HOJE'; }
+
+        var checkIcon = isDone ? '✅' : (isToday ? '○' : '○');
+        var checkCls  = 'oab-day-check' + (isDone?' checked':'');
+
+        var dayKey = 'd'+i;
+        (function(k){ /* closure over key */
+          days.push({
+            cardCls: cardCls,
+            dow: fmtDow(d),
+            dm:  fmtDm(d),
+            badgeCls: badgeCls, badgeLabel: badgeLabel,
+            mat: p[2], topics: p[3],
+            checkCls: checkCls, checkIcon: checkIcon,
+            onCheck: function(){ self._toggleCheck(k); },
+          });
+        })(dayKey);
+      }
+    }
+
+    // Reta Final days Aug 30 – Sep 5
+    var retaDates = [
+      {iso:'2026-08-30',dow:'Dom',dm:'30/ago'},
+      {iso:'2026-08-31',dow:'Seg',dm:'31/ago'},
+      {iso:'2026-09-01',dow:'Ter',dm:'01/set'},
+      {iso:'2026-09-02',dow:'Qua',dm:'02/set'},
+      {iso:'2026-09-03',dow:'Qui',dm:'03/set'},
+      {iso:'2026-09-04',dow:'Sex',dm:'04/set'},
+      {iso:'2026-09-05',dow:'Sáb',dm:'05/set'},
+    ];
+    var retaChecks = st.retaChecks;
+    var retaDays = retaDates.map(function(rd){
+      var isToday = rd.iso === TODAY;
+      var isDone  = !!retaChecks[rd.iso];
+      var emoji   = isToday ? '👉' : (isDone ? '✅' : '📅');
+      var label   = rd.dow + ' ' + rd.dm + ' — ☀️ Revisão Nocaute + 🌙 Material Prof. Líbero';
+      var checkCls = isDone ? 'oab-reta-check checked' : 'oab-reta-check';
+      var checkIcon = isDone ? '✅' : '○';
+      var rdIso = rd.iso;
+      return {
+        emoji: emoji, label: label,
+        checkCls: checkCls, checkIcon: checkIcon,
+        onCheck: function(){ self._toggleRetaCheck(rdIso); },
+      };
+    });
+
+    // Stats
+    var totalStudy = PLAN.length;
+    var progPct = totalStudy > 0 ? Math.round(doneCount / totalStudy * 100) : 0;
+
+    var examDate = parseISO('2026-09-06');
+    var todayDate = parseISO(TODAY);
+    var diff = Math.ceil((examDate - todayDate) / 86400000);
+    var daysLeft = diff > 0 ? diff : 0;
+
+    return {
+      showOnboard: showOnboard,
+      onStartToday: this.onStartToday,
+      onStartTomorrow: this.onStartTomorrow,
+      onReset: this.onReset,
+      daysLeft: String(daysLeft),
+      doneCount: String(doneCount),
+      totalStudy: String(totalStudy),
+      progPct: String(progPct),
+      simDone: String(simDone),
+      days: days,
+      retaDays: retaDays,
+    };
+  }
+}
+</script>
