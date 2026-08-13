@@ -965,7 +965,6 @@ class Component extends DCLogic {
           if(!Array.isArray(data)){self.setState({bancoLoading:false,bancoError:true});return;}
           self.setState({bancoLoading:false,bancoLoaded:true,bancoError:false,bancoQuestoes:data,bancoTotal:total,bancoPage:pg,bancoMateria:mat,bancoTema:tem,buscaTexto:btext,revealed:{}});
           if(!self.state.bancoMaterias||!self.state.bancoMaterias.length) self._loadMaterias();
-          if(!self.state.bancoTemasMap) self._loadTemas();
         });
       }).catch(function(){self.setState({bancoLoading:false,bancoError:true});});
     };
@@ -984,16 +983,16 @@ class Component extends DCLogic {
       self.setState({bancoMaterias:mats});
     };
 
-    this._loadTemas = function(){
-      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=materia,tema&order=materia,tema&limit=3000';
-      fetch(url,{headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY,'Range':'0-2999'}}).then(function(r){return r.json();}).then(function(rows){
+    this._loadTemas = function(materia){
+      // Fetch temas only for the specific matéria to avoid 1000-row server limit
+      if(!materia) return;
+      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=tema&order=tema&limit=200&materia=eq.' + encodeURIComponent(materia);
+      fetch(url,{headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY}}).then(function(r){return r.json();}).then(function(rows){
         if(!Array.isArray(rows)) return;
-        var map={};
-        rows.forEach(function(r){
-          var m=r.materia||'';var t=r.tema||'';
-          if(!map[m]) map[m]=[];
-          if(t&&map[m].indexOf(t)<0) map[m].push(t);
-        });
+        var seen={}, temas=[];
+        rows.forEach(function(r){var t=r.tema||''; if(t&&!seen[t]){seen[t]=1;temas.push(t);}});
+        var map = Object.assign({}, self.state.bancoTemasMap||{});
+        map[materia] = temas;
         self.setState({bancoTemasMap:map});
       }).catch(function(){});
     };
@@ -1472,7 +1471,10 @@ class Component extends DCLogic {
           return {
             label: m.label,
             cls: 'ct-bq-filter'+(cur===m.id?' active':''),
-            onClick: (function(id){return function(){self._loadBanco(0,id,'',st.buscaTexto||'');};})(m.id),
+            onClick: (function(id){return function(){
+              self._loadBanco(0,id,'',st.buscaTexto||'');
+              if(id && (!self.state.bancoTemasMap || !self.state.bancoTemasMap[id])) self._loadTemas(id);
+            };})(m.id),
           };
         });
       })(),
