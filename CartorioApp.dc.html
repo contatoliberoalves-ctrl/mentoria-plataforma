@@ -992,8 +992,9 @@ class Component extends DCLogic {
     };
 
     this._loadMaterias = function(){
-      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=materia&order=materia';
-      fetch(url, {headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY}}).then(function(r){return r.json();}).then(function(rows){
+      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=materia&order=materia&limit=9999';
+      var hdrs = {'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY,'Range':'0-9998'};
+      fetch(url, {headers:hdrs}).then(function(r){return r.json();}).then(function(rows){
         if(!Array.isArray(rows)) return;
         var seen={}, mats=[];
         rows.forEach(function(r){ if(r.materia && !seen[r.materia]){seen[r.materia]=1;mats.push(r.materia);} });
@@ -1002,8 +1003,9 @@ class Component extends DCLogic {
     };
 
     this._loadTemas = function(materia){
-      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=tema&materia=eq.' + encodeURIComponent(materia) + '&order=tema';
-      fetch(url, {headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY}}).then(function(r){return r.json();}).then(function(rows){
+      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=tema&materia=eq.' + encodeURIComponent(materia) + '&order=tema&limit=9999';
+      var hdrs = {'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY,'Range':'0-9998'};
+      fetch(url, {headers:hdrs}).then(function(r){return r.json();}).then(function(rows){
         if(!Array.isArray(rows)) return;
         var seen={}, temas=[];
         rows.forEach(function(r){ if(r.tema && !seen[r.tema]){seen[r.tema]=1;temas.push(r.tema);} });
