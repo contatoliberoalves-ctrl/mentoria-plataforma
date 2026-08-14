@@ -339,13 +339,25 @@
 .ct-bq-banca{background:#f0f0f0;color:#555;border-radius:20px;padding:3px 8px;font-size:10px;font-weight:700}
 .ct-bq-enunciado{font-size:13.5px;color:var(--cb);line-height:1.6;margin-bottom:12px;font-weight:500}
 .ct-bq-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
-.ct-bq-opt{display:flex;gap:10px;padding:8px 10px;border-radius:8px;border:2px solid #e5e7eb;background:#f8fafc;font-size:13px;line-height:1.45;transition:all .15s}
-.ct-bq-opt.gabarito-revealed.correct{background:#f0fdf4;border-color:#22c55e;color:#15803d;font-weight:700}
+.ct-bq-opt{display:flex;gap:10px;padding:9px 12px;border-radius:9px;border:2px solid #e5e7eb;background:#f8fafc;font-size:13px;line-height:1.5;transition:all .15s;cursor:pointer}
+.ct-bq-opt:hover:not(.respondida):not(.bloqueada){border-color:var(--cy);background:#f0f7f5}
+.ct-bq-opt.selecionada{border-color:#3b82f6;background:#eff6ff}
+.ct-bq-opt.acertou{background:#f0fdf4;border-color:#22c55e;color:#15803d;font-weight:700}
+.ct-bq-opt.errou{background:#fff1f2;border-color:#ef4444;color:#b91c1c;text-decoration:line-through}
+.ct-bq-opt.gabarito-ref{background:#f0fdf4;border-color:#22c55e;color:#15803d;font-weight:700}
+.ct-bq-opt.bloqueada{cursor:default}
 .ct-bq-opt-letter{font-weight:900;color:var(--cy);flex-shrink:0;min-width:18px}
+.ct-bq-opt.acertou .ct-bq-opt-letter,.ct-bq-opt.gabarito-ref .ct-bq-opt-letter{color:#15803d}
+.ct-bq-opt.errou .ct-bq-opt-letter{color:#b91c1c}
+.ct-bq-resp-badge{display:inline-flex;align-items:center;gap:5px;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:900;margin-right:8px}
+.ct-bq-resp-badge.acertou{background:#f0fdf4;border:2px solid #22c55e;color:#15803d}
+.ct-bq-resp-badge.errou{background:#fff1f2;border:2px solid #ef4444;color:#b91c1c}
+.ct-bq-comentario{margin-top:12px;padding:12px 14px;background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 10px 10px 0;font-size:12.5px;color:#444;line-height:1.6}
+.ct-bq-comentario-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#b45309;margin-bottom:5px}
 .ct-bq-reveal-btn{background:var(--cy);color:#fff;border:2.5px solid var(--cb);border-radius:10px;padding:8px 16px;font-size:12px;font-weight:900;cursor:pointer;box-shadow:3px 3px 0 var(--cb);transition:transform .1s;text-transform:uppercase;letter-spacing:.3px}
 .ct-bq-reveal-btn:active{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--cb)}
 .ct-bq-reveal-btn.shown{background:#059669;border-color:var(--cb)}
-.ct-bq-gabarito{display:inline-flex;align-items:center;gap:6px;background:#f0fdf4;border:2px solid #22c55e;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:900;color:#15803d;margin-left:8px}
+.ct-bq-gabarito{display:inline-flex;align-items:center;gap:6px;background:#f0fdf4;border:2px solid #22c55e;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:900;color:#15803d}
 .ct-bq-pagination{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;padding:12px 0}
 .ct-bq-page-btn{background:var(--cw);border:2.5px solid var(--cb);border-radius:10px;padding:8px 18px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:3px 3px 0 var(--cb);transition:all .15s}
 .ct-bq-page-btn:hover{background:var(--cy);color:#fff;border-color:var(--cy)}
@@ -769,20 +781,29 @@
               <div class="ct-bq-enunciado">{{ bq.enunciado }}</div>
               <div class="ct-bq-opts">
                 <sc-for list="{{ bq.opts }}" as="opt">
-                  <div class="{{ opt.cls }}">
+                  <div class="{{ opt.cls }}" onclick="{{ opt.onSelect }}" data-qid="{{ bq.qid }}" data-aidx="{{ opt.aidx }}">
                     <span class="ct-bq-opt-letter">{{ opt.letra }}</span>
                     <span>{{ opt.texto }}</span>
                   </div>
                 </sc-for>
               </div>
-              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-                <button class="{{ bq.btnCls }}" onclick="{{ onReveal }}" data-idx="{{ bq.idx }}">
-                  {{ bq.btnLabel }}
-                </button>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px">
+                <sc-if value="{{ bq.respondida }}" hint-placeholder-val="">
+                  <span class="{{ bq.respBadgeCls }}">{{ bq.respBadgeLabel }}</span>
+                </sc-if>
+                <sc-if value="{{ bq.naoRespondida }}" hint-placeholder-val="">
+                  <button class="{{ bq.btnCls }}" onclick="{{ onReveal }}" data-idx="{{ bq.idx }}">{{ bq.btnLabel }}</button>
+                </sc-if>
                 <sc-if value="{{ bq.revealed }}" hint-placeholder-val="">
-                  <span class="ct-bq-gabarito">✅ Gabarito: {{ bq.gabarito }}</span>
+                  <span class="ct-bq-gabarito">✅ {{ bq.gabarito }}</span>
                 </sc-if>
               </div>
+              <sc-if value="{{ bq.showComentario }}" hint-placeholder-val="">
+                <div class="ct-bq-comentario">
+                  <div class="ct-bq-comentario-title">💬 Gabarito comentado</div>
+                  {{ bq.comentario }}
+                </div>
+              </sc-if>
             </div>
           </sc-for>
 
@@ -947,10 +968,9 @@ class Component extends DCLogic {
       var filt   = filtro != null ? filtro : (self.state.bancoFiltro || '');
       var temaF  = tema   != null ? tema   : (self.state.bancoTemaFiltro || '');
       var btext  = busca  != null ? busca  : (self.state.buscaTexto || '');
-      // Se trocou matéria, zera o filtro de tema
       if(filtro != null && filtro !== (self.state.bancoFiltro||'')) temaF = '';
       var from   = pg * self._PAGE_SIZE;
-      var base   = self._SB_URL + '/rest/v1/const_banco_questoes?select=id,materia,tema,enunciado,alternativa_a,alternativa_b,alternativa_c,alternativa_d,alternativa_e,gabarito,banca,ano&order=materia,tema,id&limit=' + self._PAGE_SIZE + '&offset=' + from;
+      var base   = self._SB_URL + '/rest/v1/const_banco_questoes?select=id,materia,tema,prova,enunciado,opcoes,correta,comentario&order=materia,tema,id&limit=' + self._PAGE_SIZE + '&offset=' + from;
       if(filt)  base += '&materia=eq.' + encodeURIComponent(filt);
       if(temaF) base += '&tema=eq.'    + encodeURIComponent(temaF);
       if(btext) base += '&enunciado=ilike.*' + encodeURIComponent(btext) + '*';
@@ -961,7 +981,7 @@ class Component extends DCLogic {
         var total  = parseInt((crange.split('/')[1]) || '0', 10) || 0;
         return res.json().then(function(data){
           if(!Array.isArray(data)){ self.setState({bancoLoading:false, bancoError:true}); return; }
-          var newState = {bancoLoading:false, bancoLoaded:true, bancoError:false, bancoQuestoes: data, bancoTotal: total, bancoPage: pg, bancoFiltro: filt, bancoTemaFiltro: temaF, buscaTexto: btext, revealed: {}};
+          var newState = {bancoLoading:false, bancoLoaded:true, bancoError:false, bancoQuestoes: data, bancoTotal: total, bancoPage: pg, bancoFiltro: filt, bancoTemaFiltro: temaF, buscaTexto: btext, revealed: {}, bancoRespostas: {}};
           self.setState(newState);
           if(!self.state.bancoMaterias || !self.state.bancoMaterias.length) self._loadMaterias();
           // Carrega temas sempre que há uma matéria selecionada
@@ -997,6 +1017,30 @@ class Component extends DCLogic {
       var rev = Object.assign({}, self.state.revealed || {});
       rev[idx] = !rev[idx];
       self.setState({revealed: rev});
+    };
+
+    this._onResponder = function(e){
+      var el = e.currentTarget || e.target;
+      var qid   = el.dataset.qid;
+      var aidx  = parseInt(el.dataset.aidx, 10);
+      var qs    = self.state.bancoQuestoes || [];
+      var resp  = Object.assign({}, self.state.bancoRespostas || {});
+      if(resp[qid]) return; // já respondeu
+      // encontra a questão pelo id
+      var q = null;
+      for(var i=0;i<qs.length;i++){ if(qs[i].id===qid){ q=qs[i]; break; } }
+      if(!q) return;
+      var corrIdx = typeof q.correta === 'number' ? q.correta : -1;
+      var acertou = aidx === corrIdx;
+      resp[qid] = {escolha: aidx, acertou: acertou};
+      // salva no localStorage para relatório
+      var statsKey = '_ct_bq_resp';
+      try{
+        var all = JSON.parse(localStorage.getItem(statsKey)||'{}');
+        all[qid] = {materia: q.materia||'', tema: q.tema||'', acertou: acertou, ts: Date.now()};
+        localStorage.setItem(statsKey, JSON.stringify(all));
+      }catch(_){}
+      self.setState({bancoRespostas: resp, revealed: Object.assign({}, self.state.revealed||{})});
     };
 
     this._onBancoPrev = function(){ var pg=self.state.bancoPage||0; if(pg>0) self._loadBanco(pg-1); };
@@ -1489,6 +1533,7 @@ class Component extends DCLogic {
       onBancoNext:  this._onBancoNext,
       onBuscaInput: this._onBuscaInput,
       onReveal:     this._onReveal,
+      onResponder:  this._onResponder,
       bancoFiltros: (function(){
         var mats = st.bancoMaterias || [];
         var cur  = st.bancoFiltro || '';
@@ -1518,29 +1563,64 @@ class Component extends DCLogic {
       bancoQuestoesVisiveis: (function(){
         var qs   = st.bancoQuestoes || [];
         var rev  = st.revealed || {};
+        var resp = st.bancoRespostas || {};
         var base = (st.bancoPage||0) * self._PAGE_SIZE;
+        var letters = ['A','B','C','D','E'];
         return qs.map(function(q, i){
-          var letters = ['A','B','C','D','E'];
-          var alts = [q.alternativa_a, q.alternativa_b, q.alternativa_c, q.alternativa_d, q.alternativa_e];
-          var gabLetter = (q.gabarito||'').toUpperCase().trim();
-          var isRev = !!rev[String(i)];
-          var opts = alts.map(function(txt, ai){
-            var letter = letters[ai];
-            var isGab = isRev && letter === gabLetter;
-            return {letra: letter, texto: txt||'', cls: 'ct-bq-opt' + (isGab?' gabarito-revealed correct':'')};
-          }).filter(function(o){return !!o.texto;});
+          var corrIdx   = typeof q.correta === 'number' ? q.correta : -1;
+          var gabLetter = corrIdx >= 0 ? (letters[corrIdx]||'') : '';
+          var isRev     = !!rev[String(i)];
+          var qid       = q.id || String(i);
+          var qResp     = resp[qid] || null;
+          var respondida= !!qResp;
+          var acertou   = qResp && qResp.acertou;
+          var errou     = qResp && !qResp.acertou;
+          var showComentario = respondida || isRev;
+          var opts = (Array.isArray(q.opcoes) ? q.opcoes : []).map(function(txt, ai){
+            var letter = letters[ai] || String(ai+1);
+            var cls = 'ct-bq-opt';
+            if(respondida){
+              cls += ' bloqueada';
+              if(ai === qResp.escolha && acertou)  cls += ' acertou';
+              else if(ai === qResp.escolha && errou) cls += ' errou';
+              else if(ai === corrIdx && errou)       cls += ' gabarito-ref';
+            } else if(isRev){
+              cls += ' bloqueada';
+              if(ai === corrIdx) cls += ' gabarito-ref';
+            } else {
+              cls += ' selecionar';
+            }
+            return {
+              letra: letter, texto: String(txt||''), cls: cls,
+              aidx: String(ai),
+              onSelect: (respondida || isRev) ? null : self._onResponder,
+            };
+          });
+          var respBadgeLabel = '';
+          var respBadgeCls   = 'ct-bq-resp-badge';
+          if(respondida){
+            if(acertou){ respBadgeLabel = '✅ Acertou!'; respBadgeCls += ' acertou'; }
+            else { respBadgeLabel = '❌ Errou — gabarito: ' + gabLetter; respBadgeCls += ' errou'; }
+          }
           return {
-            idx:      String(i),
-            num:      String(base + i + 1),
-            materia:  q.materia || '',
-            tema:     q.tema || '',
-            banca:    q.banca ? (q.banca + (q.ano?' '+q.ano:'')) : '',
-            enunciado:q.enunciado || '',
-            opts:     opts,
-            gabarito: gabLetter,
-            revealed: isRev,
-            btnCls:   'ct-bq-reveal-btn' + (isRev?' shown':''),
-            btnLabel: isRev ? '🙈 Ocultar gabarito' : '👁 Ver gabarito',
+            idx:            String(i),
+            qid:            qid,
+            num:            String(base + i + 1),
+            materia:        q.materia || '',
+            tema:           q.tema || '',
+            banca:          q.prova || '',
+            enunciado:      q.enunciado || '',
+            opts:           opts,
+            gabarito:       gabLetter,
+            comentario:     q.comentario || '',
+            revealed:       isRev,
+            respondida:     respondida,
+            naoRespondida:  !respondida,
+            showComentario: showComentario,
+            btnCls:         'ct-bq-reveal-btn' + (isRev?' shown':''),
+            btnLabel:       isRev ? '🙈 Ocultar gabarito' : '👁 Ver gabarito',
+            respBadgeCls:   respBadgeCls,
+            respBadgeLabel: respBadgeLabel,
           };
         });
       })(),
