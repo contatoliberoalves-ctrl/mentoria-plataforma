@@ -193,7 +193,8 @@
 .ct-crono-topic{font-size:12px;color:#555;line-height:1.45;margin-bottom:6px}
 
 /* LEI SECA */
-.ct-lei-wrap{display:flex;align-items:flex-start;gap:7px;margin-top:5px;margin-bottom:4px;padding:7px 10px;background:rgba(0,80,80,.06);border-left:3px solid var(--cp);border-radius:0 8px 8px 0}
+.ct-lei-wrap{display:none;align-items:flex-start;gap:7px;margin-top:5px;margin-bottom:4px;padding:7px 10px;background:rgba(0,80,80,.06);border-left:3px solid var(--cp);border-radius:0 8px 8px 0}
+.ct-lei-wrap.show{display:flex}
 .ct-lei-icon{font-size:14px;flex-shrink:0;margin-top:1px}
 .ct-lei-body{flex:1;min-width:0}
 .ct-lei-title{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:var(--cp);margin-bottom:3px}
@@ -501,7 +502,7 @@
               <sc-if value="{{ cd.hasTopic }}" hint-placeholder-val="">
                 <div class="ct-crono-topic">{{ cd.topic }}</div>
               </sc-if>
-              <div class="ct-lei-wrap" style="display:{{ cd.leisDisplay }}">
+              <div class="{{ cd.leisCls }}">
                 <span class="ct-lei-icon">📖</span>
                 <div class="ct-lei-body">
                   <div class="ct-lei-title">Lei seca — leitura do dia</div>
@@ -1331,7 +1332,7 @@ class Component extends DCLogic {
           subject: subj, topic: topic||'',
           leis: LEIS_MAP[subj] || '',
           hasLeis: !!(LEIS_MAP[subj]) && (typ==='c'||typ==='o'),
-          leisDisplay: (LEIS_MAP[subj] && (typ==='c'||typ==='o')) ? 'flex' : 'none',
+          leisCls: 'ct-lei-wrap' + ((LEIS_MAP[subj] && (typ==='c'||typ==='o')) ? ' show' : ''),
           hasTopic: !!(topic), hasQ: !!q,
           q: q?String(q):'', xpReward: xpReward,
           hasChecks: dayChecks.length>0, checks: dayChecks,
