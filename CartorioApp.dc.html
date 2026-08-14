@@ -502,13 +502,6 @@
               <sc-if value="{{ cd.hasTopic }}" hint-placeholder-val="">
                 <div class="ct-crono-topic">{{ cd.topic }}</div>
               </sc-if>
-              <div class="{{ cd.leisCls }}">
-                <span class="ct-lei-icon">📖</span>
-                <div class="ct-lei-body">
-                  <div class="ct-lei-title">Lei seca — leitura do dia</div>
-                  <div class="ct-lei-text">{{ cd.leis }}</div>
-                </div>
-              </div>
               <sc-if value="{{ cd.hasChecks }}" hint-placeholder-val="">
                 <div class="ct-crono-checks">
                   <div class="ct-checks-hdr">
@@ -1308,13 +1301,16 @@ class Component extends DCLogic {
     var cronoWeeks = this.CRONO.map(function(w, wi){
       var days = w.d.map(function(day, di){
         var typ = day[1], badge = day[2], subj = day[3], topic = day[4], q = day[5];
+        var leisText = LEIS_MAP[subj] || '';
         var lbls = checkLabels[typ] || [];
         var stepIcons = ['1°','2°','3°','4°','5°'];
         var dayChecks = lbls.map(function(lbl, ci){
           var key = 'w'+wi+'_d'+di+'_c'+ci;
           var on = !!checks[key];
           totalCks++; if(on) doneCks++;
-          return { key:key, label:lbl, step:on?'✓':(stepIcons[ci]||String(ci+1)+'°'), cls:'ct-chk'+(on?' done':'') };
+          var finalLbl = lbl;
+          if(lbl === 'Li a lei seca (opcional)' && leisText) finalLbl = '📖 Lei seca: ' + leisText;
+          return { key:key, label:finalLbl, step:on?'✓':(stepIcons[ci]||String(ci+1)+'°'), cls:'ct-chk'+(on?' done':'') };
         });
         var dayKey = 'w'+wi+'_d'+di;
         var qs = questStats[dayKey] || {};
@@ -1331,8 +1327,6 @@ class Component extends DCLogic {
           badge: badge, date: day[0],
           subject: subj, topic: topic||'',
           leis: LEIS_MAP[subj] || '',
-          hasLeis: !!(LEIS_MAP[subj]) && (typ==='c'||typ==='o'),
-          leisCls: 'ct-lei-wrap show',
           hasTopic: !!(topic), hasQ: !!q,
           q: q?String(q):'', xpReward: xpReward,
           hasChecks: dayChecks.length>0, checks: dayChecks,
