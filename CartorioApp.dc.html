@@ -1332,7 +1332,7 @@ class Component extends DCLogic {
           subject: subj, topic: topic||'',
           leis: LEIS_MAP[subj] || '',
           hasLeis: !!(LEIS_MAP[subj]) && (typ==='c'||typ==='o'),
-          leisCls: 'ct-lei-wrap' + ((LEIS_MAP[subj] && (typ==='c'||typ==='o')) ? ' show' : ''),
+          leisCls: 'ct-lei-wrap show',
           hasTopic: !!(topic), hasQ: !!q,
           q: q?String(q):'', xpReward: xpReward,
           hasChecks: dayChecks.length>0, checks: dayChecks,
