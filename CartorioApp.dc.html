@@ -501,15 +501,13 @@
               <sc-if value="{{ cd.hasTopic }}" hint-placeholder-val="">
                 <div class="ct-crono-topic">{{ cd.topic }}</div>
               </sc-if>
-              <sc-if value="{{ cd.hasLeis }}" hint-placeholder-val="">
-                <div class="ct-lei-wrap">
-                  <span class="ct-lei-icon">📖</span>
-                  <div class="ct-lei-body">
-                    <div class="ct-lei-title">Lei seca — leitura do dia</div>
-                    <div class="ct-lei-text">{{ cd.leis }}</div>
-                  </div>
+              <div class="ct-lei-wrap" style="display:{{ cd.leisDisplay }}">
+                <span class="ct-lei-icon">📖</span>
+                <div class="ct-lei-body">
+                  <div class="ct-lei-title">Lei seca — leitura do dia</div>
+                  <div class="ct-lei-text">{{ cd.leis }}</div>
                 </div>
-              </sc-if>
+              </div>
               <sc-if value="{{ cd.hasChecks }}" hint-placeholder-val="">
                 <div class="ct-crono-checks">
                   <div class="ct-checks-hdr">
@@ -1333,6 +1331,7 @@ class Component extends DCLogic {
           subject: subj, topic: topic||'',
           leis: LEIS_MAP[subj] || '',
           hasLeis: !!(LEIS_MAP[subj]) && (typ==='c'||typ==='o'),
+          leisDisplay: (LEIS_MAP[subj] && (typ==='c'||typ==='o')) ? 'flex' : 'none',
           hasTopic: !!(topic), hasQ: !!q,
           q: q?String(q):'', xpReward: xpReward,
           hasChecks: dayChecks.length>0, checks: dayChecks,
