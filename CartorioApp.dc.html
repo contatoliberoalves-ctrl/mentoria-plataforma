@@ -303,10 +303,19 @@
 .ct-bq-header{background:linear-gradient(135deg,#001818,var(--cy));border:3px solid var(--cb);border-radius:16px;box-shadow:4px 4px 0 var(--cb);padding:16px;margin-bottom:14px;color:#fff}
 .ct-bq-title{font-size:16px;font-weight:900;letter-spacing:.3px;margin-bottom:4px}
 .ct-bq-sub{font-size:12px;color:rgba(255,255,255,.7)}
-.ct-bq-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.ct-bq-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
 .ct-bq-filter{background:var(--cw);border:2px solid var(--cb);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:.3px;transition:all .15s;color:var(--cb)}
 .ct-bq-filter.active{background:var(--cy);color:#fff;border-color:var(--cy)}
 .ct-bq-filter:hover:not(.active){background:#f0f0f0}
+/* Filtros de TEMA */
+.ct-bq-temas-wrap{margin-bottom:12px;padding:10px 12px;background:#f0f7f5;border:2px solid var(--cy);border-radius:12px}
+.ct-bq-temas-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--cy);margin-bottom:7px}
+.ct-bq-tema-filters{display:flex;gap:5px;flex-wrap:wrap}
+.ct-bq-tema-filter{background:#fff;border:2px solid #b2d8d8;border-radius:20px;padding:4px 11px;font-size:10.5px;font-weight:700;cursor:pointer;transition:all .15s;color:#005050;letter-spacing:.1px}
+.ct-bq-tema-filter.active{background:var(--cy);color:#fff;border-color:var(--cy);font-weight:900}
+.ct-bq-tema-filter:hover:not(.active){background:#e0f0ef;border-color:var(--cy)}
+/* Tag de tema dentro do card */
+.ct-bq-tema{background:#e0f0ef;color:#004040;border-radius:20px;padding:2px 9px;font-size:10px;font-weight:800;letter-spacing:.2px}
 .ct-bq-search{width:100%;border:2.5px solid var(--cb);border-radius:10px;padding:10px 14px;font-size:14px;outline:none;margin-bottom:12px;box-sizing:border-box;font-family:inherit}
 .ct-bq-search:focus{border-color:var(--cy)}
 .ct-bq-card{background:var(--cw);border:3px solid var(--cb);border-radius:14px;box-shadow:4px 4px 0 var(--cb);padding:16px;margin-bottom:12px;overflow:hidden}
@@ -718,12 +727,27 @@
             </sc-for>
           </div>
 
+          <!-- Filtros por tema (aparece quando matéria está selecionada) -->
+          <sc-if value="{{ bancoTemasVisiveis }}" hint-placeholder-val="">
+            <div class="ct-bq-temas-wrap">
+              <div class="ct-bq-temas-label">📂 Filtrar por tema</div>
+              <div class="ct-bq-tema-filters">
+                <sc-for list="{{ bancoTemaFiltros }}" as="tf" hint-placeholder-count="5">
+                  <button class="{{ tf.cls }}" onclick="{{ tf.onClick }}">{{ tf.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
           <!-- Questões -->
           <sc-for list="{{ bancoQuestoesVisiveis }}" as="bq" hint-placeholder-count="5">
             <div class="ct-bq-card">
               <div class="ct-bq-card-top">
                 <span class="ct-bq-num">#{{ bq.num }}</span>
                 <span class="ct-bq-mat">{{ bq.materia }}</span>
+                <sc-if value="{{ bq.tema }}" hint-placeholder-val="">
+                  <span class="ct-bq-tema">{{ bq.tema }}</span>
+                </sc-if>
                 <sc-if value="{{ bq.banca }}" hint-placeholder-val="">
                   <span class="ct-bq-banca">{{ bq.banca }}</span>
                 </sc-if>
@@ -904,13 +928,17 @@ class Component extends DCLogic {
       banco:      function(){ self.setState({view:'banco'}); if(!self.state.bancoLoaded && !self.state.bancoLoading){ self._loadBanco(0); } },
     };
 
-    this._loadBanco = function(page, filtro, busca) {
+    this._loadBanco = function(page, filtro, tema, busca) {
       var pg     = page   != null ? page   : (self.state.bancoPage || 0);
       var filt   = filtro != null ? filtro : (self.state.bancoFiltro || '');
+      var temaF  = tema   != null ? tema   : (self.state.bancoTemaFiltro || '');
       var btext  = busca  != null ? busca  : (self.state.buscaTexto || '');
+      // Se trocou matéria, zera o filtro de tema
+      if(filtro != null && filtro !== (self.state.bancoFiltro||'')) temaF = '';
       var from   = pg * self._PAGE_SIZE;
-      var base   = self._SB_URL + '/rest/v1/const_banco_questoes?select=id,materia,enunciado,alternativa_a,alternativa_b,alternativa_c,alternativa_d,alternativa_e,gabarito,banca,ano&order=materia,id&limit=' + self._PAGE_SIZE + '&offset=' + from;
-      if(filt) base += '&materia=eq.' + encodeURIComponent(filt);
+      var base   = self._SB_URL + '/rest/v1/const_banco_questoes?select=id,materia,tema,enunciado,alternativa_a,alternativa_b,alternativa_c,alternativa_d,alternativa_e,gabarito,banca,ano&order=materia,tema,id&limit=' + self._PAGE_SIZE + '&offset=' + from;
+      if(filt)  base += '&materia=eq.' + encodeURIComponent(filt);
+      if(temaF) base += '&tema=eq.'    + encodeURIComponent(temaF);
       if(btext) base += '&enunciado=ilike.*' + encodeURIComponent(btext) + '*';
       var hdrs = { 'apikey': self._SB_KEY, 'Authorization': 'Bearer ' + self._SB_KEY, 'Prefer': 'count=exact' };
       self.setState({bancoLoading: true, bancoError: false, bancoLoaded: false});
@@ -919,8 +947,12 @@ class Component extends DCLogic {
         var total  = parseInt((crange.split('/')[1]) || '0', 10) || 0;
         return res.json().then(function(data){
           if(!Array.isArray(data)){ self.setState({bancoLoading:false, bancoError:true}); return; }
-          self.setState({bancoLoading:false, bancoLoaded:true, bancoError:false, bancoQuestoes: data, bancoTotal: total, bancoPage: pg, bancoFiltro: filt, buscaTexto: btext, revealed: {}});
+          var newState = {bancoLoading:false, bancoLoaded:true, bancoError:false, bancoQuestoes: data, bancoTotal: total, bancoPage: pg, bancoFiltro: filt, bancoTemaFiltro: temaF, buscaTexto: btext, revealed: {}};
+          self.setState(newState);
           if(!self.state.bancoMaterias || !self.state.bancoMaterias.length) self._loadMaterias();
+          // Carrega temas sempre que há uma matéria selecionada
+          if(filt) self._loadTemas(filt);
+          else self.setState({bancoTemas: []});
         });
       }).catch(function(){ self.setState({bancoLoading:false, bancoError:true}); });
     };
@@ -932,6 +964,16 @@ class Component extends DCLogic {
         var seen={}, mats=[];
         rows.forEach(function(r){ if(r.materia && !seen[r.materia]){seen[r.materia]=1;mats.push(r.materia);} });
         self.setState({bancoMaterias: mats});
+      }).catch(function(){});
+    };
+
+    this._loadTemas = function(materia){
+      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=tema&materia=eq.' + encodeURIComponent(materia) + '&order=tema';
+      fetch(url, {headers:{'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY}}).then(function(r){return r.json();}).then(function(rows){
+        if(!Array.isArray(rows)) return;
+        var seen={}, temas=[];
+        rows.forEach(function(r){ if(r.tema && !seen[r.tema]){seen[r.tema]=1;temas.push(r.tema);} });
+        self.setState({bancoTemas: temas});
       }).catch(function(){});
     };
 
@@ -954,7 +996,7 @@ class Component extends DCLogic {
       var v=(e.target||e.currentTarget).value;
       clearTimeout(self._buscaTimer);
       self.setState({buscaTexto:v});
-      self._buscaTimer = setTimeout(function(){ self._loadBanco(0, self.state.bancoFiltro, v); }, 500);
+      self._buscaTimer = setTimeout(function(){ self._loadBanco(0, self.state.bancoFiltro, self.state.bancoTemaFiltro, v); }, 500);
     };
 
     this._onWeekPrev = function(){ var w=self.state.activeWeek||0; if(w>0) self.setState({activeWeek:w-1}); };
@@ -1386,7 +1428,21 @@ class Component extends DCLogic {
           return {
             label: m.label,
             cls: 'ct-bq-filter' + (cur===m.id?' active':''),
-            onClick: (function(id){ return function(){ self._loadBanco(0, id, st.buscaTexto||''); }; })(m.id),
+            onClick: (function(id){ return function(){ self._loadBanco(0, id, '', st.buscaTexto||''); }; })(m.id),
+          };
+        });
+      })(),
+      bancoTemasVisiveis: !!(st.bancoFiltro) && !!(st.bancoTemas && st.bancoTemas.length),
+      bancoTemaFiltros: (function(){
+        var temas = st.bancoTemas || [];
+        var curT  = st.bancoTemaFiltro || '';
+        var curM  = st.bancoFiltro || '';
+        var all   = [{label:'Todos os temas', id:''}].concat(temas.map(function(t){return {label:t,id:t};}));
+        return all.map(function(t){
+          return {
+            label: t.label,
+            cls: 'ct-bq-tema-filter' + (curT===t.id?' active':''),
+            onClick: (function(tid){ return function(){ self._loadBanco(0, curM, tid, st.buscaTexto||''); }; })(t.id),
           };
         });
       })(),
@@ -1408,6 +1464,7 @@ class Component extends DCLogic {
             idx:      String(i),
             num:      String(base + i + 1),
             materia:  q.materia || '',
+            tema:     q.tema || '',
             banca:    q.banca ? (q.banca + (q.ano?' '+q.ano:'')) : '',
             enunciado:q.enunciado || '',
             opts:     opts,
