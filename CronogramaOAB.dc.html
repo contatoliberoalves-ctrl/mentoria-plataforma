@@ -103,16 +103,29 @@
     <div class="oab-onboard-card">
       <div style="font-size:32px;margin-bottom:12px">📅</div>
       <div class="oab-onboard-title">Sua Reta Final OAB</div>
-      <div class="oab-onboard-sub">Prova em <strong>6 de setembro de 2026</strong>. Escolha a data em que você começa o cronograma — o plano é montado automaticamente com base nos temas prioritários.</div>
+      <div class="oab-onboard-sub">Prova em <strong>6 de setembro de 2026</strong>. Escolha a data em que você começa o cronograma — o plano é adaptado automaticamente à quantidade de dias disponíveis.</div>
       <div class="oab-onboard-opts">
         <button class="oab-onboard-btn today" onclick="{{ onStartToday }}">
-          <div class="oab-onboard-btn-date">📅 Hoje — 13 de agosto</div>
-          <div class="oab-onboard-btn-label">17 dias de estudo + 7 dias de reta final</div>
+          <div class="oab-onboard-btn-date">📅 Hoje — {{ onboardTodayLabel }}</div>
+          <div class="oab-onboard-btn-label">{{ onboardTodaySub }}</div>
         </button>
         <button class="oab-onboard-btn" onclick="{{ onStartTomorrow }}">
-          <div class="oab-onboard-btn-date">📅 Amanhã — 14 de agosto</div>
-          <div class="oab-onboard-btn-label">16 dias de estudo + 7 dias de reta final</div>
+          <div class="oab-onboard-btn-date">📅 Amanhã — {{ onboardTomorrowLabel }}</div>
+          <div class="oab-onboard-btn-label">{{ onboardTomorrowSub }}</div>
         </button>
+        <div style="margin-top:4px">
+          <div style="font-size:11px;font-weight:700;color:#888;margin-bottom:6px">Ou escolha outra data:</div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="date" id="oab-custom-date" min="{{ onboardMinDate }}" max="2026-09-05"
+              style="flex:1;padding:10px 12px;border:2.5px solid #ccc;border-radius:10px;font-size:14px;font-weight:700;color:#0D0D0D;outline:none"
+              oninput="{{ onCustomDateInput }}" />
+            <button onclick="{{ onStartCustom }}"
+              style="background:var(--cg);color:#fff;border:2.5px solid #0D0D0D;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:900;cursor:pointer;box-shadow:2px 2px 0 #0D0D0D">
+              Confirmar
+            </button>
+          </div>
+          <div style="font-size:11px;color:#888;margin-top:5px;font-weight:600">{{ onboardCustomSub }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -170,7 +183,7 @@
     </sc-for>
 
     <!-- Reta Final -->
-    <div class="oab-section-hd">🔥 Reta Final — 30/ago a 5/set</div>
+    <div class="oab-section-hd">🔥 Reta Final — 30/ago a 5/set (imersão total)</div>
 
     <div class="reta-special">
       <div class="reta-special-title">🎯 Modo Imersão Total — 7 dias</div>
@@ -229,12 +242,31 @@ class CronogramaOAB extends React.Component {
     };
 
     var self = this;
-    this.onStartToday    = function(){ self._setStart('2026-08-13'); };
-    this.onStartTomorrow = function(){ self._setStart('2026-08-14'); };
+    this.customDateVal = '';
+    this.onStartToday    = function(){ self._setStart(self._todayISO()); };
+    this.onStartTomorrow = function(){
+      var t = new Date(); t.setDate(t.getDate()+1);
+      self._setStart(self._isoOf(t));
+    };
+    this.onCustomDateInput = function(e){
+      self.customDateVal = (e && e.target) ? e.target.value : '';
+    };
+    this.onStartCustom = function(){
+      var v = self.customDateVal;
+      if(!v){ var el = document.getElementById('oab-custom-date'); if(el) v = el.value; }
+      if(v && /^\d{4}-\d{2}-\d{2}$/.test(v)) self._setStart(v);
+    };
     this.onReset = function(){
       try{ localStorage.removeItem('_oab_crono_start'); }catch(e){}
       self.setState({startDate:null});
     };
+  }
+
+  _isoOf(d){
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+  _todayISO(){
+    return this._isoOf(new Date());
   }
 
   _setStart(iso) {
@@ -316,7 +348,39 @@ class CronogramaOAB extends React.Component {
 
     var TODAY = todayISO();
     var startDate = st.startDate;
+    // Also check if index.html stored the start date
+    if (!startDate) {
+      try { startDate = localStorage.getItem('_oab_crono_start') || null; } catch(e){}
+      if (startDate) this.state.startDate = startDate;
+    }
     var showOnboard = !startDate;
+
+    // Onboarding dynamic labels
+    var MONTHS_PT = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    var MONTHS_SHORT = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    function dayStudyCount(isoStart) {
+      var base2 = parseISO(isoStart);
+      var count = 0;
+      for (var j = 0; j < 17; j++) {
+        var dj = addDays(base2, j);
+        if (isoOf(dj) >= '2026-08-30') break;
+        count++;
+      }
+      return count;
+    }
+    function fmtDatePT(d) {
+      return d.getDate() + ' de ' + MONTHS_PT[d.getMonth()];
+    }
+    var todayDate0 = parseISO(TODAY);
+    var tomorrowDate0 = addDays(todayDate0, 1);
+    var onboardTodayLabel = fmtDatePT(todayDate0);
+    var onboardTomorrowLabel = fmtDatePT(tomorrowDate0);
+    var todayStudyDays = dayStudyCount(TODAY);
+    var tmrwStudyDays = dayStudyCount(isoOf(tomorrowDate0));
+    var onboardTodaySub = todayStudyDays + ' dias de estudo + 7 dias de reta final';
+    var onboardTomorrowSub = tmrwStudyDays + ' dias de estudo + 7 dias de reta final';
+    var onboardMinDate = TODAY;
+    var onboardCustomSub = '';
 
     var days = [];
     var doneCount = 0;
@@ -329,6 +393,8 @@ class CronogramaOAB extends React.Component {
         var p = PLAN[i];
         var d = addDays(base, i);
         var iso = isoOf(d);
+        // Stop adding study days once reta final begins (Aug 30)
+        if (iso >= '2026-08-30') break;
         var isToday = iso === TODAY;
         var isDone  = !!checks['d'+i];
         if (isDone) { doneCount++; if (p[4]) simDone++; }
@@ -400,6 +466,14 @@ class CronogramaOAB extends React.Component {
       showOnboard: showOnboard,
       onStartToday: this.onStartToday,
       onStartTomorrow: this.onStartTomorrow,
+      onCustomDateInput: this.onCustomDateInput,
+      onStartCustom: this.onStartCustom,
+      onboardTodayLabel: onboardTodayLabel,
+      onboardTomorrowLabel: onboardTomorrowLabel,
+      onboardTodaySub: onboardTodaySub,
+      onboardTomorrowSub: onboardTomorrowSub,
+      onboardMinDate: onboardMinDate,
+      onboardCustomSub: onboardCustomSub,
       onReset: this.onReset,
       daysLeft: String(daysLeft),
       doneCount: String(doneCount),
