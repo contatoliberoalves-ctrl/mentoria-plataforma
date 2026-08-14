@@ -992,14 +992,17 @@ class Component extends DCLogic {
     };
 
     this._loadMaterias = function(){
-      var url = self._SB_URL + '/rest/v1/const_banco_questoes?select=materia&order=materia&limit=9999';
-      var hdrs = {'apikey':self._SB_KEY,'Authorization':'Bearer '+self._SB_KEY,'Range':'0-9998'};
-      fetch(url, {headers:hdrs}).then(function(r){return r.json();}).then(function(rows){
-        if(!Array.isArray(rows)) return;
-        var seen={}, mats=[];
-        rows.forEach(function(r){ if(r.materia && !seen[r.materia]){seen[r.materia]=1;mats.push(r.materia);} });
-        self.setState({bancoMaterias: mats});
-      }).catch(function(){});
+      // Matérias fixas do banco (3100 questões em 15 matérias)
+      var mats = [
+        'Direito Administrativo','Direito Civil','Direito Constitucional',
+        'Direito Empresarial','Direito Penal','Direito Processual Civil',
+        'Direito Processual Penal','Direito Tributário',
+        'Registro Civil de Pessoas Jurídicas','Registro Civil de Pessoas Naturais',
+        'Registro de Imóveis','Registro de Títulos e Documentos',
+        'Tabelionato de Notas','Tabelionato de Protesto',
+        'Teoria Geral dos Registros Públicos'
+      ];
+      self.setState({bancoMaterias: mats});
     };
 
     this._loadTemas = function(materia){
