@@ -1208,67 +1208,7 @@ class Component extends DCLogic {
       ]},
     ];
 
-    // Mapa de lei seca por assunto do dia
-    this.LEIS_MAP = {
-      // TEORIA GERAL DOS REGISTROS PÚBLICOS
-      'TGRP I':       'CF: art. 236 · Lei 8.935/94: arts. 1º, 3º, 7º, 8º, 10–13 · Lei 6.015/73: arts. 1º, 9º, 16–19, 29 · Prov. 149/2023',
-      'TGRP II':      'CF: art. 236 · Lei 8.935/94: arts. 14, 16, 20, 36–40 · Lei 10.169/00 · Lei 11.331/02 · Prov. 149/23: arts. 65, 72',
-      'TGRP III':     'Lei 8.935/94: arts. 21–24, 32, 36–37 · Lei 6.015/73: arts. 26–27, 132 · Prov. 149/23: arts. 285, 295 · Prov. 103/20',
-      // CONSTITUCIONAL
-      'Const. I':     'CF: arts. 1º–4º · CF: art. 5º (caput, I, V, X, §§1–3) · Lei 4.717/65: arts. 1º, 4º · Lei 12.016/09',
-      'Const. II':    'CF: arts. 18–36 · CF: arts. 92–100 · CF: art. 103-B · CF: art. 236 · Lei 8.935/94 · EC 45/2004',
-      'Const. III':   'CF: arts. 6º–11 · CF: arts. 170–174 · CF: arts. 102–103-A · Lei 9.868/99: arts. 4–10, 21–27 · Lei 9.882/99',
-      'Const. Final + Penal': 'CF: arts. 5º, 18–41, 92–103-A · Lei 9.868/99 · CP: arts. 1–3, 13–14, 18–20, 23–25',
-      // ADMINISTRATIVO
-      'Adm. I':       'CF: art. 37 (I–XI) · Lei 9.784/99: arts. 1–3 · Lei 8.429/92: art. 12 · Súm. Vinculante 13 · Lei 8.935/94: art. 37',
-      'Adm. II':      'Lei 14.133/21: arts. 1–9, 28–90 · Lei 8.429/92: arts. 1–12 · CF: art. 37, §6º · Lei 9.784/99',
-      'Adm. III':     'CF: art. 37, §6º · Lei 9.784/99: arts. 1–3, 26–32, 56–65 · Lei 3.365/41 · Lei 8.935/94: arts. 22, 37',
-      'Adm. Final + Proc. Penal': 'Lei 9.784/99 · CF: art. 37, §6º · CPP: arts. 4–23, 155–184, 283–310',
-      // TRIBUTÁRIO
-      'Trib. I':      'CF: arts. 145–153, 155–156 · CTN: arts. 1–5, 113–138 · CF: art. 156, II (ITBI) · CF: art. 155, I (ITCMD)',
-      'Trib. II':     'CTN: arts. 139–193 · CF: art. 156, II (ITBI) · CF: art. 155, I (ITCMD) · CTN: art. 35 · IN RFB 2096/22 (DOI)',
-      'Trib. Revisão':'CF: arts. 155, I e 156, II · CTN: art. 35 · IN RFB 2096/22 (DOI) · Lei 10.169/00 (emolumentos)',
-      'Trib. Final':  'CF: arts. 145–156 · CTN: arts. 1–200 · CF: arts. 155, I e 156, II · IN RFB 2096/22',
-      // EMPRESARIAL
-      'Emp. I':       'CC: arts. 966–984, 1.045–1.094 · Lei 8.934/94: arts. 32–36 · Lei 6.404/76: arts. 1–7 · LC 123/06: art. 3º',
-      'Emp. II':      'CC: arts. 887–926 · Lei 5.474/68: arts. 13, 18 · Dec. 57.663/66 (LC): arts. 46, 70 · Lei 11.101/05: art. 94',
-      'Emp. Revisão': 'Lei 11.101/05: arts. 1–3, 94–97 · CDC: arts. 1–5, 12–28 · CC: arts. 887–909 · Lei 6.404/76',
-      'Emp. Final':   'CC: arts. 966–1.094 · Lei 6.404/76 · Lei 11.101/05: arts. 1–3, 94–97 · CC: arts. 887–926 · Lei 5.474/68',
-      // RCPN
-      'RCPN I':       'Lei 6.015/73: arts. 29–59 · CC: art. 1.597 · Prov. 149/23: arts. 483–513 · Lei 12.662/12',
-      'RCPN II':      'Lei 6.015/73: arts. 67–87 · CC: arts. 1.521–1.542 · Lei 11.441/07 · Lei 14.382/22: arts. 56–57',
-      'RCPN III':     'Lei 6.015/73: arts. 77–94 · CC: arts. 5º, 1.767–1.783 · Lei 6.015/73: arts. 90–94',
-      'RCPN IV':      'Lei 6.015/73: arts. 109–110, 55–58 · CC: arts. 1.607–1.616 · Lei 8.560/92 · Prov. 149/23: arts. 498–526',
-      'RCPN V':       'ECA: arts. 42, 47 · CC: art. 1.619 · Lei 6.015/73: arts. 29–30, 94-A · Prov. 149/23: arts. 483, 488, 539',
-      // TABELIONATO DE NOTAS
-      'Tab. Notas I':  'CF: art. 236 · CC: arts. 215, 217–218 · Lei 8.935/94: arts. 1º, 3º, 6º, 19, 37–38 · Prov. 149/23: art. 106',
-      'Tab. Notas II': 'Lei 8.935/94: arts. 6º–11 · CC: art. 215, §1º · Prov. 149/23: arts. 315–354 · Dec. 93.240/86',
-      'Tab. Notas III':'CC: arts. 108, 215, 1.647–1.648 · Lei 7.433/85: arts. 2º–3º · Dec. 93.240/86 · Prov. 149/23: arts. 182–199',
-      'Tab. Notas IV': 'Lei 11.441/07: arts. 28–31 · CPC: arts. 610, 982 · CC: arts. 1.723, 1.829 · Prov. 93/20 · Lei 14.382/22: art. 57',
-      'Tab. Notas V':  'CC: arts. 1.857–1.875 · Lei 8.935/94: arts. 7º, 8º · Prov. 149/23: arts. 285–295, 375–396 · Lei 6.206/75',
-      // TABELIONATO DE PROTESTO
-      'Tab. Protesto I':  'Lei 9.492/97: arts. 1º–12 · CC: arts. 202, 204 · Lei 11.101/05: art. 94 · Lei 5.474/68',
-      'Tab. Protesto II': 'Lei 9.492/97: arts. 9–29, 17, 25–26, 38 · Prov. 149/23: arts. 335–399 · Dec. 57.663/66',
-      // REGISTRO DE IMÓVEIS
-      'Reg. Imóveis I':  'Lei 6.015/73: arts. 167, 169, 172, 176, 186, 189–198 · CC: arts. 1.245–1.247 · Lei 8.935/94: art. 44',
-      'Reg. Imóveis II': 'Lei 6.015/73: arts. 172–214, 246, 252 · CC: art. 1.246 · Lei 13.097/15: art. 54 · Lei 14.382/22: art. 167',
-      'Reg. Imóveis III':'Lei 6.015/73: arts. 198–207, 213 · Lei 14.382/22: art. 198 · Lei 10.931/04 · Lei 5.709/71: arts. 11, 16',
-      'Reg. Imóveis IV': 'Lei 9.514/97: arts. 17–27 · Lei 6.766/79: arts. 13, 16, 18 · Lei 4.591/64 · Lei 10.931/04: arts. 22–27',
-      'Reg. Imóveis V':  'CPC: art. 216-A · Lei 13.465/17 · Lei 6.015/73: arts. 213, 250, 252, 277 · Lei 5.709/71: arts. 11, 16',
-      // RCPJ + RTD
-      'RCPJ + RTD': 'Lei 6.015/73: arts. 114–127 · CC: arts. 44–53 · Lei 8.934/94: arts. 32–36 · Lei 9.492/97: arts. 1º–6º',
-      // CIVIL
-      'Civil I — LINDB + Parte Geral': 'LINDB: arts. 1º–19 · CC: arts. 1–78, 185–232 · CC: arts. 189–206 (prescrição/decadência)',
-      'Civil II — Obrigações':         'CC: arts. 233–420 · CC: arts. 389–420 (inadimplemento) · CC: arts. 286–303 (cessão)',
-      'Civil III — Contratos I':        'CC: arts. 421–480, 481–532, 533–537, 538–549 · CC: arts. 441–446 (vícios redibitórios)',
-      'Civil IV — Contratos II + Resp. Civil': 'CC: arts. 565–652, 653–692, 818–839 · CC: arts. 927–954 (responsabilidade civil)',
-      'Civil V — Coisas / Direitos Reais':     'CC: arts. 1.196–1.232, 1.225–1.232 · CC: arts. 1.390–1.510 · Lei 9.514/97',
-      'Civil VI — Família':                    'CC: arts. 1.511–1.590, 1.591–1.638 · ECA: arts. 42, 47 · CC: arts. 1.694–1.710',
-      'Civil VII — Sucessões + CDC':           'CC: arts. 1.784–1.990 · CC: arts. 1.857–1.875 (testamentos) · CDC: arts. 1–5, 12–28',
-      // PROCESSO CIVIL
-      'Proc. Civil I':     'CPC: arts. 1–12, 42–68, 69–76, 303–311 (tutelas prov.) · CPC: arts. 313–374 (suspensão, prazos)',
-      'Proc. Civil II + III': 'CPC: arts. 369–484, 485–508, 509–540 · CPC: arts. 771–925 (execução) · CPC: arts. 994–1.044 (recursos)',
-    };
+
 
     var _sp = {};
     try{ _sp = JSON.parse(localStorage.getItem('_ct_profile')||'{}'); }catch(e){}
@@ -1306,6 +1246,55 @@ class Component extends DCLogic {
     var view = st.view;
     var self = this;
 
+    var LEIS_MAP = {
+      'TGRP I':       'CF: art. 236 · Lei 8.935/94: arts. 1º, 3º, 7º, 8º, 10-13 · Lei 6.015/73: arts. 1º, 9º, 16-19, 29 · Prov. 149/2023',
+      'TGRP II':      'CF: art. 236 · Lei 8.935/94: arts. 14, 16, 20, 36-40 · Lei 10.169/00 · Lei 11.331/02 · Prov. 149/23: arts. 65, 72',
+      'TGRP III':     'Lei 8.935/94: arts. 21-24, 32, 36-37 · Lei 6.015/73: arts. 26-27, 132 · Prov. 149/23: arts. 285, 295 · Prov. 103/20',
+      'Const. I':     'CF: arts. 1º-4º · CF: art. 5º (I, V, X, LXIX-LXXI) · Lei 4.717/65: arts. 1º, 4º · Lei 12.016/09',
+      'Const. II':    'CF: arts. 18-36 · CF: arts. 92-100 · CF: art. 103-B · CF: art. 236 · Lei 8.935/94 · EC 45/2004',
+      'Const. III':   'CF: arts. 6º-11 · CF: arts. 170-174 · CF: arts. 102-103-A · Lei 9.868/99: arts. 4-10, 21-27 · Lei 9.882/99',
+      'Const. Final + Penal': 'CF: arts. 5º, 18-41, 92-103-A · Lei 9.868/99 · CP: arts. 1-3, 13-14, 18-20, 23-25',
+      'Adm. I':       'CF: art. 37 (I-XI) · Lei 9.784/99: arts. 1-3 · Lei 8.429/92: art. 12 · Sum. Vinculante 13 · Lei 8.935/94: art. 37',
+      'Adm. II':      'Lei 14.133/21: arts. 1-9, 28-90 · Lei 8.429/92: arts. 1-12 · CF: art. 37, §6º · Lei 9.784/99',
+      'Adm. III':     'CF: art. 37, §6º · Lei 9.784/99: arts. 1-3, 26-32, 56-65 · Lei 3.365/41 · Lei 8.935/94: arts. 22, 37',
+      'Adm. Final + Proc. Penal': 'Lei 9.784/99 · CF: art. 37, §6º · CPP: arts. 4-23, 155-184, 283-310',
+      'Trib. I':      'CF: arts. 145-153, 155-156 · CTN: arts. 1-5, 113-138 · CF: art. 156, II (ITBI) · CF: art. 155, I (ITCMD)',
+      'Trib. II':     'CTN: arts. 139-193 · CF: art. 156, II (ITBI) · CF: art. 155, I (ITCMD) · CTN: art. 35 · IN RFB 2096/22 (DOI)',
+      'Trib. Revisão':'CF: arts. 155, I e 156, II · CTN: art. 35 · IN RFB 2096/22 (DOI) · Lei 10.169/00 (emolumentos)',
+      'Trib. Final':  'CF: arts. 145-156 · CTN: arts. 1-200 · CF: arts. 155, I e 156, II · IN RFB 2096/22',
+      'Emp. I':       'CC: arts. 966-984, 1.045-1.094 · Lei 8.934/94: arts. 32-36 · Lei 6.404/76: arts. 1-7 · LC 123/06: art. 3º',
+      'Emp. II':      'CC: arts. 887-926 · Lei 5.474/68: arts. 13, 18 · Dec. 57.663/66 (LC): arts. 46, 70 · Lei 11.101/05: art. 94',
+      'Emp. Revisão': 'Lei 11.101/05: arts. 1-3, 94-97 · CDC: arts. 1-5, 12-28 · CC: arts. 887-909 · Lei 6.404/76',
+      'Emp. Final':   'CC: arts. 966-1.094 · Lei 6.404/76 · Lei 11.101/05: arts. 1-3, 94-97 · CC: arts. 887-926 · Lei 5.474/68',
+      'RCPN I':       'Lei 6.015/73: arts. 29-59 · CC: art. 1.597 · Prov. 149/23: arts. 483-513 · Lei 12.662/12',
+      'RCPN II':      'Lei 6.015/73: arts. 67-87 · CC: arts. 1.521-1.542 · Lei 11.441/07 · Lei 14.382/22: arts. 56-57',
+      'RCPN III':     'Lei 6.015/73: arts. 77-94 · CC: arts. 5º, 1.767-1.783 · Lei 6.015/73: arts. 90-94',
+      'RCPN IV':      'Lei 6.015/73: arts. 109-110, 55-58 · CC: arts. 1.607-1.616 · Lei 8.560/92 · Prov. 149/23: arts. 498-526',
+      'RCPN V':       'ECA: arts. 42, 47 · CC: art. 1.619 · Lei 6.015/73: arts. 29-30, 94-A · Prov. 149/23: arts. 483, 488, 539',
+      'Tab. Notas I':  'CF: art. 236 · CC: arts. 215, 217-218 · Lei 8.935/94: arts. 1º, 3º, 6º, 19, 37-38 · Prov. 149/23: art. 106',
+      'Tab. Notas II': 'Lei 8.935/94: arts. 6º-11 · CC: art. 215, §1º · Prov. 149/23: arts. 315-354 · Dec. 93.240/86',
+      'Tab. Notas III':'CC: arts. 108, 215, 1.647-1.648 · Lei 7.433/85: arts. 2º-3º · Dec. 93.240/86 · Prov. 149/23: arts. 182-199',
+      'Tab. Notas IV': 'Lei 11.441/07: arts. 28-31 · CPC: arts. 610, 982 · CC: arts. 1.723, 1.829 · Prov. 93/20 · Lei 14.382/22: art. 57',
+      'Tab. Notas V':  'CC: arts. 1.857-1.875 · Lei 8.935/94: arts. 7º, 8º · Prov. 149/23: arts. 285-295, 375-396 · Lei 6.206/75',
+      'Tab. Protesto I':  'Lei 9.492/97: arts. 1º-12 · CC: arts. 202, 204 · Lei 11.101/05: art. 94 · Lei 5.474/68',
+      'Tab. Protesto II': 'Lei 9.492/97: arts. 9-29, 17, 25-26, 38 · Prov. 149/23: arts. 335-399 · Dec. 57.663/66',
+      'Reg. Imóveis I':  'Lei 6.015/73: arts. 167, 169, 172, 176, 186, 189-198 · CC: arts. 1.245-1.247 · Lei 8.935/94: art. 44',
+      'Reg. Imóveis II': 'Lei 6.015/73: arts. 172-214, 246, 252 · CC: art. 1.246 · Lei 13.097/15: art. 54 · Lei 14.382/22: art. 167',
+      'Reg. Imóveis III':'Lei 6.015/73: arts. 198-207, 213 · Lei 14.382/22: art. 198 · Lei 10.931/04 · Lei 5.709/71: arts. 11, 16',
+      'Reg. Imóveis IV': 'Lei 9.514/97: arts. 17-27 · Lei 6.766/79: arts. 13, 16, 18 · Lei 4.591/64 · Lei 10.931/04: arts. 22-27',
+      'Reg. Imóveis V':  'CPC: art. 216-A · Lei 13.465/17 · Lei 6.015/73: arts. 213, 250, 252, 277 · Lei 5.709/71: arts. 11, 16',
+      'RCPJ + RTD': 'Lei 6.015/73: arts. 114-127 · CC: arts. 44-53 · Lei 8.934/94: arts. 32-36 · Lei 9.492/97: arts. 1º-6º',
+      'Civil I — LINDB + Parte Geral': 'LINDB: arts. 1º-19 · CC: arts. 1-78, 185-232 · CC: arts. 189-206 (prescricao/decadencia)',
+      'Civil II — Obrigações':         'CC: arts. 233-420 · CC: arts. 389-420 (inadimplemento) · CC: arts. 286-303 (cessao)',
+      'Civil III — Contratos I':        'CC: arts. 421-480, 481-532, 533-537, 538-549 · CC: arts. 441-446 (vicios redibiotorios)',
+      'Civil IV — Contratos II + Resp. Civil': 'CC: arts. 565-652, 653-692, 818-839 · CC: arts. 927-954 (responsabilidade civil)',
+      'Civil V — Coisas / Direitos Reais':     'CC: arts. 1.196-1.232 · CC: arts. 1.390-1.510 · Lei 9.514/97',
+      'Civil VI — Família':                    'CC: arts. 1.511-1.590, 1.591-1.638 · ECA: arts. 42, 47 · CC: arts. 1.694-1.710',
+      'Civil VII — Sucessões + CDC':           'CC: arts. 1.784-1.990 · CC: arts. 1.857-1.875 (testamentos) · CDC: arts. 1-5, 12-28',
+      'Proc. Civil I':     'CPC: arts. 1-12, 42-68, 69-76, 303-311 (tutelas) · CPC: arts. 313-374',
+      'Proc. Civil II + III': 'CPC: arts. 369-484, 485-508, 509-540 · CPC: arts. 771-925 (execucao) · CPC: arts. 994-1.044 (recursos)',
+    };
+
     var checks = st.cronoChecks || {};
     var questStats = st.questStats || {};
     var dayNotes = st.dayNotes || {};
@@ -1342,8 +1331,8 @@ class Component extends DCLogic {
           badgeCls: 'ct-crono-badge t-'+typ,
           badge: badge, date: day[0],
           subject: subj, topic: topic||'',
-          leis: self.LEIS_MAP[subj] || '',
-          hasLeis: !!(self.LEIS_MAP[subj]) && (typ==='c'||typ==='o'),
+          leis: LEIS_MAP[subj] || '',
+          hasLeis: !!(LEIS_MAP[subj]) && (typ==='c'||typ==='o'),
           hasTopic: !!(topic), hasQ: !!q,
           q: q?String(q):'', xpReward: xpReward,
           hasChecks: dayChecks.length>0, checks: dayChecks,
