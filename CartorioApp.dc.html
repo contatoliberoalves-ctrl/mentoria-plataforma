@@ -1441,8 +1441,19 @@ class Component extends DCLogic {
       return{name:s.name||'',timer:s.timer||5,date:s.date||'',url:s.url||''};
     });
 
-    // Report
+    // Report — calcula diretamente do localStorage (_ct_bq_resp)
     var rep=d.reportData||{};
+    var _localResp={};
+    try{ _localResp=JSON.parse(localStorage.getItem('_ct_bq_resp')||'{}'); }catch(_){}
+    var _localKeys=Object.keys(_localResp);
+    if(_localKeys.length>0){
+      var _tot=_localKeys.length;
+      var _acert=_localKeys.filter(function(k){return _localResp[k].acertou;}).length;
+      rep=Object.assign({},rep,{
+        totalQ: _tot,
+        taxa: _tot>0?Math.round(_acert/_tot*100):0,
+      });
+    }
     var rTaxa=rep.taxa||0;
 
     // Compute per-area completion from cronoChecks
