@@ -1089,6 +1089,7 @@ class Component extends DCLogic {
       stats[dayKey][field] = val;
       if(stats[dayKey].acertos > stats[dayKey].feitas) stats[dayKey].acertos = stats[dayKey].feitas;
       self.setState({ questStats: stats });
+      try{ localStorage.setItem('_ct_queststats', JSON.stringify(stats)); }catch(ex){}
       var d2 = self.props.data || {};
       d2.onQuestStat && d2.onQuestStat(dayKey, stats[dayKey]);
     };
@@ -1255,6 +1256,8 @@ class Component extends DCLogic {
     try{ _sp = JSON.parse(localStorage.getItem('_ct_profile')||'{}'); }catch(e){}
     var _sn = {};
     try{ _sn = JSON.parse(localStorage.getItem('_ct_notes')||'{}'); }catch(e){}
+    var _sq = {};
+    try{ _sq = JSON.parse(localStorage.getItem('_ct_queststats')||'{}'); }catch(e){}
     // Auto-detect current week based on today's date
     var _todayStr = (function(){var d=new Date();return (d.getMonth()+1)+'/'+d.getDate();})();
     var _startWeek = 0;
@@ -1274,7 +1277,7 @@ class Component extends DCLogic {
       view:'cronograma', activeMonth:0,
       activeWeek: _startWeek,
       cronoChecks: (props.data && props.data.cronoChecks) || {},
-      questStats:  (props.data && props.data.questStats)  || {},
+      questStats:  (props.data && props.data.questStats)  || _sq,
       profileOpen: false,
       profileName: _sp.name||'', profilePhone: _sp.phone||'', profileCity: _sp.city||'', profilePhoto: _sp.photo||'',
       dayNotes: _sn,
