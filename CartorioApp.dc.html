@@ -166,6 +166,26 @@
 .ct-crono-day.t-p .ct-crono-subject{color:#ffd700;font-size:18px;text-align:center;letter-spacing:1px;text-shadow:0 0 10px rgba(255,215,0,.5)}
 
 /* META badges */
+.ct-edit-hidden{display:none!important}
+.ct-crono-edit-wrap{margin-top:6px}
+.ct-crono-edit-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ct-crono-edit-btn{font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;border:1.5px solid #94a3b8;background:transparent;color:#64748b;cursor:pointer;transition:all .15s;letter-spacing:.02em}
+.ct-crono-edit-btn:hover,.ct-crono-edit-btn.customized{border-color:var(--cg);color:var(--cg);background:rgba(16,185,129,.08)}
+.ct-crono-day.t-s .ct-crono-edit-btn,.ct-crono-day.t-r .ct-crono-edit-btn{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.6)}
+.ct-crono-day.t-s .ct-crono-edit-btn:hover,.ct-crono-day.t-r .ct-crono-edit-btn:hover{border-color:rgba(255,255,255,.8);color:#fff}
+.ct-crono-edit-restore{font-size:10px;color:#94a3b8;background:none;border:none;cursor:pointer;text-decoration:underline;padding:0}
+.ct-crono-edit-restore:hover{color:var(--cr)}
+.ct-crono-edit-form{margin-top:10px;padding:12px;background:rgba(0,0,0,.04);border-radius:10px;border:1px solid rgba(0,0,0,.08);display:flex;flex-direction:column;gap:8px}
+.ct-crono-day.t-s .ct-crono-edit-form,.ct-crono-day.t-r .ct-crono-edit-form{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+.ct-edit-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#94a3b8;display:block;margin-bottom:3px}
+.ct-edit-field{display:flex;flex-direction:column}
+.ct-edit-field-q{max-width:160px}
+.ct-edit-input{font-family:inherit;font-size:13px;padding:7px 10px;border-radius:7px;border:1.5px solid #e2e8f0;background:#fff;color:#1e293b;width:100%;outline:none;transition:border-color .15s}
+.ct-edit-input:focus{border-color:var(--cg)}
+.ct-edit-textarea{resize:vertical;min-height:64px;line-height:1.45}
+.ct-edit-input-q{width:100%}
+.ct-edit-save-btn{align-self:flex-start;padding:7px 16px;border-radius:8px;background:var(--cg);color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .15s;margin-top:2px}
+.ct-edit-save-btn:hover{opacity:.85}
 .ct-crono-day-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
 .ct-crono-badge{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;padding:3px 10px;border-radius:99px;border:2px solid currentColor}
 .ct-crono-badge.t-c{color:var(--c-blue);background:#EFF6FF}
@@ -514,6 +534,27 @@
               <sc-if value="{{ cd.hasTopic }}" hint-placeholder-val="">
                 <div class="ct-crono-topic">{{ cd.topic }}</div>
               </sc-if>
+              <div class="{{ cd.editRowWrapCls }}">
+                <div class="ct-crono-edit-row">
+                  <button class="{{ cd.editBtnCls }}" onclick="{{ onCronoEditToggle }}" data-day-key="{{ cd.dayKey }}">{{ cd.editBtnLabel }}</button>
+                  <button class="{{ cd.editRestoreCls }}" onclick="{{ onCronoEditReset }}" data-day-key="{{ cd.dayKey }}">↺ Restaurar original</button>
+                </div>
+                <div class="{{ cd.editFormCls }}">
+                  <div class="ct-edit-field">
+                    <label class="ct-edit-label">Tema do dia</label>
+                    <input type="text" class="ct-edit-input" data-field="s" oninput="{{ onCronoEditInput }}" value="{{ cd.editSubject }}" placeholder="Ex: TGRP I">
+                  </div>
+                  <div class="ct-edit-field">
+                    <label class="ct-edit-label">Conteúdo / Artigos</label>
+                    <textarea class="ct-edit-input ct-edit-textarea" data-field="t" oninput="{{ onCronoEditInput }}" placeholder="Ex: Princípios · Lei 8.935/94...">{{ cd.editTopic }}</textarea>
+                  </div>
+                  <div class="ct-edit-field ct-edit-field-q">
+                    <label class="ct-edit-label">Meta de questões</label>
+                    <input type="number" class="ct-edit-input ct-edit-input-q" data-field="q" oninput="{{ onCronoEditInput }}" value="{{ cd.editQ }}" min="0" max="200" placeholder="—">
+                  </div>
+                  <button class="ct-edit-save-btn" onclick="{{ onCronoEditSave }}" data-day-key="{{ cd.dayKey }}">✓ Salvar alterações</button>
+                </div>
+              </div>
               <sc-if value="{{ cd.hasChecks }}" hint-placeholder-val="">
                 <div class="ct-crono-checks">
                   <div class="ct-checks-hdr">
@@ -1106,6 +1147,61 @@ class Component extends DCLogic {
       d.onCronoCheck && d.onCronoCheck(key, newVal);
     };
 
+    this._onCronoEditToggle = function(e){
+      var btn = e.currentTarget || e.target;
+      var dayKey = btn.dataset.dayKey;
+      var cur = self.state.cronoEditOpen;
+      if(cur === dayKey){
+        self.setState({ cronoEditOpen: '' });
+      } else {
+        var cust = (self.state.cronoCustom || {})[dayKey] || {};
+        var parts = dayKey.match(/w(\d+)_d(\d+)/);
+        var defSubj='', defTopic='', defQ='';
+        if(parts){
+          var _wi=parseInt(parts[1],10), _di=parseInt(parts[2],10);
+          var _wk=self.CRONO[_wi];
+          if(_wk&&_wk.d[_di]){ defSubj=_wk.d[_di][3]||''; defTopic=_wk.d[_di][4]||''; defQ=_wk.d[_di][5]?String(_wk.d[_di][5]):''; }
+        }
+        var draft = {
+          's': cust.subject != null ? cust.subject : defSubj,
+          't': cust.topic   != null ? cust.topic   : defTopic,
+          'q': cust.q       != null ? String(cust.q) : defQ,
+        };
+        self.setState({ cronoEditOpen: dayKey, cronoEditDraft: draft });
+      }
+    };
+
+    this._onCronoEditInput = function(e){
+      var el = e.currentTarget || e.target;
+      var field = el.dataset.field;
+      var draft = Object.assign({}, self.state.cronoEditDraft || {});
+      draft[field] = el.value;
+      self.setState({ cronoEditDraft: draft });
+    };
+
+    this._onCronoEditSave = function(e){
+      var btn = e.currentTarget || e.target;
+      var dayKey = btn.dataset.dayKey;
+      var draft = self.state.cronoEditDraft || {};
+      var custom = Object.assign({}, self.state.cronoCustom || {});
+      custom[dayKey] = {
+        subject: draft['s'] || null,
+        topic:   draft['t'] || null,
+        q:       draft['q'] !== '' && draft['q'] != null ? parseInt(draft['q'],10) : null,
+      };
+      self.setState({ cronoCustom: custom, cronoEditOpen: '', cronoEditDraft: {} });
+      try{ localStorage.setItem('_ct_crono_custom', JSON.stringify(custom)); }catch(ex){}
+    };
+
+    this._onCronoEditReset = function(e){
+      var btn = e.currentTarget || e.target;
+      var dayKey = btn.dataset.dayKey;
+      var custom = Object.assign({}, self.state.cronoCustom || {});
+      delete custom[dayKey];
+      self.setState({ cronoCustom: custom, cronoEditOpen: '', cronoEditDraft: {} });
+      try{ localStorage.setItem('_ct_crono_custom', JSON.stringify(custom)); }catch(ex){}
+    };
+
     // ── PROFILE ──
     var _storedProfile = {};
     try{ _storedProfile = JSON.parse(localStorage.getItem('_ct_profile')||'{}'); }catch(e){}
@@ -1258,6 +1354,8 @@ class Component extends DCLogic {
     try{ _sn = JSON.parse(localStorage.getItem('_ct_notes')||'{}'); }catch(e){}
     var _sq = {};
     try{ _sq = JSON.parse(localStorage.getItem('_ct_queststats')||'{}'); }catch(e){}
+    var _scust = {};
+    try{ _scust = JSON.parse(localStorage.getItem('_ct_crono_custom')||'{}'); }catch(e){}
     // Auto-detect current week based on today's date
     var _todayStr = (function(){var d=new Date();return (d.getMonth()+1)+'/'+d.getDate();})();
     var _startWeek = 0;
@@ -1281,6 +1379,9 @@ class Component extends DCLogic {
       profileOpen: false,
       profileName: _sp.name||'', profilePhone: _sp.phone||'', profileCity: _sp.city||'', profilePhoto: _sp.photo||'',
       dayNotes: _sn,
+      cronoCustom: _scust,
+      cronoEditOpen: '',
+      cronoEditDraft: {},
     };
   }
 
@@ -1350,9 +1451,15 @@ class Component extends DCLogic {
       s: ['Fiz o simulado completo','Revisei todos os erros'],
     };
 
+    var cronoCustom = st.cronoCustom || {};
     var cronoWeeks = this.CRONO.map(function(w, wi){
       var days = w.d.map(function(day, di){
         var typ = day[1], badge = day[2], subj = day[3], topic = day[4], q = day[5];
+        var dayKeyEarly = 'w'+wi+'_d'+di;
+        var cust = cronoCustom[dayKeyEarly] || {};
+        if(cust.subject != null && cust.subject !== '') subj  = cust.subject;
+        if(cust.topic   != null && cust.topic   !== '') topic = cust.topic;
+        if(cust.q       != null)                        q     = cust.q;
         var leisText = LEIS_MAP[subj] || '';
         var lbls = checkLabels[typ] || [];
         var stepIcons = ['1°','2°','3°','4°','5°'];
@@ -1373,6 +1480,11 @@ class Component extends DCLogic {
         var pctLabel = '—%';
         if(pct !== null){ pctLabel = pct+'%'; pctCls += pct>=70?' good':pct>=50?' mid':' bad'; }
         var xpReward = q ? Math.round(q * 2) : 0;
+        var _dr = st.cronoEditDraft || {};
+        var _isOpen = st.cronoEditOpen === dayKey;
+        var _editSubj = (_isOpen && _dr['s'] != null) ? _dr['s'] : (cust.subject != null && cust.subject !== '' ? cust.subject : day[3]);
+        var _editTopic = (_isOpen && _dr['t'] != null) ? _dr['t'] : (cust.topic != null && cust.topic !== '' ? cust.topic : (day[4]||''));
+        var _editQStr = (_isOpen && _dr['q'] != null) ? _dr['q'] : (cust.q != null ? String(cust.q) : (day[5] ? String(day[5]) : ''));
         return {
           cls: 'ct-crono-day t-'+typ,
           badgeCls: 'ct-crono-badge t-'+typ,
@@ -1388,6 +1500,17 @@ class Component extends DCLogic {
           dayKey: dayKey,
           questFeitas: feitas||'', questAcertos: acertos||'',
           questPctCls: pctCls, questPctLabel: pctLabel,
+          hasEdit: typ !== 'f' && typ !== 'p',
+          isEditOpen: _isOpen,
+          isCustomized: !!(cronoCustom[dayKey]),
+          editBtnLabel: _isOpen ? '✕ Fechar edição' : (cronoCustom[dayKey] ? '✏️ Editado ✓' : '✏️ Personalizar dia'),
+          editBtnCls: 'ct-crono-edit-btn' + (cronoCustom[dayKey] ? ' customized' : ''),
+          editRowWrapCls: typ !== 'f' && typ !== 'p' ? 'ct-crono-edit-wrap' : 'ct-crono-edit-wrap ct-edit-hidden',
+          editRestoreCls: cronoCustom[dayKey] ? 'ct-crono-edit-restore' : 'ct-crono-edit-restore ct-edit-hidden',
+          editFormCls: _isOpen ? 'ct-crono-edit-form' : 'ct-crono-edit-form ct-edit-hidden',
+          editSubject: _editSubj,
+          editTopic: _editTopic,
+          editQ: _editQStr,
         };
       });
       return { numLabel:'S'+w.n, range:w.r, days:days };
@@ -1522,6 +1645,10 @@ class Component extends DCLogic {
       onCronoCheck: this._onCronoCheck,
       onQuestInput: this._onQuestInput,
       onDayNote: this._onDayNote,
+      onCronoEditToggle: this._onCronoEditToggle,
+      onCronoEditInput: this._onCronoEditInput,
+      onCronoEditSave: this._onCronoEditSave,
+      onCronoEditReset: this._onCronoEditReset,
       hasAvisos: avisos.length>0, avisos: avisos,
 
       // Relatório
