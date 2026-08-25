@@ -522,7 +522,7 @@
               </sc-if>
               <sc-if value="{{ cd.hasEdit }}" hint-placeholder-val="">
                 <div class="ct-crono-edit-row">
-                  <button class="ct-crono-edit-btn{{ cd.isCustomized ? ' customized' : '' }}" onclick="{{ onCronoEditToggle }}" data-day-key="{{ cd.dayKey }}">{{ cd.editBtnLabel }}</button>
+                  <button class="{{ cd.editBtnCls }}" onclick="{{ onCronoEditToggle }}" data-day-key="{{ cd.dayKey }}">{{ cd.editBtnLabel }}</button>
                   <sc-if value="{{ cd.isCustomized }}" hint-placeholder-val="">
                     <button class="ct-crono-edit-restore" onclick="{{ onCronoEditReset }}" data-day-key="{{ cd.dayKey }}">↺ Restaurar original</button>
                   </sc-if>
@@ -531,15 +531,15 @@
                   <div class="ct-crono-edit-form">
                     <div class="ct-edit-field">
                       <label class="ct-edit-label">Tema do dia</label>
-                      <input type="text" class="ct-edit-input" data-field="edit-subject" value="{{ cd.editSubject }}" placeholder="Ex: TGRP I">
+                      <input type="text" class="ct-edit-input" data-field="s" oninput="{{ onCronoEditInput }}" value="{{ cd.editSubject }}" placeholder="Ex: TGRP I">
                     </div>
                     <div class="ct-edit-field">
                       <label class="ct-edit-label">Conteúdo / Artigos</label>
-                      <textarea class="ct-edit-input ct-edit-textarea" data-field="edit-topic" placeholder="Ex: Princípios · Lei 8.935/94...">{{ cd.editTopic }}</textarea>
+                      <textarea class="ct-edit-input ct-edit-textarea" data-field="t" oninput="{{ onCronoEditInput }}" placeholder="Ex: Princípios · Lei 8.935/94...">{{ cd.editTopic }}</textarea>
                     </div>
                     <div class="ct-edit-field ct-edit-field-q">
                       <label class="ct-edit-label">Meta de questões</label>
-                      <input type="number" class="ct-edit-input ct-edit-input-q" data-field="edit-q" value="{{ cd.editQ }}" min="0" max="200" placeholder="—">
+                      <input type="number" class="ct-edit-input ct-edit-input-q" data-field="q" oninput="{{ onCronoEditInput }}" value="{{ cd.editQ }}" min="0" max="200" placeholder="—">
                     </div>
                     <button class="ct-edit-save-btn" onclick="{{ onCronoEditSave }}" data-day-key="{{ cd.dayKey }}">✓ Salvar alterações</button>
                   </div>
@@ -1103,24 +1103,45 @@ class Component extends DCLogic {
       var btn = e.currentTarget || e.target;
       var dayKey = btn.dataset.dayKey;
       var cur = self.state.cronoEditOpen;
-      self.setState({ cronoEditOpen: cur === dayKey ? '' : dayKey });
+      if(cur === dayKey){
+        self.setState({ cronoEditOpen: '' });
+      } else {
+        var cust = (self.state.cronoCustom || {})[dayKey] || {};
+        var parts = dayKey.match(/w(\d+)_d(\d+)/);
+        var defSubj='', defTopic='', defQ='';
+        if(parts){
+          var _wi=parseInt(parts[1],10), _di=parseInt(parts[2],10);
+          var _wk=self.CRONO[_wi];
+          if(_wk&&_wk.d[_di]){ defSubj=_wk.d[_di][3]||''; defTopic=_wk.d[_di][4]||''; defQ=_wk.d[_di][5]?String(_wk.d[_di][5]):''; }
+        }
+        var draft = {
+          's': cust.subject != null ? cust.subject : defSubj,
+          't': cust.topic   != null ? cust.topic   : defTopic,
+          'q': cust.q       != null ? String(cust.q) : defQ,
+        };
+        self.setState({ cronoEditOpen: dayKey, cronoEditDraft: draft });
+      }
+    };
+
+    this._onCronoEditInput = function(e){
+      var el = e.currentTarget || e.target;
+      var field = el.dataset.field;
+      var draft = Object.assign({}, self.state.cronoEditDraft || {});
+      draft[field] = el.value;
+      self.setState({ cronoEditDraft: draft });
     };
 
     this._onCronoEditSave = function(e){
       var btn = e.currentTarget || e.target;
       var dayKey = btn.dataset.dayKey;
-      var form = btn.closest ? btn.closest('.ct-crono-edit-form') : null;
-      if(!form){ form = btn.parentNode; }
-      var subjectEl = form.querySelector('[data-field="edit-subject"]');
-      var topicEl   = form.querySelector('[data-field="edit-topic"]');
-      var qEl       = form.querySelector('[data-field="edit-q"]');
+      var draft = self.state.cronoEditDraft || {};
       var custom = Object.assign({}, self.state.cronoCustom || {});
       custom[dayKey] = {
-        subject: subjectEl ? subjectEl.value : null,
-        topic:   topicEl   ? topicEl.value   : null,
-        q:       qEl && qEl.value !== '' ? parseInt(qEl.value, 10) : null,
+        subject: draft['s'] || null,
+        topic:   draft['t'] || null,
+        q:       draft['q'] !== '' && draft['q'] != null ? parseInt(draft['q'],10) : null,
       };
-      self.setState({ cronoCustom: custom, cronoEditOpen: '' });
+      self.setState({ cronoCustom: custom, cronoEditOpen: '', cronoEditDraft: {} });
       try{ localStorage.setItem('_ct_crono_custom', JSON.stringify(custom)); }catch(ex){}
     };
 
@@ -1129,7 +1150,7 @@ class Component extends DCLogic {
       var dayKey = btn.dataset.dayKey;
       var custom = Object.assign({}, self.state.cronoCustom || {});
       delete custom[dayKey];
-      self.setState({ cronoCustom: custom, cronoEditOpen: '' });
+      self.setState({ cronoCustom: custom, cronoEditOpen: '', cronoEditDraft: {} });
       try{ localStorage.setItem('_ct_crono_custom', JSON.stringify(custom)); }catch(ex){}
     };
 
@@ -1310,6 +1331,7 @@ class Component extends DCLogic {
       dayNotes: _sn,
       cronoCustom: _scust,
       cronoEditOpen: '',
+      cronoEditDraft: {},
     };
   }
 
@@ -1427,9 +1449,10 @@ class Component extends DCLogic {
           isEditOpen: st.cronoEditOpen === dayKey,
           isCustomized: !!(cronoCustom[dayKey]),
           editBtnLabel: st.cronoEditOpen === dayKey ? '✕ Fechar edição' : (cronoCustom[dayKey] ? '✏️ Editado ✓' : '✏️ Personalizar dia'),
-          editSubject: cust.subject != null && cust.subject !== '' ? cust.subject : day[3],
-          editTopic:   cust.topic   != null && cust.topic   !== '' ? cust.topic   : (day[4]||''),
-          editQ:       cust.q       != null                        ? String(cust.q): (day[5]?String(day[5]):''),
+          editBtnCls: 'ct-crono-edit-btn' + (cronoCustom[dayKey] ? ' customized' : ''),
+          editSubject: st.cronoEditOpen === dayKey ? ((st.cronoEditDraft||{})['s'] != null ? (st.cronoEditDraft||{})['s'] : (cust.subject != null ? cust.subject : day[3])) : (cust.subject != null && cust.subject !== '' ? cust.subject : day[3]),
+          editTopic:   st.cronoEditOpen === dayKey ? ((st.cronoEditDraft||{})['t'] != null ? (st.cronoEditDraft||{})['t'] : (cust.topic   != null ? cust.topic   : (day[4]||''))) : (cust.topic   != null && cust.topic   !== '' ? cust.topic   : (day[4]||'')),
+          editQ:       st.cronoEditOpen === dayKey ? ((st.cronoEditDraft||{})['q'] != null ? (st.cronoEditDraft||{})['q'] : (cust.q != null ? String(cust.q) : (day[5]?String(day[5]):''))): (cust.q != null ? String(cust.q) : (day[5]?String(day[5]):'')),
         };
       });
       return { numLabel:'S'+w.n, range:w.r, days:days };
@@ -1554,6 +1577,7 @@ class Component extends DCLogic {
       onQuestInput: this._onQuestInput,
       onDayNote: this._onDayNote,
       onCronoEditToggle: this._onCronoEditToggle,
+      onCronoEditInput: this._onCronoEditInput,
       onCronoEditSave: this._onCronoEditSave,
       onCronoEditReset: this._onCronoEditReset,
       hasAvisos: avisos.length>0, avisos: avisos,
