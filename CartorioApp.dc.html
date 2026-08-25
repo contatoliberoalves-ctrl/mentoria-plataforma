@@ -166,7 +166,9 @@
 .ct-crono-day.t-p .ct-crono-subject{color:#ffd700;font-size:18px;text-align:center;letter-spacing:1px;text-shadow:0 0 10px rgba(255,215,0,.5)}
 
 /* META badges */
-.ct-crono-edit-row{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+.ct-edit-hidden{display:none!important}
+.ct-crono-edit-wrap{margin-top:6px}
+.ct-crono-edit-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .ct-crono-edit-btn{font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;border:1.5px solid #94a3b8;background:transparent;color:#64748b;cursor:pointer;transition:all .15s;letter-spacing:.02em}
 .ct-crono-edit-btn:hover,.ct-crono-edit-btn.customized{border-color:var(--cg);color:var(--cg);background:rgba(16,185,129,.08)}
 .ct-crono-day.t-s .ct-crono-edit-btn,.ct-crono-day.t-r .ct-crono-edit-btn{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.6)}
@@ -520,31 +522,27 @@
               <sc-if value="{{ cd.hasTopic }}" hint-placeholder-val="">
                 <div class="ct-crono-topic">{{ cd.topic }}</div>
               </sc-if>
-              <sc-if value="{{ cd.hasEdit }}" hint-placeholder-val="">
+              <div class="{{ cd.editRowWrapCls }}">
                 <div class="ct-crono-edit-row">
                   <button class="{{ cd.editBtnCls }}" onclick="{{ onCronoEditToggle }}" data-day-key="{{ cd.dayKey }}">{{ cd.editBtnLabel }}</button>
-                  <sc-if value="{{ cd.isCustomized }}" hint-placeholder-val="">
-                    <button class="ct-crono-edit-restore" onclick="{{ onCronoEditReset }}" data-day-key="{{ cd.dayKey }}">↺ Restaurar original</button>
-                  </sc-if>
+                  <button class="{{ cd.editRestoreCls }}" onclick="{{ onCronoEditReset }}" data-day-key="{{ cd.dayKey }}">↺ Restaurar original</button>
                 </div>
-                <sc-if value="{{ cd.isEditOpen }}" hint-placeholder-val="">
-                  <div class="ct-crono-edit-form">
-                    <div class="ct-edit-field">
-                      <label class="ct-edit-label">Tema do dia</label>
-                      <input type="text" class="ct-edit-input" data-field="s" oninput="{{ onCronoEditInput }}" value="{{ cd.editSubject }}" placeholder="Ex: TGRP I">
-                    </div>
-                    <div class="ct-edit-field">
-                      <label class="ct-edit-label">Conteúdo / Artigos</label>
-                      <textarea class="ct-edit-input ct-edit-textarea" data-field="t" oninput="{{ onCronoEditInput }}" placeholder="Ex: Princípios · Lei 8.935/94...">{{ cd.editTopic }}</textarea>
-                    </div>
-                    <div class="ct-edit-field ct-edit-field-q">
-                      <label class="ct-edit-label">Meta de questões</label>
-                      <input type="number" class="ct-edit-input ct-edit-input-q" data-field="q" oninput="{{ onCronoEditInput }}" value="{{ cd.editQ }}" min="0" max="200" placeholder="—">
-                    </div>
-                    <button class="ct-edit-save-btn" onclick="{{ onCronoEditSave }}" data-day-key="{{ cd.dayKey }}">✓ Salvar alterações</button>
+                <div class="{{ cd.editFormCls }}">
+                  <div class="ct-edit-field">
+                    <label class="ct-edit-label">Tema do dia</label>
+                    <input type="text" class="ct-edit-input" data-field="s" oninput="{{ onCronoEditInput }}" value="{{ cd.editSubject }}" placeholder="Ex: TGRP I">
                   </div>
-                </sc-if>
-              </sc-if>
+                  <div class="ct-edit-field">
+                    <label class="ct-edit-label">Conteúdo / Artigos</label>
+                    <textarea class="ct-edit-input ct-edit-textarea" data-field="t" oninput="{{ onCronoEditInput }}" placeholder="Ex: Princípios · Lei 8.935/94...">{{ cd.editTopic }}</textarea>
+                  </div>
+                  <div class="ct-edit-field ct-edit-field-q">
+                    <label class="ct-edit-label">Meta de questões</label>
+                    <input type="number" class="ct-edit-input ct-edit-input-q" data-field="q" oninput="{{ onCronoEditInput }}" value="{{ cd.editQ }}" min="0" max="200" placeholder="—">
+                  </div>
+                  <button class="ct-edit-save-btn" onclick="{{ onCronoEditSave }}" data-day-key="{{ cd.dayKey }}">✓ Salvar alterações</button>
+                </div>
+              </div>
               <sc-if value="{{ cd.hasChecks }}" hint-placeholder-val="">
                 <div class="ct-crono-checks">
                   <div class="ct-checks-hdr">
@@ -1451,10 +1449,13 @@ class Component extends DCLogic {
           questFeitas: feitas||'', questAcertos: acertos||'',
           questPctCls: pctCls, questPctLabel: pctLabel,
           hasEdit: typ !== 'f' && typ !== 'p',
-          isEditOpen: st.cronoEditOpen === dayKey,
+          isEditOpen: _isOpen,
           isCustomized: !!(cronoCustom[dayKey]),
-          editBtnLabel: st.cronoEditOpen === dayKey ? '✕ Fechar edição' : (cronoCustom[dayKey] ? '✏️ Editado ✓' : '✏️ Personalizar dia'),
+          editBtnLabel: _isOpen ? '✕ Fechar edição' : (cronoCustom[dayKey] ? '✏️ Editado ✓' : '✏️ Personalizar dia'),
           editBtnCls: 'ct-crono-edit-btn' + (cronoCustom[dayKey] ? ' customized' : ''),
+          editRowWrapCls: typ !== 'f' && typ !== 'p' ? 'ct-crono-edit-wrap' : 'ct-crono-edit-wrap ct-edit-hidden',
+          editRestoreCls: cronoCustom[dayKey] ? 'ct-crono-edit-restore' : 'ct-crono-edit-restore ct-edit-hidden',
+          editFormCls: _isOpen ? 'ct-crono-edit-form' : 'ct-crono-edit-form ct-edit-hidden',
           editSubject: _editSubj,
           editTopic: _editTopic,
           editQ: _editQStr,
