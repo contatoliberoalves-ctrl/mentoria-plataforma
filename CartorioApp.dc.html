@@ -166,6 +166,24 @@
 .ct-crono-day.t-p .ct-crono-subject{color:#ffd700;font-size:18px;text-align:center;letter-spacing:1px;text-shadow:0 0 10px rgba(255,215,0,.5)}
 
 /* META badges */
+.ct-crono-edit-row{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+.ct-crono-edit-btn{font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;border:1.5px solid #94a3b8;background:transparent;color:#64748b;cursor:pointer;transition:all .15s;letter-spacing:.02em}
+.ct-crono-edit-btn:hover,.ct-crono-edit-btn.customized{border-color:var(--cg);color:var(--cg);background:rgba(16,185,129,.08)}
+.ct-crono-day.t-s .ct-crono-edit-btn,.ct-crono-day.t-r .ct-crono-edit-btn{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.6)}
+.ct-crono-day.t-s .ct-crono-edit-btn:hover,.ct-crono-day.t-r .ct-crono-edit-btn:hover{border-color:rgba(255,255,255,.8);color:#fff}
+.ct-crono-edit-restore{font-size:10px;color:#94a3b8;background:none;border:none;cursor:pointer;text-decoration:underline;padding:0}
+.ct-crono-edit-restore:hover{color:var(--cr)}
+.ct-crono-edit-form{margin-top:10px;padding:12px;background:rgba(0,0,0,.04);border-radius:10px;border:1px solid rgba(0,0,0,.08);display:flex;flex-direction:column;gap:8px}
+.ct-crono-day.t-s .ct-crono-edit-form,.ct-crono-day.t-r .ct-crono-edit-form{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+.ct-edit-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#94a3b8;display:block;margin-bottom:3px}
+.ct-edit-field{display:flex;flex-direction:column}
+.ct-edit-field-q{max-width:160px}
+.ct-edit-input{font-family:inherit;font-size:13px;padding:7px 10px;border-radius:7px;border:1.5px solid #e2e8f0;background:#fff;color:#1e293b;width:100%;outline:none;transition:border-color .15s}
+.ct-edit-input:focus{border-color:var(--cg)}
+.ct-edit-textarea{resize:vertical;min-height:64px;line-height:1.45}
+.ct-edit-input-q{width:100%}
+.ct-edit-save-btn{align-self:flex-start;padding:7px 16px;border-radius:8px;background:var(--cg);color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .15s;margin-top:2px}
+.ct-edit-save-btn:hover{opacity:.85}
 .ct-crono-day-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
 .ct-crono-badge{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;padding:3px 10px;border-radius:99px;border:2px solid currentColor}
 .ct-crono-badge.t-c{color:var(--c-blue);background:#EFF6FF}
@@ -501,6 +519,31 @@
               <div class="ct-crono-subject">{{ cd.subject }}</div>
               <sc-if value="{{ cd.hasTopic }}" hint-placeholder-val="">
                 <div class="ct-crono-topic">{{ cd.topic }}</div>
+              </sc-if>
+              <sc-if value="{{ cd.hasEdit }}" hint-placeholder-val="">
+                <div class="ct-crono-edit-row">
+                  <button class="ct-crono-edit-btn{{ cd.isCustomized ? ' customized' : '' }}" onclick="{{ onCronoEditToggle }}" data-day-key="{{ cd.dayKey }}">{{ cd.editBtnLabel }}</button>
+                  <sc-if value="{{ cd.isCustomized }}" hint-placeholder-val="">
+                    <button class="ct-crono-edit-restore" onclick="{{ onCronoEditReset }}" data-day-key="{{ cd.dayKey }}">↺ Restaurar original</button>
+                  </sc-if>
+                </div>
+                <sc-if value="{{ cd.isEditOpen }}" hint-placeholder-val="">
+                  <div class="ct-crono-edit-form">
+                    <div class="ct-edit-field">
+                      <label class="ct-edit-label">Tema do dia</label>
+                      <input type="text" class="ct-edit-input" data-field="edit-subject" value="{{ cd.editSubject }}" placeholder="Ex: TGRP I">
+                    </div>
+                    <div class="ct-edit-field">
+                      <label class="ct-edit-label">Conteúdo / Artigos</label>
+                      <textarea class="ct-edit-input ct-edit-textarea" data-field="edit-topic" placeholder="Ex: Princípios · Lei 8.935/94...">{{ cd.editTopic }}</textarea>
+                    </div>
+                    <div class="ct-edit-field ct-edit-field-q">
+                      <label class="ct-edit-label">Meta de questões</label>
+                      <input type="number" class="ct-edit-input ct-edit-input-q" data-field="edit-q" value="{{ cd.editQ }}" min="0" max="200" placeholder="—">
+                    </div>
+                    <button class="ct-edit-save-btn" onclick="{{ onCronoEditSave }}" data-day-key="{{ cd.dayKey }}">✓ Salvar alterações</button>
+                  </div>
+                </sc-if>
               </sc-if>
               <sc-if value="{{ cd.hasChecks }}" hint-placeholder-val="">
                 <div class="ct-crono-checks">
@@ -1056,6 +1099,40 @@ class Component extends DCLogic {
       d.onCronoCheck && d.onCronoCheck(key, newVal);
     };
 
+    this._onCronoEditToggle = function(e){
+      var btn = e.currentTarget || e.target;
+      var dayKey = btn.dataset.dayKey;
+      var cur = self.state.cronoEditOpen;
+      self.setState({ cronoEditOpen: cur === dayKey ? '' : dayKey });
+    };
+
+    this._onCronoEditSave = function(e){
+      var btn = e.currentTarget || e.target;
+      var dayKey = btn.dataset.dayKey;
+      var form = btn.closest ? btn.closest('.ct-crono-edit-form') : null;
+      if(!form){ form = btn.parentNode; }
+      var subjectEl = form.querySelector('[data-field="edit-subject"]');
+      var topicEl   = form.querySelector('[data-field="edit-topic"]');
+      var qEl       = form.querySelector('[data-field="edit-q"]');
+      var custom = Object.assign({}, self.state.cronoCustom || {});
+      custom[dayKey] = {
+        subject: subjectEl ? subjectEl.value : null,
+        topic:   topicEl   ? topicEl.value   : null,
+        q:       qEl && qEl.value !== '' ? parseInt(qEl.value, 10) : null,
+      };
+      self.setState({ cronoCustom: custom, cronoEditOpen: '' });
+      try{ localStorage.setItem('_ct_crono_custom', JSON.stringify(custom)); }catch(ex){}
+    };
+
+    this._onCronoEditReset = function(e){
+      var btn = e.currentTarget || e.target;
+      var dayKey = btn.dataset.dayKey;
+      var custom = Object.assign({}, self.state.cronoCustom || {});
+      delete custom[dayKey];
+      self.setState({ cronoCustom: custom, cronoEditOpen: '' });
+      try{ localStorage.setItem('_ct_crono_custom', JSON.stringify(custom)); }catch(ex){}
+    };
+
     // ── PROFILE ──
     var _storedProfile = {};
     try{ _storedProfile = JSON.parse(localStorage.getItem('_ct_profile')||'{}'); }catch(e){}
@@ -1206,6 +1283,8 @@ class Component extends DCLogic {
     try{ _sp = JSON.parse(localStorage.getItem('_ct_profile')||'{}'); }catch(e){}
     var _sn = {};
     try{ _sn = JSON.parse(localStorage.getItem('_ct_notes')||'{}'); }catch(e){}
+    var _scust = {};
+    try{ _scust = JSON.parse(localStorage.getItem('_ct_crono_custom')||'{}'); }catch(e){}
     // Auto-detect current week based on today's date
     var _todayStr = (function(){var d=new Date();return (d.getMonth()+1)+'/'+d.getDate();})();
     var _startWeek = 0;
@@ -1229,6 +1308,8 @@ class Component extends DCLogic {
       profileOpen: false,
       profileName: _sp.name||'', profilePhone: _sp.phone||'', profileCity: _sp.city||'', profilePhoto: _sp.photo||'',
       dayNotes: _sn,
+      cronoCustom: _scust,
+      cronoEditOpen: '',
     };
   }
 
@@ -1298,9 +1379,15 @@ class Component extends DCLogic {
       s: ['Fiz o simulado completo','Revisei todos os erros'],
     };
 
+    var cronoCustom = st.cronoCustom || {};
     var cronoWeeks = this.CRONO.map(function(w, wi){
       var days = w.d.map(function(day, di){
         var typ = day[1], badge = day[2], subj = day[3], topic = day[4], q = day[5];
+        var dayKeyEarly = 'w'+wi+'_d'+di;
+        var cust = cronoCustom[dayKeyEarly] || {};
+        if(cust.subject != null && cust.subject !== '') subj  = cust.subject;
+        if(cust.topic   != null && cust.topic   !== '') topic = cust.topic;
+        if(cust.q       != null)                        q     = cust.q;
         var leisText = LEIS_MAP[subj] || '';
         var lbls = checkLabels[typ] || [];
         var stepIcons = ['1°','2°','3°','4°','5°'];
@@ -1336,6 +1423,13 @@ class Component extends DCLogic {
           dayKey: dayKey,
           questFeitas: feitas||'', questAcertos: acertos||'',
           questPctCls: pctCls, questPctLabel: pctLabel,
+          hasEdit: typ !== 'f' && typ !== 'p',
+          isEditOpen: st.cronoEditOpen === dayKey,
+          isCustomized: !!(cronoCustom[dayKey]),
+          editBtnLabel: st.cronoEditOpen === dayKey ? '✕ Fechar edição' : (cronoCustom[dayKey] ? '✏️ Editado ✓' : '✏️ Personalizar dia'),
+          editSubject: cust.subject != null && cust.subject !== '' ? cust.subject : day[3],
+          editTopic:   cust.topic   != null && cust.topic   !== '' ? cust.topic   : (day[4]||''),
+          editQ:       cust.q       != null                        ? String(cust.q): (day[5]?String(day[5]):''),
         };
       });
       return { numLabel:'S'+w.n, range:w.r, days:days };
@@ -1459,6 +1553,9 @@ class Component extends DCLogic {
       onCronoCheck: this._onCronoCheck,
       onQuestInput: this._onQuestInput,
       onDayNote: this._onDayNote,
+      onCronoEditToggle: this._onCronoEditToggle,
+      onCronoEditSave: this._onCronoEditSave,
+      onCronoEditReset: this._onCronoEditReset,
       hasAvisos: avisos.length>0, avisos: avisos,
 
       // Relatório
