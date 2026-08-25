@@ -1430,6 +1430,11 @@ class Component extends DCLogic {
         var pctLabel = '—%';
         if(pct !== null){ pctLabel = pct+'%'; pctCls += pct>=70?' good':pct>=50?' mid':' bad'; }
         var xpReward = q ? Math.round(q * 2) : 0;
+        var _dr = st.cronoEditDraft || {};
+        var _isOpen = st.cronoEditOpen === dayKey;
+        var _editSubj = (_isOpen && _dr['s'] != null) ? _dr['s'] : (cust.subject != null && cust.subject !== '' ? cust.subject : day[3]);
+        var _editTopic = (_isOpen && _dr['t'] != null) ? _dr['t'] : (cust.topic != null && cust.topic !== '' ? cust.topic : (day[4]||''));
+        var _editQStr = (_isOpen && _dr['q'] != null) ? _dr['q'] : (cust.q != null ? String(cust.q) : (day[5] ? String(day[5]) : ''));
         return {
           cls: 'ct-crono-day t-'+typ,
           badgeCls: 'ct-crono-badge t-'+typ,
@@ -1450,9 +1455,9 @@ class Component extends DCLogic {
           isCustomized: !!(cronoCustom[dayKey]),
           editBtnLabel: st.cronoEditOpen === dayKey ? '✕ Fechar edição' : (cronoCustom[dayKey] ? '✏️ Editado ✓' : '✏️ Personalizar dia'),
           editBtnCls: 'ct-crono-edit-btn' + (cronoCustom[dayKey] ? ' customized' : ''),
-          editSubject: st.cronoEditOpen === dayKey ? ((st.cronoEditDraft||{})['s'] != null ? (st.cronoEditDraft||{})['s'] : (cust.subject != null ? cust.subject : day[3])) : (cust.subject != null && cust.subject !== '' ? cust.subject : day[3]),
-          editTopic:   st.cronoEditOpen === dayKey ? ((st.cronoEditDraft||{})['t'] != null ? (st.cronoEditDraft||{})['t'] : (cust.topic   != null ? cust.topic   : (day[4]||''))) : (cust.topic   != null && cust.topic   !== '' ? cust.topic   : (day[4]||'')),
-          editQ:       st.cronoEditOpen === dayKey ? ((st.cronoEditDraft||{})['q'] != null ? (st.cronoEditDraft||{})['q'] : (cust.q != null ? String(cust.q) : (day[5]?String(day[5]):''))): (cust.q != null ? String(cust.q) : (day[5]?String(day[5]):'')),
+          editSubject: _editSubj,
+          editTopic: _editTopic,
+          editQ: _editQStr,
         };
       });
       return { numLabel:'S'+w.n, range:w.r, days:days };
