@@ -168,6 +168,23 @@
 /* META badges */
 .ct-edit-hidden{display:none!important}
 .ct-crono-edit-wrap{margin-top:6px}
+
+/* ── CONFIGURADOR DE PLANO ── */
+.ct-plano-box{background:#fff;border:2px solid var(--cb);border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:3px 3px 0 var(--cb)}
+.ct-plano-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.ct-plano-title{font-size:13px;font-weight:900;color:var(--cb);letter-spacing:.02em}
+.ct-plano-sub{font-size:11px;color:#64748b;margin-top:1px}
+.ct-plano-presets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.ct-plano-preset{padding:6px 14px;border-radius:20px;border:2px solid #e2e8f0;background:#f8fafc;font-size:12px;font-weight:700;color:#64748b;cursor:pointer;transition:all .15s}
+.ct-plano-preset:hover{border-color:var(--cy);color:var(--cy)}
+.ct-plano-preset.active{border-color:var(--cy);background:var(--cy);color:#fff}
+.ct-plano-custom-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ct-plano-custom-input{width:80px;padding:6px 10px;border:2px solid #e2e8f0;border-radius:8px;font-size:14px;font-weight:700;text-align:center;outline:none;font-family:inherit}
+.ct-plano-custom-input:focus{border-color:var(--cy)}
+.ct-plano-custom-lbl{font-size:12px;color:#64748b;font-weight:600}
+.ct-plano-info{background:rgba(0,96,96,.07);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--cy);font-weight:700;display:flex;align-items:center;gap:8px}
+.ct-plano-reset{font-size:11px;color:#94a3b8;background:none;border:none;cursor:pointer;text-decoration:underline;padding:0;font-family:inherit}
+.ct-plano-reset:hover{color:var(--cr)}
 .ct-crono-edit-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .ct-crono-edit-btn{font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;border:1.5px solid #94a3b8;background:transparent;color:#64748b;cursor:pointer;transition:all .15s;letter-spacing:.02em}
 .ct-crono-edit-btn:hover,.ct-crono-edit-btn.customized{border-color:var(--cg);color:var(--cg);background:rgba(16,185,129,.08)}
@@ -493,6 +510,29 @@
           </div>
         </div>
 
+        <!-- CONFIGURADOR DE PLANO -->
+        <div class="ct-plano-box">
+          <div class="ct-plano-hdr">
+            <div>
+              <div class="ct-plano-title">📅 Personalizar Plano de Estudos</div>
+              <div class="ct-plano-sub">Quantos dias você tem até a prova? As metas se adaptam automaticamente.</div>
+            </div>
+          </div>
+          <div class="ct-plano-presets">
+            <button class="{{ plano45Cls }}" onclick="{{ onPlanoPreset }}" data-days="45">45 dias</button>
+            <button class="{{ plano60Cls }}" onclick="{{ onPlanoPreset }}" data-days="60">60 dias</button>
+            <button class="{{ plano75Cls }}" onclick="{{ onPlanoPreset }}" data-days="75">75 dias</button>
+            <button class="{{ plano84Cls }}" onclick="{{ onPlanoPreset }}" data-days="84">84 dias</button>
+            <button class="{{ plano90Cls }}" onclick="{{ onPlanoPreset }}" data-days="90">90 dias</button>
+          </div>
+          <div class="ct-plano-custom-row">
+            <input type="number" class="ct-plano-custom-input" min="20" max="180" value="{{ planoInputVal }}" placeholder="—" oninput="{{ onPlanoInput }}">
+            <span class="ct-plano-custom-lbl">dias personalizados</span>
+            <button class="ct-plano-reset" onclick="{{ onPlanoReset }}">↺ usar original</button>
+          </div>
+          <div class="ct-plano-info">📊 {{ planoInfoText }}</div>
+        </div>
+
         <!-- WEEK NAVIGATOR -->
         <div class="ct-week-nav">
           <button class="ct-week-nav-btn" onclick="{{ onWeekPrev }}" data-disabled="{{ weekIsFirst }}">‹</button>
@@ -534,7 +574,6 @@
               <sc-if value="{{ cd.hasTopic }}" hint-placeholder-val="">
                 <div class="ct-crono-topic">{{ cd.topic }}</div>
               </sc-if>
-              <span style="display:block;font-size:10px;color:#e8441a;margin-top:4px">✏️ personalizar</span>
               <div class="{{ cd.editRowWrapCls }}">
                 <div class="ct-crono-edit-row">
                   <button class="{{ cd.editBtnCls }}" onclick="{{ onCronoEditToggle }}" data-day-key="{{ cd.dayKey }}">{{ cd.editBtnLabel }}</button>
@@ -1148,6 +1187,26 @@ class Component extends DCLogic {
       d.onCronoCheck && d.onCronoCheck(key, newVal);
     };
 
+    this._onPlanoPreset = function(e){
+      var btn = e.currentTarget || e.target;
+      var days = parseInt(btn.dataset.days, 10);
+      self.setState({ planoDays: days, planoInput: String(days) });
+      try{ localStorage.setItem('_ct_plano_days', String(days)); }catch(ex){}
+    };
+    this._onPlanoInput = function(e){
+      var val = (e.currentTarget || e.target).value;
+      var days = parseInt(val, 10);
+      self.setState({ planoInput: val });
+      if(days >= 20 && days <= 180){
+        self.setState({ planoDays: days });
+        try{ localStorage.setItem('_ct_plano_days', String(days)); }catch(ex){}
+      }
+    };
+    this._onPlanoReset = function(){
+      self.setState({ planoDays: null, planoInput: '' });
+      try{ localStorage.removeItem('_ct_plano_days'); }catch(ex){}
+    };
+
     this._onCronoEditToggle = function(e){
       var btn = e.currentTarget || e.target;
       var dayKey = btn.dataset.dayKey;
@@ -1357,6 +1416,8 @@ class Component extends DCLogic {
     try{ _sq = JSON.parse(localStorage.getItem('_ct_queststats')||'{}'); }catch(e){}
     var _scust = {};
     try{ _scust = JSON.parse(localStorage.getItem('_ct_crono_custom')||'{}'); }catch(e){}
+    var _planoDays = null;
+    try{ var _pd=localStorage.getItem('_ct_plano_days'); if(_pd) _planoDays=parseInt(_pd,10)||null; }catch(e){}
     // Auto-detect current week based on today's date
     var _todayStr = (function(){var d=new Date();return (d.getMonth()+1)+'/'+d.getDate();})();
     var _startWeek = 0;
@@ -1381,6 +1442,8 @@ class Component extends DCLogic {
       profileName: _sp.name||'', profilePhone: _sp.phone||'', profileCity: _sp.city||'', profilePhoto: _sp.photo||'',
       dayNotes: _sn,
       cronoCustom: _scust,
+      planoDays: _planoDays,
+      planoInput: _planoDays ? String(_planoDays) : '',
       cronoEditOpen: '',
       cronoEditDraft: {},
     };
@@ -1453,14 +1516,34 @@ class Component extends DCLogic {
     };
 
     var cronoCustom = st.cronoCustom || {};
+
+    // Plano de dias: calcular fator de escala
+    var _BASE_STUDY_DAYS = 0;
+    var _BASE_TOTAL_Q = 0;
+    this.CRONO.forEach(function(w){ w.d.forEach(function(day){ if(day[1]!=='f'&&day[1]!=='p'){ _BASE_STUDY_DAYS++; if(day[5]) _BASE_TOTAL_Q+=day[5]; } }); });
+    var _planoDays = st.planoDays;
+    var _qFactor = (_planoDays && _planoDays > 0) ? (_BASE_STUDY_DAYS / _planoDays) : 1;
+    var _qPerDay = (_planoDays && _planoDays > 0) ? Math.round(_BASE_TOTAL_Q / _planoDays) : null;
+
+    // Plano info text
+    var _planoInfoText;
+    if(!_planoDays){
+      _planoInfoText = 'Plano original: '+_BASE_STUDY_DAYS+' dias de estudo · '+_BASE_TOTAL_Q+' questões no total';
+    } else {
+      var _qDiff = Math.round(_qFactor*100)-100;
+      var _pace = _qFactor > 1.15 ? 'Ritmo intenso 🔥' : _qFactor < 0.85 ? 'Ritmo leve 🌱' : 'Ritmo moderado ⚡';
+      _planoInfoText = _pace+' — ~'+_qPerDay+' questões/dia · '+(_qDiff>0?'+':'')+_qDiff+'% vs plano original';
+    }
+
     var cronoWeeks = this.CRONO.map(function(w, wi){
       var days = w.d.map(function(day, di){
         var typ = day[1], badge = day[2], subj = day[3], topic = day[4], q = day[5];
+        // Aplicar fator do plano de dias (só se não tiver customização manual)
         var dayKeyEarly = 'w'+wi+'_d'+di;
         var cust = cronoCustom[dayKeyEarly] || {};
         if(cust.subject != null && cust.subject !== '') subj  = cust.subject;
         if(cust.topic   != null && cust.topic   !== '') topic = cust.topic;
-        if(cust.q       != null)                        q     = cust.q;
+        if(cust.q       != null){ q = cust.q; } else if(_qFactor !== 1 && q){ q = Math.max(1, Math.round(q * _qFactor)); }
         var leisText = LEIS_MAP[subj] || '';
         var lbls = checkLabels[typ] || [];
         var stepIcons = ['1°','2°','3°','4°','5°'];
@@ -1643,6 +1726,17 @@ class Component extends DCLogic {
       weekIsLast: activeWeekIdx===cronoWeeks.length-1,
       onWeekPrev: this._onWeekPrev,
       onWeekNext: this._onWeekNext,
+      // Plano de dias
+      planoInfoText: _planoInfoText,
+      planoInputVal: st.planoInput || '',
+      plano45Cls:  'ct-plano-preset' + (_planoDays===45 ? ' active' : ''),
+      plano60Cls:  'ct-plano-preset' + (_planoDays===60 ? ' active' : ''),
+      plano75Cls:  'ct-plano-preset' + (_planoDays===75 ? ' active' : ''),
+      plano84Cls:  'ct-plano-preset' + (_planoDays===84 ? ' active' : ''),
+      plano90Cls:  'ct-plano-preset' + (_planoDays===90 ? ' active' : ''),
+      onPlanoPreset: this._onPlanoPreset,
+      onPlanoInput:  this._onPlanoInput,
+      onPlanoReset:  this._onPlanoReset,
       onCronoCheck: this._onCronoCheck,
       onQuestInput: this._onQuestInput,
       onDayNote: this._onDayNote,
