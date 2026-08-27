@@ -1517,25 +1517,47 @@ class Component extends DCLogic {
 
     var cronoCustom = st.cronoCustom || {};
 
-    // Plano de dias: calcular fator de escala
+    // Plano de dias: gerar cronograma redistribuído a partir de hoje
     var _BASE_STUDY_DAYS = 0;
     var _BASE_TOTAL_Q = 0;
     this.CRONO.forEach(function(w){ w.d.forEach(function(day){ if(day[1]!=='f'&&day[1]!=='p'){ _BASE_STUDY_DAYS++; if(day[5]) _BASE_TOTAL_Q+=day[5]; } }); });
     var _planoDays = st.planoDays;
-    var _qFactor = (_planoDays && _planoDays > 0) ? (_BASE_STUDY_DAYS / _planoDays) : 1;
-    var _qPerDay = (_planoDays && _planoDays > 0) ? Math.round(_BASE_TOTAL_Q / _planoDays) : null;
 
-    // Plano info text
+    // Flatten all CRONO days
+    var _allCronoDays = [];
+    this.CRONO.forEach(function(w){ w.d.forEach(function(day){ _allCronoDays.push(day); }); });
+    var _N = _allCronoDays.length;
+
+    var _sourceCrono;
     var _planoInfoText;
-    if(!_planoDays){
-      _planoInfoText = 'Plano original: '+_BASE_STUDY_DAYS+' dias de estudo · '+_BASE_TOTAL_Q+' questões no total';
+    if(_planoDays && _planoDays > 0){
+      // Redistribute: generate _planoDays days starting from today
+      var _today = new Date(); _today.setHours(0,0,0,0);
+      var _dayNamesShort = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+      var _adaptedDays = [];
+      var _totalAdaptedQ = 0;
+      for(var _i=0; _i<_planoDays; _i++){
+        var _d = new Date(_today.getTime()); _d.setDate(_today.getDate()+_i);
+        var _ci = Math.min(Math.floor(_i*_N/_planoDays), _N-1);
+        var _base = _allCronoDays[_ci];
+        var _ds = _dayNamesShort[_d.getDay()]+', '+String(_d.getDate()).padStart(2,'0')+'/'+String(_d.getMonth()+1).padStart(2,'0');
+        var _aq = _base[5] ? Math.max(1, Math.round(_base[5]*_N/_planoDays)) : _base[5];
+        if(_aq) _totalAdaptedQ += _aq;
+        _adaptedDays.push([_ds, _base[1], _base[2], _base[3], _base[4], _aq]);
+      }
+      _sourceCrono = [];
+      for(var _w=0; _w<Math.ceil(_planoDays/7); _w++){
+        _sourceCrono.push({ n:_w+1, r:'Semana '+(_w+1), d:_adaptedDays.slice(_w*7, _w*7+7) });
+      }
+      var _qPerDay = _planoDays > 0 ? Math.round(_totalAdaptedQ/_planoDays) : 0;
+      var _pace = _planoDays < 50 ? 'Ritmo intenso 🔥' : _planoDays < 70 ? 'Ritmo moderado ⚡' : 'Ritmo leve 🌱';
+      _planoInfoText = _pace+' — Plano de '+_planoDays+' dias a partir de hoje · ~'+_qPerDay+' questões/dia';
     } else {
-      var _qDiff = Math.round(_qFactor*100)-100;
-      var _pace = _qFactor > 1.15 ? 'Ritmo intenso 🔥' : _qFactor < 0.85 ? 'Ritmo leve 🌱' : 'Ritmo moderado ⚡';
-      _planoInfoText = _pace+' — ~'+_qPerDay+' questões/dia · '+(_qDiff>0?'+':'')+_qDiff+'% vs plano original';
+      _sourceCrono = this.CRONO;
+      _planoInfoText = 'Plano original: '+_BASE_STUDY_DAYS+' dias de estudo · '+_BASE_TOTAL_Q+' questões no total';
     }
 
-    var cronoWeeks = this.CRONO.map(function(w, wi){
+    var cronoWeeks = _sourceCrono.map(function(w, wi){
       var days = w.d.map(function(day, di){
         var typ = day[1], badge = day[2], subj = day[3], topic = day[4], q = day[5];
         // Aplicar fator do plano de dias (só se não tiver customização manual)
@@ -1543,7 +1565,7 @@ class Component extends DCLogic {
         var cust = cronoCustom[dayKeyEarly] || {};
         if(cust.subject != null && cust.subject !== '') subj  = cust.subject;
         if(cust.topic   != null && cust.topic   !== '') topic = cust.topic;
-        if(cust.q       != null){ q = cust.q; } else if(_qFactor !== 1 && q){ q = Math.max(1, Math.round(q * _qFactor)); }
+        if(cust.q       != null){ q = cust.q; }
         var leisText = LEIS_MAP[subj] || '';
         var lbls = checkLabels[typ] || [];
         var stepIcons = ['1°','2°','3°','4°','5°'];
