@@ -1541,7 +1541,7 @@ class Component extends DCLogic {
         var _ci = Math.min(Math.floor(_i*_N/_planoDays), _N-1);
         var _base = _allCronoDays[_ci];
         var _ds = _dayNamesShort[_d.getDay()]+', '+String(_d.getDate()).padStart(2,'0')+'/'+String(_d.getMonth()+1).padStart(2,'0');
-        var _aq = _base[5] ? Math.min(35, Math.max(10, Math.round(_base[5]*_N/_planoDays))) : _base[5];
+        var _aq = _base[5] ? Math.min(Math.round(_base[5]*1.5), Math.max(10, Math.round(_base[5]*_N/_planoDays))) : _base[5];
         if(_aq) _totalAdaptedQ += _aq;
         _adaptedDays.push([_ds, _base[1], _base[2], _base[3], _base[4], _aq]);
       }
